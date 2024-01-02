@@ -1,8 +1,17 @@
-public class Professor {
-
+public class Professor implements ProfessorImplementa {
     private String nome;
     private int idade;
     private String email;
+
+    @Override
+    public Modulo criarModulo(){
+        System.out.println("\nConteudo criado com sucesso");
+        return new Modulo();
+    }
+    @Override
+    public void modificarModulo(Modulo conteudo) {
+        System.out.println("\nConteudo Modificado com sucesso");
+    }
 
     public String getNome() {
         return nome;
@@ -28,3 +37,4 @@ public class Professor {
         this.email = email;
     }
 }
+

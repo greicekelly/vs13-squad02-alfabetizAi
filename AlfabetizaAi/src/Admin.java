@@ -1,8 +1,19 @@
-public class Admin {
-
+public class Admin implements AdminImplementa {
     private String nome;
     private int idade;
     private String email;
+
+    @Override
+    public boolean aprovarModulo(Modulo conteudo) {
+        System.out.println("\nConteudo aprovado com sucesso");
+        return true;
+    }
+
+    @Override
+    public boolean deletarModulo(Modulo conteudo) {
+        System.out.println("/nConteudo deletado com sucesso");
+        return true;
+    }
 
     public String getNome() {
         return nome;
