@@ -2,8 +2,15 @@ public class Desafio {
 
     private String titulo;
     private char tipo; //(v - video, e - escrito)
-    private String autor;
+    private Professor autor;
     private boolean foiAprovado;
+
+    public Desafio(String titulo, char tipo, Professor autor) {
+        this.titulo = titulo;
+        this.tipo = tipo;
+        this.autor = autor;
+        this.foiAprovado = false;
+    }
 
     public boolean exibirDesafio(){
         System.out.println("Exibindo desafio.");
@@ -26,11 +33,11 @@ public class Desafio {
         this.tipo = tipo;
     }
 
-    public String getAutor() {
+    public Professor getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(Professor autor) {
         this.autor = autor;
     }
 
