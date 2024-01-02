@@ -8,6 +8,16 @@ public class Modulo {
     private ArrayList<Desafio> desafios;
     private int classificacao; //(1- iniciante, 2- medio, 3- avancado)
 
+    public Modulo(){}
+
+    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, int classificacao) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.foiAprovado = false;
+        this.desafios = desafios;
+        this.classificacao = classificacao;
+    }
+
     public void ExibirConteudo(){
         System.out.println("Exibindo conteúdo do módulo.");
     }
