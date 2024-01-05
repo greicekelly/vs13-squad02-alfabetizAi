@@ -15,4 +15,9 @@ public class Admin extends Usuario implements AdminImplementa {
         System.out.println("/nConteudo deletado com sucesso");
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Nome: "+getNome() +" - Idade: "+getIdade()+" - Email: "+getEmail();
+    }
 }
