@@ -1,7 +1,9 @@
+import java.time.LocalDate;
+
 public class Admin extends Usuario implements AdminImplementa {
 
-    public Admin(String nome, int idade, String email) {
-        super(nome, idade, email);
+    public Admin(String nome, LocalDate dataDeNascimento, String email) {
+        super(nome, dataDeNascimento, email);
     }
 
     @Override

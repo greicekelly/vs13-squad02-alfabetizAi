@@ -35,6 +35,15 @@ public class AlunoService {
         }
     }
 
+    public Aluno consultarAlunoEmail(String email) {
+        for (Aluno aluno : lista) {
+            if(aluno.getEmail().equals(email)){
+               return aluno;
+            }
+        }
+        return null;
+    }
+
 
     public void editarAluno(int index, Aluno alunoEditado) {
         try{

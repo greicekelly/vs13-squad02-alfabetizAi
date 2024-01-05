@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class MenuNumerico {
@@ -22,7 +23,14 @@ public class MenuNumerico {
 
                         switch (escolhaInterna) {
                             case 1:
+                                System.out.println("Informe seu email: ");
+                                String email = sc.nextLine();
+                                System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                String dataNascimento = sc.nextLine();
+                                LocalDate data = LocalDate.parse(dataNascimento);
+                                Aluno alunoLogin = AlunoService.consultarAlunoEmail(email);
 
+                                }
                                 break;
                             case 2:
                                 break;

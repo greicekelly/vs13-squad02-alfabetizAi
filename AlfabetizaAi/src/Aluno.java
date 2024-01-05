@@ -1,10 +1,11 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 public class Aluno extends Usuario
 {
     private ArrayList<Modulo> modulosConcluidos;
 
-    public Aluno(String nome, int idade, String email, ArrayList<Modulo> modulosConcluidos) {
-        super(nome, idade, email);
+    public Aluno(String nome, LocalDate dataDeNascimento, String email, ArrayList<Modulo> modulosConcluidos) {
+        super(nome, dataDeNascimento, email);
         this.modulosConcluidos = modulosConcluidos;
     }
 

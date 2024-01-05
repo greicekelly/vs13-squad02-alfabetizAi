@@ -1,7 +1,9 @@
+import java.time.LocalDate;
+
 public class Professor extends Usuario implements ProfessorImplementa {
 
-    public Professor(String nome, int idade, String email) {
-        super(nome, idade, email);
+    public Professor(String nome, LocalDate dataDeNascimento, String email) {
+        super(nome, dataDeNascimento, email);
     }
 
     @Override
