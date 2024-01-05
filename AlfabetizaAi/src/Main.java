@@ -5,6 +5,13 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
+        ModuloService lista = new ModuloService();
+        Professor professor = new Professor("maria", 20, "teste@email");
+        Desafio desafio = new Desafio("Desafio 1", 'V', professor);
+        Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), 1);
+        modulo.adicionarDesafio(desafio);
+        lista.adicionar(modulo);
+        
         AdminService listaAdmin = new AdminService();
         listaAdmin.adicionar(new Admin("Maria Antonia", 36, "teste@email"));
         listaAdmin.adicionar(new Admin("Joao da Silva", 36, "teste@email"));

@@ -18,6 +18,26 @@ public class Modulo {
         this.classificacao = classificacao;
     }
 
+    public void adicionarDesafio(Desafio desafio) {
+        this.desafios.add(desafio);
+    }
+
+    public void visualizarDesafios() {
+        for (int i = 0; i < desafios.size(); i++) {
+            System.out.printf("""
+                __________Desafio %d___________
+                Titulo: %s
+                Autor: %s
+                """, i, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome());
+            System.out.println("--------------------------------");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();
+    }
+
     public void ExibirConteudo(){
         System.out.println("Exibindo conteúdo do módulo.");
     }
