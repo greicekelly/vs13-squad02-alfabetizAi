@@ -14,5 +14,9 @@ public class Professor extends Usuario implements ProfessorImplementa {
         System.out.println("\nConteudo Modificado com sucesso");
     }
 
+    @Override
+    public String toString() {
+        return "Professor \nNome: " + this.getNome() + "\nIdade: " + this.getIdade() + "\nE-mail: " + this.getEmail();
+    }
 }
 
