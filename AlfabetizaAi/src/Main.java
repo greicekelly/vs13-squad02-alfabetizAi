@@ -7,7 +7,7 @@ public class Main {
 
         ModuloService lista = new ModuloService();
         Professor professor = new Professor("maria", 20, "teste@email");
-        Desafio desafio = new Desafio("Desafio 1", 'V', professor);
+        Desafio desafio = new Desafio("Desafio 1", TipoDesafio.JOGO, professor);
         Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), 1);
         modulo.adicionarDesafio(desafio);
         lista.adicionar(modulo);

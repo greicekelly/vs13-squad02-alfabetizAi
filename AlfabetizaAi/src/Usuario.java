@@ -1,12 +1,14 @@
+import java.time.LocalDate;
+
 public abstract class Usuario {
 
     private String nome;
-    private int idade;
+    private LocalDate dataDeNascimento;
     private String email;
 
-    public Usuario(String nome, int idade, String email) {
+    public Usuario(String nome, LocalDate dataDeNascimento, String email) {
         this.nome = nome;
-        this.idade = idade;
+        this.dataDeNascimento = dataDeNascimento;
         this.email = email;
     }
 
@@ -19,11 +21,11 @@ public abstract class Usuario {
     }
 
     public int getIdade() {
-        return idade;
+        return dataDeNascimento;
     }
 
     public void setIdade(int idade) {
-        this.idade = idade;
+        this.dataDeNascimento = dataDeNascimento;
     }
 
     public String getEmail() {

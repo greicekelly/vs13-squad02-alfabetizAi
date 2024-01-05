@@ -18,9 +18,11 @@ public class MenuNumerico {
 
                         menuAluno();
                         int escolhaInterna = sc.nextInt();
+                        sc.nextLine();
 
                         switch (escolhaInterna) {
                             case 1:
+
                                 break;
                             case 2:
                                 break;

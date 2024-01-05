@@ -24,14 +24,8 @@ public class DesafioService {
         }
     }
 
-    String tipo;
     public void consultarDesafio(int index) {
-        if (desafios.get(index).getTipoDesafio() == 'q') {
-            tipo = "Quiz";
-        } else if (desafios.get(index).getTipoDesafio() == 'j'){
-            tipo = "Jogo";
-        }
-        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + tipo + ", Autor: " + desafios.get(index).getAutor().getNome());
+        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + desafios.get(index).getTipoDesafio().name() + ", Autor: " + desafios.get(index).getAutor().getNome());
     }
 
     public void editarDesafio(int index, Desafio desafioEditado) {
