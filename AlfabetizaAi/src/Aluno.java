@@ -9,6 +9,10 @@ public class Aluno extends Usuario
         this.modulosConcluidos = modulosConcluidos;
     }
 
+    public Aluno(String nome, LocalDate dataDeNascimento, String email) {
+        super(nome, dataDeNascimento, email);
+    }
+
     public boolean concluirModulo(Modulo modulo){
         System.out.println("O módulo " + modulo.getTitulo() + " foi concluído.");
         this.modulosConcluidos.add(modulo);

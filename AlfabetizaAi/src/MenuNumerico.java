@@ -1,10 +1,16 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuNumerico {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int escolha;
+        ModuloService listaModulos = new ModuloService();
+        DesafioService listaDesafios = new DesafioService();
+        AlunoService listaAluno = new AlunoService();
+        AdminService listaAdmin = new AdminService();
+        ProfessorService listaProfessor = new ProfessorService();
 
         while (true) {
             exibirMenuInicial();
@@ -28,13 +34,24 @@ public class MenuNumerico {
                                 System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
                                 String dataNascimento = sc.nextLine();
                                 LocalDate data = LocalDate.parse(dataNascimento);
-                                Aluno alunoLogin = AlunoService.consultarAlunoEmail(email);
+//                                Aluno alunoLogin = AlunoService.consultarAlunoEmail(email);
 
                                 }
                                 break;
                             case 2:
+                                System.out.println("Informe o seu nome: ");
+                                String nomeCadastro = sc.nextLine();
+                                System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                String dataNascimentoCadastro = sc.nextLine();
+                                LocalDate data = LocalDate.parse(dataNascimentoCadastro);
+                                System.out.println("Informe o seu email: ");
+                                String email = sc.nextLine();
+                                Aluno alunoCadastrado = new Aluno(nomeCadastro, data, email);
+                                listaAluno.adicionarAluno(alunoCadastrado);
+                                System.out.println("Aluno cadastrado com sucesso");
                                 break;
                             case 3:
+                                System.out.println("");
                                 break;
                             case 4:
                                 break;
