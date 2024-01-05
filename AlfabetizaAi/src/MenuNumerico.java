@@ -15,7 +15,34 @@ public class MenuNumerico {
                 switch (escolha) {
                     case 1:
                         System.out.println("Você escolheu a opção 1.");
-                        // Adicione o código correspondente à opção 1 aqui
+
+                        menuAluno();
+                        int escolhaInterna = sc.nextInt();
+
+                        switch (escolhaInterna) {
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            case 5:
+                                break;
+                            case 6:
+                                break;
+                            default:
+                                System.out.println("Opção inválida. Tente novamente.");
+                        }
+
+
+
+
+
+
+
+
                         break;
                     case 2:
                         System.out.println("Você escolheu a opção 2.");
@@ -61,9 +88,13 @@ public class MenuNumerico {
 
     private static void menuProfessor() {
         System.out.println("\n---- Menu ----");
-        System.out.println("1. Pressione 1 se você é um Aluno");
-        System.out.println("2. Pressione 2 se você é um Professor");
-        System.out.println("3. Pressione 3 se você é um Admin");
+        System.out.println("1. Pressione 1 para fazer o login");  // READ
+        System.out.println("2. Pressione 2 para fazer o cadastro"); // CREATE
+        System.out.println("3. Pressione 3 para editar seus dados cadastrais"); //UPDATE
+        System.out.println("4. Pressione 4 para criar um novo módulo"); // CREATE //passar por aprovação novamente
+        System.out.println("5. Pressione 5 para modificar um módulo"); // UPDATE //passar por aprovação novamente
+        System.out.println("4. Pressione 6 para criar um novo desafio"); // CREATE //passar por aprovação novamente
+        System.out.println("5. Pressione 7 para modificar um desafio"); // UPDATE //passar por aprovação novamente
         System.out.println("0. Voltar");
 
 
@@ -71,9 +102,11 @@ public class MenuNumerico {
 
     private static void menuAdmin() {
         System.out.println("\n---- Menu ----");
-        System.out.println("1. Pressione 1 se você é um Aluno");
-        System.out.println("2. Pressione 2 se você é um Professor");
-        System.out.println("3. Pressione 3 se você é um Admin");
+        System.out.println("1. Pressione 1 para fazer o login");  // READ
+        System.out.println("2. Pressione 2 para fazer o cadastro"); // CREATE
+        System.out.println("3. Pressione 3 para editar seus dados cadastrais"); //UPDATE
+        System.out.println("4. Pressione 4 para aprovar um módulo"); // CREATE
+        System.out.println("5. Pressione 5 para deletar um módulo"); // DELETE
         System.out.println("0. Voltar");
 
 
