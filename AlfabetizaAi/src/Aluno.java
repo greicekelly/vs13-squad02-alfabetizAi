@@ -21,4 +21,5 @@ public class Aluno extends Usuario
     public void setModulosConcluidos(ArrayList<Modulo> modulosConcluidos) {
         this.modulosConcluidos = modulosConcluidos;
     }
+
 }

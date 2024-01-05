@@ -1,20 +1,18 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Desafio {
 
     private String titulo;
-    private char tipo; //(v - video, e - escrito)
+    private char tipoDesafio; // (q - quiz ou j - jogo)
     private Professor autor;
-    private boolean foiAprovado;
+
+    public Desafio() {}
 
     public Desafio(String titulo, char tipo, Professor autor) {
         this.titulo = titulo;
-        this.tipo = tipo;
+        this.tipoDesafio = tipo;
         this.autor = autor;
-        this.foiAprovado = false;
-    }
-
-    public boolean exibirDesafio(){
-        System.out.println("Exibindo desafio.");
-        return true;
     }
 
     public String getTitulo() {
@@ -25,12 +23,12 @@ public class Desafio {
         this.titulo = titulo;
     }
 
-    public char getTipo() {
-        return tipo;
+    public char getTipoDesafio() {
+        return tipoDesafio;
     }
 
-    public void setTipo(char tipo) {
-        this.tipo = tipo;
+    public void setTipoDesafio(char tipo) {
+        this.tipoDesafio = tipo;
     }
 
     public Professor getAutor() {
@@ -41,11 +39,15 @@ public class Desafio {
         this.autor = autor;
     }
 
-    public boolean isFoiAprovado() {
-        return foiAprovado;
+    String tipo;
+    @Override
+    public String toString() {
+        if (this.tipoDesafio == 'q') {
+            tipo = "Quiz";
+        } else if (this.tipoDesafio == 'j'){
+            tipo = "Jogo";
+        }
+        return "Titulo: " + this.getTitulo() + "\nTipo: " + tipo + "\nAutor: " + this.getAutor().getNome();
     }
 
-    public void setFoiAprovado(boolean foiAprovado) {
-        this.foiAprovado = foiAprovado;
-    }
 }
