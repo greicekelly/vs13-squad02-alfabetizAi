@@ -22,6 +22,11 @@ public class ProfessorService {
         }
     }
 
+    public void consultarProfessor(int i) {
+        Professor professor = professores.get(i);
+        System.out.println("Nome: " + professor.getNome() + " - Idade: " + professor.getIdade() + " - E-mail: " + professor.getEmail());
+    }
+
     public void editar(int i, Professor professorEditado) {
         Professor professor = professores.get(i);
         professor.setNome(professorEditado.getNome());
