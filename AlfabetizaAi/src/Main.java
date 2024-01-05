@@ -26,5 +26,16 @@ public class Main {
         listaAluno.visualizarTodosAlunos();
         listaAluno.consultarAluno(0);
         listaAluno.removerAluno(1);
+
+        ProfessorService listaProfessor = new ProfessorService();
+        listaProfessor.adicionar(new Professor("Bruno",34,"bruno@email.com"));
+        listaProfessor.adicionar(new Professor("Gabriel",23, "gabriel@email.com"));
+        listaProfessor.adicionar(new Professor("Vitoria",32, "vitoria@email.teste"));
+
+        listaProfessor.editar(2, new Professor("Vitoria", 21, "vitoria@email.teste"));
+        listaProfessor.consultarProfessor(2);
+        listaProfessor.remover(2);
+        listaProfessor.visualizar();
+
     }
 }
