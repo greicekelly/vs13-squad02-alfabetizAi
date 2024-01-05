@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -14,5 +16,15 @@ public class Main {
         listaAdmin.visualizarTodos();
         listaAdmin.remover(0);
         listaAdmin.visualizarTodos();
+
+        AlunoService listaAluno = new AlunoService();
+        listaAluno.adicionarAluno(new Aluno("Lucas", 8, "lucass@mail.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Renan", 6, "lucas@mail.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Arthur", 3, "arthura@mail.com", new ArrayList<>()));
+
+        listaAluno.editarAluno(1, new Aluno("Lucas Vinicius", 12, "lucas@gmail.com", new ArrayList<>()));
+        listaAluno.visualizarTodosAlunos();
+        listaAluno.consultarAluno(0);
+        listaAluno.removerAluno(1);
     }
 }
