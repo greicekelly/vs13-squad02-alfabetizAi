@@ -7,9 +7,9 @@ public class Main {
     public static void main(String[] args) {
 
         ModuloService lista = new ModuloService();
-        Professor professor = new Professor("maria", LocalDate.parse("12-18-1987"), "maria@email");
+        Professor professor = new Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
         Desafio desafio = new Desafio("Desafio 1", TipoDesafio.JOGO, professor);
-        Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), 1);
+        Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), ClassificacaoModulo.INICIANTE);
       //  modulo.adicionarDesafio(desafio);
         lista.adicionar(modulo);
         

@@ -175,14 +175,15 @@ public class MenuNumerico {
                                             } else {
                                                 Desafio desafioCriado = new Desafio(tituloNovoDesafio, tipo, professor);
                                                 listaDesafios.adicionarDesafio(desafioCriado);
-                                                System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - MEDIO, 3 - AVANÇADO");
+                                                System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
                                                 int classificao = sc.nextInt();
                                                 if (classificao > 3 || classificao < 1) {
                                                     throw new IllegalArgumentException("Opção de módulo inexistente");
                                                 } else {
+                                                    ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
                                                     DesafioService novaListaDesafio = new DesafioService();
                                                     novaListaDesafio.adicionarDesafio(desafioCriado);
-                                                    listaModulos.adicionar(new Modulo(tituloModulo, professor, novaListaDesafio.getListaDesafios(), classificao));
+                                                    listaModulos.adicionar(new Modulo(tituloModulo, professor, novaListaDesafio.getListaDesafios(), dificuldadeSelecionada));
                                                     listaDesafios.adicionarDesafio(desafioCriado);
                                                     System.out.println("Novo módulo cadastrado com sucesso");
                                                 }

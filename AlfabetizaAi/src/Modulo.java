@@ -7,11 +7,11 @@ public class Modulo {
     private Professor autor;
     private boolean foiAprovado;
     private ArrayList<Desafio> desafios;
-    private int classificacao; //(1- iniciante, 2- medio, 3- avancado)
+    private ClassificacaoModulo classificacao; //(1- iniciante, 2- intermediário, 3- avancado)
 
     public Modulo(){}
 
-    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, int classificacao) {
+    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
         this.titulo = titulo;
         this.autor = autor;
         this.foiAprovado = false;
@@ -79,11 +79,11 @@ public class Modulo {
         this.desafios = desafios;
     }
 
-    public int getClassificacao() {
+    public ClassificacaoModulo getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(int classificacao) {
+    public void setClassificacao(ClassificacaoModulo classificacao) {
         this.classificacao = classificacao;
     }
 }
