@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -33,12 +34,19 @@ public class AdminService {
 
     }
 
+    public Admin consultarAdminEmail(String email) {
+        for (Admin admin : lista) {
+            if(admin.getEmail().equals(email)){
+                return admin;
+            }
+        }
+        return null;
+    }
 
-    public void editar(int index, Admin cadastroEditado) {
-        Admin admin = lista.get(index);
-        admin.setNome(cadastroEditado.getNome());
-        admin.setDataDeNascimento(cadastroEditado.getDataDeNascimento());
-        admin.setEmail(cadastroEditado.getEmail());
+    public void editar(Admin adminASerEditado, Admin cadastroEditado) {
+        adminASerEditado.setNome(cadastroEditado.getNome());
+        adminASerEditado.setDataDeNascimento(cadastroEditado.getDataDeNascimento());
+        adminASerEditado.setEmail(cadastroEditado.getEmail());
         System.out.println("Cadastro atualizado com sucesso.");
         System.out.println("--------------------------------");
     }
@@ -46,5 +54,14 @@ public class AdminService {
     public void remover(int index) {
         lista.remove(index);
         System.out.println("--------------------------------");
+    }
+
+    public Admin loginAdmin(String email, LocalDate dataNascimento) {
+        for (Admin admin : lista) {
+            if (admin.getEmail().equals(email) && admin.getDataDeNascimento().equals(dataNascimento)) {
+                return admin;
+            }
+        }
+        return null;
     }
 }

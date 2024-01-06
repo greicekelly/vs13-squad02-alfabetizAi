@@ -10,7 +10,7 @@ public class Main {
         Professor professor = new Professor("maria", LocalDate.parse("12-18-1987"), "maria@email");
         Desafio desafio = new Desafio("Desafio 1", TipoDesafio.JOGO, professor);
         Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), 1);
-        modulo.adicionarDesafio(desafio);
+      //  modulo.adicionarDesafio(desafio);
         lista.adicionar(modulo);
         
         AdminService listaAdmin = new AdminService();
@@ -20,7 +20,7 @@ public class Main {
 
         listaAdmin.visualizarTodos();
         listaAdmin.consultar(1);
-        listaAdmin.editar(2, new Admin("Pedro Santos",LocalDate.parse("01-06-2018"), "pedro.santos@email"));
+       // listaAdmin.editar(2, new Admin("Pedro Santos",LocalDate.parse("01-06-2018"), "pedro.santos@email"));
         listaAdmin.visualizarTodos();
         listaAdmin.remover(0);
         listaAdmin.visualizarTodos();
@@ -40,7 +40,7 @@ public class Main {
         listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("01-06-2014"), "gabriel@email.com"));
         listaProfessor.adicionar(new Professor("Vitoria",LocalDate.parse("01-06-2019"), "vitoria@email.teste"));
 
-        listaProfessor.editar(2, new Professor("Vitoria", LocalDate.parse("01-06-2015"), "vitoria@email.teste"));
+       // listaProfessor.editar(2, new Professor("Vitoria", LocalDate.parse("01-06-2015"), "vitoria@email.teste"));
         listaProfessor.consultarProfessor(2);
         listaProfessor.remover(2);
         listaProfessor.visualizar();
