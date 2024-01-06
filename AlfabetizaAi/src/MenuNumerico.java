@@ -199,7 +199,37 @@ public class MenuNumerico {
                                             break;
 
                                         case 2:
-                                            break;
+                                            System.out.println("Informe o título do novo Modulo: ");
+                                            String tituloModulo = sc.nextLine();
+                                            System.out.println("Informe o email do autor do novo Modulo: ");
+                                            email = sc.nextLine();
+                                            professor = listaProfessor.consultarProfessorEmail(email);
+                                            System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
+                                            String tituloNovoDesafio = sc.nextLine();
+                                            System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
+                                            Integer tipoNovoDesafio = sc.nextInt();
+                                            TipoDesafio tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
+                                            if (tipo == null) {
+                                                throw new IllegalArgumentException("Opção de desafio inexistente");
+                                                break;
+                                            } else {
+                                                Desafio desafioCriado = new Desafio(tituloNovoDesafio, tipo, professor);
+                                                listaDesafios.adicionarDesafio(desafioCriado);
+                                                System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - MEDIO, 3 - AVANÇADO");
+                                                int classificao = sc.nextInt();
+                                                if (classificao > 3 || classificao < 1) {
+                                                    throw new IllegalArgumentException("Opção de módulo inexistente");
+                                                    break;
+                                                } else {
+                                                    listaModulos.adicionar(new Modulo(tituloModulo, professor, desafioCriado, classificao));
+                                                    listaDesafios.adicionarDesafio(desafioCriado);
+                                                    System.out.println("Novo módulo cadastrado com sucesso");
+                                                    break;
+                                                }
+
+
+                                              break;
+                                            }
 
                                         case 3:
                                             break;
@@ -247,6 +277,7 @@ public class MenuNumerico {
             }
         }
     }
+
 
 
 

@@ -6,12 +6,12 @@ public class Modulo {
     private String conteudo;
     private Professor autor;
     private boolean foiAprovado;
-    private ArrayList<Desafio> desafios;
+    private Desafio desafios;
     private int classificacao; //(1- iniciante, 2- medio, 3- avancado)
 
     public Modulo(){}
 
-    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, int classificacao) {
+    public Modulo(String titulo, Professor autor, Desafio desafios, int classificacao) {
         this.titulo = titulo;
         this.autor = autor;
         this.foiAprovado = false;
@@ -19,20 +19,20 @@ public class Modulo {
         this.classificacao = classificacao;
     }
 
-    public void adicionarDesafio(Desafio desafio) {
-        this.desafios.add(desafio);
-    }
-
-    public void visualizarDesafios() {
-        for (int i = 0; i < desafios.size(); i++) {
-            System.out.printf("""
-                __________Desafio %d___________
-                Titulo: %s
-                Autor: %s
-                """, i, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome());
-            System.out.println("--------------------------------");
-        }
-    }
+//    public void adicionarDesafio(Desafio desafio) {
+//        this.desafios.add(desafio);
+//    }
+//
+//    public void visualizarDesafios() {
+//        for (int i = 0; i < desafios.size(); i++) {
+//            System.out.printf("""
+//                __________Desafio %d___________
+//                Titulo: %s
+//                Autor: %s
+//                """, i, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome());
+//            System.out.println("--------------------------------");
+//        }
+//    }
 
     @Override
     public String toString() {
@@ -75,11 +75,11 @@ public class Modulo {
         this.foiAprovado = foiAprovado;
     }
 
-    public ArrayList<Desafio> getDesafios() {
+    public Desafio getDesafios() {
         return desafios;
     }
 
-    public void setDesafios(ArrayList<Desafio> desafios) {
+    public void setDesafios(Desafio desafios) {
         this.desafios = desafios;
     }
 
