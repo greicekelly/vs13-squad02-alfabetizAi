@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class AlunoService {
@@ -22,14 +23,14 @@ public class AlunoService {
         System.out.println("Lista de Alunos:");
         for (int i = 0; i < lista.size(); i++) {
             Aluno aluno = lista.get(i);
-            System.out.println("Id: " + i + ", Nome: " + aluno.getNome() + ", Idade: " + aluno.getIdade() + ", Email: " + aluno.getEmail());
+            System.out.println("Id: " + i + ", Nome: " + aluno.getNome() + ", Idade: " + aluno.getDataDeNascimento() + ", Email: " + aluno.getEmail());
         }
     }
 
     public void consultarAluno(int index) {
         try {
             Aluno aluno = lista.get(index);
-            System.out.println("Nome: " + aluno.getNome() + ", Idade: " + aluno.getIdade() + ", Email: " + aluno.getEmail());
+            System.out.println("Nome: " + aluno.getNome() + ", Idade: " + aluno.getDataDeNascimento() + ", Email: " + aluno.getEmail());
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Aluno não existe.");
         }
@@ -44,12 +45,22 @@ public class AlunoService {
         return null;
     }
 
+    public Aluno loginAluno(String email, LocalDate dataNascimento) {
+        for (Aluno aluno : lista) {
+            aluno.getDataDeNascimento();
+            if (aluno.getEmail().equals(email) && aluno.getDataDeNascimento().equals(dataNascimento)) {
+                return aluno;
+            }
+        }
+        return null;
+    }
+
 
     public void editarAluno(Aluno aluno, Aluno alunoEditado) {
         try{
             aluno.setNome((alunoEditado.getNome()));
             aluno.setEmail((alunoEditado.getEmail()));
-            aluno.setIdade((alunoEditado.getIdade()));
+            aluno.setDataDeNascimento((alunoEditado.getDataDeNascimento()));
         } catch (IndexOutOfBoundsException e){
             System.err.println("erro ao editar  aluno.");
         }

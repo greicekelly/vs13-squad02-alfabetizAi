@@ -7,16 +7,16 @@ public class Main {
     public static void main(String[] args) {
 
         ModuloService lista = new ModuloService();
-        Professor professor = new Professor("maria", LocalDate.parse("12-18-1987"), "teste@email");
+        Professor professor = new Professor("maria", LocalDate.parse("12-18-1987"), "maria@email");
         Desafio desafio = new Desafio("Desafio 1", TipoDesafio.JOGO, professor);
         Modulo modulo = new Modulo("teste", professor , new ArrayList<>(), 1);
         modulo.adicionarDesafio(desafio);
         lista.adicionar(modulo);
         
         AdminService listaAdmin = new AdminService();
-        listaAdmin.adicionar(new Admin("Maria Antonia", LocalDate.parse("12-18-1987"), "teste@email"));
-        listaAdmin.adicionar(new Admin("Joao da Silva", LocalDate.parse("12-18-1987"), "teste@email"));
-        listaAdmin.adicionar(new Admin("Pedro", LocalDate.parse("12-18-1987"), "teste@email"));
+        listaAdmin.adicionar(new Admin("Maria Antonia", LocalDate.parse("12-18-1987"), "maria@email"));
+        listaAdmin.adicionar(new Admin("Joao da Silva", LocalDate.parse("12-18-1987"), "joao@email"));
+        listaAdmin.adicionar(new Admin("Pedro", LocalDate.parse("12-18-1987"), "pedro@email"));
 
         listaAdmin.visualizarTodos();
         listaAdmin.consultar(1);
@@ -30,7 +30,7 @@ public class Main {
         listaAluno.adicionarAluno(new Aluno("Renan", LocalDate.parse("01-08-2018"), "lucas@mail.com", new ArrayList<>()));
         listaAluno.adicionarAluno(new Aluno("Arthur", LocalDate.parse("01-09-2018"), "arthura@mail.com", new ArrayList<>()));
 
-        listaAluno.editarAluno(1, new Aluno("Lucas Vinicius", LocalDate.parse("01-06-2015"), "lucas@gmail.com", new ArrayList<>()));
+        //listaAluno.editarAluno(1, new Aluno("Lucas Vinicius", LocalDate.parse("01-06-2015"), "lucas@gmail.com", new ArrayList<>()));
         listaAluno.visualizarTodosAlunos();
         listaAluno.consultarAluno(0);
         listaAluno.removerAluno(1);

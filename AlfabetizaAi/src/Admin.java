@@ -20,6 +20,6 @@ public class Admin extends Usuario implements AdminImplementa {
 
     @Override
     public String toString() {
-        return "Nome: "+getNome() +" - Idade: "+getIdade()+" - Email: "+getEmail();
+        return "Nome: "+getNome() +" - Idade: "+getDataDeNascimento()+" - Email: "+getEmail();
     }
 }

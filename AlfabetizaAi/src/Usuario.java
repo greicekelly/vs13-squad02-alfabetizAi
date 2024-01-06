@@ -20,11 +20,11 @@ public abstract class Usuario {
         this.nome = nome;
     }
 
-    public int getIdade() {
+    public LocalDate getDataDeNascimento() {
         return dataDeNascimento;
     }
 
-    public void setIdade(int idade) {
+    public void setDataDeNascimento(LocalDate dataDeNascimento) {
         this.dataDeNascimento = dataDeNascimento;
     }
 

@@ -28,7 +28,7 @@ public class AdminService {
                 Nome: %s
                 Idade: %d
                 Email: %s
-                """, index, admin.getNome(), admin.getIdade(), admin.getEmail());
+                """, index, admin.getNome(), admin.getDataDeNascimento(), admin.getEmail());
         System.out.println("--------------------------------");
 
     }
@@ -37,7 +37,7 @@ public class AdminService {
     public void editar(int index, Admin cadastroEditado) {
         Admin admin = lista.get(index);
         admin.setNome(cadastroEditado.getNome());
-        admin.setIdade(cadastroEditado.getIdade());
+        admin.setDataDeNascimento(cadastroEditado.getDataDeNascimento());
         admin.setEmail(cadastroEditado.getEmail());
         System.out.println("Cadastro atualizado com sucesso.");
         System.out.println("--------------------------------");

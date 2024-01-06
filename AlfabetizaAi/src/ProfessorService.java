@@ -24,13 +24,13 @@ public class ProfessorService {
 
     public void consultarProfessor(int i) {
         Professor professor = professores.get(i);
-        System.out.println("Nome: " + professor.getNome() + " - Idade: " + professor.getIdade() + " - E-mail: " + professor.getEmail());
+        System.out.println("Nome: " + professor.getNome() + " - Idade: " + professor.getDataDeNascimento() + " - E-mail: " + professor.getEmail());
     }
 
     public void editar(int i, Professor professorEditado) {
         Professor professor = professores.get(i);
         professor.setNome(professorEditado.getNome());
-        professor.setIdade(professorEditado.getIdade());
+        professor.setDataDeNascimento(professorEditado.getDataDeNascimento());
         professor.setEmail(professorEditado.getEmail());
         System.out.println("Edição realizada com sucesso");
     }

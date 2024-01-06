@@ -18,7 +18,7 @@ public class Professor extends Usuario implements ProfessorImplementa {
 
     @Override
     public String toString() {
-        return "Professor \nNome: " + this.getNome() + "\nIdade: " + this.getIdade() + "\nE-mail: " + this.getEmail();
+        return "Professor \nNome: " + this.getNome() + "\nIdade: " + this.getDataDeNascimento() + "\nE-mail: " + this.getEmail();
     }
 }
 
