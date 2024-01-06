@@ -12,6 +12,13 @@ public class MenuNumerico {
         AdminService listaAdmin = new AdminService();
         ProfessorService listaProfessor = new ProfessorService();
 
+        String nome;
+        String dataNascimento;
+        String email;
+        LocalDate data;
+
+
+
         while (true) {
             exibirMenuInicial();
             System.out.print("Escolha uma opção (0 para sair): ");
@@ -21,6 +28,7 @@ public class MenuNumerico {
 
                 switch (escolha) {
                     case 1:
+
                         System.out.println("Você escolheu a opção 1.");
 
                         menuAluno();
@@ -30,30 +38,43 @@ public class MenuNumerico {
                         switch (escolhaInterna) {
                             case 1:
                                 System.out.println("Informe seu email: ");
-                                String email = sc.nextLine();
+                                email = sc.nextLine();
                                 System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                String dataNascimento = sc.nextLine();
-                                LocalDate data = LocalDate.parse(dataNascimento);
-//                                Aluno alunoLogin = AlunoService.consultarAlunoEmail(email);
+                                dataNascimento = sc.nextLine();
+                                data = LocalDate.parse(dataNascimento);
+                                Aluno alunoLogin = listaAluno.consultarAlunoEmail(email);
 
-                                }
+
+
                                 break;
                             case 2:
                                 System.out.println("Informe o seu nome: ");
                                 String nomeCadastro = sc.nextLine();
                                 System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
                                 String dataNascimentoCadastro = sc.nextLine();
-                                LocalDate data = LocalDate.parse(dataNascimentoCadastro);
+                                data = LocalDate.parse(dataNascimentoCadastro);
                                 System.out.println("Informe o seu email: ");
-                                String email = sc.nextLine();
+                                email = sc.nextLine();
                                 Aluno alunoCadastrado = new Aluno(nomeCadastro, data, email);
                                 listaAluno.adicionarAluno(alunoCadastrado);
                                 System.out.println("Aluno cadastrado com sucesso");
                                 break;
                             case 3:
-                                System.out.println("");
+                                System.out.println("Informe seu email: ");
+                                String alunoASerEditado = sc.nextLine();
+                                Aluno aluno = listaAluno.consultarAlunoEmail(alunoASerEditado);
+                                System.out.println("Informe o seu nome: ");
+                                nome = sc.nextLine();
+                                System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                dataNascimento = sc.nextLine();
+                                LocalDate dataNova = LocalDate.parse(dataNascimento);
+                                System.out.println("Informe o seu email: ");
+                                email = sc.nextLine();
+                                listaAluno.editarAluno(aluno, new Aluno(nome, data, email));
+                                System.out.println("Aluno editado com sucesso");
                                 break;
                             case 4:
+
                                 break;
                             case 5:
                                 break;
@@ -63,14 +84,8 @@ public class MenuNumerico {
                                 System.out.println("Opção inválida. Tente novamente.");
                         }
 
-
-
-
-
-
-
-
                         break;
+
                     case 2:
                         System.out.println("Você escolheu a opção 2.");
                         // Adicione o código correspondente à opção 2 aqui

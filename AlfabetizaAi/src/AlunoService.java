@@ -45,9 +45,8 @@ public class AlunoService {
     }
 
 
-    public void editarAluno(int index, Aluno alunoEditado) {
+    public void editarAluno(Aluno aluno, Aluno alunoEditado) {
         try{
-            Aluno aluno = lista.get(index);
             aluno.setNome((alunoEditado.getNome()));
             aluno.setEmail((alunoEditado.getEmail()));
             aluno.setIdade((alunoEditado.getIdade()));
