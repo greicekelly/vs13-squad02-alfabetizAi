@@ -53,6 +53,16 @@ public class ModuloService extends Modulo{
         System.out.println("--------------------------------");
     }
 
+    public void adminAprovar(int i) {
+        if (i > lista.size() || i < lista.size()) {
+            throw new IllegalArgumentException("Opção de desafio inexistente");
+        } else {
+            Modulo modulo = lista.get(i);
+            modulo.setFoiAprovado(modulo.isFoiAprovado());
+            System.out.println("Modulo aprovado com sucesso");
+        }
+    }
+
     public void remover(int index) {
         lista.remove(index);
     }

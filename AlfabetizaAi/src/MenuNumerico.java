@@ -207,20 +207,21 @@ public class MenuNumerico {
                                             break;
 
                                         case 4:
-                                            //TODO: implementar Pressione 4 para criar um novo desafio
-
-
-
-
-
-
-
-
-
-
-
-
-                                            break;
+                                            System.out.println("Informe o título do novo desafio: ");
+                                            tituloNovoDesafio = sc.nextLine();
+                                            System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
+                                            tipoNovoDesafio = sc.nextInt();
+                                            tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
+                                            if (tipo == null) {
+                                                throw new IllegalArgumentException("Opção de desafio inexistente");
+                                            } else {
+                                                System.out.println("Informe o email do professor autor deste desafio: ");
+                                                email=sc.nextLine();
+                                                professor = listaProfessor.consultarProfessorEmail(email);
+                                                listaDesafios.adicionarDesafio(new Desafio(tituloNovoDesafio, tipo, professor));
+                                                System.out.println("Novo desafio criado com sucesso");
+                                                break;
+                                            }
                                         case 5:
                                             //TODO: implementar Pressione 5 para modificar um desafio
 
@@ -306,7 +307,12 @@ public class MenuNumerico {
                                             System.out.println("Admin editado com sucesso");
                                             break;
                                         case 2:
-                                        //TODO Pressione 2 para aprovar um módulo
+                                        //TODO Pressione 2 para aprovar um módulo -> verificar se está funcional
+                                            listaModulos.visualizarTodos();
+                                            System.out.println("Digite o número do módulo a ser aprovado: ");
+                                            int indexModulo = sc.nextInt();
+                                            listaModulos.adminAprovar(indexModulo);
+
 
                                         case 3:
                                         //TODO Pressione 3 para deletar um módulo
