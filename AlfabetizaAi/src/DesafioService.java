@@ -15,7 +15,6 @@ public class DesafioService {
 
     public void adicionarDesafio(Desafio desafio) {
         desafios.add(desafio);
-        System.out.println("\n" + desafio.getTitulo() + " adicionado com sucesso.");
     }
 
     public ArrayList<Desafio> getListaDesafios() {

@@ -20,6 +20,7 @@ public class MenuNumerico {
         String email;
         LocalDate data;
         int opcaoMenu;
+        int indexModulo;
 
         while (true) {
             exibirMenuInicial();
@@ -97,6 +98,9 @@ public class MenuNumerico {
                                             break;
                                     }
                                 }
+
+                            break;
+
                             case 2:
                                 System.out.println("Informe o seu nome: ");
                                 nome = sc.nextLine();
@@ -117,6 +121,9 @@ public class MenuNumerico {
                                 System.out.println("Opção inválida.");
                                 break;
                         }
+
+                    break;
+
                     case 2:
                         //MENU PROFESSOR
                         System.out.println("Você escolheu a opção Professor:");
@@ -189,6 +196,7 @@ public class MenuNumerico {
                                                 }
                                                 break;
                                             }
+
                                         case 3:
                                             System.out.println("Pressione 3 para modificar um módulo");
                                             int opcaoModulo = sc.nextInt();
@@ -227,19 +235,20 @@ public class MenuNumerico {
                                             tituloNovoDesafio = sc.nextLine();
                                             System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
                                             tipoNovoDesafio = sc.nextInt();
+                                            sc.nextLine();
                                             tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
                                             if (tipo == null) {
                                                 throw new IllegalArgumentException("Opção de desafio inexistente");
                                             } else {
                                                 System.out.println("Informe o email do professor autor deste desafio: ");
-                                                email=sc.nextLine();
+                                                email = sc.nextLine();
                                                 professor = listaProfessor.consultarProfessorEmail(email);
                                                 listaDesafios.adicionarDesafio(new Desafio(tituloNovoDesafio, tipo, professor));
                                                 System.out.println("Novo desafio criado com sucesso");
-                                                break;
                                             }
+                                            break;
                                         case 5:
-                                            System.out.println("Informe o título do desafio que deseja modificado:");
+                                            System.out.println("Informe o título do desafio que deseja modificar: ");
                                             String tituloDesafioModificar = sc.nextLine();
 
                                             Desafio desafioParaModificar = null;
@@ -275,11 +284,14 @@ public class MenuNumerico {
                                             }
                                             break;
 
-                                            default:
-                                                System.out.println("Opção inválida.");
-                                                break;
+                                        default:
+                                            System.out.println("Opção inválida.");
+                                            break;
                                     }
                                 }
+
+                                break;
+
                             case 2:
                                 System.out.println("Informe o seu nome: ");
                                 nome = sc.nextLine();
@@ -300,6 +312,8 @@ public class MenuNumerico {
                                 System.out.println("Opção inválida.");
                                 break;
                         }
+
+                        break;
 
                     case 3:
                         //MENU ADMIN
@@ -345,12 +359,18 @@ public class MenuNumerico {
                                         //TODO Pressione 2 para aprovar um módulo -> verificar se está funcional
                                             listaModulos.visualizarTodos();
                                             System.out.println("Digite o número do módulo a ser aprovado: ");
-                                            int indexModulo = sc.nextInt();
+                                            indexModulo = sc.nextInt();
                                             listaModulos.adminAprovar(indexModulo);
-
+                                            break;
 
                                         case 3:
                                         //TODO Pressione 3 para deletar um módulo
+                                            listaModulos.visualizarTodos();
+                                            System.out.println("Digite o número do módulo a ser deletado: ");
+                                            indexModulo = sc.nextInt();
+                                            listaModulos.remover(indexModulo);
+                                            System.out.println("Módulo deletado com sucesso!");
+                                            break;
 
                                         case 0:
                                             break;
@@ -360,6 +380,9 @@ public class MenuNumerico {
                                             break;
                                     }
                                 }
+
+                                break;
+
                             case 2:
                                 System.out.println("Informe o seu nome: ");
                                 nome = sc.nextLine();
@@ -372,6 +395,7 @@ public class MenuNumerico {
                                 listaAdmin.adicionar(adminCadastrado);
                                 System.out.println("Admin cadastrado com sucesso");
                                 break;
+
                             case 0:
                                 break;
 
@@ -380,19 +404,23 @@ public class MenuNumerico {
                                 break;
                         }
 
+                        break;
+
                     case 0:
                         System.out.println("Saindo do programa. Até logo!");
                         sc.close();
                         System.exit(0);
+
                     default:
                         System.out.println("Opção inválida. Tente novamente.");
                         break;
                 }
-            }else {
+            } else {
                 System.out.println("Por favor, insira um número válido.");
                 sc.next();
             }
         }
+
     }
 
     private static void exibirMenuInicial() {
