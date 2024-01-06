@@ -34,6 +34,15 @@ public class ModuloService extends Modulo{
         System.out.println("--------------------------------");
     }
 
+    public Modulo consultarModuloTitulo(String nome) {
+        for (Modulo modulo : lista) {
+            if(modulo.getTitulo().equals(nome)){
+                return modulo;
+            }
+        }
+        return null;
+    }
+
     public void editar(int index, Modulo cadastroEditado) {
         Modulo modulo = lista.get(index);
         modulo.setAutor(cadastroEditado.getAutor());

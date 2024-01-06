@@ -69,9 +69,23 @@ public class MenuNumerico {
                                                 System.out.println("Aluno editado com sucesso");
                                                 break;
                                             case 2:
+                                                System.out.print("Informe o titulo do módulo que deseja estudar: ");
+                                                listaModulos.visualizarTodos();
+                                                Modulo moduloEscolhido = listaModulos.consultarModuloTitulo(sc.nextLine());
+                                                System.out.println(moduloEscolhido.getConteudo());
+                                                System.out.println("Parabéns pelo estudo! Agora já está pronto para os desafios!");
 
                                                 break;
                                             case 3:
+                                                System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
+                                                listaModulos.visualizarTodos();
+                                                Modulo moduloEscolhidoParaDesafios = listaModulos.consultarModuloTitulo(sc.nextLine());
+                                                DesafioService DesafiosDoModulo = new DesafioService(moduloEscolhidoParaDesafios.getDesafios());
+                                                System.out.print("Informe o índice do desafio que deseja acessar: ");
+                                                DesafiosDoModulo.visualizarDesafios();
+                                                DesafiosDoModulo.consultarDesafio(sc.nextInt());
+                                                System.out.println("Parabéns por concluir o desafio!");
+
                                                 break;
                                             case 4:
                                                 break;

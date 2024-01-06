@@ -9,6 +9,10 @@ public class DesafioService {
         this.desafios = new ArrayList<>();
     }
 
+    public DesafioService(ArrayList desafiosDoModulo) {
+        this.desafios = desafiosDoModulo;
+    }
+
     public void adicionarDesafio(Desafio desafio) {
         desafios.add(desafio);
         System.out.println("\n" + desafio.getTitulo() + " adicionado com sucesso.");
