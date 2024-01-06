@@ -190,20 +190,36 @@ public class MenuNumerico {
                                                 break;
                                             }
                                         case 3:
-                                            //TODO: implementar 3. Pressione 3 para modificar um módulo
+                                            System.out.println("Pressione 3 para modificar um módulo");
+                                            int opcaoModulo = sc.nextInt();
+                                            sc.nextLine();
 
+                                            switch (opcaoModulo) {
+                                                case 3:
+                                                    System.out.println("Informe o título do módulo que deseja modificado: ");
+                                                    String tituloModuloEdicao = sc.nextLine();
+                                                    Modulo moduloParaEditar = listaModulos.consultarModuloTitulo(tituloModuloEdicao);
 
+                                                    if (moduloParaEditar != null) {
+                                                        System.out.println("Módulo encontrado:");
+                                                        listaModulos.visualizarModulo(moduloParaEditar, 0);
+                                                        System.out.println("Informe o novo título do módulo: ");
+                                                        String novoTitulo = sc.nextLine();
+                                                        System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
+                                                        int novaClassificacao = sc.nextInt();
+                                                        sc.nextLine();
 
-
-
-
-
-
-
-
-
-
-
+                                                        ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
+                                                        listaModulos.editar(0, new Modulo(novoTitulo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
+                                                        System.out.println("Módulo editado com sucesso.");
+                                                    } else {
+                                                        System.out.println("Módulo não encontrado.");
+                                                    }
+                                                    break;
+                                                default:
+                                                    System.out.println("Opção inválida.");
+                                                    break;
+                                            }
                                             break;
 
                                         case 4:
@@ -223,26 +239,45 @@ public class MenuNumerico {
                                                 break;
                                             }
                                         case 5:
-                                            //TODO: implementar Pressione 5 para modificar um desafio
+                                            System.out.println("Informe o título do desafio que deseja modificado:");
+                                            String tituloDesafioModificar = sc.nextLine();
 
+                                            Desafio desafioParaModificar = null;
+                                            for (Desafio desafio : listaDesafios.getListaDesafios()) {
+                                                if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
+                                                    desafioParaModificar = desafio;
+                                                    break;
+                                                }
+                                            }
 
+                                            if (desafioParaModificar != null) {
+                                                System.out.println("Desafio encontrado:");
+                                                System.out.println(desafioParaModificar);
 
+                                                System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
+                                                String novoTitulo = sc.nextLine();
+                                                if (!novoTitulo.isEmpty()) {
+                                                    desafioParaModificar.setTitulo(novoTitulo);
+                                                }
 
+                                                System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
+                                                int novoTipo = sc.nextInt();
+                                                sc.nextLine();
+                                                if (novoTipo == 1) {
+                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.QUIZ);
+                                                } else if (novoTipo == 2) {
+                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
+                                                }
 
-
-
-
-
-
-
-
+                                                System.out.println("Desafio modificado com sucesso.");
+                                            } else {
+                                                System.out.println("Desafio não encontrado.");
+                                            }
                                             break;
-                                        case 0:
 
-                                            break;
-                                        default:
-                                            System.out.println("Opção inválida.");
-                                            break;
+                                            default:
+                                                System.out.println("Opção inválida.");
+                                                break;
                                     }
                                 }
                             case 2:
