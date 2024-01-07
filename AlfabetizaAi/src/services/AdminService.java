@@ -1,3 +1,8 @@
+package services;
+
+import models.Admin;
+import models.Professor;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -16,22 +21,31 @@ public class AdminService {
 
 
     public void visualizarTodos() {
-        for (int i = 0; i < lista.size(); i++) {
-            System.out.println("Id: " + i+" - "+lista.get(i));
+        if (lista.isEmpty()) {
+            throw new IllegalStateException("Nenhum admin cadastrado.");
+        } else {
+            for (Admin admin : lista) {
+                System.out.println(admin);
+            }
+            System.out.println("--------------------------------");
         }
-        System.out.println("--------------------------------");
     }
 
-    public void consultar(int index){
-        Admin admin = lista.get(index);
-        System.out.printf("""
+    public void consultar(int id){
+        for (Admin admin : lista) {
+            if(admin.getId() == id){
+                System.out.printf("""
                 Id: %d
                 Nome: %s
-                Idade: %d
+                Data de nascimento: %s
                 Email: %s
-                """, index, admin.getNome(), admin.getDataDeNascimento(), admin.getEmail());
+                """, admin.getId(), admin.getNome(), admin.getDataDeNascimento(), admin.getEmail());
+                System.out.println("--------------------------------");
+                return;
+            }
+        }
+        System.out.println("Nenhum administrador com o ID informado.");
         System.out.println("--------------------------------");
-
     }
 
     public Admin consultarAdminEmail(String email) {
@@ -51,10 +65,17 @@ public class AdminService {
         System.out.println("--------------------------------");
     }
 
-    public void remover(int index) {
-        lista.remove(index);
+    public void remover(int id) {
+        for (Admin admin : lista) {
+            if(admin.getId() == id){
+                lista.remove(admin);
+                return;
+            }
+        }
+        System.out.println("Nenhum professor com o ID informado.");
         System.out.println("--------------------------------");
-    }
+
+}
 
     public Admin loginAdmin(String email, LocalDate dataNascimento) {
         for (Admin admin : lista) {
@@ -64,4 +85,6 @@ public class AdminService {
         }
         return null;
     }
+
+
 }

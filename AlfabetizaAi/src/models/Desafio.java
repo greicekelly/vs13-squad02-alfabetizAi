@@ -1,3 +1,7 @@
+package models;
+
+import enums.TipoDesafio;
+
 public class Desafio {
 
     private String titulo;

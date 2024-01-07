@@ -1,9 +1,17 @@
+package models;
+
+import implement.ProfessorImplementa;
+import models.Modulo;
+import models.Usuario;
+
 import java.time.LocalDate;
 
 public class Professor extends Usuario implements ProfessorImplementa {
-
+    private static Integer professorId = 1;
     public Professor(String nome, LocalDate dataDeNascimento, String email) {
         super(nome, dataDeNascimento, email);
+        setId(professorId);
+        professorId++;
     }
 
     @Override
@@ -16,9 +24,14 @@ public class Professor extends Usuario implements ProfessorImplementa {
         System.out.println("\nConteudo Modificado com sucesso");
     }
 
+
     @Override
     public String toString() {
-        return "Professor \nNome: " + this.getNome() + "\nIdade: " + this.getDataDeNascimento() + "\nE-mail: " + this.getEmail();
+        return "Professor: " +
+                "Id: " + getId() +
+                " - Nome: " + getNome() +
+                " - Data de Nascimento: " + getDataDeNascimento() +
+                " - Email: " + getEmail() + "\'";
     }
 }
 

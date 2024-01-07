@@ -1,7 +1,12 @@
+package services;
+
+import models.Desafio;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DesafioService {
+
 
     private ArrayList<Desafio> desafios;
 
@@ -22,8 +27,11 @@ public class DesafioService {
     }
 
     public void visualizarDesafios() {
+        if (desafios.isEmpty()) {
+            throw new IllegalStateException("Nenhum desafio cadastrado.");
+        }
         for (int i = 0; i < desafios.size(); i++) {
-            System.out.println("\nId do Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
+            System.out.println("\nId do models.Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
         }
     }
 

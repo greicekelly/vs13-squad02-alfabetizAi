@@ -1,3 +1,8 @@
+package models;
+
+import enums.ClassificacaoModulo;
+import models.Desafio;
+
 import java.util.ArrayList;
 
 public class Modulo {

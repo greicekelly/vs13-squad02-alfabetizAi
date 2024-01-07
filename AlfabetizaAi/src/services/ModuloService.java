@@ -1,6 +1,10 @@
+package services;
+
+import models.Modulo;
+
 import java.util.ArrayList;
 
-public class ModuloService extends Modulo{
+public class ModuloService extends Modulo {
 
     private ArrayList<Modulo> lista;
 
@@ -49,7 +53,7 @@ public class ModuloService extends Modulo{
         modulo.setTitulo(cadastroEditado.getTitulo());
         modulo.setClassificacao(cadastroEditado.getClassificacao());
         modulo.setFoiAprovado(cadastroEditado.isFoiAprovado());
-        System.out.println("Modulo atualizado com sucesso.");
+        System.out.println("models.Modulo atualizado com sucesso.");
         System.out.println("--------------------------------");
     }
 
@@ -59,7 +63,7 @@ public class ModuloService extends Modulo{
         } else {
             Modulo modulo = lista.get(i);
             modulo.setFoiAprovado(modulo.isFoiAprovado());
-            System.out.println("Modulo aprovado com sucesso");
+            System.out.println("models.Modulo aprovado com sucesso");
         }
     }
 

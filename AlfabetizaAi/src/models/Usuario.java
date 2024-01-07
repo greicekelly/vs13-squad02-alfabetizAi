@@ -1,7 +1,10 @@
+package models;
+
 import java.time.LocalDate;
 
 public abstract class Usuario {
 
+    private int id;
     private String nome;
     private LocalDate dataDeNascimento;
     private String email;
@@ -10,6 +13,14 @@ public abstract class Usuario {
         this.nome = nome;
         this.dataDeNascimento = dataDeNascimento;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -36,4 +47,13 @@ public abstract class Usuario {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "models.Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataDeNascimento=" + dataDeNascimento +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

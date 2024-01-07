@@ -1,3 +1,9 @@
+package services;
+
+import models.Admin;
+import models.Aluno;
+import models.Professor;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -18,22 +24,30 @@ public class AlunoService {
     public void visualizarTodosAlunos() {
         if (lista.isEmpty()) {
             throw new IllegalStateException("Nenhum aluno cadastrado.");
+        } else{
+            for (Aluno aluno : lista) {
+                System.out.println(aluno);
+            }
+            System.out.println("--------------------------------");
         }
 
-        System.out.println("Lista de Alunos:");
-        for (int i = 0; i < lista.size(); i++) {
-            Aluno aluno = lista.get(i);
-            System.out.println("Id: " + i + ", Nome: " + aluno.getNome() + ", Idade: " + aluno.getDataDeNascimento() + ", Email: " + aluno.getEmail());
-        }
     }
 
-    public void consultarAluno(int index) {
-        try {
-            Aluno aluno = lista.get(index);
-            System.out.println("Nome: " + aluno.getNome() + ", Idade: " + aluno.getDataDeNascimento() + ", Email: " + aluno.getEmail());
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("Aluno não existe.");
+    public void consultar(int id){
+        for (Aluno aluno : lista) {
+            if(aluno.getId() == id){
+                System.out.printf("""
+                Id: %d
+                Nome: %s
+                Data de nascimento: %s
+                Email: %s
+                """, aluno.getId(), aluno.getNome(),aluno.getDataDeNascimento(), aluno.getEmail());
+                System.out.println("--------------------------------");
+                return;
+            }
         }
+        System.out.println("Nenhum aluno com o ID informado.");
+        System.out.println("--------------------------------");
     }
 
     public Aluno consultarAlunoEmail(String email) {
@@ -67,13 +81,15 @@ public class AlunoService {
 
     }
 
-    public void removerAluno(int index) {
-        try {
-            Aluno alunoRemovido = lista.get(index);
-            lista.remove(index);
-            System.out.println("Aluno " + alunoRemovido.getNome() + " removido com sucesso");
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("O aluno selecionado não existe.");
+    public void remover(int id) {
+        for (Aluno aluno :lista) {
+            if(aluno.getId() == id){
+                lista.remove(aluno);
+                return;
+            }
         }
+        System.out.println("Nenhum professor com o ID informado.");
+        System.out.println("--------------------------------");
     }
+
 }
