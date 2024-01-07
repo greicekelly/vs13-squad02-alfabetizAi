@@ -198,35 +198,24 @@ public class MenuNumerico {
                                             }
 
                                         case 3:
-                                            System.out.println("Pressione 3 para modificar um módulo");
-                                            int opcaoModulo = sc.nextInt();
-                                            sc.nextLine();
+                                            System.out.println("Informe o título do módulo que deseja modificar: ");
+                                            String tituloModuloEdicao = sc.nextLine();
+                                            Modulo moduloParaEditar = listaModulos.consultarModuloTitulo(tituloModuloEdicao);
 
-                                            switch (opcaoModulo) {
-                                                case 3:
-                                                    System.out.println("Informe o título do módulo que deseja modificado: ");
-                                                    String tituloModuloEdicao = sc.nextLine();
-                                                    Modulo moduloParaEditar = listaModulos.consultarModuloTitulo(tituloModuloEdicao);
+                                            if (moduloParaEditar != null) {
+                                                System.out.println("Módulo encontrado:");
+                                                listaModulos.visualizarModulo(moduloParaEditar, 0);
+                                                System.out.println("Informe o novo título do módulo: ");
+                                                String novoTitulo = sc.nextLine();
+                                                System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
+                                                int novaClassificacao = sc.nextInt();
+                                                sc.nextLine();
 
-                                                    if (moduloParaEditar != null) {
-                                                        System.out.println("Módulo encontrado:");
-                                                        listaModulos.visualizarModulo(moduloParaEditar, 0);
-                                                        System.out.println("Informe o novo título do módulo: ");
-                                                        String novoTitulo = sc.nextLine();
-                                                        System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
-                                                        int novaClassificacao = sc.nextInt();
-                                                        sc.nextLine();
-
-                                                        ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
-                                                        listaModulos.editar(0, new Modulo(novoTitulo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
-                                                        System.out.println("Módulo editado com sucesso.");
-                                                    } else {
-                                                        System.out.println("Módulo não encontrado.");
-                                                    }
-                                                    break;
-                                                default:
-                                                    System.out.println("Opção inválida.");
-                                                    break;
+                                                ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
+                                                listaModulos.editar(0, new Modulo(novoTitulo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
+                                                System.out.println("Módulo editado com sucesso.");
+                                            } else {
+                                                System.out.println("Módulo não encontrado.");
                                             }
                                             break;
 
@@ -356,7 +345,6 @@ public class MenuNumerico {
                                             System.out.println("Admin editado com sucesso");
                                             break;
                                         case 2:
-                                        //TODO Pressione 2 para aprovar um módulo -> verificar se está funcional
                                             listaModulos.visualizarTodos();
                                             System.out.println("Digite o número do módulo a ser aprovado: ");
                                             indexModulo = sc.nextInt();
@@ -364,7 +352,6 @@ public class MenuNumerico {
                                             break;
 
                                         case 3:
-                                        //TODO Pressione 3 para deletar um módulo
                                             listaModulos.visualizarTodos();
                                             System.out.println("Digite o número do módulo a ser deletado: ");
                                             indexModulo = sc.nextInt();
