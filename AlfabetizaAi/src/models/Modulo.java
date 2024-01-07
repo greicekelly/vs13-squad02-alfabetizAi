@@ -12,7 +12,7 @@ public class Modulo {
     private Professor autor;
     private boolean foiAprovado;
     private ArrayList<Desafio> desafios;
-    private ClassificacaoModulo classificacao; //(1- iniciante, 2- intermediário, 3- avancado)
+    private ClassificacaoModulo classificacao;
 
     public Modulo(){}
 
@@ -24,13 +24,18 @@ public class Modulo {
         this.classificacao = classificacao;
     }
 
+    public void adicionarDesafio(Desafio desafio) {
+        this.desafios.add(desafio);
+    }
+
     public void visualizarDesafios() {
         for (int i = 0; i < desafios.size(); i++) {
             System.out.printf("""
                 __________Desafio %d___________
                 Titulo: %s
                 Autor: %s
-                """, i, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome());
+                Tipo: %s
+                """, i + 1, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome(), desafios.get(i).getTipoDesafio().getNome());
             System.out.println("--------------------------------");
         }
     }

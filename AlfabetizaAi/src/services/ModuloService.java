@@ -28,7 +28,7 @@ public class ModuloService extends Modulo {
                 Titulo: %s
                 Autor: %s
                 Classificação: %s
-                """, index, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
+                """, index + 1, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
         modulo.visualizarDesafios();
     }
 

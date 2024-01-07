@@ -1,9 +1,7 @@
 import enums.ClassificacaoModulo;
 import enums.TipoDesafio;
 import models.*;
-import services.AdminService;
-import services.DesafioService;
-import services.ModuloService;
+import services.*;
 import utils.MenuNumerico;
 
 import java.time.LocalDate;
@@ -16,32 +14,36 @@ public class Main {
     public static void main(String[] args) {
 
         AdminService listaAdmin = new AdminService();
+        ModuloService listaModulos = new ModuloService();
+        DesafioService listaDesafios = new DesafioService();
+        ModuloService modulosConcluidos = new ModuloService();
+        AlunoService listaAluno = new services.AlunoService();
+        ProfessorService listaProfessor = new services.ProfessorService();
+
         listaAdmin.adicionar(new Admin("Maria Antonia", LocalDate.parse("1988-12-18"), "maria@email"));
         listaAdmin.adicionar(new Admin("Joao da Silva", LocalDate.parse("1989-12-18"), "joao@email"));
         listaAdmin.adicionar(new Admin("Pedro", LocalDate.parse("1990-12-18"), "pedro@email"));
 
-        services.AlunoService listaAluno = new services.AlunoService();
-        listaAluno.adicionarAluno(new models.Aluno("Lucas", LocalDate.parse("2018-07-01"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new models.Aluno("Renan", LocalDate.parse("2019-06-02"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new models.Aluno("Arthur", LocalDate.parse("2020-01-10"), "arthura@email.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Lucas", LocalDate.parse("2018-07-01"), "lucas@email.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Renan", LocalDate.parse("2019-06-02"), "lucas@email.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Arthur", LocalDate.parse("2020-01-10"), "arthura@email.com", new ArrayList<>()));
+        listaAluno.adicionarAluno(new Aluno("Greice", LocalDate.parse("1992-10-02"), "greice@email.com", new ArrayList<>()));
 
-        services.ProfessorService listaProfessor = new services.ProfessorService();
-        listaProfessor.adicionar(new models.Professor("Bruno",LocalDate.parse("1980-10-10"),"bruno@email.com"));
-        listaProfessor.adicionar(new models.Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));
-        listaProfessor.adicionar(new models.Professor("Vitoria",LocalDate.parse("1981-10-30"), "vitoria@email.teste"));
+        listaProfessor.adicionar(new Professor("Bruno",LocalDate.parse("1980-10-10"),"bruno@email.com"));
+        listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));
+        listaProfessor.adicionar(new Professor("Vitoria",LocalDate.parse("1981-10-30"), "vitoria@email.teste"));
 
-        services.ModuloService lista = new services.ModuloService();
-        models.Professor professor = new models.Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
-        models.Desafio desafio = new models.Desafio("models.Desafio 1", enums.TipoDesafio.JOGO, professor);
-        models.Modulo modulo = new models.Modulo("teste", professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-      //  modulo.adicionarDesafio(desafio);
-        lista.adicionar(modulo);
-
-        ModuloService listaModulos = new ModuloService();
-        DesafioService listaDesafios = new DesafioService();
-        ModuloService modulosConcluidos = new ModuloService();
-
-        MenuNumerico menuNumerico = new MenuNumerico();
+        Professor professor = new Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
+        Desafio desafioUm = new Desafio("Desafio AEIOU", enums.TipoDesafio.JOGO, professor);
+        Desafio desafioDois = new Desafio("ABC", TipoDesafio.QUIZ, professor);
+        Desafio desafioTres = new Desafio("A", TipoDesafio.JOGO, professor);
+        Modulo moduloDois = new Modulo("Letras Alfabeto", professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
+        Modulo moduloUm = new Modulo("Letras Vogais", professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
+        moduloUm.adicionarDesafio(desafioUm);
+        moduloUm.adicionarDesafio(desafioTres);
+        moduloDois.adicionarDesafio(desafioDois);
+        listaModulos.adicionar(moduloUm);
+        listaModulos.adicionar(moduloDois);
 
         Scanner sc = new Scanner(System.in);
         int escolha;
@@ -50,12 +52,15 @@ public class Main {
         String dataNascimento;
         String email;
         LocalDate data;
+        String tituloNovoDesafio;
+        Integer tipoNovoDesafio;
+        TipoDesafio tipo;
         int indexModulo;
 
-        menuNumerico.bemVindo();
+        MenuNumerico.bemVindo();
 
         while (true) {
-            menuNumerico.exibirMenuInicial();
+            MenuNumerico.exibirMenuInicial();
             System.out.print("Escolha uma opção do menu: ");
 
             if (sc.hasNextInt()) {
@@ -86,7 +91,7 @@ public class Main {
                                 } else {
                                     System.out.println("Login bem-sucedido! Bem-vindo, " + alunoLogado.getNome() + ".");
                                     do {
-                                        menuNumerico.menuAluno();
+                                        MenuNumerico.menuAluno();
                                         int escolhaInterna = sc.nextInt();
                                         sc.nextLine();
 
@@ -146,7 +151,7 @@ public class Main {
                                 email = sc.nextLine();
                                 Aluno alunoCadastrado = new Aluno(nome, data, email);
                                 listaAluno.adicionarAluno(alunoCadastrado);
-                                System.out.println("models.Aluno cadastrado com sucesso");
+                                System.out.println("Aluno cadastrado com sucesso");
                                 break;
 
                             case 0:
@@ -183,7 +188,7 @@ public class Main {
                                 } else {
                                     System.out.println("Login bem-sucedido! Bem-vindo, " + professorLogado.getNome() + ".");
                                     do {
-                                        menuNumerico.menuProfessor();
+                                        MenuNumerico.menuProfessor();
                                         int escolhaInterna = sc.nextInt();
                                         sc.nextLine();
 
@@ -202,16 +207,16 @@ public class Main {
                                                 break;
 
                                             case 2:
-                                                System.out.println("Informe o título do novo models.Modulo: ");
+                                                System.out.println("Informe o título do novo Modulo: ");
                                                 String tituloModulo = sc.nextLine();
-                                                System.out.println("Informe o email do autor do novo models.Modulo: ");
+                                                System.out.println("Informe o email do autor do novo Modulo: ");
                                                 email = sc.nextLine();
                                                 professor = listaProfessor.consultarProfessorEmail(email);
                                                 System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
-                                                String tituloNovoDesafio = sc.nextLine();
+                                                tituloNovoDesafio = sc.nextLine();
                                                 System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
-                                                Integer tipoNovoDesafio = sc.nextInt();
-                                                TipoDesafio tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
+                                                tipoNovoDesafio = sc.nextInt();
+                                                tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
                                                 if (tipo == null) {
                                                     throw new IllegalArgumentException("Opção de desafio inexistente");
                                                 } else {
@@ -272,41 +277,41 @@ public class Main {
                                                 }
                                                 break;
                                             case 5:
-//                                            System.out.println("Informe o título do desafio que deseja modificar: ");
-//                                            String tituloDesafioModificar = sc.nextLine();
-//
-//                                            Desafio desafioParaModificar = null;
-//                                            for (Desafio desafio : listaDesafios.getListaDesafios()) {
-//                                                if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
-//                                                    desafioParaModificar = desafio;
-//                                                    break;
-//                                                }
-//                                            }
+                                            System.out.println("Informe o título do desafio que deseja modificar: ");
+                                            String tituloDesafioModificar = sc.nextLine();
 
-//                                            if (desafioParaModificar != null) {
-//                                                System.out.println("models.Desafio encontrado:");
-//                                                System.out.println(desafioParaModificar);
-//
-//                                                System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
-//                                                String novoTitulo = sc.nextLine();
-//                                                if (!novoTitulo.isEmpty()) {
-//                                                    desafioParaModificar.setTitulo(novoTitulo);
-//                                                }
-//
-//                                                System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
-//                                                int novoTipo = sc.nextInt();
-//                                                sc.nextLine();
-//                                                if (novoTipo == 1) {
-//                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.QUIZ);
-//                                                } else if (novoTipo == 2) {
-//                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
-//                                                }
-//
-//                                                System.out.println("models.Desafio modificado com sucesso.");
-//                                            } else {
-//                                                System.out.println("models.Desafio não encontrado.");
-//                                            }
-//                                            break;
+                                            Desafio desafioParaModificar  = null;
+                                            for (Desafio desafio : listaDesafios.getListaDesafios()) {
+                                                if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
+                                                    desafioParaModificar = desafio;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (desafioParaModificar != null) {
+                                                System.out.println("Desafio encontrado:");
+                                                System.out.println(desafioParaModificar);
+
+                                                System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
+                                                String novoTitulo = sc.nextLine();
+                                                if (!novoTitulo.isEmpty()) {
+                                                    desafioParaModificar.setTitulo(novoTitulo);
+                                                }
+
+                                                System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
+                                                int novoTipo = sc.nextInt();
+                                                sc.nextLine();
+                                                if (novoTipo == 1) {
+                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.QUIZ);
+                                                } else if (novoTipo == 2) {
+                                                    desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
+                                                }
+
+                                                System.out.println("Desafio modificado com sucesso.");
+                                            } else {
+                                                System.out.println("Desafio não encontrado.");
+                                            }
+                                            break;
                                             case 0:
                                                 menuUsuarioLogado = false;
                                                 break;
@@ -366,7 +371,7 @@ public class Main {
                                 } else {
                                     System.out.println("Login bem-sucedido! Bem-vindo, " + adminLogado.getNome() + ".");
                                     do {
-                                        menuNumerico.menuAdmin();
+                                        MenuNumerico.menuAdmin();
                                         int escolhaInterna = sc.nextInt();
                                         sc.nextLine();
 
