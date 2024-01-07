@@ -88,7 +88,7 @@ public class AlunoService {
                 return;
             }
         }
-        System.out.println("Nenhum professor com o ID informado.");
+        System.out.println("Nenhum aluno com o ID informado.");
         System.out.println("--------------------------------");
     }
 

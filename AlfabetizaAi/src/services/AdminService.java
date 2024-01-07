@@ -22,7 +22,7 @@ public class AdminService {
 
     public void visualizarTodos() {
         if (lista.isEmpty()) {
-            throw new IllegalStateException("Nenhum admin cadastrado.");
+            throw new IllegalStateException("Nenhum administrador cadastrado.");
         } else {
             for (Admin admin : lista) {
                 System.out.println(admin);
@@ -72,7 +72,7 @@ public class AdminService {
                 return;
             }
         }
-        System.out.println("Nenhum professor com o ID informado.");
+        System.out.println("Nenhum administrador com o ID informado.");
         System.out.println("--------------------------------");
 
 }

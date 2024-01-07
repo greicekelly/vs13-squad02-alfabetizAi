@@ -330,7 +330,7 @@ public class Main {
                                 email = sc.nextLine();
                                 Professor professorCadastrado = new Professor(nome, data, email);
                                 listaProfessor.adicionar(professorCadastrado);
-                                System.out.println("models.Professor cadastrado com sucesso");
+                                System.out.println("Professor cadastrado com sucesso");
                                 break;
 
                             case 0:
@@ -444,7 +444,7 @@ public class Main {
                                 email = sc.nextLine();
                                 Admin adminCadastrado = new Admin(nome, data, email);
                                 listaAdmin.adicionar(adminCadastrado);
-                                System.out.println("models.Admin cadastrado com sucesso");
+                                System.out.println("Admin cadastrado com sucesso");
                                 break;
 
                             case 0:
