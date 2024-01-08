@@ -65,7 +65,7 @@ public class ModuloService extends Modulo {
     }
 
     public void remover(int index) {
-        lista.remove(index);
+        lista.remove(index - 1);
     }
 
     @Override
