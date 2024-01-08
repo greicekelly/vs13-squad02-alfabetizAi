@@ -33,12 +33,45 @@ public class Main {
         listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));
         listaProfessor.adicionar(new Professor("Vitoria",LocalDate.parse("1981-10-30"), "vitoria@email.teste"));
 
+        String conteudoABC = "A - Abelha: A abelha faz \"zum zum\" e voa de flor em flor.\n" +
+                "B - Borboleta: A borboleta é colorida e voa pelo jardim.\n" +
+                "C - Cachorro: O cachorro é amigo e late \"au au\".\n" +
+                "D - Dinossauro: O dinossauro é grande e faz \"roar\".\n" +
+                "E - Elefante: O elefante tem uma tromba longa e faz \"trrr\".\n" +
+                "F - Flor: A flor é bonita e cheira bem.\n" +
+                "G - Girafa: A girafa tem um pescoço comprido e come folhas.\n" +
+                "H - Helicóptero: O helicóptero voa no céu e faz \"vruum\".\n" +
+                "I - Igual: As coisas são iguais quando são parecidas.\n" +
+                "J - Jacaré: O jacaré mora na água e tem dentes afiados.\n" +
+                "K - Kite (pipa): A pipa voa alto no vento.\n" +
+                "L - Leão: O leão é corajoso e faz \"rugir\".\n" +
+                "M - Macaco: O macaco é divertido e pula de galho em galho.\n" +
+                "N - Nuvem: A nuvem é fofa e está no céu.\n" +
+                "O - Ovelha: A ovelha tem lã macia e faz \"bêê\".\n" +
+                "P - Pato: O pato nada na água e faz \"quá quá\".\n" +
+                "Q - Queijo: O queijo é delicioso e amarelo.\n" +
+                "R - Rato: O rato é pequeno e faz \"piu piu\".\n" +
+                "S - Sol: O sol brilha no céu e nos dá luz.\n" +
+                "T - Tartaruga: A tartaruga é lenta e tem uma casca dura.\n" +
+                "U - Urso: O urso é peludo e vive na floresta.\n" +
+                "V - Vaca: A vaca dá leite e faz \"moo\".\n" +
+                "W - Waffle: O waffle é uma delícia para comer.\n" +
+                "X - Xícara: A xícara é usada para tomar chá ou café.\n" +
+                "Y - Yo-yo: O yo-yo vai para cima e para baixo.\n" +
+                "Z - Zebra: A zebra tem listras pretas e brancas.";
+
+        String conteudoVogais = "A - Abelhinha: A abelhinha adora voar alto e faz \"a-a-a\" como em \"abelha\".\n" +
+                "E - Elefantinho: O elefantinho tem orelhas grandes e faz \"e-e-e\" como em \"elefante\".\n" +
+                "I - Indiozinho: O indiozinho usa um penacho na cabeça e faz \"i-i-i\" como em \"índio\".\n" +
+                "O - Ouriço: O ouriço é redondinho e faz \"o-o-o\" como em \"ouriço\".\n" +
+                "U - Ursinho: O ursinho é fofo e faz \"u-u-u\" como em \"ursinho\".";
+
         Professor professor = new Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
         Desafio desafioUm = new Desafio("Desafio AEIOU", enums.TipoDesafio.JOGO, professor);
         Desafio desafioDois = new Desafio("ABC", TipoDesafio.QUIZ, professor);
         Desafio desafioTres = new Desafio("A", TipoDesafio.JOGO, professor);
-        Modulo moduloDois = new Modulo("Letras Alfabeto", professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-        Modulo moduloUm = new Modulo("Letras Vogais", professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
+        Modulo moduloDois = new Modulo("Letras Alfabeto",conteudoABC, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
+        Modulo moduloUm = new Modulo("Letras Vogais", conteudoVogais, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
         moduloUm.adicionarDesafio(desafioUm);
         moduloUm.adicionarDesafio(desafioTres);
         moduloDois.adicionarDesafio(desafioDois);
@@ -55,6 +88,7 @@ public class Main {
         String tituloNovoDesafio;
         Integer tipoNovoDesafio;
         TipoDesafio tipo;
+        String conteudo;
         int indexModulo;
 
         boolean continuarMenu = true;
@@ -222,6 +256,8 @@ public class Main {
                                                         System.out.println("Informe o email do autor do novo Modulo: ");
                                                         email = sc.nextLine();
                                                         professor = listaProfessor.consultarProfessorEmail(email);
+                                                        System.out.println("Digite o Conteudo do novo Modulo: ");
+                                                        conteudo = sc.nextLine();
                                                         System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
                                                         tituloNovoDesafio = sc.nextLine();
                                                         System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
@@ -240,7 +276,7 @@ public class Main {
                                                                 ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
                                                                 DesafioService novaListaDesafio = new DesafioService();
                                                                 novaListaDesafio.adicionarDesafio(desafioCriado);
-                                                                listaModulos.adicionar(new Modulo(tituloModulo, professor, novaListaDesafio.getListaDesafios(), dificuldadeSelecionada));
+                                                                listaModulos.adicionar(new Modulo(tituloModulo, conteudo, professor, novaListaDesafio.getListaDesafios(), dificuldadeSelecionada));
                                                                 listaDesafios.adicionarDesafio(desafioCriado);
                                                                 System.out.println("Novo módulo cadastrado com sucesso");
                                                             }
@@ -257,12 +293,14 @@ public class Main {
                                                             listaModulos.visualizarModulo(moduloParaEditar, 0);
                                                             System.out.println("Informe o novo título do módulo: ");
                                                             String novoTitulo = sc.nextLine();
+                                                            System.out.println("Digite o novo conteudo do novo Modulo: ");
+                                                            conteudo = sc.nextLine();
                                                             System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
                                                             int novaClassificacao = sc.nextInt();
                                                             sc.nextLine();
 
                                                             ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
-                                                            listaModulos.editar(0, new Modulo(novoTitulo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
+                                                            listaModulos.editar(0, new Modulo(novoTitulo, conteudo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
                                                             System.out.println("Módulo editado com sucesso.");
                                                         } else {
                                                             System.out.println("Módulo não encontrado.");
