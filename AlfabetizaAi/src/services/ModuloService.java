@@ -53,7 +53,7 @@ public class ModuloService extends Modulo {
         modulo.setTitulo(cadastroEditado.getTitulo());
         modulo.setClassificacao(cadastroEditado.getClassificacao());
         modulo.setFoiAprovado(cadastroEditado.isFoiAprovado());
-        System.out.println("models.Modulo atualizado com sucesso.");
+        System.out.println("Modulo atualizado com sucesso.");
         System.out.println("--------------------------------");
     }
 

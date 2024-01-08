@@ -31,7 +31,7 @@ public class DesafioService {
             throw new IllegalStateException("Nenhum desafio cadastrado.");
         }
         for (int i = 0; i < desafios.size(); i++) {
-            System.out.println("\nId do models.Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
+            System.out.println("\nId do Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
         }
     }
 
