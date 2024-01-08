@@ -93,6 +93,7 @@ public class Main {
 
         boolean continuarMenu = true;
 
+        listaModulos.visualizarTodos();
         MenuNumerico.bemVindo();
 
         try {
@@ -153,13 +154,15 @@ public class Main {
                                                             System.out.println("Parabéns pelo estudo! Agora já está pronto para os desafios!");
                                                             break;
                                                         case 3:
-                                                            System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
                                                             listaModulos.visualizarTodos();
+                                                            System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
                                                             Modulo moduloEscolhidoParaDesafios = listaModulos.consultarModuloTitulo(sc.nextLine());
                                                             DesafioService DesafiosDoModulo = new DesafioService(moduloEscolhidoParaDesafios.getDesafios());
-                                                            System.out.print("Informe o índice do desafio que deseja acessar: ");
                                                             DesafiosDoModulo.visualizarDesafios();
-                                                            DesafiosDoModulo.consultarDesafio(sc.nextInt());
+                                                            System.out.print("Informe o índice do desafio que deseja acessar: ");
+                                                            int indiceDesafio = sc.nextInt();
+                                                            DesafiosDoModulo.consultarDesafio(indiceDesafio - 1);
+                                                            sc.nextLine();
                                                             System.out.println("Parabéns por concluir o desafio!");
                                                             modulosConcluidos.adicionar(moduloEscolhidoParaDesafios);
                                                             break;
@@ -400,7 +403,7 @@ public class Main {
                         case 3:
                             try {
                                 //MENU ADMIN
-                                System.out.println("Você escolheu a opção models.Admin.");
+                                System.out.println("Você escolheu a opção Admin.");
                                 System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
                                 int opcaoMenuAdmin = sc.nextInt();
                                 sc.nextLine();
@@ -442,6 +445,7 @@ public class Main {
                                                         listaModulos.visualizarTodos();
                                                         System.out.println("Digite o número do módulo a ser aprovado: ");
                                                         indexModulo = sc.nextInt();
+                                                        sc.nextLine();
                                                         listaModulos.adminAprovar(indexModulo);
                                                         break;
 
@@ -449,6 +453,7 @@ public class Main {
                                                         listaModulos.visualizarTodos();
                                                         System.out.println("Digite o número do módulo a ser deletado: ");
                                                         indexModulo = sc.nextInt();
+                                                        sc.nextLine();
                                                         listaModulos.remover(indexModulo);
                                                         System.out.println("Módulo deletado com sucesso!");
                                                         break;
