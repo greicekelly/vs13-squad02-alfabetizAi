@@ -16,8 +16,9 @@ public class Modulo {
 
     public Modulo(){}
 
-    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
+    public Modulo(String titulo, String conteudo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
         this.titulo = titulo;
+        this.conteudo = conteudo;
         this.autor = autor;
         this.foiAprovado = false;
         this.desafios = desafios;
