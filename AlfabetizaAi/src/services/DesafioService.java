@@ -1,7 +1,12 @@
+package services;
+
+import models.Desafio;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DesafioService {
+
 
     private ArrayList<Desafio> desafios;
 
@@ -9,9 +14,12 @@ public class DesafioService {
         this.desafios = new ArrayList<>();
     }
 
+    public DesafioService(ArrayList desafiosDoModulo) {
+        this.desafios = desafiosDoModulo;
+    }
+
     public void adicionarDesafio(Desafio desafio) {
         desafios.add(desafio);
-        System.out.println("\n" + desafio.getTitulo() + " adicionado com sucesso.");
     }
 
     public ArrayList<Desafio> getListaDesafios() {
@@ -19,19 +27,16 @@ public class DesafioService {
     }
 
     public void visualizarDesafios() {
+        if (desafios.isEmpty()) {
+            throw new IllegalStateException("Nenhum desafio cadastrado.");
+        }
         for (int i = 0; i < desafios.size(); i++) {
             System.out.println("\nId do Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
         }
     }
 
-    String tipo;
     public void consultarDesafio(int index) {
-        if (desafios.get(index).getTipoDesafio() == 'q') {
-            tipo = "Quiz";
-        } else if (desafios.get(index).getTipoDesafio() == 'j'){
-            tipo = "Jogo";
-        }
-        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + tipo + ", Autor: " + desafios.get(index).getAutor().getNome());
+        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + desafios.get(index).getTipoDesafio().name() + ", Autor: " + desafios.get(index).getAutor().getNome());
     }
 
     public void editarDesafio(int index, Desafio desafioEditado) {

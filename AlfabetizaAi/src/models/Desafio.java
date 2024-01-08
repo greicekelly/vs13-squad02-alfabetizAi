@@ -1,15 +1,16 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+package models;
+
+import enums.TipoDesafio;
 
 public class Desafio {
 
     private String titulo;
-    private char tipoDesafio; // (q - quiz ou j - jogo)
+    private TipoDesafio tipoDesafio;
     private Professor autor;
 
     public Desafio() {}
 
-    public Desafio(String titulo, char tipo, Professor autor) {
+    public Desafio(String titulo, TipoDesafio tipo, Professor autor) {
         this.titulo = titulo;
         this.tipoDesafio = tipo;
         this.autor = autor;
@@ -23,11 +24,11 @@ public class Desafio {
         this.titulo = titulo;
     }
 
-    public char getTipoDesafio() {
+    public TipoDesafio getTipoDesafio() {
         return tipoDesafio;
     }
 
-    public void setTipoDesafio(char tipo) {
+    public void setTipoDesafio(TipoDesafio tipo) {
         this.tipoDesafio = tipo;
     }
 
@@ -39,15 +40,9 @@ public class Desafio {
         this.autor = autor;
     }
 
-    String tipo;
     @Override
     public String toString() {
-        if (this.tipoDesafio == 'q') {
-            tipo = "Quiz";
-        } else if (this.tipoDesafio == 'j'){
-            tipo = "Jogo";
-        }
-        return "Titulo: " + this.getTitulo() + "\nTipo: " + tipo + "\nAutor: " + this.getAutor().getNome();
+        return "Titulo: " + this.getTitulo() + "\nTipo: " + tipoDesafio.name() + "\nAutor: " + this.getAutor().getNome();
     }
 
 }

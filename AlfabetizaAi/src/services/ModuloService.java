@@ -1,6 +1,10 @@
+package services;
+
+import models.Modulo;
+
 import java.util.ArrayList;
 
-public class ModuloService extends Modulo{
+public class ModuloService extends Modulo {
 
     private ArrayList<Modulo> lista;
 
@@ -24,7 +28,7 @@ public class ModuloService extends Modulo{
                 Titulo: %s
                 Autor: %s
                 Classificação: %s
-                """, index, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
+                """, index + 1, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
         modulo.visualizarDesafios();
     }
 
@@ -32,6 +36,15 @@ public class ModuloService extends Modulo{
         Modulo modulo = lista.get(index);
         visualizarModulo(modulo, index);
         System.out.println("--------------------------------");
+    }
+
+    public Modulo consultarModuloTitulo(String nome) {
+        for (Modulo modulo : lista) {
+            if(modulo.getTitulo().equals(nome)){
+                return modulo;
+            }
+        }
+        return null;
     }
 
     public void editar(int index, Modulo cadastroEditado) {
@@ -42,6 +55,13 @@ public class ModuloService extends Modulo{
         modulo.setFoiAprovado(cadastroEditado.isFoiAprovado());
         System.out.println("Modulo atualizado com sucesso.");
         System.out.println("--------------------------------");
+    }
+
+    public void adminAprovar(int i) {
+        if (i > lista.size() || i <= 0) throw new IllegalArgumentException("Opção de desafio inexistente");
+        Modulo modulo = lista.get(i - 1);
+        modulo.setFoiAprovado(modulo.isFoiAprovado());
+        System.out.println("Modulo aprovado com sucesso");
     }
 
     public void remover(int index) {

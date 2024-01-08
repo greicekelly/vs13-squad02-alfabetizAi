@@ -1,16 +1,22 @@
+package models;
+
+import enums.ClassificacaoModulo;
+import models.Desafio;
+
 import java.util.ArrayList;
 
 public class Modulo {
 
     private String titulo;
+    private String conteudo;
     private Professor autor;
     private boolean foiAprovado;
     private ArrayList<Desafio> desafios;
-    private int classificacao; //(1- iniciante, 2- medio, 3- avancado)
+    private ClassificacaoModulo classificacao;
 
     public Modulo(){}
 
-    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, int classificacao) {
+    public Modulo(String titulo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
         this.titulo = titulo;
         this.autor = autor;
         this.foiAprovado = false;
@@ -28,7 +34,8 @@ public class Modulo {
                 __________Desafio %d___________
                 Titulo: %s
                 Autor: %s
-                """, i, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome());
+                Tipo: %s
+                """, i + 1, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome(), desafios.get(i).getTipoDesafio().getNome());
             System.out.println("--------------------------------");
         }
     }
@@ -48,6 +55,14 @@ public class Modulo {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getConteudo() {
+        return conteudo;
+    }
+
+    public void setConteudo(String conteudo) {
+        this.conteudo = conteudo;
     }
 
     public Professor getAutor() {
@@ -74,11 +89,11 @@ public class Modulo {
         this.desafios = desafios;
     }
 
-    public int getClassificacao() {
+    public ClassificacaoModulo getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(int classificacao) {
+    public void setClassificacao(ClassificacaoModulo classificacao) {
         this.classificacao = classificacao;
     }
 }
