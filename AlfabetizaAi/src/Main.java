@@ -92,8 +92,7 @@ public class Main {
         int indexModulo;
 
         boolean continuarMenu = true;
-
-        listaModulos.visualizarTodos();
+        
         MenuNumerico.bemVindo();
 
         try {
