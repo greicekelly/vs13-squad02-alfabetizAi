@@ -33,6 +33,10 @@ CREATE SEQUENCE SEQ_MODULO_ALUNO_DESAFIO
 	INCREMENT BY 1
 	NOCACHE NOCYCLE;
 
+
+
+--Inserção dados USUARIO
+
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
 VALUES(SEQ_USUARIO.nextval, 'Filipe', 'Andrade Prata', '(79) 99691-9876', 'filipe@email', TO_DATE('27-07-2001', 'dd-mm-yyyy'), 'S', 'M', '0000');
 
@@ -50,5 +54,45 @@ VALUES(SEQ_USUARIO.nextval, 'Gabriel', 'Johann', '(79) 94444-0000', 'gabriel@ema
 
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
 VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000');
+
+INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
+VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000');
+
+
+
+
+
+--Inserção dados ADMIN(vinculação de Usuário_Admin)
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 1, 'Responsável por verificar conteúdo criado');
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 2, 'Responsável por verificar conteúdo criado');
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 3, 'Responsável por manutenção bando de dados');
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 4, 'Responsável por manutenção bando de dados');
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 5, 'Responsável por deploy do sistema');
+
+INSERT INTO ADMIN (id_admin, id_usuario, descricao)
+VALUES (SEQ_ADMIN.NEXTVAL, 6, 'Responsável por manutenção do sistema');
+
+
+
+
+--Inserção dados PROFESSOR(vinculação de Usuário_Professor)
+
+
+
+
+--Inserção dados ALUNO(vinculação de Usuário_Aluno)
+
+
+
 
 
