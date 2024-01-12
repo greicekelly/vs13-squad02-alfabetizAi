@@ -16,6 +16,7 @@ CREATE TABLE ADMIN(
 
   id_admin NUMBER(38) NOT NULL,
   id_usuario NUMBER(38) NOT NULL,
+  descricao VARCHAR2(255) NOT NULL,
   PRIMARY KEY (id_admin),
   CONSTRAINT FK_ADMIN_ID_USUARIO
     FOREIGN KEY (id_usuario)
@@ -42,6 +43,7 @@ CREATE TABLE PROFESSOR(
 
   id_professor NUMBER(38) NOT NULL,
   id_usuario NUMBER(38) NOT NULL,
+  descricao VARCHAR2(255) NOT NULL,
   PRIMARY KEY (id_professor),
   CONSTRAINT FK_PROFESSOR_ID_USUARIO
     FOREIGN KEY (id_usuario)
@@ -73,6 +75,7 @@ CREATE TABLE DESAFIO(
   id_desafio NUMBER(38) NOT NULL,
   id_modulo NUMBER(38) NOT NULL,
   titulo VARCHAR2(255) NOT NULL,
+  conteudo CLOB NOT NULL,
   tipo_desafio NUMBER(1) NOT NULL,
   PRIMARY KEY (id_desafio),
   CONSTRAINT FK_DESAFIO_ID_MODULO
@@ -85,7 +88,7 @@ CREATE TABLE MODULO_ALUNO_DESAFIO(
 
   id_modulo_aluno_desafio NUMBER(38) NOT NULL,
   id_modulo NUMBER(38) NOT NULL,
-  id_desafio NUMBER(38),
+  id_desafio NUMBER(38) NOT NULL,
   id_aluno NUMBER(38) NOT NULL,
   modulo_concluido CHAR(1) NOT NULL CHECK (modulo_concluido IN ('S', 'N')),
   desafio_concluido CHAR(1) NOT NULL CHECK (desafio_concluido IN ('S', 'N')),
@@ -101,6 +104,7 @@ CREATE TABLE MODULO_ALUNO_DESAFIO(
       REFERENCES ALUNO(id_aluno)
       
 );
+
 
 
 
