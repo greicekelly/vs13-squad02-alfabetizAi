@@ -4,16 +4,26 @@ import enums.TipoDesafio;
 
 public class Desafio {
 
+    private int id;
     private String titulo;
+    private String conteudo;
     private TipoDesafio tipoDesafio;
-    private Professor autor;
 
     public Desafio() {}
 
-    public Desafio(String titulo, TipoDesafio tipo, Professor autor) {
+    public Desafio(int id,String titulo,String conteudo, TipoDesafio tipo) {
+        this.id = id;
         this.titulo = titulo;
+        this.conteudo = conteudo;
         this.tipoDesafio = tipo;
-        this.autor = autor;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -24,6 +34,14 @@ public class Desafio {
         this.titulo = titulo;
     }
 
+    public String getConteudo() {
+        return conteudo;
+    }
+
+    public void setConteudo(String conteudo) {
+        this.conteudo = conteudo;
+    }
+
     public TipoDesafio getTipoDesafio() {
         return tipoDesafio;
     }
@@ -32,17 +50,9 @@ public class Desafio {
         this.tipoDesafio = tipo;
     }
 
-    public Professor getAutor() {
-        return autor;
-    }
-
-    public void setAutor(Professor autor) {
-        this.autor = autor;
-    }
-
     @Override
     public String toString() {
-        return "Titulo: " + this.getTitulo() + "\nTipo: " + tipoDesafio.name() + "\nAutor: " + this.getAutor().getNome();
+        return "Titulo: " + this.getTitulo() + "\nTipo: " + tipoDesafio.name() + "\nConteudo: " + this.getConteudo();
     }
 
 }
