@@ -7,11 +7,21 @@ import models.Usuario;
 import java.time.LocalDate;
 
 public class Professor extends Usuario implements ProfessorImplementa {
-    private static Integer professorId = 1;
-    public Professor(String nome, LocalDate dataDeNascimento, String email) {
-        super(nome, dataDeNascimento, email);
-        setId(professorId);
-        professorId++;
+
+    private Integer idProfessor;
+
+    private String descricao;
+
+    public Professor() {}
+
+    public Professor(int idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, Integer idProfessor, String descricao) {
+        super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
+        this.idProfessor = idProfessor;
+        this.descricao = descricao;
+    }
+
+    public Integer getIdProfessor() {
+        return idProfessor;
     }
 
     @Override
