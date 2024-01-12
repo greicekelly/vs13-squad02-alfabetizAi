@@ -94,5 +94,18 @@ VALUES (SEQ_ADMIN.NEXTVAL, 6, 'Responsável por manutenção do sistema');
 
 
 
+--Inserção dados DESAFIO(vinculação de MODULO)
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
+VALUES(SEQ_DESAFIO.nextval, 1, 'Acerte as vogais', 'Acerte a sequência  de vogais');
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
+VALUES(SEQ_DESAFIO.nextval, 2, 'Forme as palavras', 'Forme a sequência  de palvras');
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
+VALUES(SEQ_DESAFIO.nextval, 3, 'Animais com a letra A', 'Insira nome de animais com a letra A');
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
+VALUES(SEQ_DESAFIO.nextval, 4, 'Frutas com a letra B', 'Acerte as frutas com a letra B');
+
 
 
