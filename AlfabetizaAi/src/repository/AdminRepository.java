@@ -66,7 +66,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(4, admin.getTelefone());
             stmt.setString(5, admin.getEmail());
             stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
-            stmt.setString(7, admin.getAtivo());
+            stmt.setString(7, "S");
             stmt.setString(8, admin.getSexo());
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
@@ -136,28 +136,36 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     @Override
-    public boolean editar(Integer id, Contato contato) throws BancoDeDadosException {
+    public boolean editar(Integer id, Admin admin) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE PESSOA SET ");
-            sql.append(" cpf = ?,");
-            sql.append(" nome = ?,");
-            sql.append(" data_nascimento = ? ");
+            sql.append("UPDATE USUARIO SET ");
+            sql.append(" NOME = ?,");
+            sql.append(" SOBRENOME = ?,");
+            sql.append(" TELEFONE = ?,");
+            sql.append(" EMAIL = ?,");
+            sql.append(" DATA_NASCIMENTO = ?,");
+            sql.append(" SEXO = ?,");
+            sql.append(" SENHA = ?,");
+            sql.append(" CPF = ?,");
             sql.append(" WHERE id_pessoa = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, pessoa.getCpf());
-            stmt.setString(2, pessoa.getNome());
-            stmt.setDate(3, Date.valueOf(pessoa.getDataNascimento()));
-            stmt.setInt(4, id);
+            stmt.setString(2, admin.getNome());
+            stmt.setString(3, admin.getSobrenome());
+            stmt.setString(4, admin.getTelefone());
+            stmt.setString(5, admin.getEmail());
+            stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
+            stmt.setString(8, admin.getSexo());
+            stmt.setString(9, admin.getSenha());
+            stmt.setString(10, admin.getCpf());
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarPessoa.res=" + res);
+            System.out.println("editarUsuario.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
