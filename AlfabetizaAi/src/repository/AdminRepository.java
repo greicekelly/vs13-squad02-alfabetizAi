@@ -5,6 +5,7 @@ import models.Admin;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class AdminRepository implements Repositorio<Integer, Admin>{
@@ -181,27 +182,33 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         }
     }
 
-    @Override
-    public List<Contato> listar() throws BancoDeDadosException {
-        List<Contato> contatos = new ArrayList<>();
+    public List<Admin> listar() throws BancoDeDadosException {
+        List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT C.*, " +
-                    "            P.NOME AS NOME_PESSOA " +
-                    "       FROM CONTATO C " +
-                    "  LEFT JOIN PESSOA P ON (P.ID_PESSOA = C.ID_PESSOA) ";
+            String sql = "SELECT U.*, A.DESCRICAO " +
+                    "FROM USUARIO U " +
+                    "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) ";
 
-            // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
 
+            ID_USUARIO, NOME, SOBRENOME, TELEFONE, EMAIL, DATA_NASCIMENTO, ATIVO, SEXO, SENHA, CPF)
             while (res.next()) {
-                Contato contato = getContatoFromResultSet(res);
-                contatos.add(contato);
+                Admin admin = new Admin();
+                admin.setIdUsuario(res.getInt("id_usuario"));
+                admin.setNome(res.getString("nome"));
+                admin.setSobrenome(res.getString("sobrenome"));
+                admin.setTelefone(res.getString("telefone"));
+                admin.setEmail(res.getString("email"));
+                admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                admin.setSexo(res.getString("sexo"));
+                admin.setSenha(res.getString("senha"));
+                admin.setCpf(res.getString("cpf"));
+                adminBanco.add(admin);
             }
-            return contatos;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -213,6 +220,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 e.printStackTrace();
             }
         }
+        return adminBanco;
     }
 
     public List<Contato> listarContatosPorPessoa(Integer idPessoa) throws BancoDeDadosException {
@@ -252,9 +260,9 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         }
     }
 
-    private Contato getContatoFromResultSet(ResultSet res) throws SQLException {
-        Contato contato = new Contato();
-        contato.setIdContato(res.getInt("id_Contato"));
+    private Admin getAdminFromResultSet(ResultSet res) throws SQLException {
+        Admin admin = new Admin();
+        admin.setIdContato(res.getInt("id_Contato"));
         Pessoa pessoa = new Pessoa();
         pessoa.setNome(res.getString("nome_pessoa"));
         pessoa.setIdPessoa(res.getInt("id_pessoa"));
