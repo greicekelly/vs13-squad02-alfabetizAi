@@ -107,5 +107,24 @@ VALUES(SEQ_DESAFIO.nextval, 3, 'Animais com a letra A', 'Insira nome de animais 
 INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
 VALUES(SEQ_DESAFIO.nextval, 4, 'Frutas com a letra B', 'Acerte as frutas com a letra B');
 
+--Inserção dados MODULO
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Você conhece as vogais?', 'Conheça as vogais! A de Aniversário, E de Escola, I de Indígena, O de Onda e U de Universo', 'Iniciante', 's', 1);
 
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Vogais e os animais!', 'O nome de muitos animais começam com vogais! A de Abelha, E de Elefante, I de Iguana, O de Ornitorrinco, U de Urso', 'Iniciante', 's', 1);
 
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 2, 'Consoantes e as frutas!', 'Você já provou essas deliciosas frutas que começam com as consoantes? B de Banana, C de Cereja, D de Damasco, F de Framboesa, G de Goiaba, H de ...', 'Iniciante', 'n', 1);
+
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 3, 'Sílabas: O lego do alfabeto!', 'Você conhece as peças de lego? Com as sílabas podemos montar palavras assim como montamos lego!', 'Iniciante', 'n', 2);
+
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 3, 'Descobrindo os Números Mágicos', 'Vamos explorar os números mágicos! Eles têm propriedades especiais que os tornam incríveis. 2, 3, 5 e 7 são alguns desses números mágicos!', 'Intermediario', 's', 2);
+
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Descobrindo Palavras: A Magia da Leitura', 'Embarque na magia da leitura! Vamos descobrir novas palavras e histórias encantadoras. A cada palavra, um mundo novo se abre diante de nós! A primeira palavra é: Mangá! Os quadrinhos japoneses...', 'Avançado', 's', 2);
+
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Consoantes pelo mundo!', 'Divirta-se enquanto aprende as consoantes! P de Parque', 'Iniciante', 'n', 1);
