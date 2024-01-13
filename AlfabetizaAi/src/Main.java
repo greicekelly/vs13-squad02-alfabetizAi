@@ -20,14 +20,6 @@ public class Main {
         AlunoService listaAluno = new services.AlunoService();
         ProfessorService listaProfessor = new services.ProfessorService();
 
-        listaAdmin.adicionar(new Admin("Maria Antonia", LocalDate.parse("1988-12-18"), "maria@email"));
-        listaAdmin.adicionar(new Admin("Joao da Silva", LocalDate.parse("1989-12-18"), "joao@email"));
-        listaAdmin.adicionar(new Admin("Pedro", LocalDate.parse("1990-12-18"), "pedro@email"));
-
-        listaAluno.adicionarAluno(new Aluno("Lucas", LocalDate.parse("2018-07-01"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Renan", LocalDate.parse("2019-06-02"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Arthur", LocalDate.parse("2020-01-10"), "arthura@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Greice", LocalDate.parse("1992-10-02"), "greice@email.com", new ArrayList<>()));
 
         listaProfessor.adicionar(new Professor("Bruno",LocalDate.parse("1980-10-10"),"bruno@email.com"));
         listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));

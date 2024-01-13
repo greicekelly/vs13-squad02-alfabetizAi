@@ -6,11 +6,17 @@ import models.Usuario;
 import java.time.LocalDate;
 
 public class Admin extends Usuario implements AdminImplementa {
-    private static Integer adminId = 1;
-    public Admin(String nome, LocalDate dataDeNascimento, String email) {
-        super(nome, dataDeNascimento, email);
-        setId(adminId );
-        adminId++;
+
+    private Integer idAdmin;
+
+    private String descricao;
+
+    public Admin() {}
+
+    public Admin(int idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, Integer idAdmin, String descricao) {
+        super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
+        this.idAdmin = idAdmin;
+        this.descricao = descricao;
     }
 
     @Override
@@ -33,6 +39,4 @@ public class Admin extends Usuario implements AdminImplementa {
                 " - Data de Nascimento: " + getDataDeNascimento() +
                 " - Email: " + getEmail() + "\'";
     }
-
-
 }
