@@ -19,6 +19,22 @@ public class Admin extends Usuario implements AdminImplementa {
         this.descricao = descricao;
     }
 
+    public Integer getIdAdmin() {
+        return idAdmin;
+    }
+
+    public void setIdAdmin(Integer idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     @Override
     public boolean aprovarModulo(Modulo conteudo) {
         System.out.println("\nConteudo aprovado com sucesso");

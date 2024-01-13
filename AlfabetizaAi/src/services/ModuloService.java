@@ -16,27 +16,27 @@ public class ModuloService extends Modulo {
         lista.add(modulo);
     }
 
-    public void visualizarTodos() {
-        for (int i = 0; i < lista.size(); i++) {
-            visualizarModulo(lista.get(i), i);
-        }
-    }
+//    public void visualizarTodos() {
+//        for (int i = 0; i < lista.size(); i++) {
+//            visualizarModulo(lista.get(i), i);
+//        }
+//    }
 
-    public void visualizarModulo(Modulo modulo, int index) {
-        System.out.printf("""
-                _______________Modulo %d______________
-                Titulo: %s
-                Autor: %s
-                Classificação: %s
-                """, index + 1, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
-        modulo.visualizarDesafios();
-    }
+//    public void visualizarModulo(Modulo modulo, int index) {
+//        System.out.printf("""
+//                _______________Modulo %d______________
+//                Titulo: %s
+//                Autor: %s
+//                Classificação: %s
+//                """, index + 1, modulo.getTitulo(), modulo.getAutor().getNome(), modulo.getClassificacao());
+//        modulo.visualizarDesafios();
+//    }
 
-    public void consultar(int index){
-        Modulo modulo = lista.get(index);
-        visualizarModulo(modulo, index);
-        System.out.println("--------------------------------");
-    }
+//    public void consultar(int index){
+//        Modulo modulo = lista.get(index);
+//        visualizarModulo(modulo, index);
+//        System.out.println("--------------------------------");
+//    }
 
     public Modulo consultarModuloTitulo(String nome) {
         for (Modulo modulo : lista) {

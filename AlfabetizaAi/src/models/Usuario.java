@@ -21,6 +21,8 @@ public abstract class Usuario {
 
     private String senha;
 
+    private String cpf;
+
     public Usuario() {}
 
     public Usuario(Integer idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha) {
@@ -43,6 +45,14 @@ public abstract class Usuario {
                 ", dataDeNascimento=" + dataDeNascimento +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public int getIdade() {
@@ -116,5 +126,13 @@ public abstract class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }
