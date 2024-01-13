@@ -195,7 +195,6 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             ResultSet res = stmt.executeQuery(sql);
 
-            ID_USUARIO, NOME, SOBRENOME, TELEFONE, EMAIL, DATA_NASCIMENTO, ATIVO, SEXO, SENHA, CPF)
             while (res.next()) {
                 Admin admin = new Admin();
                 admin.setIdUsuario(res.getInt("id_usuario"));
@@ -223,30 +222,25 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public List<Contato> listarContatosPorPessoa(Integer idPessoa) throws BancoDeDadosException {
-        List<Contato> contatos = new ArrayList<>();
+    public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
+            String sql = "SELECT U.*, A.DESCRICAO " +
+                    "FROM USUARIO U " +
+                    "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
+                    "WHERE U.ID_USUARIO = ? ";
 
-            String sql = "SELECT C.*, " +
-                    "            P.NOME AS NOME_PESSOA " +
-                    "       FROM CONTATO C " +
-                    " INNER JOIN PESSOA P ON (P.ID_PESSOA = C.ID_PESSOA) " +
-                    "      WHERE C.ID_PESSOA = ? ";
-
-            // Executa-se a consulta
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idPessoa);
+            stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                Contato contato = getContatoFromResultSet(res);
-                contatos.add(contato);
-            }
-            return contatos;
+            Admin admin = getAdminFromResultSet(res);
+
+            return admin;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -262,14 +256,16 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
     private Admin getAdminFromResultSet(ResultSet res) throws SQLException {
         Admin admin = new Admin();
-        admin.setIdContato(res.getInt("id_Contato"));
-        Pessoa pessoa = new Pessoa();
-        pessoa.setNome(res.getString("nome_pessoa"));
-        pessoa.setIdPessoa(res.getInt("id_pessoa"));
-        contato.setPessoa(pessoa);
-        contato.setTipoContato(TipoContato.ofTipo(res.getInt("tipo")));
-        contato.setNumero(res.getString("numero"));
-        contato.setDescricao(res.getString("descricao"));
-        return contato;
+        admin.setIdUsuario(res.getInt("id_usuario"));
+        admin.setNome(res.getString("nome"));
+        admin.setSobrenome(res.getString("sobrenome"));
+        admin.setTelefone(res.getString("telefone"));
+        admin.setEmail(res.getString("email"));
+        admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+        admin.setSexo(res.getString("sexo"));
+        admin.setSenha(res.getString("senha"));
+        admin.setCpf(res.getString("cpf"));
+
+        return admin;
     }
 }
