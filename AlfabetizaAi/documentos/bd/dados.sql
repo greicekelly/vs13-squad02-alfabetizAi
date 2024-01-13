@@ -1,3 +1,5 @@
+ALTER SESSION SET CURRENT_SCHEMA=VS_13_EQUIPE_2;
+
 CREATE SEQUENCE SEQ_USUARIO
 	START WITH 1
 	INCREMENT BY 1
@@ -58,8 +60,14 @@ VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', 
 INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
 VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000');
 
+INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
+VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Santos', '(11) 99124-1515', 'rafael@email', TO_DATE('03-02-1992', 'dd-mm-yyyy'), 'S', 'M', '0000');
 
+INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
+VALUES(SEQ_USUARIO.nextval, 'Julia', 'Almeida', '(68) 99321-1515', 'julia@email', TO_DATE('21-08-1990', 'dd-mm-yyyy'), 'S', 'F', '0000');
 
+INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
+VALUES(SEQ_USUARIO.nextval, 'Bruno', 'Cardoso', '(51) 99136-1515', 'bruno@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000');
 
 
 --Inserção dados ADMIN(vinculação de Usuário_Admin)
@@ -87,8 +95,14 @@ VALUES (SEQ_ADMIN.NEXTVAL, 6, 'Responsável por manutenção do sistema');
 
 --Inserção dados PROFESSOR(vinculação de Usuário_Professor)
 
+INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
+VALUES (SEQ_PROFESSOR.NEXTVAL, 8, 'Bacharelado em Letras')
 
+INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
+VALUES (SEQ_PROFESSOR.NEXTVAL, 9, 'Licenciatura em Letras')
 
+INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
+VALUES (SEQ_PROFESSOR.NEXTVAL, 10, 'Bacharelado em Letras')
 
 --Inserção dados ALUNO(vinculação de Usuário_Aluno)
 
