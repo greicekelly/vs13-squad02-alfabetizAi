@@ -51,7 +51,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             Integer proximoIdUsuario = this.getProximoId(con);
             Integer proximoIdAdmin = this.getProximoId(con);
             admin.setIdUsuario(proximoIdUsuario);
-            admin.se
+            admin.setIdAdmin(proximoIdAdmin);
 
 
             String sqlUsuario = "INSERT INTO USUARIO\n" +
@@ -71,8 +71,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
 
-            int res = stmt.executeUpdate();
-            System.out.println("adicionarUsuario.res=" + res);
+            int resUsuario = stmt.executeUpdate();
+            System.out.println("adicionarUsuario.res=" + resUsuario);
 
             String sqlAdmin = "INSERT INTO ADMIN\n" +
                     "(ID_ADMIN, ID_USUARIO, DESCRICAO)\n" +
@@ -80,21 +80,15 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             PreparedStatement stmtAdmin = con.prepareStatement(sqlAdmin);
 
-            stmtAdmin.setInt(1, proximoId);
+            stmtAdmin.setInt(1, admin.getIdAdmin());
             stmtAdmin.setInt(2, admin.getIdUsuario());
-            stmtAdmin.setString(3, admin.get);
+            stmtAdmin.setString(3, admin.getDescricao());
 
-
-//                    id_admin NUMBER(38) NOT NULL,
-//                    id_usuario NUMBER(38) NOT NULL,
-//                    descricao VARCHAR2(255) NOT NULL,
-//                    PRIMARY KEY (id_admin),
-//                    CONSTRAINT FK_ADMIN_ID_USUARIO
-//                    FOREIGN KEY (id_usuario)
-//                    REFERENCES USUARIO(id_usuario)
-
+            int resAdmin = stmtAdmin.executeUpdate();
+            System.out.println("adicionarAdmin.res=" + resAdmin);
 
             return admin;
+
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
