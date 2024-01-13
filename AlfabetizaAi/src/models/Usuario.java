@@ -45,6 +45,14 @@ public abstract class Usuario {
                 '}';
     }
 
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public int getIdade() {
         LocalDate hoje = LocalDate.now();
         return Period.between(this.dataDeNascimento, hoje).getYears();
