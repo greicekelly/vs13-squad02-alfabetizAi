@@ -49,30 +49,16 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             con = ConexaoBancoDeDados.getConnection();
 
             Integer proximoIdUsuario = this.getProximoId(con);
-            Integer proximoId = this.getProximoId(con);
+            Integer proximoIdAdmin = this.getProximoId(con);
             admin.setIdUsuario(proximoIdUsuario);
+            admin.se
 
 
             String sqlUsuario = "INSERT INTO USUARIO\n" +
                     "(ID_USUARIO, NOME, SOBRENOME, TELEFONE, EMAIL, DATA_NASCIMENTO, ATIVO, SEXO, SENHA, CPF)\n" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n";
 
-            String sqlAdmin = "INSERT INTO ADMIN\n" +
-                    "(ID_CONTATO, ID_PESSOA, TIPO, NUMERO, DESCRICAO)\n" +
-                    "VALUES(?, ?, ?, ?, ?)\n";
-
             PreparedStatement stmt = con.prepareStatement(sqlUsuario);
-//
-//            id_usuario NUMBER(38) PRIMARY KEY NOT NULL,
-//            nome VARCHAR2(255) NOT NULL,
-//            sobrenome VARCHAR2(255) NOT NULL,
-//            telefone VARCHAR2(255) NOT NULL,
-//            email VARCHAR2(255) NOT NULL UNIQUE,
-//                    data_nascimento DATE NOT NULL,
-//                    ativo CHAR(1) NOT NULL CHECK(ativo IN ('S', 'N')),
-//                    sexo CHAR(1) NOT NULL CHECK(sexo IN ('M', 'F', 'O')),
-//                    senha VARCHAR2(255) NOT NULL,
-//            cpf VARCHAR2(11) NOT NULL UNIQUE,
 
             stmt.setInt(1, admin.getIdUsuario());
             stmt.setString(2, admin.getNome());
@@ -85,10 +71,30 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
 
-
             int res = stmt.executeUpdate();
-            System.out.println("adicionarContato.res=" + res);
-            return contato;
+            System.out.println("adicionarUsuario.res=" + res);
+
+            String sqlAdmin = "INSERT INTO ADMIN\n" +
+                    "(ID_ADMIN, ID_USUARIO, DESCRICAO)\n" +
+                    "VALUES(?, ?, ?)\n";
+
+            PreparedStatement stmtAdmin = con.prepareStatement(sqlAdmin);
+
+            stmtAdmin.setInt(1, proximoId);
+            stmtAdmin.setInt(2, admin.getIdUsuario());
+            stmtAdmin.setString(3, admin.get);
+
+
+//                    id_admin NUMBER(38) NOT NULL,
+//                    id_usuario NUMBER(38) NOT NULL,
+//                    descricao VARCHAR2(255) NOT NULL,
+//                    PRIMARY KEY (id_admin),
+//                    CONSTRAINT FK_ADMIN_ID_USUARIO
+//                    FOREIGN KEY (id_usuario)
+//                    REFERENCES USUARIO(id_usuario)
+
+
+            return admin;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
