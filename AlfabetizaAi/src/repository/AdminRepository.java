@@ -103,20 +103,23 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     @Override
-    public boolean remover(Integer id) throws BancoDeDadosException {
+    public boolean remover(Integer id, Admin admin) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "DELETE FROM CONTATO WHERE ID_CONTATO = ?";
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE USUARIO SET ");
+            sql.append(" ATIVO = ?,");
+            sql.append(" WHERE id_pessoa = ? ");
 
-            PreparedStatement stmt = con.prepareStatement(sql);
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setInt(1, id);
+            stmt.setString(1, "N");
+            stmt.setInt(2, id);
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerContatoPorId.res=" + res);
+            System.out.println("editarUsuario.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -139,49 +142,22 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE contato SET \n");
-            Pessoa pessoa = contato.getPessoa();
-            if (pessoa != null) {
-                if (pessoa.getIdPessoa() != null) {
-                    sql.append(" id_pessoa = ?,");
-                }
-            }
-            if (contato.getTipoContato() != null) {
-                sql.append(" tipo = ?,");
-            }
-            if (contato.getNumero() != null) {
-                sql.append(" numero = ?,");
-            }
-            if (contato.getDescricao() != null) {
-                sql.append(" descricao = ?,");
-            }
-
-            sql.deleteCharAt(sql.length() - 1); //remove o ultimo ','
-            sql.append(" WHERE id_contato = ? ");
+            sql.append("UPDATE PESSOA SET ");
+            sql.append(" cpf = ?,");
+            sql.append(" nome = ?,");
+            sql.append(" data_nascimento = ? ");
+            sql.append(" WHERE id_pessoa = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            int index = 1;
-            if (pessoa != null) {
-                if (pessoa.getIdPessoa() != null) {
-                    stmt.setInt(index++, pessoa.getIdPessoa());
-                }
-            }
-            if (contato.getTipoContato() != null) {
-                stmt.setInt(index++, contato.getTipoContato().getTipo());
-            }
-            if (contato.getNumero() != null) {
-                stmt.setString(index++, contato.getNumero());
-            }
-            if (contato.getDescricao() != null) {
-                stmt.setString(index++, contato.getDescricao());
-            }
-
-            stmt.setInt(index++, id);
+            stmt.setString(1, pessoa.getCpf());
+            stmt.setString(2, pessoa.getNome());
+            stmt.setDate(3, Date.valueOf(pessoa.getDataNascimento()));
+            stmt.setInt(4, id);
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("editarContato.res=" + res);
+            System.out.println("editarPessoa.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
