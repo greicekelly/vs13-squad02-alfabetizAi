@@ -132,7 +132,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             stmt.setString(3, modulo.getTitulo());
             stmt.setString(4, modulo.getConteudo());
             stmt.setInt(5, modulo.getClassificacao().ordinal()+1);
-            stmt.setBoolean(6, modulo.isFoiAprovado());
+            stmt.setString(6, String.valueOf(modulo.isFoiAprovado()));
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
@@ -177,7 +177,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
-                modulo.setFoiAprovado(res.getBoolean("modulo_aprovado"));
+                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
                 modulos.add(modulo);
             }
 
