@@ -1,14 +1,16 @@
 package services;
 
+import exceptions.BancoDeDadosException;
 import models.Admin;
 import models.Professor;
+import repository.AdminRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class AdminService {
-
     private ArrayList<Admin> lista;
 
     public AdminService() {
@@ -31,18 +33,12 @@ public class AdminService {
         }
     }
 
-    public void consultar(int id){
-        for (Admin admin : lista) {
-            if(admin.getId() == id){
-                System.out.printf("""
-                Id: %d
-                Nome: %s
-                Data de nascimento: %s
-                Email: %s
-                """, admin.getId(), admin.getNome(), admin.getDataDeNascimento(), admin.getEmail());
-                System.out.println("--------------------------------");
-                return;
-            }
+    public void BuscarAdminPorId(Integer idUsuario){
+        try {
+            AdminRepository adminRepository = new AdminRepository();
+            adminRepository.BuscarAdminPorId(2);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
         System.out.println("Nenhum administrador com o ID informado.");
         System.out.println("--------------------------------");

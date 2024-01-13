@@ -35,17 +35,17 @@ public class DesafioService {
         }
     }
 
-    public void consultarDesafio(int index) {
-        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + desafios.get(index).getTipoDesafio().name() + ", Autor: " + desafios.get(index).getAutor().getNome());
-    }
+//    public void consultarDesafio(int index) {
+//        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + desafios.get(index).getTipoDesafio().name() + ", Autor: " + desafios.get(index).getAutor().getNome());
+//    }
 
-    public void editarDesafio(int index, Desafio desafioEditado) {
-        Desafio desafio = desafios.get(index);
-        desafio.setTitulo(desafioEditado.getTitulo());
-        desafio.setTipoDesafio(desafioEditado.getTipoDesafio());
-        desafio.setAutor(desafioEditado.getAutor());
-        System.out.println("\nEdição realizada com sucesso.");
-    }
+//    public void editarDesafio(int index, Desafio desafioEditado) {
+//        Desafio desafio = desafios.get(index);
+//        desafio.setTitulo(desafioEditado.getTitulo());
+//        desafio.setTipoDesafio(desafioEditado.getTipoDesafio());
+//        desafio.setAutor(desafioEditado.getAutor());
+//        System.out.println("\nEdição realizada com sucesso.");
+//    }
 
     public void removerDesafio(int index) {
         desafios.remove(index);

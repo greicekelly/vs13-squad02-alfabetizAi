@@ -222,8 +222,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
-
+    public List<Admin> BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+        List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -238,11 +238,26 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             ResultSet res = stmt.executeQuery();
 
-            Admin admin = getAdminFromResultSet(res);
+            while (res.next()) {
+                Admin admin = new Admin();
+                admin.setIdUsuario(res.getInt("id_usuario"));
+                admin.setNome(res.getString("nome"));
+                admin.setSobrenome(res.getString("sobrenome"));
+                admin.setTelefone(res.getString("telefone"));
+                admin.setEmail(res.getString("email"));
+                admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                admin.setSexo(res.getString("sexo"));
+                admin.setSenha(res.getString("senha"));
+                admin.setCpf(res.getString("cpf"));
+                adminBanco.add(admin);
+            }
+            System.out.println(adminBanco);
+            return adminBanco;
 
-            return admin;
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
+
         } finally {
             try {
                 if (con != null) {
@@ -252,20 +267,5 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 e.printStackTrace();
             }
         }
-    }
-
-    private Admin getAdminFromResultSet(ResultSet res) throws SQLException {
-        Admin admin = new Admin();
-        admin.setIdUsuario(res.getInt("id_usuario"));
-        admin.setNome(res.getString("nome"));
-        admin.setSobrenome(res.getString("sobrenome"));
-        admin.setTelefone(res.getString("telefone"));
-        admin.setEmail(res.getString("email"));
-        admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
-        admin.setSexo(res.getString("sexo"));
-        admin.setSenha(res.getString("senha"));
-        admin.setCpf(res.getString("cpf"));
-
-        return admin;
     }
 }
