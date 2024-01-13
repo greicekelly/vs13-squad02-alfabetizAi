@@ -1,7 +1,6 @@
 package models;
 
 import enums.ClassificacaoModulo;
-import models.Desafio;
 
 import java.util.ArrayList;
 
@@ -12,6 +11,7 @@ public class Modulo {
     private String conteudo;
     private Professor autor;
     private boolean foiAprovado;
+    private Admin adminAprova;
     private ArrayList<Desafio> desafios;
     private ClassificacaoModulo classificacao;
 
@@ -69,6 +69,14 @@ public class Modulo {
 
     public void setFoiAprovado(boolean foiAprovado) {
         this.foiAprovado = foiAprovado;
+    }
+
+    public Admin getAdminAprova() {
+        return adminAprova;
+    }
+
+    public void setAdminAprova(Admin adminAprova) {
+        this.adminAprova = adminAprova;
     }
 
     public ArrayList<Desafio> getDesafios() {
