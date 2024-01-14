@@ -71,4 +71,6 @@ public class Aluno extends Usuario {
                 " - Email: " + getEmail() + "\'";
     }
 
+    public void setIdAluno(Integer proximoIdAluno) {
+    }
 }
