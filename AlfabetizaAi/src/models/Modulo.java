@@ -66,7 +66,24 @@ public class Modulo {
     }
 
     public void setFoiAprovado(Character foiAprovado) {
-        this.foiAprovado = foiAprovado;
+
+        switch (foiAprovado){
+            case 'S':
+                this.foiAprovado = foiAprovado;
+                break;
+            case 's':
+                this.foiAprovado = foiAprovado;
+                break;
+            case 'N':
+                this.foiAprovado = foiAprovado;
+                break;
+            case 'n':
+                this.foiAprovado = foiAprovado;
+                break;
+            default:
+                this.foiAprovado = null;
+                break;
+        }
     }
 
     public Admin getAdminAprova() {
