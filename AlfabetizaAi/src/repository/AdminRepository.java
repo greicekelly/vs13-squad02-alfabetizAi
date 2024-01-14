@@ -268,4 +268,51 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             }
         }
     }
+
+    public boolean LoginAdmin(String email, String senha) throws BancoDeDadosException {
+        List<Admin> adminBanco = new ArrayList<>();
+        Connection con = null;
+        try {
+            String sql = "SELECT U.*, A.DESCRICAO " +
+                    "FROM USUARIO U " +
+                    "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
+                    "WHERE U.EMAIL = ? "+
+                    "AND U.SENHA = ? ";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
+
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                Admin admin = new Admin();
+                admin.setIdUsuario(res.getInt("id_usuario"));
+                admin.setNome(res.getString("nome"));
+                admin.setSobrenome(res.getString("sobrenome"));
+                admin.setTelefone(res.getString("telefone"));
+                admin.setEmail(res.getString("email"));
+                admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                admin.setSexo(res.getString("sexo"));
+                admin.setSenha(res.getString("senha"));
+                admin.setCpf(res.getString("cpf"));
+                adminBanco.add(admin);
+            }
+            System.out.println(adminBanco);
+            return !adminBanco.isEmpty();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BancoDeDadosException(e.getCause());
+
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
