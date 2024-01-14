@@ -27,19 +27,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     @Override
     public Integer getProximoIdUsuario(Connection connection) throws BancoDeDadosException {
-//        try {
-//            String sql = "SELECT seq_usuario.nextval mysequence from DUAL";
-//            Statement stmt = connection.createStatement();
-//            ResultSet res = stmt.executeQuery(sql);
-//
-//            if (res.next()) {
-//                return res.getInt("mysequence");
-//            }
-//
             return null;
-//        } catch (SQLException e) {
-//            throw new BancoDeDadosException(e.getCause());
-//        }
     }
 
     @Override
