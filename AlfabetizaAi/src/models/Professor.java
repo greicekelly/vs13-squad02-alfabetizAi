@@ -24,6 +24,18 @@ public class Professor extends Usuario implements ProfessorImplementa {
         return idProfessor;
     }
 
+    public void setIdProfessor(Integer idProfessor) {
+        this.idProfessor = idProfessor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     @Override
     public Modulo criarModulo(){
         System.out.println("\nConteudo criado com sucesso");
