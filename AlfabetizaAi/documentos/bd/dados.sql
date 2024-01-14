@@ -39,74 +39,83 @@ CREATE SEQUENCE SEQ_MODULO_ALUNO_DESAFIO
 
 --Inserção dados USUARIO
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Filipe', 'Andrade Prata', '(79) 99691-9876', 'filipe@email', TO_DATE('27-07-2001', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Filipe', 'Andrade Prata', '(79) 99691-9876', 'filipe@email', TO_DATE('27-07-2001', 'dd-mm-yyyy'), 'S', 'M', '0000', '12345678900');
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Helcius', 'Cabral', '(70) 99999-5555', 'helcius@email', TO_DATE('10-01-2000', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Helcius', 'Cabral', '(70) 99999-5555', 'helcius@email', TO_DATE('10-01-2000', 'dd-mm-yyyy'), 'S', 'M', '0000', '00123456789');
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Greice', 'Rosa', '(51) 98888-3333', 'greice@email', TO_DATE('20-10-1999', 'dd-mm-yyyy'), 'S', 'F', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Greice', 'Rosa', '(51) 98888-3333', 'greice@email', TO_DATE('20-10-1999', 'dd-mm-yyyy'), 'S', 'F', '0000', '45678912300');
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Renan', 'Meira', '(21) 97777-7777', 'renan@email', TO_DATE('14-03-2001', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Renan', 'Meira', '(21) 97777-7777', 'renan@email', TO_DATE('14-03-2001', 'dd-mm-yyyy'), 'S', 'M', '0000', '00456789123');
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Gabriel', 'Johann', '(79) 94444-0000', 'gabriel@email', TO_DATE('27-09-2003', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Gabriel', 'Johann', '(79) 94444-0000', 'gabriel@email', TO_DATE('27-09-2003', 'dd-mm-yyyy'), 'S', 'M', '0000', '78912345600');
 
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000', '00789123456');
 
-INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000', '07104175008');
 
-INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Santos', '(11) 99124-1515', 'rafael@email', TO_DATE('03-02-1992', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Santos', '(11) 99124-1515', 'rafael@email', TO_DATE('03-02-1992', 'dd-mm-yyyy'), 'S', 'M', '0000', '32414805005');
 
-INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Julia', 'Almeida', '(68) 99321-1515', 'julia@email', TO_DATE('21-08-1990', 'dd-mm-yyyy'), 'S', 'F', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Julia', 'Almeida', '(68) 99321-1515', 'julia@email', TO_DATE('21-08-1990', 'dd-mm-yyyy'), 'S', 'F', '0000', '31531621074');
 
-INSERT INTO ADMIN (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha)
-VALUES(SEQ_USUARIO.nextval, 'Bruno', 'Cardoso', '(51) 99136-1515', 'bruno@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000');
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Bruno', 'Cardoso', '(51) 99136-1515', 'bruno@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000', '55680201089');
 
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Silveira', '(51) 99136-4015', 'rafael@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000', '05474124015');
+
+INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
+VALUES(SEQ_USUARIO.nextval, 'Luiza', 'Roberta', '(51) 98765-4015', 'luiza@email', TO_DATE('02-04-1995', 'dd-mm-yyyy'), 'S', 'F', '0000', '98290517068');
 
 --Inserção dados ADMIN(vinculação de Usuário_Admin)
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 1, 'Responsável por verificar conteúdo criado');
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '12345678900'), 'Responsável por verificar conteúdo criado');
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 2, 'Responsável por verificar conteúdo criado');
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '00123456789'), 'Responsável por verificar conteúdo criado');
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 3, 'Responsável por manutenção bando de dados');
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '45678912300'), 'Responsável por manutenção bando de dados');
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 4, 'Responsável por manutenção bando de dados');
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '00456789123'), 'Responsável por manutenção bando de dados');
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 5, 'Responsável por deploy do sistema');
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '78912345600'), 'Responsável por deploy do sistema');
 
 INSERT INTO ADMIN (id_admin, id_usuario, descricao)
-VALUES (SEQ_ADMIN.NEXTVAL, 6, 'Responsável por manutenção do sistema');
-
-
-
+VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '00789123456'), 'Responsável por manutenção do sistema');
 
 --Inserção dados PROFESSOR(vinculação de Usuário_Professor)
 
 INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
-VALUES (SEQ_PROFESSOR.NEXTVAL, 8, 'Bacharelado em Letras')
+VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '07104175008'), 'Bacharelado em Letras')
 
 INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
-VALUES (SEQ_PROFESSOR.NEXTVAL, 9, 'Licenciatura em Letras')
+VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '32414805005'), 'Licenciatura em Letras')
 
 INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
-VALUES (SEQ_PROFESSOR.NEXTVAL, 10, 'Bacharelado em Letras')
+VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '31531621074'), 'Bacharelado em Letras')
 
 --Inserção dados ALUNO(vinculação de Usuário_Aluno)
 
+INSERT INTO ALUNO (id_aluno, id_usuario, nome_aluno, sobrenome_aluno, data_nascimento_aluno, sexo_aluno)
+VALUES(SEQ_ALUNO.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '55680201089'), 'Alice', 'Moraes', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'F');
 
+INSERT INTO ALUNO (id_aluno, id_usuario, nome_aluno, sobrenome_aluno, data_nascimento_aluno, sexo_aluno)
+VALUES(SEQ_ALUNO.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '05474124015'), 'Enzo', 'Moraes', TO_DATE('02-05-2020', 'dd-mm-yyyy'), 'M');
+
+INSERT INTO ALUNO (id_aluno, id_usuario, nome_aluno, sobrenome_aluno, data_nascimento_aluno, sexo_aluno)
+VALUES(SEQ_ALUNO.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '98290517068'), 'Erica', 'Roberta', TO_DATE('02-05-2019', 'dd-mm-yyyy'), 'F');
 
 --Inserção dados DESAFIO(vinculação de MODULO)
 INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
