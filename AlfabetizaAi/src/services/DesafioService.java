@@ -1,55 +1,64 @@
 package services;
 
+import exceptions.BancoDeDadosException;
+import models.Admin;
 import models.Desafio;
+import repository.AdminRepository;
+import repository.DesafioRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DesafioService {
 
-
-    private ArrayList<Desafio> desafios;
+    private DesafioRepository desafioRepository;
 
     public DesafioService() {
-        this.desafios = new ArrayList<>();
+        desafioRepository = new DesafioRepository();
     }
 
-    public DesafioService(ArrayList desafiosDoModulo) {
-        this.desafios = desafiosDoModulo;
-    }
+    public void adicionar(Desafio desafio) {
+        try {
 
-    public void adicionarDesafio(Desafio desafio) {
-        desafios.add(desafio);
-    }
+            Desafio desafioAdicionado = desafioRepository.adicionar(desafio);
 
-    public ArrayList<Desafio> getListaDesafios() {
-        return desafios;
-    }
-
-    public void visualizarDesafios() {
-        if (desafios.isEmpty()) {
-            throw new IllegalStateException("Nenhum desafio cadastrado.");
-        }
-        for (int i = 0; i < desafios.size(); i++) {
-            System.out.println("\nId do Desafio: " + ((int) i + 1) + "\n" + desafios.get(i).toString());
+            System.out.println("Desafio adicionado com sucesso! " + desafioAdicionado);
+        } catch (BancoDeDadosException e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-//    public void consultarDesafio(int index) {
-//        System.out.println("\nTítulo: " + desafios.get(index).getTitulo() + ", Tipo: " + desafios.get(index).getTipoDesafio().name() + ", Autor: " + desafios.get(index).getAutor().getNome());
-//    }
 
-//    public void editarDesafio(int index, Desafio desafioEditado) {
-//        Desafio desafio = desafios.get(index);
-//        desafio.setTitulo(desafioEditado.getTitulo());
-//        desafio.setTipoDesafio(desafioEditado.getTipoDesafio());
-//        desafio.setAutor(desafioEditado.getAutor());
-//        System.out.println("\nEdição realizada com sucesso.");
-//    }
+    public void visualizarTodos() {
+        try {
+            List<Desafio> listar = desafioRepository.listar();
+            listar.forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void removerDesafio(int index) {
-        desafios.remove(index);
-        System.out.println("\n" + desafios.get(index).getTitulo() + " removido com sucesso.");
+    public void editar(Integer id, Desafio desafioEditado) {
+        try {
+            boolean conseguiuEditar = desafioRepository.editar(id, desafioEditado);
+            System.out.println("Desafio editado com sucesso? " + conseguiuEditar + "| com id=" + id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void remover(Integer id, Desafio desafio) {
+        try {
+            boolean conseguiuRemover = desafioRepository.remover(id, desafio);
+            System.out.println("Desafio removido? " + conseguiuRemover + "| com id=" + id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
     }
 
 }
