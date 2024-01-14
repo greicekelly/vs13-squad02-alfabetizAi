@@ -1,95 +1,89 @@
 package services;
 
-import models.Admin;
+import exceptions.BancoDeDadosException;
 import models.Aluno;
-import models.Professor;
+import repository.AlunoRepository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 public class AlunoService {
-    private ArrayList<Aluno> lista;
+    private AlunoRepository alunoRepository;
 
     public AlunoService() {
-        this.lista = new ArrayList<>();
+        alunoRepository = new AlunoRepository();
     }
 
     public void adicionarAluno(Aluno aluno) {
-        if(aluno.getNome() == null || aluno.getNome().isEmpty()) {
+        if (aluno.getNome() == null || aluno.getNome().isEmpty()) {
             throw new IllegalArgumentException("Por favor insira um nome.");
         }
-        lista.add(aluno);
+
+        try {
+            alunoRepository.adicionar(aluno);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
     }
 
     public void visualizarTodosAlunos() {
-        if (lista.isEmpty()) {
-            throw new IllegalStateException("Nenhum aluno cadastrado.");
-        } else{
-            for (Aluno aluno : lista) {
-                System.out.println(aluno);
-            }
-            System.out.println("--------------------------------");
-        }
-
-    }
-
-    public void consultar(int id){
-        for (Aluno aluno : lista) {
-            if(aluno.getId() == id){
-                System.out.printf("""
-                Id: %d
-                Nome: %s
-                Data de nascimento: %s
-                Email: %s
-                """, aluno.getId(), aluno.getNome(),aluno.getDataDeNascimento(), aluno.getEmail());
+        try {
+            List<Aluno> alunos = alunoRepository.listar();
+            if (alunos.isEmpty()) {
+                throw new IllegalStateException("Nenhum aluno cadastrado.");
+            } else {
+                for (Aluno aluno : alunos) {
+                    System.out.println(aluno);
+                }
                 System.out.println("--------------------------------");
-                return;
             }
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
-        System.out.println("Nenhum aluno com o ID informado.");
-        System.out.println("--------------------------------");
     }
 
-    public Aluno consultarAlunoEmail(String email) {
-        for (Aluno aluno : lista) {
-            if(aluno.getEmail().equals(email)){
-               return aluno;
+    public void consultar(int id) {
+        try {
+            List<Aluno> alunos = alunoRepository.BuscarAlunoPorId(id);
+            if (!alunos.isEmpty()) {
+                Aluno aluno = alunos.get(0);
+                System.out.printf("""
+                        Id: %d
+                        Nome: %s
+                        Data de nascimento: %s
+                        Email: %s
+                        """, aluno.getIdUsuario(), aluno.getNome(), aluno.getDataDeNascimento(), aluno.getEmail());
+                System.out.println("--------------------------------");
+            } else {
+                System.out.println("Nenhum aluno com o ID informado.");
+                System.out.println("--------------------------------");
             }
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
-        return null;
     }
-
-    public Aluno loginAluno(String email, LocalDate dataNascimento) {
-        for (Aluno aluno : lista) {
-            aluno.getDataDeNascimento();
-            if (aluno.getEmail().equals(email) && aluno.getDataDeNascimento().equals(dataNascimento)) {
-                return aluno;
-            }
+    public boolean loginAluno(String email, String senha) {
+        try {
+            Aluno aluno = alunoRepository.loginAluno(email, senha);
+            return aluno != null;
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            return false;
         }
-        return null;
     }
-
 
     public void editarAluno(Aluno aluno, Aluno alunoEditado) {
-        try{
-            aluno.setNome((alunoEditado.getNome()));
-            aluno.setEmail((alunoEditado.getEmail()));
-            aluno.setDataDeNascimento((alunoEditado.getDataDeNascimento()));
-        } catch (IndexOutOfBoundsException e){
-            System.err.println("erro ao editar  aluno.");
+        try {
+            alunoRepository.editar(aluno.getIdUsuario(), alunoEditado);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
-
     }
 
     public void remover(int id) {
-        for (Aluno aluno :lista) {
-            if(aluno.getId() == id){
-                lista.remove(aluno);
-                return;
-            }
+        try {
+            alunoRepository.remover(id, new Aluno());
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
-        System.out.println("Nenhum aluno com o ID informado.");
-        System.out.println("--------------------------------");
     }
-
 }
