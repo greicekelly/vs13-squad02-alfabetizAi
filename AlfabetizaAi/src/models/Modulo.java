@@ -12,18 +12,16 @@ public class Modulo {
     private Professor autor;
     private Character foiAprovado;
     private Admin adminAprova;
-    private ArrayList<Desafio> desafios;
     private ClassificacaoModulo classificacao;
 
     public Modulo(){}
 
-    public Modulo(int id, String titulo, String conteudo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
+    public Modulo(int id, String titulo, String conteudo, Professor autor, ClassificacaoModulo classificacao) {
         this.id = id;
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.autor = autor;
         this.foiAprovado = 'N';
-        this.desafios = desafios;
         this.classificacao = classificacao;
     }
 
@@ -79,24 +77,12 @@ public class Modulo {
         this.adminAprova = adminAprova;
     }
 
-    public ArrayList<Desafio> getDesafios() {
-        return desafios;
-    }
-
-    public void setDesafios(ArrayList<Desafio> desafios) {
-        this.desafios = desafios;
-    }
-
     public ClassificacaoModulo getClassificacao() {
         return classificacao;
     }
 
     public void setClassificacao(ClassificacaoModulo classificacao) {
         this.classificacao = classificacao;
-    }
-
-    public void adicionarDesafio(Desafio desafio) {
-        this.desafios.add(desafio);
     }
 
 //    public void visualizarDesafios() {
