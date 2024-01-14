@@ -6,32 +6,61 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 public class Aluno extends Usuario {
 
-    private static Integer alunoId = 1;
-    private ArrayList<Modulo> modulosConcluidos;
+    private Integer idAluno;
 
-    public Aluno(String nome, LocalDate dataDeNascimento, String email, ArrayList<Modulo> modulosConcluidos) {
-        super(nome, dataDeNascimento, email);
-        this.modulosConcluidos = modulosConcluidos;
-        setId(alunoId);
-        alunoId++;
+    private String nomeAluno;
+
+    private String sobrenomeAluno;
+
+    private LocalDate dataNascimentoAluno;
+
+    private String sexoAluno;
+
+    public Aluno() {}
+
+    public Aluno(Integer idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, Integer idAluno, String nomeAluno, String sobrenomeAluno, LocalDate dataNascimentoAluno, String sexoAluno) {
+        super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
+        this.idAluno = idAluno;
+        this.nomeAluno = nomeAluno;
+        this.sobrenomeAluno = sobrenomeAluno;
+        this.dataNascimentoAluno = dataNascimentoAluno;
+        this.sexoAluno = sexoAluno;
     }
 
-    public Aluno(String nome, LocalDate dataDeNascimento, String email) {
-        super(nome, dataDeNascimento, email);
+    public int getIdAluno() {
+        return idAluno;
     }
 
-    public boolean concluirModulo(Modulo modulo){
-        System.out.println("O módulo " + modulo.getTitulo() + " foi concluído.");
-        this.modulosConcluidos.add(modulo);
-        return true;
+    public String getNomeAluno() {
+        return nomeAluno;
     }
 
-    public ArrayList<Modulo> getModulosConcluidos() {
-        return modulosConcluidos;
+    public void setNomeAluno(String nomeAluno) {
+        this.nomeAluno = nomeAluno;
     }
 
-    public void setModulosConcluidos(ArrayList<Modulo> modulosConcluidos) {
-        this.modulosConcluidos = modulosConcluidos;
+    public String getSobrenomeAluno() {
+        return sobrenomeAluno;
+    }
+
+    public void setSobrenomeAluno(String sobrenomeAluno) {
+        this.sobrenomeAluno = sobrenomeAluno;
+    }
+
+    public LocalDate getDataNascimentoAluno() {
+        return dataNascimentoAluno;
+    }
+
+    public void setDataNascimentoAluno(LocalDate dataNascimentoAluno) {
+        this.dataNascimentoAluno = dataNascimentoAluno;
+    }
+
+    public String getSexoAluno() {
+        return sexoAluno;
+    }
+
+    public void setSexoAluno(String sexoAluno) {
+        this.sexoAluno = sexoAluno;
     }
 
     public String toString() {
@@ -42,4 +71,6 @@ public class Aluno extends Usuario {
                 " - Email: " + getEmail() + "\'";
     }
 
+    public void setIdAluno(Integer proximoIdAluno) {
+    }
 }

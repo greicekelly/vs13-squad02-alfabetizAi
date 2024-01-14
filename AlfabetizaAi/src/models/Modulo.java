@@ -1,49 +1,36 @@
 package models;
 
 import enums.ClassificacaoModulo;
-import models.Desafio;
 
 import java.util.ArrayList;
 
 public class Modulo {
 
+    private int id;
     private String titulo;
     private String conteudo;
     private Professor autor;
-    private boolean foiAprovado;
-    private ArrayList<Desafio> desafios;
+    private Character foiAprovado;
+    private Admin adminAprova;
     private ClassificacaoModulo classificacao;
 
     public Modulo(){}
 
-    public Modulo(String titulo, String conteudo, Professor autor, ArrayList<Desafio> desafios, ClassificacaoModulo classificacao) {
+    public Modulo(int id, String titulo, String conteudo, Professor autor, ClassificacaoModulo classificacao) {
+        this.id = id;
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.autor = autor;
-        this.foiAprovado = false;
-        this.desafios = desafios;
+        this.foiAprovado = 'N';
         this.classificacao = classificacao;
     }
 
-    public void adicionarDesafio(Desafio desafio) {
-        this.desafios.add(desafio);
+    public int getId() {
+        return this.id;
     }
 
-    public void visualizarDesafios() {
-        for (int i = 0; i < desafios.size(); i++) {
-            System.out.printf("""
-                __________Desafio %d___________
-                Titulo: %s
-                Autor: %s
-                Tipo: %s
-                """, i + 1, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome(), desafios.get(i).getTipoDesafio().getNome());
-            System.out.println("--------------------------------");
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void ExibirConteudo(){
@@ -74,20 +61,20 @@ public class Modulo {
         this.autor = autor;
     }
 
-    public boolean isFoiAprovado() {
+    public Character isFoiAprovado() {
         return foiAprovado;
     }
 
-    public void setFoiAprovado(boolean foiAprovado) {
+    public void setFoiAprovado(Character foiAprovado) {
         this.foiAprovado = foiAprovado;
     }
 
-    public ArrayList<Desafio> getDesafios() {
-        return desafios;
+    public Admin getAdminAprova() {
+        return adminAprova;
     }
 
-    public void setDesafios(ArrayList<Desafio> desafios) {
-        this.desafios = desafios;
+    public void setAdminAprova(Admin adminAprova) {
+        this.adminAprova = adminAprova;
     }
 
     public ClassificacaoModulo getClassificacao() {
@@ -97,4 +84,22 @@ public class Modulo {
     public void setClassificacao(ClassificacaoModulo classificacao) {
         this.classificacao = classificacao;
     }
+
+//    public void visualizarDesafios() {
+//        for (int i = 0; i < desafios.size(); i++) {
+//            System.out.printf("""
+//                __________Desafio %d___________
+//                Titulo: %s
+//                Autor: %s
+//                Tipo: %s
+//                """, i + 1, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome(), desafios.get(i).getTipoDesafio().getNome());
+//            System.out.println("--------------------------------");
+//        }
+//    }
+
+    @Override
+    public String toString() {
+        return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();
+    }
+
 }
