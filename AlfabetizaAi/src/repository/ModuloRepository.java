@@ -139,6 +139,40 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
     }
+    public boolean editarAprovacaoPorAdmin(Admin admin, Modulo modulo) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE MODULO SET ");
+            sql.append(" id_admin = ?,");
+            sql.append(" modulo_aprovado = ? ");
+            sql.append(" WHERE id_modulo = ? ");
+
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
+
+            stmt.setInt(1, admin.getIdAdmin());
+            stmt.setString(2, String.valueOf(modulo.isFoiAprovado()));
+            stmt.setInt(3, modulo.getId());
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("editarModulo.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public List<Modulo> listar() throws BancoDeDadosException {
