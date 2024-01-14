@@ -16,11 +16,11 @@ public class ModuloService extends Modulo {
         lista.add(modulo);
     }
 
-//    public void visualizarTodos() {
-//        for (int i = 0; i < lista.size(); i++) {
-//            visualizarModulo(lista.get(i), i);
-//        }
-//    }
+    public void visualizarTodos() {
+        for (int i = 0; i < lista.size(); i++) {
+            visualizarModulo(lista.get(i), i);
+        }
+    }
 
 //    public void visualizarModulo(Modulo modulo, int index) {
 //        System.out.printf("""
