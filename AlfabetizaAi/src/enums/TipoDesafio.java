@@ -24,4 +24,17 @@ public enum TipoDesafio {
         }
         return null;
     }
+
+    public static TipoDesafio trazEnumPeloOrdinal(int opcao){
+        switch (opcao){
+            case 1:
+                return TipoDesafio.QUIZ;
+            case 2:
+                return TipoDesafio.JOGO;
+            default:
+                System.out.println("Opção inválida.");
+                return null;
+        }
+    }
+
 }

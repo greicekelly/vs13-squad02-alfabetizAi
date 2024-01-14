@@ -5,6 +5,7 @@ import enums.TipoDesafio;
 public class Desafio {
 
     private int id;
+    private int idModulo;
     private String titulo;
     private String conteudo;
     private TipoDesafio tipoDesafio;
@@ -24,6 +25,14 @@ public class Desafio {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdModulo() {
+        return idModulo;
+    }
+
+    public void setIdModulo(int idModulo) {
+        this.idModulo = idModulo;
     }
 
     public String getTitulo() {
