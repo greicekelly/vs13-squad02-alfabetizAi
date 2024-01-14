@@ -58,9 +58,6 @@ INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimen
 VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000', '00789123456');
 
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
-VALUES(SEQ_USUARIO.nextval, 'Tiago', 'Raupp', '(51) 99696-2222', 'tiago@email', TO_DATE('28-05-1995', 'dd-mm-yyyy'), 'S', 'M', '0000', '07104175008');
-
-INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
 VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Santos', '(11) 99124-1515', 'rafael@email', TO_DATE('03-02-1992', 'dd-mm-yyyy'), 'S', 'M', '0000', '32414805005');
 
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
@@ -70,7 +67,7 @@ INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimen
 VALUES(SEQ_USUARIO.nextval, 'Bruno', 'Cardoso', '(51) 99136-1515', 'bruno@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000', '55680201089');
 
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
-VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Silveira', '(51) 99136-4015', 'rafael@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000', '05474124015');
+VALUES(SEQ_USUARIO.nextval, 'Rafael', 'Silveira', '(51) 99136-4015', 'rafael.s@email', TO_DATE('02-05-1997', 'dd-mm-yyyy'), 'S', 'M', '0000', '05474124015');
 
 INSERT INTO USUARIO (id_usuario, nome, sobrenome, telefone, email, data_nascimento, ativo, sexo, senha, cpf)
 VALUES(SEQ_USUARIO.nextval, 'Luiza', 'Roberta', '(51) 98765-4015', 'luiza@email', TO_DATE('02-04-1995', 'dd-mm-yyyy'), 'S', 'F', '0000', '98290517068');
@@ -98,7 +95,7 @@ VALUES (SEQ_ADMIN.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '00
 --Inserção dados PROFESSOR(vinculação de Usuário_Professor)
 
 INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
-VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '07104175008'), 'Bacharelado em Letras')
+VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '05474124015'), 'Bacharelado em Letras')
 
 INSERT INTO PROFESSOR (id_professor, id_usuario, descricao)
 VALUES (SEQ_PROFESSOR.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '32414805005'), 'Licenciatura em Letras')
@@ -117,37 +114,38 @@ VALUES(SEQ_ALUNO.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '054
 INSERT INTO ALUNO (id_aluno, id_usuario, nome_aluno, sobrenome_aluno, data_nascimento_aluno, sexo_aluno)
 VALUES(SEQ_ALUNO.NEXTVAL, (SELECT u.ID_USUARIO FROM USUARIO u WHERE u.CPF = '98290517068'), 'Erica', 'Roberta', TO_DATE('02-05-2019', 'dd-mm-yyyy'), 'F');
 
---Inserção dados DESAFIO(vinculação de MODULO)
-INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
-VALUES(SEQ_DESAFIO.nextval, 1, 'Acerte as vogais', 'Acerte a sequência  de vogais');
-
-INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
-VALUES(SEQ_DESAFIO.nextval, 2, 'Forme as palavras', 'Forme a sequência  de palvras');
-
-INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
-VALUES(SEQ_DESAFIO.nextval, 3, 'Animais com a letra A', 'Insira nome de animais com a letra A');
-
-INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo)
-VALUES(SEQ_DESAFIO.nextval, 4, 'Frutas com a letra B', 'Acerte as frutas com a letra B');
-
 --Inserção dados MODULO
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 1, 'Você conhece as vogais?', 'Conheça as vogais! A de Aniversário, E de Escola, I de Indígena, O de Onda e U de Universo', 'Iniciante', 's', 1);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Você conhece as vogais?', 'Conheça as vogais! A de Aniversário, E de Escola, I de Indígena, O de Onda e U de Universo', 1, 's', 1);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 1, 'Vogais e os animais!', 'O nome de muitos animais começam com vogais! A de Abelha, E de Elefante, I de Iguana, O de Ornitorrinco, U de Urso', 'Iniciante', 's', 1);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Vogais e os animais!', 'O nome de muitos animais começam com vogais! A de Abelha, E de Elefante, I de Iguana, O de Ornitorrinco, U de Urso', 1, 's', 1);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 2, 'Consoantes e as frutas!', 'Você já provou essas deliciosas frutas que começam com as consoantes? B de Banana, C de Cereja, D de Damasco, F de Framboesa, G de Goiaba, H de ...', 'Iniciante', 'n', 1);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 2, 'Consoantes e as frutas!', 'Você já provou essas deliciosas frutas que começam com as consoantes? B de Banana, C de Cereja, D de Damasco, F de Framboesa, G de Goiaba, H de ...', 1, 'n', 1);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 3, 'Sílabas: O lego do alfabeto!', 'Você conhece as peças de lego? Com as sílabas podemos montar palavras assim como montamos lego!', 'Iniciante', 'n', 2);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 3, 'Sílabas: O lego do alfabeto!', 'Você conhece as peças de lego? Com as sílabas podemos montar palavras assim como montamos lego!', 1, 'n', 2);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 3, 'Descobrindo os Números Mágicos', 'Vamos explorar os números mágicos! Eles têm propriedades especiais que os tornam incríveis. 2, 3, 5 e 7 são alguns desses números mágicos!', 'Intermediario', 's', 2);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 3, 'Descobrindo os Números Mágicos', 'Vamos explorar os números mágicos! Eles têm propriedades especiais que os tornam incríveis. 2, 3, 5 e 7 são alguns desses números mágicos!', 2, 's', 2);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 1, 'Descobrindo Palavras: A Magia da Leitura', 'Embarque na magia da leitura! Vamos descobrir novas palavras e histórias encantadoras. A cada palavra, um mundo novo se abre diante de nós! A primeira palavra é: Mangá! Os quadrinhos japoneses...', 'Avançado', 's', 2);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Descobrindo Palavras: A Magia da Leitura', 'Embarque na magia da leitura! Vamos descobrir novas palavras e histórias encantadoras. A cada palavra, um mundo novo se abre diante de nós! A primeira palavra é: Mangá! Os quadrinhos japoneses...', 3, 's', 2);
 
-INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, modulo_aprovado, classificacao, id_admin)
-VALUES(SEQ_MODULO.nextval, 1, 'Consoantes pelo mundo!', 'Divirta-se enquanto aprende as consoantes! P de Parque', 'Iniciante', 'n', 1);
+INSERT INTO MODULO (id_modulo, id_professor, titulo, conteudo, classificacao_modulo, modulo_aprovado, id_admin)
+VALUES(SEQ_MODULO.nextval, 1, 'Consoantes pelo mundo!', 'Divirta-se enquanto aprende as consoantes! P de Parque', 1, 'n', 1);
+
+--Inserção dados DESAFIO(vinculação de MODULO)
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo, tipo_desafio)
+VALUES(SEQ_DESAFIO.nextval, 1, 'Acerte as vogais', 'Acerte a sequência  de vogais', 2);
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo, tipo_desafio)
+VALUES(SEQ_DESAFIO.nextval, 2, 'Forme as palavras', 'Forme a sequência  de palvras', 2);
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo, tipo_desafio)
+VALUES(SEQ_DESAFIO.nextval, 3, 'Animais com a letra A', 'Insira nome de animais com a letra A', 1);
+
+INSERT INTO DESAFIO (id_desafio, id_modulo, titulo, conteudo, tipo_desafio)
+VALUES(SEQ_DESAFIO.nextval, 4, 'Frutas com a letra B', 'Acerte as frutas com a letra B', 1);

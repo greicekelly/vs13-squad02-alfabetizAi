@@ -253,4 +253,51 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
             }
         }
     }
+
+    public Aluno loginAluno(String email, String senha) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT * FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.EMAIL = ? AND U.SENHA = ?";
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setString(1, email);
+                stmt.setString(2, senha);
+
+                try (ResultSet res = stmt.executeQuery()) {
+                    if (res.next()) {
+                        Aluno aluno = new Aluno();
+                        aluno.setIdUsuario(res.getInt("id_usuario"));
+                        aluno.setNome(res.getString("nome"));
+                        aluno.setSobrenome(res.getString("sobrenome"));
+                        aluno.setTelefone(res.getString("telefone"));
+                        aluno.setEmail(res.getString("email"));
+                        aluno.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                        aluno.setSexo(res.getString("sexo"));
+                        aluno.setSenha(res.getString("senha"));
+                        aluno.setCpf(res.getString("cpf"));
+                        aluno.setNomeAluno(res.getString("nome_aluno"));
+                        aluno.setSobrenomeAluno(res.getString("sobrenome_aluno"));
+                        aluno.setSexoAluno(res.getString("sexo_aluno"));
+                        aluno.setIdAluno(res.getInt("id_aluno"));
+
+                        return aluno;
+                    }
+                }
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+

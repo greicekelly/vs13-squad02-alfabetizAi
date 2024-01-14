@@ -105,7 +105,7 @@ public class Main {
                     switch (escolha) {
                         case 1:
                             try {
-                                // MENU ALUNO
+                                // MENU ALUNO ---
                                 System.out.println("Você escolheu a opção Aluno:");
                                 System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
                                 int opcaoMenuAluno = sc.nextInt();
