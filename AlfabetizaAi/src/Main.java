@@ -20,6 +20,8 @@ public class Main {
         DesafioService listaDesafios = new DesafioService();
         ModuloService modulosConcluidos = new ModuloService();
         AlunoService listaAluno = new services.AlunoService();
+        AlunoService alunoService = new AlunoService();
+
         ProfessorService listaProfessor = new services.ProfessorService();
 
 
@@ -118,7 +120,7 @@ public class Main {
                                         System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
                                         dataNascimento = sc.nextLine();
                                         data = LocalDate.parse(dataNascimento);
-                                        Aluno alunoLogado = listaAluno.loginAluno(email, data);
+                                        Aluno alunoLogado = alunoService.loginAluno(email, data);
                                         boolean menuUsuarioLogado = true;
 
                                         if (alunoLogado == null) {
@@ -144,13 +146,12 @@ public class Main {
                                                         alunoEditado.setNome(nome);
                                                         alunoEditado.setDataDeNascimento(dataNova);
                                                         alunoEditado.setEmail(email);
-                                                        listaAluno.editarAluno(alunoLogado, alunoEditado);
+                                                        alunoService.editarAluno(alunoLogado, alunoEditado);
                                                         System.out.println("Aluno editado com sucesso");
-
                                                         break;
 
                                                     case 2:
-                                                        listaAluno.visualizarTodosAlunos();
+                                                        alunoService.visualizarTodosAlunos();
                                                         System.out.print("Informe o título do módulo que deseja estudar: ");
                                                         Modulo moduloEscolhido = listaModulos.consultarModuloTitulo(sc.nextLine());
                                                         System.out.println(moduloEscolhido.getConteudo());
@@ -197,7 +198,7 @@ public class Main {
 
                                         Aluno alunoCadastrado = new Aluno(novoNome, novaDataNascimentoLocal, novoEmail);
 
-                                        listaAluno.adicionarAluno(alunoCadastrado);
+                                        alunoService.adicionarAluno(alunoCadastrado);
                                         System.out.println("Aluno cadastrado com sucesso");
                                         break;
                                     case 0:
@@ -212,6 +213,34 @@ public class Main {
                                 System.out.println("Opção inválida, digite somente números conforme opção do menu");
                             }
                             break;
+                                    case 2:
+                                        System.out.println("Informe o seu nome: ");
+                                        String novoNome = sc.nextLine();
+
+                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                        String novaDataNascimento = sc.nextLine();
+                                        LocalDate novaDataNascimentoLocal = LocalDate.parse(novaDataNascimento);
+
+                                        System.out.println("Informe o seu email: ");
+                                        String novoEmail = sc.nextLine();
+
+                                        Aluno alunoCadastrado = new Aluno(novoNome, novaDataNascimentoLocal, novoEmail);
+
+                                        listaAluno.adicionarAluno(alunoCadastrado);
+                                        System.out.println("Aluno cadastrado com sucesso");
+                                        break;
+                                    case 0:
+                                        break;
+                                    default:
+                                        System.out.println("Opção inválida.");
+                                        break;
+
+                                }
+                                } catch (Exception e) {
+                                    System.out.println("Opção inválida, digite somente números conforme opção do menu");
+                                }
+
+                                break;
 //                        case 2:
 //                            try {
 //                                //MENU PROFESSOR
