@@ -426,36 +426,32 @@ public class Main {
                                                         aprovacaoModulo = sc.nextLine();
                                                         listaModulos.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
                                                         break;
-
                                                     case 3:
-                                                        listaModulos.visualizarTodos();
-                                                        System.out.println("Digite o número do módulo a ser deletado: ");
-                                                        indexModulo = sc.nextInt();
-                                                        sc.nextLine();
-                                                        listaModulos.remover(indexModulo);
-                                                        System.out.println("Módulo deletado com sucesso!");
+                                                        listaModulos.listarAprovados();
                                                         break;
 
                                                     case 4:
-                                                        listaAluno.visualizarTodosAlunos();
+                                                        listaModulos.listarReprovados();
                                                         break;
 
                                                     case 5:
+                                                        alunoService.visualizarTodosAlunos();
+                                                        break;
+                                                    case 6:
                                                         System.out.println("Digite o ID do aluno:");
                                                         int idAluno = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaAluno.consultar(idAluno);
-                                                        break;
-
-                                                    case 6:
+                                                        alunoService.BuscarAlunoPorId(idAluno);
                                                         listaProfessor.visualizarTodos();
                                                         break;
-
                                                     case 7:
-                                                        System.out.println("Digite o ID do aluno:");
+                                                        listaProfessor.visualizarTodos();
+                                                        break;
+                                                    case 8:
+                                                        System.out.println("Digite o ID do professor:");
                                                         int idProfessor = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaProfessor.consultar(idProfessor);
+                                                        listaProfessor.buscarProfessorPorId(idProfessor);
                                                         break;
 
                                                     case 0:

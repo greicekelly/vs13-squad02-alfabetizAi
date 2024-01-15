@@ -41,6 +41,14 @@ public class AlunoService {
         }
     }
 
+    public void BuscarAlunoPorId(Integer idUsuario){
+        try {
+            alunoRepository.BuscarAlunoPorId(idUsuario);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void consultar(int id) {
         try {
             List<Aluno> alunos = alunoRepository.BuscarAlunoPorId(id);

@@ -57,7 +57,23 @@ public class ModuloService extends Modulo {
 
     public void listarSemAprovacao() {
         try {
-            moduloRepository.listar().forEach(System.out::println);
+            moduloRepository.listarSemAprovacao().forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void listarAprovados() {
+        try {
+            moduloRepository.listarAprovados().forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void listarReprovados() {
+        try {
+            moduloRepository.listarReprovados().forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
