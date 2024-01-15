@@ -1,88 +1,83 @@
 package services;
 
+import exceptions.BancoDeDadosException;
 import models.Admin;
 import models.Professor;
+import repository.ProfessorRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorService {
-    private ArrayList<Professor> professores;
+    private ProfessorRepository professorRepository;
 
     public ProfessorService() {
-        this.professores = new ArrayList<>();
+        this.professorRepository = new ProfessorRepository();
     }
 
     public void adicionar(Professor professor) {
-        professores.add(professor);
-    }
+        try {
 
-    public ArrayList<Professor> listarTodos() {
-        return professores;
-    }
-
-    public Professor loginProfessor(String email, LocalDate dataNascimento) {
-        for (Professor professor : professores) {
-            professor.getDataDeNascimento();
-            if (professor.getEmail().equals(email) && professor.getDataDeNascimento().equals(dataNascimento)) {
-                return professor;
+            if (professor.getCpf().length() != 11) {
+                throw new Exception("CPF Invalido!");
             }
-        }
-        return null;
-    }
 
-    public Professor consultarProfessorEmail(String email) {
-        for (Professor professor : professores) {
-            if(professor.getEmail().equals(email)){
-                return professor;
-            }
+            Professor professorAdicionado = professorRepository.adicionar(professor);
+
+            System.out.println("professor adicinado com sucesso! " + professorAdicionado);
+        } catch (BancoDeDadosException e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         }
-        return null;
     }
 
     public void visualizarTodos() {
-        if (professores.isEmpty()) {
-            throw new IllegalStateException("Nenhum professor cadastrado.");
-        } else {
-            for (Professor professor : professores) {
-                System.out.println(professor);
-            }
-            System.out.println("--------------------------------");
+        try {
+            List<Professor> listar = professorRepository.listar();
+            listar.forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
     }
 
-    public void consultar(int id){
-        for (Professor professor : professores) {
-            if(professor.getId() == id){
-                System.out.printf("""
-                Id: %d
-                Nome: %s
-                Data de nascimento: %s
-                Email: %s
-                """, professor.getId(), professor.getNome(), professor.getDataDeNascimento(), professor.getEmail());
-                System.out.println("--------------------------------");
-                return;
-            }
+    public Professor buscarProfessorPorId(Integer idUsuario){
+        try {
+            return professorRepository.buscarProfessorPorId(idUsuario);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            return null;
         }
-        System.out.println("Nenhum professor com o ID informado.");
-        System.out.println("--------------------------------");
     }
 
-    public void editar(Professor professor, Professor professorEditado) {
-        professor.setNome(professorEditado.getNome());
-        professor.setDataDeNascimento(professorEditado.getDataDeNascimento());
-        professor.setEmail(professorEditado.getEmail());
+    public void editar(Integer id, Professor professorEditado) {
+        try {
+            boolean conseguiuEditar = professorRepository.editar(id, professorEditado);
+            System.out.println("professor editado com sucesso? " + conseguiuEditar + "| com id=" + id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void remover(int id) {
-        for (Professor professor : professores) {
-            if(professor.getId() == id){
-                professores.remove(professor);
-                return;
-            }
+    public void remover(Integer id, Professor professor) {
+        try {
+            boolean conseguiuRemover = professorRepository.remover(id, professor);
+            System.out.println("pessoa removida? " + conseguiuRemover + "| com id=" + id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
         }
-        System.out.println("Nenhum professor com o ID informado.");
-        System.out.println("--------------------------------");
+    }
+
+    public Professor loginProfessor(String email, String senha) {
+        try {
+            Professor professor = professorRepository.loginProfessor(email, senha);
+            return professor;
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

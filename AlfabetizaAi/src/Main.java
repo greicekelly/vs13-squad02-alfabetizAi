@@ -1,6 +1,8 @@
 import enums.ClassificacaoModulo;
 import enums.TipoDesafio;
+import exceptions.BancoDeDadosException;
 import models.*;
+import repository.AdminRepository;
 import services.*;
 import utils.MenuNumerico;
 
@@ -11,88 +13,43 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BancoDeDadosException {
 
-        AdminService listaAdmin = new AdminService();
-        ModuloService listaModulos = new ModuloService();
-        DesafioService listaDesafios = new DesafioService();
-        ModuloService modulosConcluidos = new ModuloService();
-        AlunoService listaAluno = new services.AlunoService();
-        ProfessorService listaProfessor = new services.ProfessorService();
-
-        listaAdmin.adicionar(new Admin("Maria Antonia", LocalDate.parse("1988-12-18"), "maria@email"));
-        listaAdmin.adicionar(new Admin("Joao da Silva", LocalDate.parse("1989-12-18"), "joao@email"));
-        listaAdmin.adicionar(new Admin("Pedro", LocalDate.parse("1990-12-18"), "pedro@email"));
-
-        listaAluno.adicionarAluno(new Aluno("Lucas", LocalDate.parse("2018-07-01"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Renan", LocalDate.parse("2019-06-02"), "lucas@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Arthur", LocalDate.parse("2020-01-10"), "arthura@email.com", new ArrayList<>()));
-        listaAluno.adicionarAluno(new Aluno("Greice", LocalDate.parse("1992-10-02"), "greice@email.com", new ArrayList<>()));
-
-        listaProfessor.adicionar(new Professor("Bruno",LocalDate.parse("1980-10-10"),"bruno@email.com"));
-        listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));
-        listaProfessor.adicionar(new Professor("Vitoria",LocalDate.parse("1981-10-30"), "vitoria@email.teste"));
-
-        String conteudoABC = "A - Abelha: A abelha faz \"zum zum\" e voa de flor em flor.\n" +
-                "B - Borboleta: A borboleta é colorida e voa pelo jardim.\n" +
-                "C - Cachorro: O cachorro é amigo e late \"au au\".\n" +
-                "D - Dinossauro: O dinossauro é grande e faz \"roar\".\n" +
-                "E - Elefante: O elefante tem uma tromba longa e faz \"trrr\".\n" +
-                "F - Flor: A flor é bonita e cheira bem.\n" +
-                "G - Girafa: A girafa tem um pescoço comprido e come folhas.\n" +
-                "H - Helicóptero: O helicóptero voa no céu e faz \"vruum\".\n" +
-                "I - Igual: As coisas são iguais quando são parecidas.\n" +
-                "J - Jacaré: O jacaré mora na água e tem dentes afiados.\n" +
-                "K - Kite (pipa): A pipa voa alto no vento.\n" +
-                "L - Leão: O leão é corajoso e faz \"rugir\".\n" +
-                "M - Macaco: O macaco é divertido e pula de galho em galho.\n" +
-                "N - Nuvem: A nuvem é fofa e está no céu.\n" +
-                "O - Ovelha: A ovelha tem lã macia e faz \"bêê\".\n" +
-                "P - Pato: O pato nada na água e faz \"quá quá\".\n" +
-                "Q - Queijo: O queijo é delicioso e amarelo.\n" +
-                "R - Rato: O rato é pequeno e faz \"piu piu\".\n" +
-                "S - Sol: O sol brilha no céu e nos dá luz.\n" +
-                "T - Tartaruga: A tartaruga é lenta e tem uma casca dura.\n" +
-                "U - Urso: O urso é peludo e vive na floresta.\n" +
-                "V - Vaca: A vaca dá leite e faz \"moo\".\n" +
-                "W - Waffle: O waffle é uma delícia para comer.\n" +
-                "X - Xícara: A xícara é usada para tomar chá ou café.\n" +
-                "Y - Yo-yo: O yo-yo vai para cima e para baixo.\n" +
-                "Z - Zebra: A zebra tem listras pretas e brancas.";
-
-        String conteudoVogais = "A - Abelhinha: A abelhinha adora voar alto e faz \"a-a-a\" como em \"abelha\".\n" +
-                "E - Elefantinho: O elefantinho tem orelhas grandes e faz \"e-e-e\" como em \"elefante\".\n" +
-                "I - Indiozinho: O indiozinho usa um penacho na cabeça e faz \"i-i-i\" como em \"índio\".\n" +
-                "O - Ouriço: O ouriço é redondinho e faz \"o-o-o\" como em \"ouriço\".\n" +
-                "U - Ursinho: O ursinho é fofo e faz \"u-u-u\" como em \"ursinho\".";
-
-        Professor professor = new Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
-        Desafio desafioUm = new Desafio("Desafio AEIOU", enums.TipoDesafio.JOGO, professor);
-        Desafio desafioDois = new Desafio("ABC", TipoDesafio.QUIZ, professor);
-        Desafio desafioTres = new Desafio("A", TipoDesafio.JOGO, professor);
-        Modulo moduloDois = new Modulo("Letras Alfabeto",conteudoABC, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-        Modulo moduloUm = new Modulo("Letras Vogais", conteudoVogais, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-        moduloUm.adicionarDesafio(desafioUm);
-        moduloUm.adicionarDesafio(desafioTres);
-        moduloDois.adicionarDesafio(desafioDois);
-        listaModulos.adicionar(moduloUm);
-        listaModulos.adicionar(moduloDois);
+        AdminService adminService = new AdminService();
+        ModuloService moduloService = new ModuloService();
+        DesafioService desafioService = new DesafioService();
+        AlunoService alunoService = new AlunoService();
+        ProfessorService professorService = new ProfessorService();
 
         Scanner sc = new Scanner(System.in);
         int escolha;
 
         String nome;
-        String dataNascimento;
+        String sobrenome;
+        String telefone;
         String email;
+        String dataNascimento;
+        String sexo;
+        String senha;
+        String ativo;
+        String cpf;
+        String descricao;
         LocalDate data;
+        LocalDate dataAluno;
         String tituloNovoDesafio;
         Integer tipoNovoDesafio;
         TipoDesafio tipo;
         String conteudo;
+        String aprovacaoModulo;
         int indexModulo;
+        Professor professor;
+        int idProfessor;
+        boolean menuUsuarioLogado;
+        String sexoAluno;
+        String sobrenomeAluno;
+        String nomeAluno;
 
-        boolean continuarMenu = true;
-        
+
         MenuNumerico.bemVindo();
 
         try {
@@ -106,106 +63,161 @@ public class Main {
 
                     switch (escolha) {
                         case 1:
-                                try {
-                                    //MENU ALUNO
-                                    System.out.println("Você escolheu a opção Aluno:");
-                                    System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
-                                    int opcaoMenuAluno = sc.nextInt();
-                                    sc.nextLine();
+                            try {
+                                // MENU ALUNO ---
+                                System.out.println("Você escolheu a opção Aluno:");
+                                System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
+                                int opcaoMenuAluno = sc.nextInt();
+                                sc.nextLine();
 
-                                    switch (opcaoMenuAluno) {
-                                        case 1:
-                                            System.out.println("Informe seu email: ");
-                                            email = sc.nextLine();
-                                            System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                            dataNascimento = sc.nextLine();
-                                            data = LocalDate.parse(dataNascimento);
-                                            Aluno alunoLogado = listaAluno.loginAluno(email, data);
-                                            boolean menuUsuarioLogado = true;
+                                switch (opcaoMenuAluno) {
+                                    case 1:
+                                        System.out.println("Informe seu email: ");
+                                        String emailLogin = sc.nextLine();
 
-                                            if (alunoLogado == null) {
-                                                System.out.println("Falha no login. Verifique suas credenciais.");
-                                                break;
-                                            } else {
-                                                System.out.println("Login bem-sucedido! Bem-vindo, " + alunoLogado.getNome() + ".");
-                                                do {
-                                                    MenuNumerico.menuAluno();
-                                                    int escolhaInterna = sc.nextInt();
-                                                    sc.nextLine();
+                                        System.out.println("Informe sua senha: ");
+                                        String senhaLogin = sc.nextLine();
 
-                                                    switch (escolhaInterna) {
-                                                        case 1:
-                                                            System.out.println("Informe o novo nome: ");
-                                                            nome = sc.nextLine();
-                                                            System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
-                                                            dataNascimento = sc.nextLine();
-                                                            LocalDate dataNova = LocalDate.parse(dataNascimento);
-                                                            System.out.println("Informe o novo email: ");
-                                                            email = sc.nextLine();
-                                                            listaAluno.editarAluno(alunoLogado, new Aluno(nome, dataNova, email));
-                                                            System.out.println("Aluno editado com sucesso");
-                                                            break;
-                                                        case 2:
-                                                            listaModulos.visualizarTodos();
-                                                            System.out.print("Informe o titulo do módulo que deseja estudar: ");
-                                                            Modulo moduloEscolhido = listaModulos.consultarModuloTitulo(sc.nextLine());
+                                        Aluno alunoLogado = alunoService.loginAluno(emailLogin, senhaLogin);
+
+                                        menuUsuarioLogado = true;
+
+                                        if (alunoLogado == null) {
+                                            System.out.println("Falha no login. Verifique suas credenciais.");
+                                            break;
+                                        } else {
+                                            System.out.println("Login bem-sucedido! Bem-vindo, " + alunoLogado.getNome() + ".");
+                                            do {
+                                                MenuNumerico.menuAluno();
+                                                int escolhaInterna = sc.nextInt();
+                                                sc.nextLine();
+
+                                                switch (escolhaInterna) {
+                                                    case 1:
+                                                        System.out.println("Informe o novo nome do responsável: ");
+                                                        nome = sc.nextLine();
+                                                        System.out.println("Informe o novo sobrenome do responsável: ");
+                                                        sobrenome = sc.nextLine();
+                                                        System.out.println("Informe a nova data de nascimento do responsável (yyyy-mm-dd): ");
+                                                        dataNascimento = sc.nextLine();
+                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
+                                                        System.out.println("Informe o novo email do responsável: ");
+                                                        email = sc.nextLine();
+                                                        System.out.println("Informe o novo telefone do responsável: ");
+                                                        telefone = sc.nextLine();
+                                                        System.out.println("Informe o sexo do responsável: F - M ");
+                                                        sexo = sc.nextLine();
+                                                        System.out.println("Crie sua nova senha: ");
+                                                        senha = sc.nextLine();
+
+                                                        System.out.println("Informe o novo nome do aluno: ");
+                                                        nomeAluno = sc.nextLine();
+                                                        System.out.println("Informe o novo sobrenome do aluno: ");
+                                                        sobrenomeAluno = sc.nextLine();
+                                                        System.out.println("Informe a nova data de nascimento do aluno (yyyy-mm-dd): ");
+                                                        dataNascimento = sc.nextLine();
+                                                        LocalDate dataNovaAluno = LocalDate.parse(dataNascimento);
+                                                        System.out.println("Informe o sexo do aluno: F - M ");
+                                                        sexoAluno = sc.nextLine();
+
+                                                        Aluno alunoCadastrado = new Aluno();
+                                                        alunoCadastrado.setNome(nome);
+                                                        alunoCadastrado.setSobrenome(sobrenome);
+                                                        alunoCadastrado.setTelefone(telefone);
+                                                        alunoCadastrado.setEmail(email);
+                                                        alunoCadastrado.setDataDeNascimento(dataNova);
+                                                        alunoCadastrado.setSexo(sexo);
+                                                        alunoCadastrado.setSenha(senha);
+                                                        alunoCadastrado.setNomeAluno(nomeAluno);
+                                                        alunoCadastrado.setSobrenomeAluno(sobrenomeAluno);
+                                                        alunoCadastrado.setDataNascimentoAluno(dataNovaAluno);
+                                                        alunoCadastrado.setSexoAluno(sexoAluno);
+
+                                                        alunoService.editar(alunoLogado, alunoCadastrado);
+                                                        System.out.println("Aluno editado com sucesso");
+                                                        break;
+
+                                                    case 2:
+                                                        moduloService.listar();
+                                                        System.out.print("Informe o id do módulo que deseja acessar: ");
+                                                        int idModuloEscolhido = sc.nextInt();
+                                                        sc.nextLine();
+
+                                                        Modulo moduloEscolhido = moduloService.BuscarModuloPorId(idModuloEscolhido);
+
+                                                        if (moduloEscolhido != null) {
                                                             System.out.println(moduloEscolhido.getConteudo());
-                                                            System.out.println("Parabéns pelo estudo! Agora já está pronto para os desafios!");
-                                                            break;
-                                                        case 3:
-                                                            listaModulos.visualizarTodos();
-                                                            System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
-                                                            Modulo moduloEscolhidoParaDesafios = listaModulos.consultarModuloTitulo(sc.nextLine());
-                                                            DesafioService DesafiosDoModulo = new DesafioService(moduloEscolhidoParaDesafios.getDesafios());
-                                                            DesafiosDoModulo.visualizarDesafios();
-                                                            System.out.print("Informe o índice do desafio que deseja acessar: ");
-                                                            int indiceDesafio = sc.nextInt();
-                                                            DesafiosDoModulo.consultarDesafio(indiceDesafio - 1);
+                                                            System.out.println("Pressione enter para ir para os desafios do módulo!");
                                                             sc.nextLine();
-                                                            System.out.println("Parabéns por concluir o desafio!");
-                                                            modulosConcluidos.adicionar(moduloEscolhidoParaDesafios);
-                                                            break;
-                                                        case 4:
-                                                            modulosConcluidos.visualizarTodos();
-                                                            break;
-                                                        case 0:
-                                                            menuUsuarioLogado = false;
-                                                            break;
-                                                        default:
-                                                            System.out.println("Opção inválida. Tente novamente.");
-                                                            break;
-                                                    }
-                                                } while (menuUsuarioLogado);
-                                            }
-                                            break;
+                                                            desafioService.listarDesafiosPorModulo(moduloEscolhido.getId());
+                                                            System.out.println("Pressione enter para finalizar o módulo!");
+                                                            sc.nextLine();
 
-                                        case 2:
-                                            System.out.println("Informe o seu nome: ");
-                                            nome = sc.nextLine();
-                                            System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                            dataNascimento = sc.nextLine();
-                                            data = LocalDate.parse(dataNascimento);
-                                            System.out.println("Informe o seu email: ");
-                                            email = sc.nextLine();
-                                            Aluno alunoCadastrado = new Aluno(nome, data, email);
-                                            listaAluno.adicionarAluno(alunoCadastrado);
-                                            System.out.println("Aluno cadastrado com sucesso");
-                                            break;
+                                                            System.out.println("Parabéns por concluir o módulo!");
+                                                        } else {
+                                                            System.out.println("Módulo não encontrado.");
+                                                        }
+                                                        break;
 
-                                        case 0:
-                                            break;
+                                                    case 0:
+                                                        menuUsuarioLogado = false;
+                                                        break;
 
-                                        default:
-                                            System.out.println("Opção inválida.");
-                                            break;
-                                    }
-                                } catch (Exception e){
-                                    System.out.println(" ");
-                                    System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-                                } finally {
-                                    escolha = 1;
+                                                    default:
+                                                        System.out.println("Opção inválida. Tente novamente.");
+                                                        break;
+                                                }
+                                            } while (menuUsuarioLogado);
+                                        }
+                                        break;
+                                    case 2:
+                                        System.out.println("Informe o nome do responsável: ");
+                                        nome = sc.nextLine();
+                                        System.out.println("Informe o sobrenome do responsável: ");
+                                        sobrenome = sc.nextLine();
+                                        System.out.println("Informe o telefone do responsável: ");
+                                        telefone = sc.nextLine();
+                                        System.out.println("Informe a data de nascimento do responsável: yyyy-mm-dd");
+                                        dataNascimento = sc.nextLine();
+                                        data = LocalDate.parse(dataNascimento);
+                                        System.out.println("Informe o email do responsável: ");
+                                        email = sc.nextLine();
+                                        System.out.println("Informe o sexo do responsável: F - M - O ");
+                                        sexo = sc.nextLine();
+                                        System.out.println("Crie sua senha: ");
+                                        senha = sc.nextLine();
+
+                                        System.out.println("Informe o nome do aluno: ");
+                                        nomeAluno = sc.nextLine();
+                                        System.out.println("Informe o sobrenome do aluno: ");
+                                        sobrenomeAluno = sc.nextLine();
+                                        System.out.println("Informe a data de nascimento do aluno: yyyy-mm-dd");
+                                        dataNascimento = sc.nextLine();
+                                        dataAluno = LocalDate.parse(dataNascimento);
+                                        System.out.println("Informe o sexo do aluno: F - M - O ");
+                                        sexoAluno = sc.nextLine();
+
+                                        Aluno alunoCadastrado = new Aluno();
+                                        alunoCadastrado.setNome(nome);
+                                        alunoCadastrado.setSobrenome(sobrenome);
+                                        alunoCadastrado.setTelefone(telefone);
+                                        alunoCadastrado.setEmail(email);
+                                        alunoCadastrado.setDataDeNascimento(data);
+                                        alunoCadastrado.setSexo(sexo);
+                                        alunoCadastrado.setSenha(senha);
+                                        alunoCadastrado.setNomeAluno(nomeAluno);
+                                        alunoCadastrado.setSobrenomeAluno(sobrenomeAluno);
+                                        alunoCadastrado.setDataNascimentoAluno(dataAluno);
+                                        alunoCadastrado.setSexoAluno(sexoAluno);
+
+                                        alunoService.adicionar(alunoCadastrado);
+                                        System.out.println("Aluno cadastrado com sucesso");
+                                        break;
                                 }
-                            break;
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+
                         case 2:
                             try {
                                 //MENU PROFESSOR
@@ -219,11 +231,10 @@ public class Main {
                                     case 1:
                                         System.out.println("Informe seu email: ");
                                         email = sc.nextLine();
-                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                        dataNascimento = sc.nextLine();
-                                        data = LocalDate.parse(dataNascimento);
-                                        Professor professorLogado = listaProfessor.loginProfessor(email, data);
-                                        boolean menuUsuarioLogado = true;
+                                        System.out.println("Informe a sua senha: ");
+                                        senha = sc.nextLine();
+                                        Professor professorLogado = professorService.loginProfessor(email, senha);
+                                        menuUsuarioLogado = true;
 
                                         if (professorLogado == null) {
                                             System.out.println("Falha no login. Verifique suas credenciais.");
@@ -240,21 +251,37 @@ public class Main {
                                                     case 1:
                                                         System.out.println("Informe o novo nome: ");
                                                         nome = sc.nextLine();
+                                                        System.out.println("Informe o seu novo sobrenome: ");
+                                                        sobrenome = sc.nextLine();
                                                         System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
                                                         dataNascimento = sc.nextLine();
                                                         LocalDate dataNova = LocalDate.parse(dataNascimento);
                                                         System.out.println("Informe o novo email: ");
                                                         email = sc.nextLine();
-                                                        listaProfessor.editar(professorLogado, new Professor(nome, dataNova, email));
+                                                        System.out.println("Informe o seu novo telefone: ");
+                                                        telefone = sc.nextLine();
+                                                        System.out.println("Informe o seu sexo: F - M - O");
+                                                        sexo = sc.nextLine();
+                                                        System.out.println("Crie sua nova senha: ");
+                                                        senha = sc.nextLine();
+
+                                                        Professor professorCadastrado = new Professor();
+                                                        professorCadastrado.setNome(nome);
+                                                        professorCadastrado.setSobrenome(sobrenome);
+                                                        professorCadastrado.setTelefone(telefone);
+                                                        professorCadastrado.setEmail(email);
+                                                        professorCadastrado.setDataDeNascimento(dataNova);
+                                                        professorCadastrado.setSexo(sexo);
+                                                        professorCadastrado.setSenha(senha);
+
+                                                        professorService.editar(professorLogado.getId(), professorCadastrado);
                                                         System.out.println("Professor editado com sucesso");
                                                         break;
 
                                                     case 2:
                                                         System.out.println("Informe o título do novo Modulo: ");
                                                         String tituloModulo = sc.nextLine();
-                                                        System.out.println("Informe o email do autor do novo Modulo: ");
-                                                        email = sc.nextLine();
-                                                        professor = listaProfessor.consultarProfessorEmail(email);
+                                                        professor = professorService.buscarProfessorPorId(professorLogado.getId());
                                                         System.out.println("Digite o Conteudo do novo Modulo: ");
                                                         conteudo = sc.nextLine();
                                                         System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
@@ -265,8 +292,10 @@ public class Main {
                                                         if (tipo == null) {
                                                             throw new IllegalArgumentException("Opção de desafio inexistente");
                                                         } else {
-                                                            Desafio desafioCriado = new Desafio(tituloNovoDesafio, tipo, professor);
-                                                            listaDesafios.adicionarDesafio(desafioCriado);
+                                                            Desafio desafioCriado = new Desafio();
+                                                            desafioCriado.setTitulo(tituloNovoDesafio);
+                                                            desafioCriado.setTipoDesafio(tipo);
+                                                            desafioService.adicionar(desafioCriado);
                                                             System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
                                                             int classificao = sc.nextInt();
                                                             if (classificao > 3 || classificao < 1) {
@@ -274,22 +303,26 @@ public class Main {
                                                             } else {
                                                                 ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
                                                                 DesafioService novaListaDesafio = new DesafioService();
-                                                                novaListaDesafio.adicionarDesafio(desafioCriado);
-                                                                listaModulos.adicionar(new Modulo(tituloModulo, conteudo, professor, novaListaDesafio.getListaDesafios(), dificuldadeSelecionada));
-                                                                listaDesafios.adicionarDesafio(desafioCriado);
+                                                                novaListaDesafio.adicionar(desafioCriado);
+                                                                Modulo modulo = new Modulo();
+                                                                modulo.setTitulo(tituloModulo);
+                                                                modulo.setConteudo(conteudo);
+                                                                modulo.setAutor(professor);
+                                                                modulo.setClassificacao(dificuldadeSelecionada);
+                                                                moduloService.adicionarModulo(modulo);
+                                                                desafioService.adicionar(desafioCriado);
                                                                 System.out.println("Novo módulo cadastrado com sucesso");
                                                             }
                                                             break;
                                                         }
 
                                                     case 3:
-                                                        System.out.println("Informe o título do módulo que deseja modificar: ");
-                                                        String tituloModuloEdicao = sc.nextLine();
-                                                        Modulo moduloParaEditar = listaModulos.consultarModuloTitulo(tituloModuloEdicao);
+                                                        moduloService.listar();
+                                                        System.out.println("Informe o id do módulo que deseja modificar: ");
+                                                        Integer idModuloEdicao = sc.nextInt();
 
-                                                        if (moduloParaEditar != null) {
+                                                        if (idModuloEdicao != null) {
                                                             System.out.println("Módulo encontrado:");
-                                                            listaModulos.visualizarModulo(moduloParaEditar, 0);
                                                             System.out.println("Informe o novo título do módulo: ");
                                                             String novoTitulo = sc.nextLine();
                                                             System.out.println("Digite o novo conteudo do novo Modulo: ");
@@ -299,7 +332,7 @@ public class Main {
                                                             sc.nextLine();
 
                                                             ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
-                                                            listaModulos.editar(0, new Modulo(novoTitulo, conteudo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
+                                                            moduloService.editar(idModuloEdicao, new Modulo(idModuloEdicao, novoTitulo, conteudo, professorLogado, classificacaoNova));
                                                             System.out.println("Módulo editado com sucesso.");
                                                         } else {
                                                             System.out.println("Módulo não encontrado.");
@@ -307,8 +340,14 @@ public class Main {
                                                         break;
 
                                                     case 4:
+                                                        moduloService.listar();
+                                                        System.out.println("Informe o índice do módulo ao qual o desafio pertence: ");
+                                                        int idModuloDoDesafio = sc.nextInt();
+                                                        sc.nextLine();
                                                         System.out.println("Informe o título do novo desafio: ");
                                                         tituloNovoDesafio = sc.nextLine();
+                                                        System.out.println("Informe o conteudo do novo desafio: ");
+                                                        String conteudoNovoDesafio = sc.nextLine();
                                                         System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
                                                         tipoNovoDesafio = sc.nextInt();
                                                         sc.nextLine();
@@ -316,24 +355,18 @@ public class Main {
                                                         if (tipo == null) {
                                                             throw new IllegalArgumentException("Opção de desafio inexistente");
                                                         } else {
-                                                            System.out.println("Informe o email do professor autor deste desafio: ");
-                                                            email = sc.nextLine();
-                                                            professor = listaProfessor.consultarProfessorEmail(email);
-                                                            listaDesafios.adicionarDesafio(new Desafio(tituloNovoDesafio, tipo, professor));
+                                                            desafioService.adicionar(new Desafio(idModuloDoDesafio, tituloNovoDesafio, conteudoNovoDesafio, tipo));
                                                             System.out.println("Novo desafio criado com sucesso");
                                                         }
                                                         break;
                                                     case 5:
-                                                        System.out.println("Informe o título do desafio que deseja modificar: ");
-                                                        String tituloDesafioModificar = sc.nextLine();
+                                                        desafioService.visualizarTodos();
+                                                        System.out.println("Informe o id do desafio que deseja modificar: ");
+                                                        int idDesafioModificar = sc.nextInt();
+                                                        sc.nextLine();
 
-                                                        Desafio desafioParaModificar  = null;
-                                                        for (Desafio desafio : listaDesafios.getListaDesafios()) {
-                                                            if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
-                                                                desafioParaModificar = desafio;
-                                                                break;
-                                                            }
-                                                        }
+                                                        Desafio desafioParaModificar = new Desafio();
+                                                        desafioParaModificar.setId(idDesafioModificar);
 
                                                         if (desafioParaModificar != null) {
                                                             System.out.println("Desafio encontrado:");
@@ -366,39 +399,40 @@ public class Main {
                                                         System.out.println("Opção inválida.");
                                                         break;
                                                 }
+
                                             } while (menuUsuarioLogado);
 
                                         }
-
-                                        break;
-
                                     case 2:
                                         System.out.println("Informe o seu nome: ");
                                         nome = sc.nextLine();
+                                        System.out.println("Informe o seu sobrenome: ");
+                                        sobrenome = sc.nextLine();
+                                        System.out.println("Informe o seu telefone: ");
+                                        telefone = sc.nextLine();
                                         System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
                                         dataNascimento = sc.nextLine();
                                         data = LocalDate.parse(dataNascimento);
                                         System.out.println("Informe o seu email: ");
                                         email = sc.nextLine();
-                                        Professor professorCadastrado = new Professor(nome, data, email);
-                                        listaProfessor.adicionar(professorCadastrado);
+                                        System.out.println("Informe o seu sexo: F - M ");
+                                        sexo = sc.nextLine();
+                                        System.out.println("Crie sua senha: ");
+                                        senha = sc.nextLine();
+
+                                        Professor professorCadastrado = new Professor();
+                                        professorCadastrado.setNome(nome);
+                                        professorCadastrado.setSobrenome(sobrenome);
+                                        professorCadastrado.setTelefone(telefone);
+                                        professorCadastrado.setEmail(email);
+                                        professorCadastrado.setDataDeNascimento(data);
+                                        professorCadastrado.setSexo(sexo);
+                                        professorCadastrado.setSenha(senha);
+
+
+                                        professorService.adicionar(professorCadastrado);
                                         System.out.println("Professor cadastrado com sucesso");
                                         break;
-
-                                    case 0:
-                                        break;
-
-                                    default:
-                                        System.out.println("Opção inválida.");
-                                        break;
-                                }
-                            }catch (Exception e){
-                                System.out.println(" ");
-                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-                            } finally {
-                                escolha = 2;
-                            }
-                            break;
                         case 3:
                             try {
                                 //MENU ADMIN
@@ -411,11 +445,12 @@ public class Main {
                                     case 1:
                                         System.out.println("Informe seu email: ");
                                         email = sc.nextLine();
-                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                        dataNascimento = sc.nextLine();
-                                        data = LocalDate.parse(dataNascimento);
-                                        Admin adminLogado = listaAdmin.loginAdmin(email, data);
-                                        boolean menuUsuarioLogado = true;
+                                        System.out.println("Informe sua senha");
+                                        senha = sc.nextLine();
+                                        Admin adminLogado = adminService.loginAdmin(email, senha);
+                                        menuUsuarioLogado = true;
+
+                                        System.out.println(adminLogado);
 
                                         if (adminLogado == null) {
                                             System.out.println("Falha no login. Verifique suas credenciais.");
@@ -430,53 +465,66 @@ public class Main {
                                                 switch (escolhaInterna) {
 
                                                     case 1:
-                                                        System.out.println("Informe o novo nome: ");
+                                                        System.out.println("Informe o seu nome: ");
                                                         nome = sc.nextLine();
-                                                        System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
-                                                        dataNascimento = sc.nextLine();
-                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
-                                                        System.out.println("Informe o novo email: ");
+                                                        System.out.println("Informe o seu sobrenome: ");
+                                                        sobrenome = sc.nextLine();
+                                                        System.out.println("Informe seu cpf: ");
+                                                        cpf = sc.nextLine();
+                                                        System.out.println("Informe o seu telefone: ");
+                                                        telefone = sc.nextLine();
+                                                        System.out.println("Informe o seu email: ");
                                                         email = sc.nextLine();
-                                                        listaAdmin.editar(adminLogado, new Admin(nome, dataNova, email));
-                                                        System.out.println("Admin editado com sucesso");
+                                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                                        dataNascimento = sc.nextLine();
+                                                        data = LocalDate.parse(dataNascimento);
+                                                        System.out.println("Informe o seu sexo: 'F':Feminino 'M':Masculino 'O':Outros");
+                                                        sexo = sc.nextLine();
+                                                        System.out.println("Informe sua especialidade: ");
+                                                        descricao = sc.nextLine();
+                                                        System.out.println("Informe sua senha: ");
+                                                        senha = sc.nextLine();
+                                                        ativo = "S";
+
+                                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, cpf, descricao);
+                                                        adminService.editar(adminLogado.getId(), adminCadastrado);
+
                                                         break;
                                                     case 2:
-                                                        listaModulos.visualizarTodos();
+                                                        moduloService.listarSemAprovacao();
                                                         System.out.println("Digite o número do módulo a ser aprovado: ");
                                                         indexModulo = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaModulos.adminAprovar(indexModulo);
+                                                        System.out.println("S - Para apovar módulo | N - Para reprovar módulo");
+                                                        aprovacaoModulo = sc.nextLine();
+                                                        moduloService.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
                                                         break;
-
                                                     case 3:
-                                                        listaModulos.visualizarTodos();
-                                                        System.out.println("Digite o número do módulo a ser deletado: ");
-                                                        indexModulo = sc.nextInt();
-                                                        sc.nextLine();
-                                                        listaModulos.remover(indexModulo);
-                                                        System.out.println("Módulo deletado com sucesso!");
+                                                        moduloService.listarAprovados();
                                                         break;
 
                                                     case 4:
-                                                        listaAluno.visualizarTodosAlunos();
+                                                        moduloService.listarReprovados();
                                                         break;
 
                                                     case 5:
+                                                        alunoService.visualizarTodosAlunos();
+                                                        break;
+                                                    case 6:
                                                         System.out.println("Digite o ID do aluno:");
                                                         int idAluno = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaAluno.consultar(idAluno);
+                                                        alunoService.BuscarAlunoPorId(idAluno);
+                                                        professorService.visualizarTodos();
                                                         break;
-
-                                                    case 6:
-                                                        listaProfessor.visualizarTodos();
-                                                        break;
-
                                                     case 7:
-                                                        System.out.println("Digite o ID do aluno:");
-                                                        int idProfessor = sc.nextInt();
+                                                        professorService.visualizarTodos();
+                                                        break;
+                                                    case 8:
+                                                        System.out.println("Digite o ID do professor:");
+                                                        idProfessor = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaProfessor.consultar(idProfessor);
+                                                        professorService.buscarProfessorPorId(idProfessor);
                                                         break;
 
                                                     case 0:
@@ -496,14 +544,27 @@ public class Main {
                                     case 2:
                                         System.out.println("Informe o seu nome: ");
                                         nome = sc.nextLine();
+                                        System.out.println("Informe o seu sobrenome: ");
+                                        sobrenome = sc.nextLine();
+                                        System.out.println("Informe seu cpf: ");
+                                        cpf = sc.nextLine();
+                                        System.out.println("Informe o seu telefone: ");
+                                        telefone = sc.nextLine();
+                                        System.out.println("Informe o seu email: ");
+                                        email = sc.nextLine();
                                         System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
                                         dataNascimento = sc.nextLine();
                                         data = LocalDate.parse(dataNascimento);
-                                        System.out.println("Informe o seu email: ");
-                                        email = sc.nextLine();
-                                        Admin adminCadastrado = new Admin(nome, data, email);
-                                        listaAdmin.adicionar(adminCadastrado);
-                                        System.out.println("Admin cadastrado com sucesso");
+                                        System.out.println("Informe o seu sexo: 'F':Feminino 'M':Masculino 'O':Outros");
+                                        sexo = sc.nextLine();
+                                        System.out.println("Informe sua especialidade: ");
+                                        descricao = sc.nextLine();
+                                        System.out.println("Informe sua senha: ");
+                                        senha = sc.nextLine();
+                                        ativo = "S";
+
+                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, cpf, descricao);
+                                        adminService.adicionar(adminCadastrado);
                                         break;
 
                                     case 0:
@@ -512,31 +573,33 @@ public class Main {
                                     default:
                                         System.out.println("Opção inválida.");
                                         break;
+
                                 }
-                            } catch (Exception e){
+                            } catch (Exception e) {
+                                e.printStackTrace();
                                 System.out.println(" ");
                                 System.out.println("Opcão inválida, digite somente números conforme opção do menu");
                             } finally {
                                 escolha = 3;
                             }
                             break;
-                        case 0:
-                            System.out.println("Saindo do programa. Até logo!");
-                            sc.close();
-                            System.exit(0);
-                        default:
-                            System.out.println("Opção inválida. Tente novamente.");
-                            break;
+                                    case 0:
+                                        System.out.println("Saindo do programa. Até logo!");
+                                        sc.close();
+                                        System.exit(0);
+                                    default:
+                                        System.out.println("Opção inválida. Tente novamente.");
+                                        break;
+                                }
+                            } catch(Exception e){
+                                System.out.println(" ");
+                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+                        }
                     }
-                } else {
-                    System.out.println("Por favor, insira um número válido.");
-                    sc.next();
                 }
             }
-        } catch (Exception e){
-            System.out.println(" ");
-            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
     }
 }

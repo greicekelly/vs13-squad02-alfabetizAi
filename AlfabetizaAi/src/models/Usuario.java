@@ -1,26 +1,80 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public abstract class Usuario {
 
-    private int id;
+    private Integer idUsuario;
     private String nome;
-    private LocalDate dataDeNascimento;
-    private String email;
 
-    public Usuario(String nome, LocalDate dataDeNascimento, String email) {
+    private String sobrenome;
+
+    private String telefone;
+
+    private String email;
+    private LocalDate dataDeNascimento;
+
+    private String ativo;
+
+    private String sexo;
+
+    private String senha;
+
+    private String cpf;
+
+    public Usuario() {}
+
+    public Usuario(Integer idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String cpf) {
+        this.idUsuario = idUsuario;
         this.nome = nome;
-        this.dataDeNascimento = dataDeNascimento;
+        this.sobrenome = sobrenome;
+        this.telefone = telefone;
         this.email = email;
+        this.dataDeNascimento = dataDeNascimento;
+        this.ativo = ativo;
+        this.sexo = sexo;
+        this.senha = senha;
+        this.cpf = cpf;
+    }
+
+    public Usuario( String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String cpf) {
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataDeNascimento = dataDeNascimento;
+        this.ativo = ativo;
+        this.sexo = sexo;
+        this.senha = senha;
+        this.cpf = cpf;
+    }
+
+    @Override
+    public String toString() {
+        return "models.Usuario{" +
+                "id=" + idUsuario +
+                ", nome='" + nome + '\'' +
+                ", dataDeNascimento=" + dataDeNascimento +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getIdade() {
+        LocalDate hoje = LocalDate.now();
+        return Period.between(this.dataDeNascimento, hoje).getYears();
     }
 
     public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        return idUsuario;
     }
 
     public String getNome() {
@@ -31,12 +85,20 @@ public abstract class Usuario {
         this.nome = nome;
     }
 
-    public LocalDate getDataDeNascimento() {
-        return dataDeNascimento;
+    public String getSobrenome() {
+        return sobrenome;
     }
 
-    public void setDataDeNascimento(LocalDate dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getEmail() {
@@ -47,13 +109,43 @@ public abstract class Usuario {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "models.Usuario{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", dataDeNascimento=" + dataDeNascimento +
-                ", email='" + email + '\'' +
-                '}';
+    public LocalDate getDataDeNascimento() {
+        return dataDeNascimento;
+    }
+
+    public void setDataDeNascimento(LocalDate dataDeNascimento) {
+        this.dataDeNascimento = dataDeNascimento;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }
