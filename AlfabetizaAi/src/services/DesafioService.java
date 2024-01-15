@@ -34,6 +34,15 @@ public class DesafioService {
     }
 
 
+    public List getListaDesafios() {
+        try {
+            return desafioRepository.listar();
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void visualizarTodos() {
         try {
             List<Desafio> listar = desafioRepository.listar();
@@ -56,6 +65,15 @@ public class DesafioService {
         try {
             boolean conseguiuRemover = desafioRepository.remover(id, desafio);
             System.out.println("Desafio removido? " + conseguiuRemover + "| com id=" + id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void listarDesafiosPorModulo(int idModuloEscolhido) {
+        try {
+            List<Desafio> listar = desafioRepository.listarPorModulo(idModuloEscolhido);
+            listar.forEach(System.out::println);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }

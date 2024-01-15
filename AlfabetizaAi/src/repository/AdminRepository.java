@@ -241,8 +241,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public List<Admin> BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
-        List<Admin> adminBanco = new ArrayList<>();
+    public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -256,9 +256,9 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
-
+            Admin admin = new Admin();
             while (res.next()) {
-                Admin admin = new Admin();
+
                 admin.setIdUsuario(res.getInt("id_usuario"));
                 admin.setNome(res.getString("nome"));
                 admin.setSobrenome(res.getString("sobrenome"));
@@ -268,10 +268,10 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 admin.setSexo(res.getString("sexo"));
                 admin.setSenha(res.getString("senha"));
                 admin.setCpf(res.getString("cpf"));
-                adminBanco.add(admin);
+
             }
-            System.out.println(adminBanco);
-            return adminBanco;
+            System.out.println(admin);
+            return admin;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -292,6 +292,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
+            con = ConexaoBancoDeDados.getConnection();
             String sql = "SELECT U.*, A.ID_ADMIN, A.DESCRICAO " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
@@ -307,21 +308,25 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             Admin admin = new Admin();
 
             while (res.next()) {
-                admin.setIdUsuario(res.getInt("id_usuario"));
-                admin.setNome(res.getString("nome"));
-                admin.setSobrenome(res.getString("sobrenome"));
-                admin.setTelefone(res.getString("telefone"));
-                admin.setEmail(res.getString("email"));
-                admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
-                admin.setSexo(res.getString("sexo"));
-                admin.setSenha(res.getString("senha"));
-                admin.setCpf(res.getString("cpf"));
-                admin.setIdAdmin(res.getInt("id_admin"));
-                admin.setDescricao(res.getString("descricao"));
-                adminBanco.add(admin);
+                    admin.setIdUsuario(res.getInt("id_usuario"));
+                    admin.setNome(res.getString("nome"));
+                    admin.setSobrenome(res.getString("sobrenome"));
+                    admin.setTelefone(res.getString("telefone"));
+                    admin.setEmail(res.getString("email"));
+                    admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                    admin.setSexo(res.getString("sexo"));
+                    admin.setSenha(res.getString("senha"));
+                    admin.setCpf(res.getString("cpf"));
+                    admin.setIdAdmin(res.getInt("id_admin"));
+                    admin.setDescricao(res.getString("descricao"));
+                    adminBanco.add(admin);
             }
-            System.out.println(adminBanco);
-            return admin;
+            if(admin.getIdUsuario() == null) {
+                return null;
+            } else {
+                return admin;
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();

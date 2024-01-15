@@ -23,8 +23,6 @@ public class MenuNumerico {
         System.out.println("\n---- Menu ----");
         System.out.println("1. Pressione 1 para editar seus dados cadastrais"); //UPDATE
         System.out.println("2. Pressione 2 para acessar os módulos"); // READ
-        System.out.println("3. Pressione 3 para acessar os desafios"); // READ
-        System.out.println("4. Pressione 4 para acessar os módulos concluídos"); //READ
         System.out.println("0. Logoff");
     }
 

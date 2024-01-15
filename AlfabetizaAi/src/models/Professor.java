@@ -14,8 +14,8 @@ public class Professor extends Usuario implements ProfessorImplementa {
 
     public Professor() {}
 
-    public Professor(int idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, Integer idProfessor, String descricao) {
-        super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
+    public Professor(int idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String cpf, Integer idProfessor, String descricao) {
+        super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha, cpf);
         this.idProfessor = idProfessor;
         this.descricao = descricao;
     }

@@ -5,12 +5,18 @@ import exceptions.BancoDeDadosException;
 import models.Admin;
 import models.Modulo;
 import models.Professor;
+import services.AdminService;
+import services.ProfessorService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
+
+    ProfessorService professorService = new ProfessorService();
+    AdminService adminService = new AdminService();
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT seq_modulo.nextval mysequence from DUAL";
@@ -331,5 +337,46 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
         return modulos;
+    }
+    public Modulo buscarModuloPorId(Integer idModulo) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT * FROM MODULO M" +
+                    "WHERE M.ID_MODULO = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, idModulo);
+
+            ResultSet res = stmt.executeQuery();
+            Modulo modulo = new Modulo();
+            while (res.next()) {
+
+                modulo.setId(res.getInt("id_modulo"));
+                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
+                modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
+                modulo.setTitulo(res.getString("titulo"));
+                modulo.setConteudo(res.getString("conteudo"));
+                modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classifcacao_modulo")));
+                modulo.setFoiAprovado(res.getString("modulo_aprovado").charAt(0));
+
+            }
+            System.out.println(modulo);
+            return modulo;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BancoDeDadosException(e.getCause());
+
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -79,6 +79,15 @@ public class ModuloService extends Modulo {
         }
     }
 
+    public Modulo BuscarModuloPorId(Integer idUsuario){
+        try {
+            return moduloRepository.buscarModuloPorId(idUsuario);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public String toString() {
         return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();

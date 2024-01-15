@@ -2,6 +2,7 @@ package repository;
 
 import exceptions.BancoDeDadosException;
 import models.Admin;
+import models.Aluno;
 import models.Professor;
 
 import java.sql.*;
@@ -25,7 +26,18 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
     @Override
     public Integer getProximoIdUsuario(Connection connection) throws SQLException {
-        return null;
+        try {
+            String sql = "SELECT seq_usuario.nextval as mysequence FROM DUAL";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet res = stmt.executeQuery(sql)) {
+                if (res.next()) {
+                    return res.getInt("mysequence");
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        }
     }
 
     @Override
@@ -204,24 +216,23 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         }
         return professorBanco;
     }
-    public List<Professor> buscarProfessorPorId(Integer idUsuasrio) throws BancoDeDadosException {
-        List<Professor> professorBanco = new ArrayList<>();
+    public Professor buscarProfessorPorId(Integer idUsuasrio) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT U.*, A.DESCRICAO " +
+            String sql = "SELECT U.*, P.DESCRICAO " +
                     "FROM USUARIO U " +
-                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) "+
+                    "INNER JOIN PROFESSOR P ON (P.ID_USUARIO = U.ID_USUARIO) "+
                     "WHERE U.ID_USUARIO = ? ";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
-
+            Professor professor = new Professor();
             while (res.next()) {
-                Professor professor = new Professor();
+
                 professor.setIdUsuario(res.getInt("id_usuario"));
                 professor.setNome(res.getString("nome"));
                 professor.setSobrenome(res.getString("sobrenome"));
@@ -231,10 +242,10 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 professor.setSexo(res.getString("sexo"));
                 professor.setSenha(res.getString("senha"));
                 professor.setCpf(res.getString("cpf"));
-                professorBanco.add(professor);
+
             }
-            System.out.println(professorBanco);
-            return professorBanco;
+            System.out.println(professor);
+            return professor;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -251,42 +262,39 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         }
     }
 
-    public boolean loginProfessor(String email, String senha) throws BancoDeDadosException {
-        List<Professor> professorBanco = new ArrayList<>();
+    public Professor loginProfessor(String email, String senha) throws BancoDeDadosException {
         Connection con = null;
         try {
-            String sql = "SELECT U.*, A.DESCRICAO " +
-                    "FROM USUARIO U " +
-                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) "+
-                    "WHERE U.EMAIL = ? "+
-                    "AND U.SENHA = ? ";
+            con = ConexaoBancoDeDados.getConnection();
 
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, email);
-            stmt.setString(2, senha);
+            String sql = "SELECT * FROM USUARIO U INNER JOIN PROFESSOR P ON (P.ID_USUARIO = U.ID_USUARIO) WHERE U.EMAIL = ? AND U.SENHA = ?";
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setString(1, email);
+                stmt.setString(2, senha);
 
-            ResultSet res = stmt.executeQuery();
+                try (ResultSet res = stmt.executeQuery()) {
+                    if (res.next()) {
+                        Professor professor = new Professor();
+                        professor.setIdUsuario(res.getInt("id_usuario"));
+                        professor.setNome(res.getString("nome"));
+                        professor.setSobrenome(res.getString("sobrenome"));
+                        professor.setTelefone(res.getString("telefone"));
+                        professor.setEmail(res.getString("email"));
+                        professor.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                        professor.setSexo(res.getString("sexo"));
+                        professor.setSenha(res.getString("senha"));
+                        professor.setCpf(res.getString("cpf"));
+                        professor.setIdProfessor(res.getInt("id_professor"));
+                        professor.setDescricao(res.getString("descricao"));
 
-            while (res.next()) {
-                Professor professor = new Professor();
-                professor.setIdUsuario(res.getInt("id_usuario"));
-                professor.setNome(res.getString("nome"));
-                professor.setSobrenome(res.getString("sobrenome"));
-                professor.setTelefone(res.getString("telefone"));
-                professor.setEmail(res.getString("email"));
-                professor.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
-                professor.setSexo(res.getString("sexo"));
-                professor.setSenha(res.getString("senha"));
-                professor.setCpf(res.getString("cpf"));
-                professorBanco.add(professor);
+                        return professor;
+                    }
+                }
             }
-            System.out.println(professorBanco);
-            return !professorBanco.isEmpty();
 
+            return null;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
-
         } finally {
             try {
                 if (con != null) {

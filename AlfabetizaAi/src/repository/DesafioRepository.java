@@ -171,4 +171,44 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
         return desafios;
     }
 
+    public List<Desafio> listarPorModulo(int idModulo) throws BancoDeDadosException {
+        List<Desafio> desafios = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM DESAFIO WHERE id_modulo = ?";
+
+            PreparedStatement stmt2 = con.prepareStatement(sql.toString());
+
+            stmt2.setInt(1, idModulo);
+
+            // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Desafio desafio = new Desafio();
+                desafio.setId(res.getInt("id_desafio"));
+                desafio.setIdModulo(res.getInt("id_modulo"));
+                desafio.setTitulo(res.getString("titulo"));
+                desafio.setConteudo(res.getString("conteudo"));
+                desafio.setTipoDesafio(TipoDesafio.trazEnumPeloOrdinal(res.getInt("tipo_desafio")));
+                desafios.add(desafio);
+            }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return desafios;
+    }
+
 }

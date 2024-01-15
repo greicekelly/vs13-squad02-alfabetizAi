@@ -44,11 +44,12 @@ public class ProfessorService {
         }
     }
 
-    public void buscarProfessorPorId(Integer idUsuario){
+    public Professor buscarProfessorPorId(Integer idUsuario){
         try {
-            professorRepository.buscarProfessorPorId(idUsuario);
+            return professorRepository.buscarProfessorPorId(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -70,12 +71,13 @@ public class ProfessorService {
         }
     }
 
-    public boolean loginProfessor(String email, String senha) {
+    public Professor loginProfessor(String email, String senha) {
         try {
-            return professorRepository.loginProfessor(email, senha);
+            Professor professor = professorRepository.loginProfessor(email, senha);
+            return professor;
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 }

@@ -18,4 +18,14 @@ public enum ClassificacaoModulo {
                 return null;
         }
     }
+
+    public static ClassificacaoModulo ofTipo(Integer tipo) {
+        for(ClassificacaoModulo cm : ClassificacaoModulo.values()) {
+            if(cm.ordinal() == tipo) {
+                return cm;
+            }
+        }
+        return null;
+    }
+
 }
