@@ -241,8 +241,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public List<Admin> BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
-        List<Admin> adminBanco = new ArrayList<>();
+    public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -256,9 +256,9 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
-
+            Admin admin = new Admin();
             while (res.next()) {
-                Admin admin = new Admin();
+
                 admin.setIdUsuario(res.getInt("id_usuario"));
                 admin.setNome(res.getString("nome"));
                 admin.setSobrenome(res.getString("sobrenome"));
@@ -268,10 +268,10 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 admin.setSexo(res.getString("sexo"));
                 admin.setSenha(res.getString("senha"));
                 admin.setCpf(res.getString("cpf"));
-                adminBanco.add(admin);
+
             }
-            System.out.println(adminBanco);
-            return adminBanco;
+            System.out.println(admin);
+            return admin;
 
         } catch (SQLException e) {
             e.printStackTrace();

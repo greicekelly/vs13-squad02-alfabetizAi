@@ -44,11 +44,12 @@ public class AdminService {
         }
     }
 
-    public void BuscarAdminPorId(Integer idUsuario){
+    public Admin BuscarAdminPorId(Integer idUsuario){
         try {
-            adminRepository.BuscarAdminPorId(idUsuario);
+            return adminRepository.BuscarAdminPorId(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

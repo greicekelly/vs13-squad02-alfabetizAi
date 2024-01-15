@@ -13,7 +13,7 @@ public class AlunoService {
         alunoRepository = new AlunoRepository();
     }
 
-    public void adicionarAluno(Aluno aluno) {
+    public void adicionar(Aluno aluno) {
         if (aluno.getNome() == null || aluno.getNome().isEmpty()) {
             throw new IllegalArgumentException("Por favor insira um nome.");
         }
@@ -80,7 +80,7 @@ public class AlunoService {
     }
 
 
-    public void editarAluno(Aluno aluno, Aluno alunoEditado) {
+    public void editar(Aluno aluno, Aluno alunoEditado) {
         try {
             alunoRepository.editar(aluno.getIdUsuario(), alunoEditado);
         } catch (BancoDeDadosException e) {
