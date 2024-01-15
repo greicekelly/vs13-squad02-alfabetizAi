@@ -46,7 +46,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            Integer proximoIdUsuario = this.getProximoId(con);
+            Integer proximoIdUsuario = this.getProximoIdUsuario(con);
             Integer proximoIdProfessor = this.getProximoId(con);
             professor.setIdUsuario(proximoIdUsuario);
             professor.setIdProfessor(proximoIdProfessor);
@@ -75,13 +75,13 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                     "(ID_PROFESSOR, ID_USUARIO, DESCRICAO)\n" +
                     "VALUES(?, ?, ?)\n";
 
-            PreparedStatement stmtAdmin = con.prepareStatement(sqlProfessor);
+            PreparedStatement stmtProfessor = con.prepareStatement(sqlProfessor);
 
-            stmtAdmin.setInt(1, professor.getIdProfessor());
-            stmtAdmin.setInt(2, professor.getIdUsuario());
-            stmtAdmin.setString(3, professor.getDescricao());
+            stmtProfessor.setInt(1, professor.getIdProfessor());
+            stmtProfessor.setInt(2, professor.getIdUsuario());
+            stmtProfessor.setString(3, professor.getDescricao());
 
-            int resProfessor = stmtAdmin.executeUpdate();
+            int resProfessor = stmtProfessor.executeUpdate();
             System.out.println("adicionarProfessor.res=" + resProfessor);
 
             return professor;
@@ -244,7 +244,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 professor.setCpf(res.getString("cpf"));
 
             }
-            System.out.println(professor);
+
             return professor;
 
         } catch (SQLException e) {

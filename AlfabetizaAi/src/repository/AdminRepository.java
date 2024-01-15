@@ -49,7 +49,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            Integer proximoIdUsuario = this.getProximoId(con);
+            Integer proximoIdUsuario = this.getProximoIdUsuario(con);
             Integer proximoIdAdmin = this.getProximoId(con);
             admin.setIdUsuario(proximoIdUsuario);
             admin.setIdAdmin(proximoIdAdmin);

@@ -55,7 +55,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             stmt.setString(2, modulo.getTitulo());
             stmt.setString(3, modulo.getConteudo());
             stmt.setInt(4, modulo.getClassificacao().ordinal()+1);
-            stmt.setBoolean(5, false);
+            stmt.setString(5, "N");
 
             int res = stmt.executeUpdate();
             System.out.println("adicionarModulo.res=" + res);
@@ -229,7 +229,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO IS NULL";
+            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'N' OR MODULO_APROVADO = 'n'";
 
             ResultSet res = stmt.executeQuery(sql);
 
@@ -305,7 +305,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'N' OR MODULO_APROVADO = 'n'";
+            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'R' OR MODULO_APROVADO = 'r'";
 
             ResultSet res = stmt.executeQuery(sql);
 
@@ -358,7 +358,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
-                modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classifcacao_modulo")));
+                modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
                 modulo.setFoiAprovado(res.getString("modulo_aprovado").charAt(0));
 
             }
