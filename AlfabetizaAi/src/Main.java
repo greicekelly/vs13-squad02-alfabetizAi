@@ -170,7 +170,6 @@ public class Main {
                                             } while (menuUsuarioLogado);
                                         }
                                         break;
-
                                     case 2:
                                         System.out.println("Informe o nome do responsável: ");
                                         nome = sc.nextLine();
@@ -214,6 +213,10 @@ public class Main {
                                         alunoService.adicionar(alunoCadastrado);
                                         System.out.println("Aluno cadastrado com sucesso");
                                         break;
+                                }
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
 
                         case 2:
                             try {
@@ -317,7 +320,7 @@ public class Main {
                                                         moduloService.listar();
                                                         System.out.println("Informe o id do módulo que deseja modificar: ");
                                                         Integer idModuloEdicao = sc.nextInt();
-//
+
                                                         if (idModuloEdicao != null) {
                                                             System.out.println("Módulo encontrado:");
                                                             System.out.println("Informe o novo título do módulo: ");
@@ -400,14 +403,6 @@ public class Main {
                                             } while (menuUsuarioLogado);
 
                                         }
-                                }
-                            } catch (Exception e){
-                                    e.printStackTrace();
-                                    System.out.println(" ");
-                                    System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-                                }
-                                break;
-
                                     case 2:
                                         System.out.println("Informe o seu nome: ");
                                         nome = sc.nextLine();
@@ -438,7 +433,6 @@ public class Main {
                                         professorService.adicionar(professorCadastrado);
                                         System.out.println("Professor cadastrado com sucesso");
                                         break;
-
                         case 3:
                             try {
                                 //MENU ADMIN
@@ -600,7 +594,7 @@ public class Main {
                             } catch(Exception e){
                                 System.out.println(" ");
                                 System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-                            }
+                        }
                     }
                 }
             }
