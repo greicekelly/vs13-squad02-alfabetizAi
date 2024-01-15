@@ -204,8 +204,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         }
         return professorBanco;
     }
-    public List<Professor> buscarProfessorPorId(Integer idUsuasrio) throws BancoDeDadosException {
-        List<Professor> professorBanco = new ArrayList<>();
+    public Professor buscarProfessorPorId(Integer idUsuasrio) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -219,9 +218,9 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
-
+            Professor professor = new Professor();
             while (res.next()) {
-                Professor professor = new Professor();
+
                 professor.setIdUsuario(res.getInt("id_usuario"));
                 professor.setNome(res.getString("nome"));
                 professor.setSobrenome(res.getString("sobrenome"));
@@ -231,10 +230,10 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 professor.setSexo(res.getString("sexo"));
                 professor.setSenha(res.getString("senha"));
                 professor.setCpf(res.getString("cpf"));
-                professorBanco.add(professor);
+
             }
-            System.out.println(professorBanco);
-            return professorBanco;
+            System.out.println(professor);
+            return professor;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -69,13 +69,13 @@ public class AlunoService {
             e.printStackTrace();
         }
     }
-    public boolean loginAluno(String email, String senha) {
+    public Aluno loginAluno(String email, String senha) {
         try {
             Aluno aluno = alunoRepository.loginAluno(email, senha);
-            return aluno != null;
+            return aluno;
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

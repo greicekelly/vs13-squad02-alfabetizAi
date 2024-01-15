@@ -44,11 +44,12 @@ public class ProfessorService {
         }
     }
 
-    public void buscarProfessorPorId(Integer idUsuario){
+    public Professor buscarProfessorPorId(Integer idUsuario){
         try {
-            professorRepository.buscarProfessorPorId(idUsuario);
+            return professorRepository.buscarProfessorPorId(idUsuario);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

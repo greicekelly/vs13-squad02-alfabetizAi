@@ -15,18 +15,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws BancoDeDadosException {
 
-        AdminService listaAdmin = new AdminService();
-        ModuloService listaModulos = new ModuloService();
-        DesafioService listaDesafios = new DesafioService();
-        ModuloService modulosConcluidos = new ModuloService();
-        ModuloService listar = new ModuloService();
-
+        AdminService adminService = new AdminService();
+        ModuloService moduloService = new ModuloService();
+        DesafioService desafioService = new DesafioService();
         AlunoService alunoService = new AlunoService();
-
-        ProfessorService listaProfessor = new services.ProfessorService();
-
-
-
+        ProfessorService professorService = new ProfessorService();
 
         Scanner sc = new Scanner(System.in);
         int escolha;
@@ -48,6 +41,8 @@ public class Main {
         String conteudo;
         String aprovacaoModulo;
         int indexModulo;
+        Professor professor;
+        int idProfessor;
 
 
         MenuNumerico.bemVindo();
@@ -110,32 +105,33 @@ public class Main {
                                                         break;
 
                                                     case 2:
-                                                        listaModulos.listar();
+                                                        moduloService.listar();
                                                         System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
                                                         String tituloModuloDesafios = sc.nextLine();
 
-                                                        Modulo moduloEscolhidoParaDesafios = listaModulos.listar(tituloModuloDesafios);
+                                                        //TODO: metodo buscar modulo por ID
+                                                        Modulo moduloEscolhidoParaDesafios = moduloService.listar();
 
                                                         if (moduloEscolhidoParaDesafios != null) {
                                                             DesafioService desafiosDoModulo = new DesafioService();
 
-                                                            desafiosDoModulo.visualizarTodos(moduloEscolhidoParaDesafios.getDesafios());
+                                                            desafiosDoModulo.visualizarTodos(moduloEscolhidoParaDesafios.);
 
                                                             System.out.print("Informe o índice do desafio que deseja acessar: ");
                                                             int indiceDesafio = sc.nextInt();
 
-                                                            desafiosDoModulo.visualizarTodos(indiceDesafio - 1);
+                                                            desafiosDoModulo.visualizarTodos();
                                                             sc.nextLine();
 
                                                             System.out.println("Parabéns por concluir o desafio!");
-                                                            modulosConcluidos.adicionarModulo(moduloEscolhidoParaDesafios);
+                                                            moduloService.adicionarModulo(moduloEscolhidoParaDesafios);
                                                         } else {
                                                             System.out.println("Módulo não encontrado.");
                                                         }
                                                         break;
 
                                                     case 3:
-                                                        modulosConcluidos.listar();
+                                                        moduloService.listar();
                                                         break;
 
                                                     case 0:
@@ -167,201 +163,228 @@ public class Main {
                                         System.out.println("Aluno cadastrado com sucesso");
                                         break;
 
-                                }
+                        case 2:
+                            try {
+                                //MENU PROFESSOR
+                                System.out.println("Você escolheu a opção Professor:");
+                                System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
+                                int opcaoMenuProfessor = sc.nextInt();
+                                sc.nextLine();
 
-//                        case 2:
-//                            try {
-//                                //MENU PROFESSOR
-//                                System.out.println("Você escolheu a opção Professor:");
-//                                System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
-//                                int opcaoMenuProfessor = sc.nextInt();
-//                                sc.nextLine();
-//
-//                                switch (opcaoMenuProfessor) {
-//
-//                                    case 1:
-//                                        System.out.println("Informe seu email: ");
-//                                        email = sc.nextLine();
-//                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-//                                        dataNascimento = sc.nextLine();
-//                                        data = LocalDate.parse(dataNascimento);
-//                                        Professor professorLogado = listaProfessor.loginProfessor(email, data);
-//                                        boolean menuUsuarioLogado = true;
-//
-//                                        if (professorLogado == null) {
-//                                            System.out.println("Falha no login. Verifique suas credenciais.");
-//                                            break;
-//                                        } else {
-//                                            System.out.println("Login bem-sucedido! Bem-vindo, " + professorLogado.getNome() + ".");
-//                                            do {
-//                                                MenuNumerico.menuProfessor();
-//                                                int escolhaInterna = sc.nextInt();
-//                                                sc.nextLine();
-//
-//                                                switch (escolhaInterna) {
-//
-//                                                    case 1:
-//                                                        System.out.println("Informe o novo nome: ");
-//                                                        nome = sc.nextLine();
-//                                                        System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
-//                                                        dataNascimento = sc.nextLine();
-//                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
-//                                                        System.out.println("Informe o novo email: ");
-//                                                        email = sc.nextLine();
-//                                                        listaProfessor.editar(professorLogado, new Professor(nome, dataNova, email));
-//                                                        System.out.println("Professor editado com sucesso");
-//                                                        break;
-//
-//                                                    case 2:
-//                                                        System.out.println("Informe o título do novo Modulo: ");
-//                                                        String tituloModulo = sc.nextLine();
-//                                                        System.out.println("Informe o email do autor do novo Modulo: ");
-//                                                        email = sc.nextLine();
-//                                                        professor = listaProfessor.consultarProfessorEmail(email);
-//                                                        System.out.println("Digite o Conteudo do novo Modulo: ");
-//                                                        conteudo = sc.nextLine();
-//                                                        System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
-//                                                        tituloNovoDesafio = sc.nextLine();
-//                                                        System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
-//                                                        tipoNovoDesafio = sc.nextInt();
-//                                                        tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
-//                                                        if (tipo == null) {
-//                                                            throw new IllegalArgumentException("Opção de desafio inexistente");
-//                                                        } else {
-//                                                            Desafio desafioCriado = new Desafio(tituloNovoDesafio, tipo, professor);
-//                                                            listaDesafios.adicionarDesafio(desafioCriado);
-//                                                            System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
-//                                                            int classificao = sc.nextInt();
-//                                                            if (classificao > 3 || classificao < 1) {
-//                                                                throw new IllegalArgumentException("Opção de módulo inexistente");
-//                                                            } else {
-//                                                                ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
-//                                                                DesafioService novaListaDesafio = new DesafioService();
-//                                                                novaListaDesafio.adicionarDesafio(desafioCriado);
-//                                                                listaModulos.adicionar(new Modulo(tituloModulo, conteudo, professor, novaListaDesafio.getListaDesafios(), dificuldadeSelecionada));
-//                                                                listaDesafios.adicionarDesafio(desafioCriado);
-//                                                                System.out.println("Novo módulo cadastrado com sucesso");
-//                                                            }
-//                                                            break;
-//                                                        }
-//
-//                                                    case 3:
-//                                                        System.out.println("Informe o título do módulo que deseja modificar: ");
-//                                                        String tituloModuloEdicao = sc.nextLine();
-//                                                        Modulo moduloParaEditar = listaModulos.consultarModuloTitulo(tituloModuloEdicao);
-//
-//                                                        if (moduloParaEditar != null) {
-//                                                            System.out.println("Módulo encontrado:");
-//                                                            listaModulos.visualizarModulo(moduloParaEditar, 0);
-//                                                            System.out.println("Informe o novo título do módulo: ");
-//                                                            String novoTitulo = sc.nextLine();
-//                                                            System.out.println("Digite o novo conteudo do novo Modulo: ");
-//                                                            conteudo = sc.nextLine();
-//                                                            System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
-//                                                            int novaClassificacao = sc.nextInt();
-//                                                            sc.nextLine();
-//
-//                                                            ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
-//                                                            listaModulos.editar(0, new Modulo(novoTitulo, conteudo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
-//                                                            System.out.println("Módulo editado com sucesso.");
-//                                                        } else {
-//                                                            System.out.println("Módulo não encontrado.");
-//                                                        }
-//                                                        break;
-//
-//                                                    case 4:
-//                                                        System.out.println("Informe o título do novo desafio: ");
-//                                                        tituloNovoDesafio = sc.nextLine();
-//                                                        System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
-//                                                        tipoNovoDesafio = sc.nextInt();
-//                                                        sc.nextLine();
-//                                                        tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
-//                                                        if (tipo == null) {
-//                                                            throw new IllegalArgumentException("Opção de desafio inexistente");
-//                                                        } else {
-//                                                            System.out.println("Informe o email do professor autor deste desafio: ");
-//                                                            email = sc.nextLine();
-//                                                            professor = listaProfessor.consultarProfessorEmail(email);
-//                                                            listaDesafios.adicionarDesafio(new Desafio(tituloNovoDesafio, tipo, professor));
-//                                                            System.out.println("Novo desafio criado com sucesso");
-//                                                        }
-//                                                        break;
-//                                                    case 5:
-//                                                        System.out.println("Informe o título do desafio que deseja modificar: ");
-//                                                        String tituloDesafioModificar = sc.nextLine();
-//
-//                                                        Desafio desafioParaModificar  = null;
-//                                                        for (Desafio desafio : listaDesafios.getListaDesafios()) {
-//                                                            if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
-//                                                                desafioParaModificar = desafio;
-//                                                                break;
-//                                                            }
-//                                                        }
-//
-//                                                        if (desafioParaModificar != null) {
-//                                                            System.out.println("Desafio encontrado:");
-//                                                            System.out.println(desafioParaModificar);
-//
-//                                                            System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
-//                                                            String novoTitulo = sc.nextLine();
-//                                                            if (!novoTitulo.isEmpty()) {
-//                                                                desafioParaModificar.setTitulo(novoTitulo);
-//                                                            }
-//
-//                                                            System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
-//                                                            int novoTipo = sc.nextInt();
-//                                                            sc.nextLine();
-//                                                            if (novoTipo == 1) {
-//                                                                desafioParaModificar.setTipoDesafio(TipoDesafio.QUIZ);
-//                                                            } else if (novoTipo == 2) {
-//                                                                desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
-//                                                            }
-//
-//                                                            System.out.println("Desafio modificado com sucesso.");
-//                                                        } else {
-//                                                            System.out.println("Desafio não encontrado.");
-//                                                        }
-//                                                        break;
-//                                                    case 0:
-//                                                        menuUsuarioLogado = false;
-//                                                        break;
-//                                                    default:
-//                                                        System.out.println("Opção inválida.");
-//                                                        break;
-//                                                }
-//                                            } while (menuUsuarioLogado);
-//
-//                                        }
-//
-//                                        break;
-//
-//                                    case 2:
-//                                        System.out.println("Informe o seu nome: ");
-//                                        nome = sc.nextLine();
-//                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-//                                        dataNascimento = sc.nextLine();
-//                                        data = LocalDate.parse(dataNascimento);
-//                                        System.out.println("Informe o seu email: ");
-//                                        email = sc.nextLine();
-//                                        Professor professorCadastrado = new Professor(nome, data, email);
-//                                        listaProfessor.adicionar(professorCadastrado);
-//                                        System.out.println("Professor cadastrado com sucesso");
-//                                        break;
-//
-//                                    case 0:
-//                                        break;
-//
-//                                    default:
-//                                        System.out.println("Opção inválida.");
-//                                        break;
-//                                }
-//                            }catch (Exception e){
-//                                System.out.println(" ");
-//                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-//                            } finally {
-//                                escolha = 2;
-//                            }
-//                            break;
+                                switch (opcaoMenuProfessor) {
+
+                                    case 1:
+                                        System.out.println("Informe seu email: ");
+                                        email = sc.nextLine();
+                                        System.out.println("Informe a sua senha: ");
+                                        senha = sc.nextLine();
+                                        Professor professorLogado = professorService.loginProfessor(email, senha);
+                                        boolean menuUsuarioLogado = true;
+
+                                        if (professorLogado == null) {
+                                            System.out.println("Falha no login. Verifique suas credenciais.");
+                                            break;
+                                        } else {
+                                            System.out.println("Login bem-sucedido! Bem-vindo, " + professorLogado.getNome() + ".");
+                                            do {
+                                                MenuNumerico.menuProfessor();
+                                                int escolhaInterna = sc.nextInt();
+                                                sc.nextLine();
+
+                                                switch (escolhaInterna) {
+
+                                                    case 1:
+                                                        System.out.println("Informe o novo nome: ");
+                                                        nome = sc.nextLine();
+                                                        System.out.println("Informe o seu novo sobrenome: ");
+                                                        sobrenome = sc.nextLine();
+                                                        System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
+                                                        dataNascimento = sc.nextLine();
+                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
+                                                        System.out.println("Informe o novo email: ");
+                                                        email = sc.nextLine();
+                                                        System.out.println("Informe o seu novo telefone: ");
+                                                        telefone = sc.nextLine();
+                                                        System.out.println("Informe o seu sexo: F - M ");
+                                                        sexo = sc.nextLine();
+                                                        System.out.println("Crie sua nova senha: ");
+                                                        senha = sc.nextLine();
+
+                                                        Professor professorCadastrado = new Professor();
+                                                        professorCadastrado.setNome(nome);
+                                                        professorCadastrado.setSobrenome(sobrenome);
+                                                        professorCadastrado.setTelefone(telefone);
+                                                        professorCadastrado.setEmail(email);
+                                                        professorCadastrado.setDataDeNascimento(dataNova);
+                                                        professorCadastrado.setSexo(sexo);
+                                                        professorCadastrado.setSenha(senha);
+
+                                                        professorService.editar(professorLogado.getId(), professorCadastrado);
+                                                        System.out.println("Professor editado com sucesso");
+                                                        break;
+
+                                                    case 2:
+                                                        System.out.println("Informe o título do novo Modulo: ");
+                                                        String tituloModulo = sc.nextLine();
+                                                        System.out.println("Informe o email do autor do novo Modulo: ");
+                                                        email = sc.nextLine();
+                                                        professor = professorService.buscarProfessorPorId(professorLogado.getId());
+                                                        System.out.println("Digite o Conteudo do novo Modulo: ");
+                                                        conteudo = sc.nextLine();
+                                                        System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
+                                                        tituloNovoDesafio = sc.nextLine();
+                                                        System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
+                                                        tipoNovoDesafio = sc.nextInt();
+                                                        tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
+                                                        if (tipo == null) {
+                                                            throw new IllegalArgumentException("Opção de desafio inexistente");
+                                                        } else {
+                                                            Desafio desafioCriado = new Desafio();
+                                                            desafioCriado.setTitulo(tituloNovoDesafio);
+                                                            desafioCriado.setTipoDesafio(tipo);
+                                                            desafioService.adicionar(desafioCriado);
+                                                            System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
+                                                            int classificao = sc.nextInt();
+                                                            if (classificao > 3 || classificao < 1) {
+                                                                throw new IllegalArgumentException("Opção de módulo inexistente");
+                                                            } else {
+                                                                ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
+                                                                DesafioService novaListaDesafio = new DesafioService();
+                                                                novaListaDesafio.adicionar(desafioCriado);
+                                                                Modulo modulo = new Modulo();
+                                                                modulo.setTitulo(tituloModulo);
+                                                                modulo.setConteudo(conteudo);
+                                                                modulo.setAutor(professor);
+                                                                modulo.setClassificacao(dificuldadeSelecionada);
+                                                                moduloService.adicionarModulo(modulo);
+                                                                desafioService.adicionar(desafioCriado);
+                                                                System.out.println("Novo módulo cadastrado com sucesso");
+                                                            }
+                                                            break;
+                                                        }
+
+                                                    case 3:
+                                                        System.out.println("Informe o título do módulo que deseja modificar: ");
+                                                        String tituloModuloEdicao = sc.nextLine();
+                                                        //TODO usar metodo para consultar modulo por id
+                                                        Modulo moduloParaEditar = moduloService..consultarModuloTitulo(tituloModuloEdicao);
+
+                                                        if (moduloParaEditar != null) {
+                                                            System.out.println("Módulo encontrado:");
+                                                            //TODO usar metodo para consultar modulo por id
+                                                            moduloService.(moduloParaEditar, 0);
+                                                            System.out.println("Informe o novo título do módulo: ");
+                                                            String novoTitulo = sc.nextLine();
+                                                            System.out.println("Digite o novo conteudo do novo Modulo: ");
+                                                            conteudo = sc.nextLine();
+                                                            System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
+                                                            int novaClassificacao = sc.nextInt();
+                                                            sc.nextLine();
+
+                                                            ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
+                                                            listaModulos.editar(0, new Modulo(novoTitulo, conteudo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
+                                                            System.out.println("Módulo editado com sucesso.");
+                                                        } else {
+                                                            System.out.println("Módulo não encontrado.");
+                                                        }
+                                                        break;
+
+                                                    case 4:
+                                                        System.out.println("Informe o título do novo desafio: ");
+                                                        tituloNovoDesafio = sc.nextLine();
+                                                        System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
+                                                        tipoNovoDesafio = sc.nextInt();
+                                                        sc.nextLine();
+                                                        tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
+                                                        if (tipo == null) {
+                                                            throw new IllegalArgumentException("Opção de desafio inexistente");
+                                                        } else {
+                                                            System.out.println("Informe o ID do professor autor deste desafio: ");
+                                                            idProfessor = sc.nextInt();
+                                                            professor = professorService.buscarProfessorPorId(idProfessor);
+                                                            desafioService.adicionar(new Desafio(tituloNovoDesafio, tipo));
+                                                            System.out.println("Novo desafio criado com sucesso");
+                                                        }
+                                                        break;
+                                                    case 5:
+                                                        System.out.println("Informe o título do desafio que deseja modificar: ");
+                                                        String tituloDesafioModificar = sc.nextLine();
+
+                                                        Desafio desafioParaModificar  = null;
+                                                        for (Desafio desafio : listaDesafios.getListaDesafios()) {
+                                                            if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
+                                                                desafioParaModificar = desafio;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (desafioParaModificar != null) {
+                                                            System.out.println("Desafio encontrado:");
+                                                            System.out.println(desafioParaModificar);
+
+                                                            System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
+                                                            String novoTitulo = sc.nextLine();
+                                                            if (!novoTitulo.isEmpty()) {
+                                                                desafioParaModificar.setTitulo(novoTitulo);
+                                                            }
+
+                                                            System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
+                                                            int novoTipo = sc.nextInt();
+                                                            sc.nextLine();
+                                                            if (novoTipo == 1) {
+                                                                desafioParaModificar.setTipoDesafio(TipoDesafio.QUIZ);
+                                                            } else if (novoTipo == 2) {
+                                                                desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
+                                                            }
+
+                                                            System.out.println("Desafio modificado com sucesso.");
+                                                        } else {
+                                                            System.out.println("Desafio não encontrado.");
+                                                        }
+                                                        break;
+                                                    case 0:
+                                                        menuUsuarioLogado = false;
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opção inválida.");
+                                                        break;
+                                                }
+                                            } while (menuUsuarioLogado);
+
+                                        }
+
+                                        break;
+
+                                    case 2:
+                                        System.out.println("Informe o seu nome: ");
+                                        nome = sc.nextLine();
+                                        System.out.println("Informe o seu sobrenome: ");
+                                        sobrenome = sc.nextLine();
+                                        System.out.println("Informe o seu telefone: ");
+                                        telefone = sc.nextLine();
+                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                        dataNascimento = sc.nextLine();
+                                        data = LocalDate.parse(dataNascimento);
+                                        System.out.println("Informe o seu email: ");
+                                        email = sc.nextLine();
+                                        System.out.println("Informe o seu sexo: F - M ");
+                                        sexo = sc.nextLine();
+                                        System.out.println("Crie sua senha: ");
+                                        senha = sc.nextLine();
+
+                                        Professor professorCadastrado = new Professor();
+                                        professorCadastrado.setNome(nome);
+                                        professorCadastrado.setSobrenome(sobrenome);
+                                        professorCadastrado.setTelefone(telefone);
+                                        professorCadastrado.setEmail(email);
+                                        professorCadastrado.setDataDeNascimento(data);
+                                        professorCadastrado.setSexo(sexo);
+                                        professorCadastrado.setSenha(senha);
+
+
+                                        professorService.adicionar(professorCadastrado);
+                                        System.out.println("Professor cadastrado com sucesso");
+                                        break;
                         case 3:
                             try {
                                 //MENU ADMIN
@@ -376,7 +399,7 @@ public class Main {
                                         email = sc.nextLine();
                                         System.out.println("Informe sua senha");
                                         senha = sc.nextLine();
-                                        Admin adminLogado = listaAdmin.loginAdmin(email, senha);
+                                        Admin adminLogado = adminService.loginAdmin(email, senha);
                                         boolean menuUsuarioLogado = true;
 
                                         if (adminLogado == null) {
@@ -414,24 +437,24 @@ public class Main {
                                                         ativo = "S";
 
                                                         Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, cpf, descricao);
-                                                        listaAdmin.editar(adminLogado.getId(), adminCadastrado);
+                                                        adminService.editar(adminLogado.getId(), adminCadastrado);
 
                                                         break;
                                                     case 2:
-                                                        listaModulos.listarSemAprovacao();
+                                                        moduloService.listarSemAprovacao();
                                                         System.out.println("Digite o número do módulo a ser aprovado: ");
                                                         indexModulo = sc.nextInt();
                                                         sc.nextLine();
                                                         System.out.println("S - Para apovar módulo | N - Para reprovar módulo");
                                                         aprovacaoModulo = sc.nextLine();
-                                                        listaModulos.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
+                                                        moduloService.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
                                                         break;
                                                     case 3:
-                                                        listaModulos.listarAprovados();
+                                                        moduloService.listarAprovados();
                                                         break;
 
                                                     case 4:
-                                                        listaModulos.listarReprovados();
+                                                        moduloService.listarReprovados();
                                                         break;
 
                                                     case 5:
@@ -442,16 +465,16 @@ public class Main {
                                                         int idAluno = sc.nextInt();
                                                         sc.nextLine();
                                                         alunoService.BuscarAlunoPorId(idAluno);
-                                                        listaProfessor.visualizarTodos();
+                                                        professorService.visualizarTodos();
                                                         break;
                                                     case 7:
-                                                        listaProfessor.visualizarTodos();
+                                                        professorService.visualizarTodos();
                                                         break;
                                                     case 8:
                                                         System.out.println("Digite o ID do professor:");
-                                                        int idProfessor = sc.nextInt();
+                                                        idProfessor = sc.nextInt();
                                                         sc.nextLine();
-                                                        listaProfessor.buscarProfessorPorId(idProfessor);
+                                                        professorService.buscarProfessorPorId(idProfessor);
                                                         break;
 
                                                     case 0:
@@ -490,8 +513,8 @@ public class Main {
                                         senha = sc.nextLine();
                                         ativo = "S";
 
-                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, descricao);
-                                        listaAdmin.adicionar(adminCadastrado);
+                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, cpf, descricao);
+                                        adminService.adicionar(adminCadastrado);
                                         break;
 
                                     case 0:
@@ -509,23 +532,23 @@ public class Main {
                                 escolha = 3;
                             }
                             break;
-//                        case 0:
-//                            System.out.println("Saindo do programa. Até logo!");
-//                            sc.close();
-//                            System.exit(0);
-//                        default:
-//                            System.out.println("Opção inválida. Tente novamente.");
-//                            break;
-//                    }
-//                } else {
-//                    System.out.println("Por favor, insira um número válido.");
-//                    sc.next();
-//                }
-//            }
-//        } catch (Exception e){
-//            System.out.println(" ");
-//            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-//        }
+                        case 0:
+                            System.out.println("Saindo do programa. Até logo!");
+                            sc.close();
+                            System.exit(0);
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                            break;
+                    }
+                } else {
+                    System.out.println("Por favor, insira um número válido.");
+                    sc.next();
+                }
+            }
+        } catch (Exception e){
+            System.out.println(" ");
+            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+        }
 
     }
 }
