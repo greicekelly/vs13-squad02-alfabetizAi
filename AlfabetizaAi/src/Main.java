@@ -413,7 +413,7 @@ public class Main {
                                                         senha = sc.nextLine();
                                                         ativo = "S";
 
-                                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, descricao);
+                                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, cpf, descricao);
                                                         listaAdmin.editar(adminLogado.getId(), adminCadastrado);
 
                                                         break;
