@@ -71,6 +71,7 @@ public class AlunoService {
         }
     }
 
+
     public void editarAluno(Aluno aluno, Aluno alunoEditado) {
         try {
             alunoRepository.editar(aluno.getIdUsuario(), alunoEditado);

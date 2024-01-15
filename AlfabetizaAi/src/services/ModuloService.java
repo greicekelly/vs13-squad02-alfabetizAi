@@ -10,6 +10,7 @@ public class ModuloService extends Modulo {
     public ModuloService() {
         moduloRepository = new ModuloRepository();
     }
+
     // criação de um objeto
     public void adicionarModulo(Modulo modulo) {
         try {

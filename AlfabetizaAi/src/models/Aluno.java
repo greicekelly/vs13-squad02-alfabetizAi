@@ -18,6 +18,10 @@ public class Aluno extends Usuario {
 
     public Aluno() {}
 
+    public Aluno(String nome, LocalDate dataNascimento, String email) {
+        super(null, nome, null, null, email, dataNascimento, null, null, null);
+    }
+
     public Aluno(Integer idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, Integer idAluno, String nomeAluno, String sobrenomeAluno, LocalDate dataNascimentoAluno, String sexoAluno) {
         super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
         this.idAluno = idAluno;
