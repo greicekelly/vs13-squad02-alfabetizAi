@@ -244,7 +244,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 professor.setCpf(res.getString("cpf"));
 
             }
-            System.out.println(professor);
+
             return professor;
 
         } catch (SQLException e) {

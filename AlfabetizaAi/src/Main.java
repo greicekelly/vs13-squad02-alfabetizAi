@@ -299,6 +299,7 @@ public class Main {
 
                                                         System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
                                                         int classificao = sc.nextInt();
+
                                                         if (classificao > 3 || classificao < 1) {
                                                             throw new IllegalArgumentException("Opção de módulo inexistente");
                                                         } else {
@@ -458,7 +459,7 @@ public class Main {
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
-
+                            break;
 
                         case 3:
                             try {
@@ -550,7 +551,7 @@ public class Main {
                                                         System.out.println("Digite o ID do professor:");
                                                         idProfessor = sc.nextInt();
                                                         sc.nextLine();
-                                                        professorService.buscarProfessorPorId(idProfessor);
+                                                        System.out.println(professorService.buscarProfessorPorId(idProfessor));
                                                         break;
 
                                                     case 0:
