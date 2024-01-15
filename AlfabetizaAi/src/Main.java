@@ -227,8 +227,6 @@ public class Main {
                                                     case 2:
                                                         System.out.println("Informe o título do novo Modulo: ");
                                                         String tituloModulo = sc.nextLine();
-                                                        System.out.println("Informe o email do autor do novo Modulo: ");
-                                                        email = sc.nextLine();
                                                         professor = professorService.buscarProfessorPorId(professorLogado.getId());
                                                         System.out.println("Digite o Conteudo do novo Modulo: ");
                                                         conteudo = sc.nextLine();
@@ -265,29 +263,26 @@ public class Main {
                                                         }
 
                                                     case 3:
-//                                                        System.out.println("Informe o título do módulo que deseja modificar: ");
-//                                                        String tituloModuloEdicao = sc.nextLine();
-//                                                        //TODO usar metodo para consultar modulo por id
-//                                                        Modulo moduloParaEditar = moduloService.consultarModuloTitulo(tituloModuloEdicao);
+                                                        moduloService.listar();
+                                                        System.out.println("Informe o id do módulo que deseja modificar: ");
+                                                        Integer idModuloEdicao = sc.nextInt();
 //
-//                                                        if (moduloParaEditar != null) {
-//                                                            System.out.println("Módulo encontrado:");
-//                                                            //TODO usar metodo para consultar modulo por id
-//                                                            moduloService.(moduloParaEditar, 0);
-//                                                            System.out.println("Informe o novo título do módulo: ");
-//                                                            String novoTitulo = sc.nextLine();
-//                                                            System.out.println("Digite o novo conteudo do novo Modulo: ");
-//                                                            conteudo = sc.nextLine();
-//                                                            System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
-//                                                            int novaClassificacao = sc.nextInt();
-//                                                            sc.nextLine();
-//
-//                                                            ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
-//                                                            listaModulos.editar(0, new Modulo(novoTitulo, conteudo, moduloParaEditar.getAutor(), moduloParaEditar.getDesafios(), classificacaoNova));
-//                                                            System.out.println("Módulo editado com sucesso.");
-//                                                        } else {
-//                                                            System.out.println("Módulo não encontrado.");
-//                                                        }
+                                                        if (idModuloEdicao != null) {
+                                                            System.out.println("Módulo encontrado:");
+                                                            System.out.println("Informe o novo título do módulo: ");
+                                                            String novoTitulo = sc.nextLine();
+                                                            System.out.println("Digite o novo conteudo do novo Modulo: ");
+                                                            conteudo = sc.nextLine();
+                                                            System.out.println("Informe a nova classificação (1 - Iniciante, 2 - Intermediário, 3 - Avançado): ");
+                                                            int novaClassificacao = sc.nextInt();
+                                                            sc.nextLine();
+
+                                                            ClassificacaoModulo classificacaoNova = ClassificacaoModulo.trazEnumPeloOrdinal(novaClassificacao);
+                                                            moduloService.editar(idModuloEdicao, new Modulo(idModuloEdicao, novoTitulo, conteudo, professorLogado, classificacaoNova));
+                                                            System.out.println("Módulo editado com sucesso.");
+                                                        } else {
+                                                            System.out.println("Módulo não encontrado.");
+                                                        }
                                                         break;
 
                                                     case 4:
@@ -311,7 +306,7 @@ public class Main {
                                                         System.out.println("Informe o título do desafio que deseja modificar: ");
                                                         String tituloDesafioModificar = sc.nextLine();
 
-                                                        Desafio desafioParaModificar  = null;
+                                                        Desafio desafioParaModificar = null;
                                                         for (Desafio desafio : listaDesafios.getListaDesafios()) {
                                                             if (desafio.getTitulo().equalsIgnoreCase(tituloDesafioModificar)) {
                                                                 desafioParaModificar = desafio;
@@ -350,11 +345,17 @@ public class Main {
                                                         System.out.println("Opção inválida.");
                                                         break;
                                                 }
+
                                             } while (menuUsuarioLogado);
 
                                         }
-
-                                        break;
+                                }
+                            } catch (Exception e){
+                                    e.printStackTrace();
+                                    System.out.println(" ");
+                                    System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+                                }
+                                break;
 
                                     case 2:
                                         System.out.println("Informe o seu nome: ");
@@ -386,6 +387,7 @@ public class Main {
                                         professorService.adicionar(professorCadastrado);
                                         System.out.println("Professor cadastrado com sucesso");
                                         break;
+
                         case 3:
                             try {
                                 //MENU ADMIN
@@ -553,6 +555,7 @@ public class Main {
             System.out.println(" ");
             System.out.println("Opcão inválida, digite somente números conforme opção do menu");
         }
+                }
 
     }
 }

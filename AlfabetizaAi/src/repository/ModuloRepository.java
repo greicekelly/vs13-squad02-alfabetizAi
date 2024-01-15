@@ -332,4 +332,46 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         }
         return modulos;
     }
+//
+//    public Modulo buscarModuloPorId(Integer idModulo) throws BancoDeDadosException {
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//
+//            String sql = "SELECT * FROM MODULO M" +
+//                    "WHERE M.ID_MODULO = ?";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, idModulo);
+//
+//            ResultSet res = stmt.executeQuery();
+//            Modulo modulo = new Modulo();
+//            while (res.next()) {
+//
+//                modulo.setId(res.getInt("id_modulo"));
+////                modulo.setAutor(res.getString("id_professor")); -> Ver como chamar o ID professor aqui
+////                modulo.setAdminAprova(res.getString("id_admin")); -> Ver como chamar o ID admin aqui
+//                modulo.setTitulo(res.getString("titulo"));
+//                modulo.setConteudo(res.getString("conteudo"));
+////                modulo.setClassificacao(res.getString("classifcacao_modulo")); -> Ver como chamar classificacao modulo aqui
+//                modulo.setFoiAprovado(res.getString("modulo_aprovado"));
+//
+//            }
+//            System.out.println(modulo);
+//            return modulo;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new BancoDeDadosException(e.getCause());
+//
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+    }
 }
