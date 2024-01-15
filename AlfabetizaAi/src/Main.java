@@ -98,6 +98,8 @@ public class Main {
                                                         nome = sc.nextLine();
                                                         System.out.println("Informe o novo sobrenome do responsável: ");
                                                         sobrenome = sc.nextLine();
+                                                        System.out.println("Informe o novo cpf do responsável: ");
+                                                        cpf = sc.nextLine();
                                                         System.out.println("Informe a nova data de nascimento do responsável (yyyy-mm-dd): ");
                                                         dataNascimento = sc.nextLine();
                                                         LocalDate dataNova = LocalDate.parse(dataNascimento);
@@ -132,6 +134,7 @@ public class Main {
                                                         alunoCadastrado.setSobrenomeAluno(sobrenomeAluno);
                                                         alunoCadastrado.setDataNascimentoAluno(dataNovaAluno);
                                                         alunoCadastrado.setSexoAluno(sexoAluno);
+                                                        alunoCadastrado.setCpf(cpf);
 
                                                         alunoService.editar(alunoLogado, alunoCadastrado);
                                                         System.out.println("Aluno editado com sucesso");
@@ -175,6 +178,8 @@ public class Main {
                                         nome = sc.nextLine();
                                         System.out.println("Informe o sobrenome do responsável: ");
                                         sobrenome = sc.nextLine();
+                                        System.out.println("Informe o cpf do responsável: ");
+                                        cpf = sc.nextLine();
                                         System.out.println("Informe o telefone do responsável: ");
                                         telefone = sc.nextLine();
                                         System.out.println("Informe a data de nascimento do responsável: yyyy-mm-dd");
@@ -209,6 +214,7 @@ public class Main {
                                         alunoCadastrado.setSobrenomeAluno(sobrenomeAluno);
                                         alunoCadastrado.setDataNascimentoAluno(dataAluno);
                                         alunoCadastrado.setSexoAluno(sexoAluno);
+                                        alunoCadastrado.setCpf(cpf);
 
                                         alunoService.adicionar(alunoCadastrado);
                                         System.out.println("Aluno cadastrado com sucesso");
@@ -254,6 +260,8 @@ public class Main {
                                                         nome = sc.nextLine();
                                                         System.out.println("Informe o seu novo sobrenome: ");
                                                         sobrenome = sc.nextLine();
+                                                        System.out.println("Informe o novo cpf: ");
+                                                        cpf = sc.nextLine();
                                                         System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
                                                         dataNascimento = sc.nextLine();
                                                         LocalDate dataNova = LocalDate.parse(dataNascimento);
@@ -274,6 +282,7 @@ public class Main {
                                                         professorCadastrado.setDataDeNascimento(dataNova);
                                                         professorCadastrado.setSexo(sexo);
                                                         professorCadastrado.setSenha(senha);
+                                                        professorCadastrado.setCpf(cpf);
 
                                                         professorService.editar(professorLogado.getId(), professorCadastrado);
                                                         System.out.println("Professor editado com sucesso");
@@ -407,6 +416,8 @@ public class Main {
                                         nome = sc.nextLine();
                                         System.out.println("Informe o seu sobrenome: ");
                                         sobrenome = sc.nextLine();
+                                        System.out.println("Informe o seu cpf: ");
+                                        cpf = sc.nextLine();
                                         System.out.println("Informe o seu telefone: ");
                                         telefone = sc.nextLine();
                                         System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
@@ -427,6 +438,7 @@ public class Main {
                                         professorCadastrado.setDataDeNascimento(data);
                                         professorCadastrado.setSexo(sexo);
                                         professorCadastrado.setSenha(senha);
+                                        professorCadastrado.setCpf(cpf);
 
 
                                         professorService.adicionar(professorCadastrado);
