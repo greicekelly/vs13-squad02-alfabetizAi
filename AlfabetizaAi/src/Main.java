@@ -19,64 +19,14 @@ public class Main {
         ModuloService listaModulos = new ModuloService();
         DesafioService listaDesafios = new DesafioService();
         ModuloService modulosConcluidos = new ModuloService();
-        AlunoService listaAluno = new services.AlunoService();
+        ModuloService listar = new ModuloService();
+
         AlunoService alunoService = new AlunoService();
 
         ProfessorService listaProfessor = new services.ProfessorService();
 
 
-        listaAdmin.BuscarAdminPorId(1);
 
-
-
-        listaProfessor.adicionar(new Professor("Bruno",LocalDate.parse("1980-10-10"),"bruno@email.com"));
-        listaProfessor.adicionar(new Professor("Gabriel",LocalDate.parse("1982-06-10"), "gabriel@email.com"));
-        listaProfessor.adicionar(new Professor("Vitoria",LocalDate.parse("1981-10-30"), "vitoria@email.teste"));
-
-        String conteudoABC = "A - Abelha: A abelha faz \"zum zum\" e voa de flor em flor.\n" +
-                "B - Borboleta: A borboleta é colorida e voa pelo jardim.\n" +
-                "C - Cachorro: O cachorro é amigo e late \"au au\".\n" +
-                "D - Dinossauro: O dinossauro é grande e faz \"roar\".\n" +
-                "E - Elefante: O elefante tem uma tromba longa e faz \"trrr\".\n" +
-                "F - Flor: A flor é bonita e cheira bem.\n" +
-                "G - Girafa: A girafa tem um pescoço comprido e come folhas.\n" +
-                "H - Helicóptero: O helicóptero voa no céu e faz \"vruum\".\n" +
-                "I - Igual: As coisas são iguais quando são parecidas.\n" +
-                "J - Jacaré: O jacaré mora na água e tem dentes afiados.\n" +
-                "K - Kite (pipa): A pipa voa alto no vento.\n" +
-                "L - Leão: O leão é corajoso e faz \"rugir\".\n" +
-                "M - Macaco: O macaco é divertido e pula de galho em galho.\n" +
-                "N - Nuvem: A nuvem é fofa e está no céu.\n" +
-                "O - Ovelha: A ovelha tem lã macia e faz \"bêê\".\n" +
-                "P - Pato: O pato nada na água e faz \"quá quá\".\n" +
-                "Q - Queijo: O queijo é delicioso e amarelo.\n" +
-                "R - Rato: O rato é pequeno e faz \"piu piu\".\n" +
-                "S - Sol: O sol brilha no céu e nos dá luz.\n" +
-                "T - Tartaruga: A tartaruga é lenta e tem uma casca dura.\n" +
-                "U - Urso: O urso é peludo e vive na floresta.\n" +
-                "V - Vaca: A vaca dá leite e faz \"moo\".\n" +
-                "W - Waffle: O waffle é uma delícia para comer.\n" +
-                "X - Xícara: A xícara é usada para tomar chá ou café.\n" +
-                "Y - Yo-yo: O yo-yo vai para cima e para baixo.\n" +
-                "Z - Zebra: A zebra tem listras pretas e brancas.";
-
-        String conteudoVogais = "A - Abelhinha: A abelhinha adora voar alto e faz \"a-a-a\" como em \"abelha\".\n" +
-                "E - Elefantinho: O elefantinho tem orelhas grandes e faz \"e-e-e\" como em \"elefante\".\n" +
-                "I - Indiozinho: O indiozinho usa um penacho na cabeça e faz \"i-i-i\" como em \"índio\".\n" +
-                "O - Ouriço: O ouriço é redondinho e faz \"o-o-o\" como em \"ouriço\".\n" +
-                "U - Ursinho: O ursinho é fofo e faz \"u-u-u\" como em \"ursinho\".";
-
-        Professor professor = new Professor("maria", LocalDate.parse("1987-12-18"), "maria@email");
-        Desafio desafioUm = new Desafio("Desafio AEIOU", enums.TipoDesafio.JOGO, professor);
-        Desafio desafioDois = new Desafio("ABC", TipoDesafio.QUIZ, professor);
-        Desafio desafioTres = new Desafio("A", TipoDesafio.JOGO, professor);
-        Modulo moduloDois = new Modulo("Letras Alfabeto",conteudoABC, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-        Modulo moduloUm = new Modulo("Letras Vogais", conteudoVogais, professor , new ArrayList<>(), enums.ClassificacaoModulo.INICIANTE);
-        moduloUm.adicionarDesafio(desafioUm);
-        moduloUm.adicionarDesafio(desafioTres);
-        moduloDois.adicionarDesafio(desafioDois);
-        listaModulos.adicionar(moduloUm);
-        listaModulos.adicionar(moduloDois);
 
         Scanner sc = new Scanner(System.in);
         int escolha;
@@ -116,11 +66,13 @@ public class Main {
                                 switch (opcaoMenuAluno) {
                                     case 1:
                                         System.out.println("Informe seu email: ");
-                                        email = sc.nextLine();
-                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                        dataNascimento = sc.nextLine();
-                                        data = LocalDate.parse(dataNascimento);
-                                        Aluno alunoLogado = alunoService.loginAluno(email, data);
+                                        String emailLogin = sc.nextLine();
+
+                                        System.out.println("Informe sua senha: ");
+                                        String senhaLogin = sc.nextLine();
+
+                                        Aluno alunoLogado = alunoService.loginAluno(emailLogin, senhaLogin);
+
                                         boolean menuUsuarioLogado = true;
 
                                         if (alunoLogado == null) {
@@ -136,47 +88,53 @@ public class Main {
                                                 switch (escolhaInterna) {
                                                     case 1:
                                                         System.out.println("Informe o novo nome: ");
-                                                        nome = sc.nextLine();
+                                                        String novoNome = sc.nextLine();
                                                         System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
-                                                        dataNascimento = sc.nextLine();
-                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
+                                                        String novaDataNascimento = sc.nextLine();
+                                                        LocalDate dataNova = LocalDate.parse(novaDataNascimento);
                                                         System.out.println("Informe o novo email: ");
-                                                        email = sc.nextLine();
+                                                        String novoEmail = sc.nextLine();
                                                         Aluno alunoEditado = new Aluno();
-                                                        alunoEditado.setNome(nome);
+                                                        alunoEditado.setNome(novoNome);
                                                         alunoEditado.setDataDeNascimento(dataNova);
-                                                        alunoEditado.setEmail(email);
+                                                        alunoEditado.setEmail(novoEmail);
                                                         alunoService.editarAluno(alunoLogado, alunoEditado);
                                                         System.out.println("Aluno editado com sucesso");
                                                         break;
 
                                                     case 2:
-                                                        alunoService.visualizarTodosAlunos();
-                                                        System.out.print("Informe o título do módulo que deseja estudar: ");
-                                                        Modulo moduloEscolhido = listaModulos.consultarModuloTitulo(sc.nextLine());
-                                                        System.out.println(moduloEscolhido.getConteudo());
-                                                        System.out.println("Parabéns pelo estudo! Agora já está pronto para os desafios!");
+                                                        listaModulos.listar();
+                                                        System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
+                                                        String tituloModuloDesafios = sc.nextLine();
+
+                                                        Modulo moduloEscolhidoParaDesafios = listaModulos.listar(tituloModuloDesafios);
+
+                                                        if (moduloEscolhidoParaDesafios != null) {
+                                                            DesafioService desafiosDoModulo = new DesafioService();
+
+                                                            desafiosDoModulo.visualizarTodos(moduloEscolhidoParaDesafios.getDesafios());
+
+                                                            System.out.print("Informe o índice do desafio que deseja acessar: ");
+                                                            int indiceDesafio = sc.nextInt();
+
+                                                            desafiosDoModulo.visualizarTodos(indiceDesafio - 1);
+                                                            sc.nextLine();
+
+                                                            System.out.println("Parabéns por concluir o desafio!");
+                                                            modulosConcluidos.adicionarModulo(moduloEscolhidoParaDesafios);
+                                                        } else {
+                                                            System.out.println("Módulo não encontrado.");
+                                                        }
                                                         break;
 
                                                     case 3:
-                                                        listaModulos.visualizarTodos();
-                                                        System.out.print("Informe o titulo do módulo que deseja acessar os desafios: ");
-                                                        Modulo moduloEscolhidoParaDesafios = listaModulos.consultarModuloTitulo(sc.nextLine());
-                                                        DesafioService DesafiosDoModulo = new DesafioService(moduloEscolhidoParaDesafios.getDesafios());
-                                                        DesafiosDoModulo.visualizarDesafios();
-                                                        System.out.print("Informe o índice do desafio que deseja acessar: ");
-                                                        int indiceDesafio = sc.nextInt();
-                                                        DesafiosDoModulo.consultarDesafio(indiceDesafio - 1);
-                                                        sc.nextLine();
-                                                        System.out.println("Parabéns por concluir o desafio!");
-                                                        modulosConcluidos.adicionar(moduloEscolhidoParaDesafios);
+                                                        modulosConcluidos.listar();
                                                         break;
-                                                    case 4:
-                                                        modulosConcluidos.visualizarTodos();
-                                                        break;
+
                                                     case 0:
                                                         menuUsuarioLogado = false;
                                                         break;
+
                                                     default:
                                                         System.out.println("Opção inválida. Tente novamente.");
                                                         break;
@@ -201,46 +159,9 @@ public class Main {
                                         alunoService.adicionarAluno(alunoCadastrado);
                                         System.out.println("Aluno cadastrado com sucesso");
                                         break;
-                                    case 0:
-                                        break;
-                                    default:
-                                        System.out.println("Opção inválida.");
-                                        break;
 
                                 }
-                            } catch (Exception e) {
-                                System.out.println(" ");
-                                System.out.println("Opção inválida, digite somente números conforme opção do menu");
-                            }
-                            break;
-                                    case 2:
-                                        System.out.println("Informe o seu nome: ");
-                                        String novoNome = sc.nextLine();
 
-                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-                                        String novaDataNascimento = sc.nextLine();
-                                        LocalDate novaDataNascimentoLocal = LocalDate.parse(novaDataNascimento);
-
-                                        System.out.println("Informe o seu email: ");
-                                        String novoEmail = sc.nextLine();
-
-                                        Aluno alunoCadastrado = new Aluno(novoNome, novaDataNascimentoLocal, novoEmail);
-
-                                        listaAluno.adicionarAluno(alunoCadastrado);
-                                        System.out.println("Aluno cadastrado com sucesso");
-                                        break;
-                                    case 0:
-                                        break;
-                                    default:
-                                        System.out.println("Opção inválida.");
-                                        break;
-
-                                }
-                                } catch (Exception e) {
-                                    System.out.println("Opção inválida, digite somente números conforme opção do menu");
-                                }
-
-                                break;
 //                        case 2:
 //                            try {
 //                                //MENU PROFESSOR
