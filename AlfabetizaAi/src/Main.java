@@ -36,7 +36,7 @@ public class Main {
         String descricao;
         LocalDate data;
         LocalDate dataAluno;
-        String tituloNovoDesafio;
+        String tituloDesafio;
         Integer tipoNovoDesafio;
         TipoDesafio tipo;
         String conteudo;
@@ -217,6 +217,7 @@ public class Main {
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
+                            break;
 
                         case 2:
                             try {
@@ -284,37 +285,23 @@ public class Main {
                                                         professor = professorService.buscarProfessorPorId(professorLogado.getId());
                                                         System.out.println("Digite o Conteudo do novo Modulo: ");
                                                         conteudo = sc.nextLine();
-                                                        System.out.println("Adicione o primeiro desafio deste módulo, insira o título do desafio: ");
-                                                        tituloNovoDesafio = sc.nextLine();
-                                                        System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
-                                                        tipoNovoDesafio = sc.nextInt();
-                                                        tipo = TipoDesafio.ofTipo(tipoNovoDesafio);
-                                                        if (tipo == null) {
-                                                            throw new IllegalArgumentException("Opção de desafio inexistente");
+
+                                                        System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
+                                                        int classificao = sc.nextInt();
+                                                        if (classificao > 3 || classificao < 1) {
+                                                            throw new IllegalArgumentException("Opção de módulo inexistente");
                                                         } else {
-                                                            Desafio desafioCriado = new Desafio();
-                                                            desafioCriado.setTitulo(tituloNovoDesafio);
-                                                            desafioCriado.setTipoDesafio(tipo);
-                                                            desafioService.adicionar(desafioCriado);
-                                                            System.out.println("Por fim, digite o número equivalente ao grau de dificuldade do Módulo: 1 - INICIANTE, 2 - INTERMEDIÁRIO, 3 - AVANÇADO");
-                                                            int classificao = sc.nextInt();
-                                                            if (classificao > 3 || classificao < 1) {
-                                                                throw new IllegalArgumentException("Opção de módulo inexistente");
-                                                            } else {
-                                                                ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
-                                                                DesafioService novaListaDesafio = new DesafioService();
-                                                                novaListaDesafio.adicionar(desafioCriado);
-                                                                Modulo modulo = new Modulo();
-                                                                modulo.setTitulo(tituloModulo);
-                                                                modulo.setConteudo(conteudo);
-                                                                modulo.setAutor(professor);
-                                                                modulo.setClassificacao(dificuldadeSelecionada);
-                                                                moduloService.adicionarModulo(modulo);
-                                                                desafioService.adicionar(desafioCriado);
-                                                                System.out.println("Novo módulo cadastrado com sucesso");
-                                                            }
-                                                            break;
+                                                            ClassificacaoModulo dificuldadeSelecionada = ClassificacaoModulo.trazEnumPeloOrdinal(classificao);
+                                                            Modulo modulo = new Modulo();
+                                                            modulo.setTitulo(tituloModulo);
+                                                            modulo.setConteudo(conteudo);
+                                                            modulo.setAutor(professor);
+                                                            modulo.setClassificacao(dificuldadeSelecionada);
+                                                            moduloService.adicionarModulo(modulo);
+                                                            System.out.println("Novo módulo cadastrado com sucesso");
                                                         }
+
+                                                        break;
 
                                                     case 3:
                                                         moduloService.listar();
@@ -344,10 +331,10 @@ public class Main {
                                                         System.out.println("Informe o índice do módulo ao qual o desafio pertence: ");
                                                         int idModuloDoDesafio = sc.nextInt();
                                                         sc.nextLine();
-                                                        System.out.println("Informe o título do novo desafio: ");
-                                                        tituloNovoDesafio = sc.nextLine();
-                                                        System.out.println("Informe o conteudo do novo desafio: ");
-                                                        String conteudoNovoDesafio = sc.nextLine();
+                                                        System.out.println("Informe o título do desafio: ");
+                                                        tituloDesafio = sc.nextLine();
+                                                        System.out.println("Informe o conteudo do desafio: ");
+                                                        String conteudoDesafio = sc.nextLine();
                                                         System.out.println("Digite o número equivalente ao método do desafio: 1 - QUIZ , 2 - JOGO");
                                                         tipoNovoDesafio = sc.nextInt();
                                                         sc.nextLine();
@@ -355,28 +342,38 @@ public class Main {
                                                         if (tipo == null) {
                                                             throw new IllegalArgumentException("Opção de desafio inexistente");
                                                         } else {
-                                                            desafioService.adicionar(new Desafio(idModuloDoDesafio, tituloNovoDesafio, conteudoNovoDesafio, tipo));
+                                                            desafioService.adicionar(new Desafio(idModuloDoDesafio, tituloDesafio, conteudoDesafio, tipo));
                                                             System.out.println("Novo desafio criado com sucesso");
                                                         }
                                                         break;
                                                     case 5:
                                                         desafioService.visualizarTodos();
                                                         System.out.println("Informe o id do desafio que deseja modificar: ");
-                                                        int idDesafioModificar = sc.nextInt();
+                                                        int idDesafioVelho = sc.nextInt();
                                                         sc.nextLine();
 
                                                         Desafio desafioParaModificar = new Desafio();
-                                                        desafioParaModificar.setId(idDesafioModificar);
+                                                        desafioParaModificar.setId(idDesafioVelho);
 
                                                         if (desafioParaModificar != null) {
                                                             System.out.println("Desafio encontrado:");
                                                             System.out.println(desafioParaModificar);
+
+                                                            moduloService.listar();
+                                                            System.out.println("Informe o índice do novo módulo ao qual o desafio pertence: ");
+                                                            int idModuloDoDesafioEditado = sc.nextInt();
+                                                            sc.nextLine();
+                                                            desafioParaModificar.setIdModulo(idModuloDoDesafioEditado);
 
                                                             System.out.println("Informe o novo título do desafio (ou pressione Enter para manter o atual):");
                                                             String novoTitulo = sc.nextLine();
                                                             if (!novoTitulo.isEmpty()) {
                                                                 desafioParaModificar.setTitulo(novoTitulo);
                                                             }
+
+                                                            System.out.println("Informe o novo conteudo do desafio: ");
+                                                            String conteudoNovoDesafio = sc.nextLine();
+                                                            desafioParaModificar.setConteudo(conteudoNovoDesafio);
 
                                                             System.out.println("Informe o novo tipo de desafio (1 - QUIZ, 2 - JOGO, ou 0 para manter o atual):");
                                                             int novoTipo = sc.nextInt();
@@ -386,6 +383,8 @@ public class Main {
                                                             } else if (novoTipo == 2) {
                                                                 desafioParaModificar.setTipoDesafio(TipoDesafio.JOGO);
                                                             }
+
+                                                            desafioService.editar(idDesafioVelho, desafioParaModificar);
 
                                                             System.out.println("Desafio modificado com sucesso.");
                                                         } else {
