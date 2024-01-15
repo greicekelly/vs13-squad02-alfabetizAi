@@ -20,13 +20,10 @@ public class AdminService {
 
     public void adicionar(Admin admin) {
         try {
-
             if (admin.getCpf().length() != 11) {
                 throw new Exception("CPF Invalido!");
             }
-
             Admin adminAdicionado = adminRepository.adicionar(admin);
-
             System.out.println("admin adicinado com sucesso! " + adminAdicionado);
         } catch (BancoDeDadosException e) {
             System.out.println("ERRO: " + e.getMessage());
@@ -73,12 +70,12 @@ public class AdminService {
         }
     }
 
-    public boolean loginAdmin(String email, String senha) {
+    public Admin loginAdmin(String email, String senha) {
         try {
             return adminRepository.LoginAdmin(email, senha);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 }

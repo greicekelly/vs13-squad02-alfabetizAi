@@ -40,13 +40,14 @@ public class MenuNumerico {
 
     public static void menuAdmin() {
         System.out.println("\n---- Menu ----");
-        System.out.println("1. Pressione 1 para editar seus dados cadastrais"); //UPDATE
-        System.out.println("2. Pressione 2 para aprovar um módulo"); // CREATE
-        System.out.println("3. Pressione 3 para deletar um módulo"); // DELETE
-        System.out.println("4. Pressione 4 para listar todos os alunos");
-        System.out.println("5. Pressione 5 para detalhar o aluno por ID");
-        System.out.println("6. Pressione 6 para listar todos os professores");
-        System.out.println("7. Pressione 7 para detalhar o professor por ID");
+        System.out.println("1. Pressione 1 para editar seus dados cadastrais");
+        System.out.println("2. Pressione 2 para aprovar/reprovar um módulo");
+        System.out.println("3. Pressione 3 para listar módulos aprovados");
+        System.out.println("4. Pressione 4 para listar módulos reprovados");
+        System.out.println("5. Pressione 5 para listar todos os alunos");
+        System.out.println("6. Pressione 6 para detalhar o aluno por ID");
+        System.out.println("7. Pressione 7 para listar todos os professores");
+        System.out.println("8. Pressione 8 para detalhar o professor por ID");
         System.out.println("0. Logoff");
     }
 

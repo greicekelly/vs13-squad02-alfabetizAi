@@ -139,7 +139,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
     }
-    public boolean editarAprovacaoPorAdmin(Admin admin, Modulo modulo) throws BancoDeDadosException {
+    public boolean editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -152,11 +152,10 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setInt(1, admin.getIdAdmin());
-            stmt.setString(2, String.valueOf(modulo.isFoiAprovado()));
-            stmt.setInt(3, modulo.getId());
+            stmt.setInt(1, idAdmin);
+            stmt.setString(2, aprovacaoModulo);
+            stmt.setInt(3, idModulo);
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
             System.out.println("editarModulo.res=" + res);
 
@@ -185,6 +184,123 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             String sql = "SELECT * FROM MODULO";
 
             // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Modulo modulo = new Modulo();
+                Professor professor = new Professor();
+                Admin admin = new Admin();
+                modulo.setId(res.getInt("id_modulo"));
+                modulo.setAutor(professor);
+                professor.setIdUsuario(res.getInt("id_professor"));
+                modulo.setAdminAprova(admin);
+                admin.setIdUsuario(res.getInt("id_admin"));
+                modulo.setTitulo(res.getString("titulo"));
+                modulo.setConteudo(res.getString("conteudo"));
+                modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
+                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulos.add(modulo);
+            }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
+    public List<Modulo> listarSemAprovacao() throws BancoDeDadosException {
+        List<Modulo> modulos = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO IS NULL";
+
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Modulo modulo = new Modulo();
+                modulo.setId(res.getInt("id_modulo"));
+                modulo.setTitulo(res.getString("titulo"));
+                modulo.setConteudo(res.getString("conteudo"));
+                modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
+                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulos.add(modulo);
+            }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
+    public List<Modulo> listarAprovados() throws BancoDeDadosException {
+        List<Modulo> modulos = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'S' OR MODULO_APROVADO = 's'";
+
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Modulo modulo = new Modulo();
+                Professor professor = new Professor();
+                Admin admin = new Admin();
+                modulo.setId(res.getInt("id_modulo"));
+                modulo.setAutor(professor);
+                professor.setIdUsuario(res.getInt("id_professor"));
+                modulo.setAdminAprova(admin);
+                admin.setIdUsuario(res.getInt("id_admin"));
+                modulo.setTitulo(res.getString("titulo"));
+                modulo.setConteudo(res.getString("conteudo"));
+                modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
+                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulos.add(modulo);
+            }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
+    public List<Modulo> listarReprovados() throws BancoDeDadosException {
+        List<Modulo> modulos = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'N' OR MODULO_APROVADO = 'n'";
+
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
