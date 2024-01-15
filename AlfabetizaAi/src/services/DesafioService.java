@@ -36,9 +36,10 @@ public class DesafioService {
 
     public List getListaDesafios() {
         try {
-            desafioRepository.listar();
+            return desafioRepository.listar();
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
