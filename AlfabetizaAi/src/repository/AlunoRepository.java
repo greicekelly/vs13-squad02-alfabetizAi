@@ -180,7 +180,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT U.*, A.DESCRICAO FROM USUARIO U INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO)";
+            String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO)";
             try (ResultSet res = stmt.executeQuery(sql)) {
                 while (res.next()) {
                     Aluno aluno = new Aluno();
@@ -217,7 +217,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT U.*, A.DESCRICAO FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.ID_USUARIO = ?";
+            String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.ID_USUARIO = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 stmt.setInt(1, idUsuario);
 

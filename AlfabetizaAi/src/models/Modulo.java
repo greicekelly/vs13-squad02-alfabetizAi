@@ -116,7 +116,7 @@ public class Modulo {
 
     @Override
     public String toString() {
-        return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();
+        return "Id: "+getId()+" - Titulo: "+getTitulo() +" - Classificação: "+getClassificacao();
     }
 
 }
