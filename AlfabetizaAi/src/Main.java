@@ -147,23 +147,16 @@ public class Main {
 
                                                         if (moduloEscolhido != null) {
                                                             System.out.println(moduloEscolhido.getConteudo());
-
-
-                                                            System.out.print("Informe o índice do desafio que deseja acessar: ");
-                                                            int indiceDesafio = sc.nextInt();
+                                                            System.out.println("Pressione enter para ir para os desafios do módulo!");
+                                                            sc.nextLine();
+                                                            desafioService.listarDesafiosPorModulo(moduloEscolhido.getId());
+                                                            System.out.println("Pressione enter para finalizar o módulo!");
                                                             sc.nextLine();
 
-                                                            desafiosDoModulo.visualizarTodos();
-
-                                                            System.out.println("Parabéns por concluir o desafio!");
-                                                            moduloService.adicionarModulo(moduloEscolhidoParaDesafios);
+                                                            System.out.println("Parabéns por concluir o módulo!");
                                                         } else {
                                                             System.out.println("Módulo não encontrado.");
                                                         }
-                                                        break;
-
-                                                    case 3:
-                                                        moduloService.listar();
                                                         break;
 
                                                     case 0:
@@ -588,7 +581,7 @@ public class Main {
                                         break;
 
                                 }
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 System.out.println(" ");
                                 System.out.println("Opcão inválida, digite somente números conforme opção do menu");
@@ -596,24 +589,23 @@ public class Main {
                                 escolha = 3;
                             }
                             break;
-                        case 0:
-                            System.out.println("Saindo do programa. Até logo!");
-                            sc.close();
-                            System.exit(0);
-                        default:
-                            System.out.println("Opção inválida. Tente novamente.");
-                            break;
+                                    case 0:
+                                        System.out.println("Saindo do programa. Até logo!");
+                                        sc.close();
+                                        System.exit(0);
+                                    default:
+                                        System.out.println("Opção inválida. Tente novamente.");
+                                        break;
+                                }
+                            } catch(Exception e){
+                                System.out.println(" ");
+                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+                            }
                     }
-                } else {
-                    System.out.println("Por favor, insira um número válido.");
-                    sc.next();
                 }
             }
-        } catch (Exception e){
-            System.out.println(" ");
-            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-                }
-
     }
 }

@@ -69,4 +69,13 @@ public class DesafioService {
         }
     }
 
+    public void listarDesafiosPorModulo(int idModuloEscolhido) {
+        try {
+            List<Desafio> listar = desafioRepository.listarPorModulo(idModuloEscolhido);
+            listar.forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
