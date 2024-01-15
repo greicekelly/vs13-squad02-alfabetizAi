@@ -254,6 +254,8 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         List<Professor> professorBanco = new ArrayList<>();
         Connection con = null;
         try {
+            con = ConexaoBancoDeDados.getConnection();
+
             String sql = "SELECT U.*, A.DESCRICAO " +
                     "FROM USUARIO U " +
                     "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) "+
