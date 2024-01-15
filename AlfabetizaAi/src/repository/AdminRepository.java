@@ -67,7 +67,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(4, admin.getTelefone());
             stmt.setString(5, admin.getEmail());
             stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
-            stmt.setString(7, "S");
+            stmt.setString(7, admin.getAtivo());
             stmt.setString(8, admin.getSexo());
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
@@ -156,16 +156,33 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(2, admin.getNome());
-            stmt.setString(3, admin.getSobrenome());
-            stmt.setString(4, admin.getTelefone());
-            stmt.setString(5, admin.getEmail());
-            stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
-            stmt.setString(8, admin.getSexo());
-            stmt.setString(9, admin.getSenha());
-            stmt.setString(10, admin.getCpf());
+            stmt.setString(1, admin.getNome());
+            stmt.setString(2, admin.getSobrenome());
+            stmt.setString(3, admin.getTelefone());
+            stmt.setString(4, admin.getEmail());
+            stmt.setDate(5, Date.valueOf(admin.getDataDeNascimento()));
+            stmt.setString(6, admin.getSexo());
+            stmt.setString(7, admin.getSenha());
+            stmt.setString(8, admin.getCpf());
+            stmt.setInt(9, id);
 
             int res = stmt.executeUpdate();
+
+            if(admin.getDescricao() != null){
+                StringBuilder sqlAdmin = new StringBuilder();
+                sqlAdmin.append("UPDATE ADMIN SET ");
+                sqlAdmin.append(" DESCRICAO = ?,");
+                sqlAdmin.append(" WHERE id_admin = ? ");
+
+                PreparedStatement stmtAdmin = con.prepareStatement(sqlAdmin.toString());
+
+                stmtAdmin.setString(1, admin.getDescricao());
+                stmtAdmin.setInt(2, admin.getIdAdmin());
+
+
+                stmtAdmin.executeUpdate();
+            }
+
             System.out.println("editarUsuario.res=" + res);
 
             return res > 0;
@@ -181,6 +198,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             }
         }
     }
+
+
 
     public List<Admin> listar() throws BancoDeDadosException {
         List<Admin> adminBanco = new ArrayList<>();
@@ -269,11 +288,11 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         }
     }
 
-    public boolean LoginAdmin(String email, String senha) throws BancoDeDadosException {
+    public Admin LoginAdmin(String email, String senha) throws BancoDeDadosException {
         List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
-            String sql = "SELECT U.*, A.DESCRICAO " +
+            String sql = "SELECT U.*, A.ID_ADMIN, A.DESCRICAO " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
                     "WHERE U.EMAIL = ? "+
@@ -285,8 +304,9 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             ResultSet res = stmt.executeQuery();
 
+            Admin admin = new Admin();
+
             while (res.next()) {
-                Admin admin = new Admin();
                 admin.setIdUsuario(res.getInt("id_usuario"));
                 admin.setNome(res.getString("nome"));
                 admin.setSobrenome(res.getString("sobrenome"));
@@ -296,10 +316,12 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 admin.setSexo(res.getString("sexo"));
                 admin.setSenha(res.getString("senha"));
                 admin.setCpf(res.getString("cpf"));
+                admin.setIdAdmin(res.getInt("id_admin"));
+                admin.setDescricao(res.getString("descricao"));
                 adminBanco.add(admin);
             }
             System.out.println(adminBanco);
-            return !adminBanco.isEmpty();
+            return admin;
 
         } catch (SQLException e) {
             e.printStackTrace();

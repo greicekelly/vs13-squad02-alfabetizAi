@@ -37,6 +37,17 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
+    public Usuario( String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha) {
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataDeNascimento = dataDeNascimento;
+        this.ativo = ativo;
+        this.sexo = sexo;
+        this.senha = senha;
+    }
+
     @Override
     public String toString() {
         return "models.Usuario{" +

@@ -32,16 +32,23 @@ public class Main {
         int escolha;
 
         String nome;
-        String dataNascimento;
+        String sobrenome;
+        String telefone;
         String email;
+        String dataNascimento;
+        String sexo;
+        String senha;
+        String ativo;
+        String cpf;
+        String descricao;
         LocalDate data;
         String tituloNovoDesafio;
         Integer tipoNovoDesafio;
         TipoDesafio tipo;
         String conteudo;
+        String aprovacaoModulo;
         int indexModulo;
 
-        boolean continuarMenu = true;
 
         MenuNumerico.bemVindo();
 
@@ -355,127 +362,157 @@ public class Main {
 //                                escolha = 2;
 //                            }
 //                            break;
-//                        case 3:
-//                            try {
-//                                //MENU ADMIN
-//                                System.out.println("Você escolheu a opção Admin.");
-//                                System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
-//                                int opcaoMenuAdmin = sc.nextInt();
-//                                sc.nextLine();
-//                                switch (opcaoMenuAdmin) {
-//
-//                                    case 1:
-//                                        System.out.println("Informe seu email: ");
-//                                        email = sc.nextLine();
-//                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-//                                        dataNascimento = sc.nextLine();
-//                                        data = LocalDate.parse(dataNascimento);
-//                                        Admin adminLogado = listaAdmin.loginAdmin(email, data);
-//                                        boolean menuUsuarioLogado = true;
-//
-//                                        if (adminLogado == null) {
-//                                            System.out.println("Falha no login. Verifique suas credenciais.");
-//                                            break;
-//                                        } else {
-//                                            System.out.println("Login bem-sucedido! Bem-vindo, " + adminLogado.getNome() + ".");
-//                                            do {
-//                                                MenuNumerico.menuAdmin();
-//                                                int escolhaInterna = sc.nextInt();
-//                                                sc.nextLine();
-//
-//                                                switch (escolhaInterna) {
-//
-//                                                    case 1:
-//                                                        System.out.println("Informe o novo nome: ");
-//                                                        nome = sc.nextLine();
-//                                                        System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
-//                                                        dataNascimento = sc.nextLine();
-//                                                        LocalDate dataNova = LocalDate.parse(dataNascimento);
-//                                                        System.out.println("Informe o novo email: ");
-//                                                        email = sc.nextLine();
-//                                                        listaAdmin.editar(adminLogado, new Admin(nome, dataNova, email));
-//                                                        System.out.println("Admin editado com sucesso");
-//                                                        break;
-//                                                    case 2:
-//                                                        listaModulos.visualizarTodos();
-//                                                        System.out.println("Digite o número do módulo a ser aprovado: ");
-//                                                        indexModulo = sc.nextInt();
-//                                                        sc.nextLine();
-//                                                        listaModulos.adminAprovar(indexModulo);
-//                                                        break;
-//
-//                                                    case 3:
-//                                                        listaModulos.visualizarTodos();
-//                                                        System.out.println("Digite o número do módulo a ser deletado: ");
-//                                                        indexModulo = sc.nextInt();
-//                                                        sc.nextLine();
-//                                                        listaModulos.remover(indexModulo);
-//                                                        System.out.println("Módulo deletado com sucesso!");
-//                                                        break;
-//
-//                                                    case 4:
-//                                                        listaAluno.visualizarTodosAlunos();
-//                                                        break;
-//
-//                                                    case 5:
-//                                                        System.out.println("Digite o ID do aluno:");
-//                                                        int idAluno = sc.nextInt();
-//                                                        sc.nextLine();
-//                                                        listaAluno.consultar(idAluno);
-//                                                        break;
-//
-//                                                    case 6:
-//                                                        listaProfessor.visualizarTodos();
-//                                                        break;
-//
-//                                                    case 7:
-//                                                        System.out.println("Digite o ID do aluno:");
-//                                                        int idProfessor = sc.nextInt();
-//                                                        sc.nextLine();
-//                                                        listaProfessor.consultar(idProfessor);
-//                                                        break;
-//
-//                                                    case 0:
-//                                                        menuUsuarioLogado = false;
-//                                                        break;
-//
-//                                                    default:
-//                                                        System.out.println("Opção inválida.");
-//                                                        break;
-//                                                }
-//                                            } while (menuUsuarioLogado);
-//
-//                                        }
-//
-//                                        break;
-//
-//                                    case 2:
-//                                        System.out.println("Informe o seu nome: ");
-//                                        nome = sc.nextLine();
-//                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
-//                                        dataNascimento = sc.nextLine();
-//                                        data = LocalDate.parse(dataNascimento);
-//                                        System.out.println("Informe o seu email: ");
-//                                        email = sc.nextLine();
-//                                        Admin adminCadastrado = new Admin(nome, data, email);
-//                                        listaAdmin.adicionar(adminCadastrado);
-//                                        System.out.println("Admin cadastrado com sucesso");
-//                                        break;
-//
-//                                    case 0:
-//                                        break;
-//
-//                                    default:
-//                                        System.out.println("Opção inválida.");
-//                                        break;
-//                                }
-//                            } catch (Exception e){
-//                                System.out.println(" ");
-//                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-//                            } finally {
-//                                escolha = 3;
-//                            }
-//                            break;
+                        case 3:
+                            try {
+                                //MENU ADMIN
+                                System.out.println("Você escolheu a opção Admin.");
+                                System.out.println("1 - Login / 2 - Cadastrar / 0 - Voltar");
+                                int opcaoMenuAdmin = sc.nextInt();
+                                sc.nextLine();
+                                switch (opcaoMenuAdmin) {
+
+                                    case 1:
+                                        System.out.println("Informe seu email: ");
+                                        email = sc.nextLine();
+                                        System.out.println("Informe sua senha");
+                                        senha = sc.nextLine();
+                                        Admin adminLogado = listaAdmin.loginAdmin(email, senha);
+                                        boolean menuUsuarioLogado = true;
+
+                                        if (adminLogado == null) {
+                                            System.out.println("Falha no login. Verifique suas credenciais.");
+                                            break;
+                                        } else {
+                                            System.out.println("Login bem-sucedido! Bem-vindo, " + adminLogado.getNome() + ".");
+                                            do {
+                                                MenuNumerico.menuAdmin();
+                                                int escolhaInterna = sc.nextInt();
+                                                sc.nextLine();
+
+                                                switch (escolhaInterna) {
+
+                                                    case 1:
+                                                        System.out.println("Informe o seu nome: ");
+                                                        nome = sc.nextLine();
+                                                        System.out.println("Informe o seu sobrenome: ");
+                                                        sobrenome = sc.nextLine();
+                                                        System.out.println("Informe seu cpf: ");
+                                                        cpf = sc.nextLine();
+                                                        System.out.println("Informe o seu telefone: ");
+                                                        telefone = sc.nextLine();
+                                                        System.out.println("Informe o seu email: ");
+                                                        email = sc.nextLine();
+                                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                                        dataNascimento = sc.nextLine();
+                                                        data = LocalDate.parse(dataNascimento);
+                                                        System.out.println("Informe o seu sexo: 'F':Feminino 'M':Masculino 'O':Outros");
+                                                        sexo = sc.nextLine();
+                                                        System.out.println("Informe sua especialidade: ");
+                                                        descricao = sc.nextLine();
+                                                        System.out.println("Informe sua senha: ");
+                                                        senha = sc.nextLine();
+                                                        ativo = "S";
+
+                                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, descricao);
+                                                        listaAdmin.editar(adminLogado.getId(), adminCadastrado);
+
+                                                        break;
+                                                    case 2:
+                                                        listaModulos.listarSemAprovacao();
+                                                        System.out.println("Digite o número do módulo a ser aprovado: ");
+                                                        indexModulo = sc.nextInt();
+                                                        sc.nextLine();
+                                                        System.out.println("S - Para apovar módulo | N - Para reprovar módulo");
+                                                        aprovacaoModulo = sc.nextLine();
+                                                        listaModulos.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
+                                                        break;
+
+                                                    case 3:
+                                                        listaModulos.visualizarTodos();
+                                                        System.out.println("Digite o número do módulo a ser deletado: ");
+                                                        indexModulo = sc.nextInt();
+                                                        sc.nextLine();
+                                                        listaModulos.remover(indexModulo);
+                                                        System.out.println("Módulo deletado com sucesso!");
+                                                        break;
+
+                                                    case 4:
+                                                        listaAluno.visualizarTodosAlunos();
+                                                        break;
+
+                                                    case 5:
+                                                        System.out.println("Digite o ID do aluno:");
+                                                        int idAluno = sc.nextInt();
+                                                        sc.nextLine();
+                                                        listaAluno.consultar(idAluno);
+                                                        break;
+
+                                                    case 6:
+                                                        listaProfessor.visualizarTodos();
+                                                        break;
+
+                                                    case 7:
+                                                        System.out.println("Digite o ID do aluno:");
+                                                        int idProfessor = sc.nextInt();
+                                                        sc.nextLine();
+                                                        listaProfessor.consultar(idProfessor);
+                                                        break;
+
+                                                    case 0:
+                                                        menuUsuarioLogado = false;
+                                                        break;
+
+                                                    default:
+                                                        System.out.println("Opção inválida.");
+                                                        break;
+                                                }
+                                            } while (menuUsuarioLogado);
+
+                                        }
+
+                                        break;
+
+                                    case 2:
+                                        System.out.println("Informe o seu nome: ");
+                                        nome = sc.nextLine();
+                                        System.out.println("Informe o seu sobrenome: ");
+                                        sobrenome = sc.nextLine();
+                                        System.out.println("Informe seu cpf: ");
+                                        cpf = sc.nextLine();
+                                        System.out.println("Informe o seu telefone: ");
+                                        telefone = sc.nextLine();
+                                        System.out.println("Informe o seu email: ");
+                                        email = sc.nextLine();
+                                        System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
+                                        dataNascimento = sc.nextLine();
+                                        data = LocalDate.parse(dataNascimento);
+                                        System.out.println("Informe o seu sexo: 'F':Feminino 'M':Masculino 'O':Outros");
+                                        sexo = sc.nextLine();
+                                        System.out.println("Informe sua especialidade: ");
+                                        descricao = sc.nextLine();
+                                        System.out.println("Informe sua senha: ");
+                                        senha = sc.nextLine();
+                                        ativo = "S";
+
+                                        Admin adminCadastrado = new Admin(nome, sobrenome, telefone, email, data, ativo, sexo, senha, descricao);
+                                        listaAdmin.adicionar(adminCadastrado);
+                                        break;
+
+                                    case 0:
+                                        break;
+
+                                    default:
+                                        System.out.println("Opção inválida.");
+                                        break;
+
+                                }
+                            } catch (Exception e){
+                                System.out.println(" ");
+                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+                            } finally {
+                                escolha = 3;
+                            }
+                            break;
 //                        case 0:
 //                            System.out.println("Saindo do programa. Até logo!");
 //                            sc.close();

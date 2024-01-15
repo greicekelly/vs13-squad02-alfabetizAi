@@ -38,10 +38,10 @@ public class ModuloService extends Modulo {
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
-    }public void editarAprovacaoPorAdmin(Admin admin, Modulo modulo) {
+    }public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
         try {
-            boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(admin, modulo);
-            System.out.println("editado? " + conseguiuEditar + "| com id=" + modulo.getId());
+            boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
+            System.out.println("editado? " + conseguiuEditar + "| com id=" + idModulo);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }
@@ -54,6 +54,15 @@ public class ModuloService extends Modulo {
             e.printStackTrace();
         }
     }
+
+    public void listarSemAprovacao() {
+        try {
+            moduloRepository.listar().forEach(System.out::println);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String toString() {
         return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();

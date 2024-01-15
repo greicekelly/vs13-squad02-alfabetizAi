@@ -19,6 +19,11 @@ public class Admin extends Usuario implements AdminImplementa {
         this.descricao = descricao;
     }
 
+    public Admin( String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String descricao) {
+        super( nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha);
+        this.descricao = descricao;
+    }
+
     public Integer getIdAdmin() {
         return idAdmin;
     }
