@@ -523,7 +523,7 @@ public class Main {
                                                         System.out.println("Digite o número do módulo a ser aprovado: ");
                                                         indexModulo = sc.nextInt();
                                                         sc.nextLine();
-                                                        System.out.println("S - Para apovar módulo | N - Para reprovar módulo");
+                                                        System.out.println("S - Para aprovar módulo | R - Para reprovar módulo");
                                                         aprovacaoModulo = sc.nextLine();
                                                         moduloService.editarAprovacaoPorAdmin(adminLogado.getIdAdmin(), indexModulo, aprovacaoModulo);
                                                         break;
