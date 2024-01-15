@@ -52,12 +52,11 @@ public class Main {
 
         MenuNumerico.bemVindo();
 
-        try {
             while (true) {
+                try {
                 MenuNumerico.exibirMenuInicial();
                 System.out.print("Escolha uma opção do menu: ");
 
-                if (sc.hasNextInt()) {
                     escolha = sc.nextInt();
                     sc.nextLine();
 
@@ -618,12 +617,12 @@ public class Main {
                             System.out.println("Opção inválida. Tente novamente.");
                             break;
                     }
+                } catch (Exception e) {
+                    System.out.println(" ");
+                    System.out.println("Opcão inválida, digite somente números conforme opção do menu");
+                    sc.nextLine();
                 }
             }
-        } catch (Exception e) {
-            System.out.println(" ");
-            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-        }
 
     }
 }
