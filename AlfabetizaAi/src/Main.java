@@ -543,7 +543,6 @@ public class Main {
                                                         int idAluno = sc.nextInt();
                                                         sc.nextLine();
                                                         alunoService.BuscarAlunoPorId(idAluno);
-                                                        professorService.visualizarTodos();
                                                         break;
                                                     case 7:
                                                         professorService.visualizarTodos();
