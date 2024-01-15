@@ -262,6 +262,8 @@ public class Main {
                                                         sobrenome = sc.nextLine();
                                                         System.out.println("Informe o novo cpf: ");
                                                         cpf = sc.nextLine();
+                                                        System.out.println("Informe sua especialidade: ");
+                                                        descricao = sc.nextLine();
                                                         System.out.println("Informe a nova data de nascimento (yyyy-mm-dd): ");
                                                         dataNascimento = sc.nextLine();
                                                         LocalDate dataNova = LocalDate.parse(dataNascimento);
@@ -283,6 +285,7 @@ public class Main {
                                                         professorCadastrado.setSexo(sexo);
                                                         professorCadastrado.setSenha(senha);
                                                         professorCadastrado.setCpf(cpf);
+                                                        professorCadastrado.setDescricao(descricao);
 
                                                         professorService.editar(professorLogado.getId(), professorCadastrado);
                                                         System.out.println("Professor editado com sucesso");
@@ -418,6 +421,8 @@ public class Main {
                                         sobrenome = sc.nextLine();
                                         System.out.println("Informe o seu cpf: ");
                                         cpf = sc.nextLine();
+                                        System.out.println("Informe sua especialidade: ");
+                                        descricao = sc.nextLine();
                                         System.out.println("Informe o seu telefone: ");
                                         telefone = sc.nextLine();
                                         System.out.println("Informe sua data de nascimento: yyyy-mm-dd");
@@ -439,6 +444,7 @@ public class Main {
                                         professorCadastrado.setSexo(sexo);
                                         professorCadastrado.setSenha(senha);
                                         professorCadastrado.setCpf(cpf);
+                                        professorCadastrado.setDescricao(descricao);
 
 
                                         professorService.adicionar(professorCadastrado);
