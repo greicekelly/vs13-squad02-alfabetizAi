@@ -358,7 +358,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
-                modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classifcacao_modulo")));
+                modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
                 modulo.setFoiAprovado(res.getString("modulo_aprovado").charAt(0));
 
             }

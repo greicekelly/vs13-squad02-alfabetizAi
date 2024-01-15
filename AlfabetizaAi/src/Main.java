@@ -444,6 +444,17 @@ public class Main {
                                         professorService.adicionar(professorCadastrado);
                                         System.out.println("Professor cadastrado com sucesso");
                                         break;
+
+                                    case 0:
+                                        menuUsuarioLogado = false;
+                                        break;
+
+                                }
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+
                         case 3:
                             try {
                                 //MENU ADMIN
@@ -594,23 +605,20 @@ public class Main {
                                 escolha = 3;
                             }
                             break;
-                                    case 0:
-                                        System.out.println("Saindo do programa. Até logo!");
-                                        sc.close();
-                                        System.exit(0);
-                                    default:
-                                        System.out.println("Opção inválida. Tente novamente.");
-                                        break;
-                                }
-                            } catch(Exception e){
-                                System.out.println(" ");
-                                System.out.println("Opcão inválida, digite somente números conforme opção do menu");
-                        }
+                        case 0:
+                            System.out.println("Saindo do programa. Até logo!");
+                            sc.close();
+                            System.exit(0);
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                            break;
                     }
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(" ");
+            System.out.println("Opcão inválida, digite somente números conforme opção do menu");
         }
+
     }
 }
