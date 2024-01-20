@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
-import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import jakarta.validation.Valid;
