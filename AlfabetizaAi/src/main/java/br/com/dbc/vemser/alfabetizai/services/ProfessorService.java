@@ -5,6 +5,7 @@ import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.ProfessorRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
+    private final ObjectMapper objectMapper;
 
     private void validarCpf(String cpf) throws RegraDeNegocioException {
         if (cpf.length() != 11) {
@@ -46,7 +48,7 @@ public class ProfessorService {
         try {
             List<Professor> professores = professorRepository.listar();
             return professores.stream()
-                    .map(ProfessorDTO::fromProfessor)
+                    .map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class))
                     .collect(Collectors.toList());
         } catch (BancoDeDadosException e) {
             log.error("Erro ao buscar professores: {}", e.getMessage(), e);
