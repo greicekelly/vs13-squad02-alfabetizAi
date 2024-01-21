@@ -38,6 +38,7 @@ public abstract class Usuario {
         this.cpf = cpf;
     }
 
+
     public Usuario( String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String cpf) {
         this.nome = nome;
         this.sobrenome = sobrenome;
