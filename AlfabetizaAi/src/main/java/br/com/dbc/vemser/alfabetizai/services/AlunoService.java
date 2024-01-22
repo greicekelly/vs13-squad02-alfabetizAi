@@ -1,98 +1,74 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.repository.AlunoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AlunoService {
-    private AlunoRepository alunoRepository;
+    private final AlunoRepository alunoRepository;
 
-    public AlunoService() {
-        alunoRepository = new AlunoRepository();
+    private final ObjectMapper objectMapper;
+
+    public AlunoService(AlunoRepository alunoRepository, ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+        this.alunoRepository = alunoRepository;
     }
 
-    public void adicionar(Aluno aluno) {
-        if (aluno.getNome() == null || aluno.getNome().isEmpty()) {
-            throw new IllegalArgumentException("Por favor insira um nome.");
-        }
-
+    public AlunoDTO criar(AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException {
         try {
-            alunoRepository.adicionar(aluno);
+            Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+
+            alunoEntity = alunoRepository.adicionar(alunoEntity);
+
+            return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
         }
     }
 
-    public List<Aluno> visualizarTodosAlunos() {
+    public List<AlunoDTO> listar() throws RegraDeNegocioException {
         try {
             List<Aluno> alunos = alunoRepository.listar();
-            if (alunos.isEmpty()) {
-                throw new IllegalStateException("Nenhum aluno cadastrado.");
-            } else {
-                return alunos;
-            }
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public void BuscarAlunoPorId(Integer idUsuario){
-        try {
-            alunoRepository.BuscarAlunoPorId(idUsuario);
+            return alunos.stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Algum problema ocorreu ao listar alunos" + e.getMessage());
         }
     }
 
-    public void consultar(int id) {
+    public AlunoDTO BuscarAlunoPorId(Integer idUsuario) throws RegraDeNegocioException {
         try {
-            List<Aluno> alunos = alunoRepository.BuscarAlunoPorId(id);
-            if (!alunos.isEmpty()) {
-                Aluno aluno = alunos.get(0);
-                System.out.printf("""
-                        Id: %d
-                        Nome: %s
-                        Data de nascimento: %s
-                        Email: %s
-                        """, aluno.getIdUsuario(), aluno.getNome(), aluno.getDataDeNascimento(), aluno.getEmail());
-                System.out.println("--------------------------------");
-            } else {
-                System.out.println("Nenhum aluno com o ID informado.");
-                System.out.println("--------------------------------");
-            }
+            Aluno alunoEntity = alunoRepository.BuscarAlunoPorId(idUsuario);
+
+            return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }
-    public Aluno loginAluno(String email, String senha) {
-        try {
-            Aluno aluno = alunoRepository.loginAluno(email, senha);
-            return aluno;
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            return null;
+            throw new RegraDeNegocioException("Algum problema ocorreu ao buscar aluno" + e.getMessage());
         }
     }
 
-
-    public void editar(Aluno aluno, Aluno alunoEditado) {
+    public boolean atualizar(Integer id, AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException {
         try {
-            alunoRepository.editar(aluno.getIdUsuario(), alunoEditado);
+            Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+           return alunoRepository.editar(id, alunoEntity);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Algum problema ocorreu ao atualizar aluno" + e.getMessage());
         }
     }
 
-    public void remover(int id) {
+    public void remover(int id) throws RegraDeNegocioException {
         try {
-            alunoRepository.remover(id, new Aluno());
+
+            alunoRepository.remover(id);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Algum problema ocorreu ao deletar aluno" + e.getMessage());
         }
     }
 }

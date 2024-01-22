@@ -129,6 +129,11 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     }
 
     @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
+        return false;
+    }
+
+    @Override
     public boolean editar(Integer id, Professor professor) throws BancoDeDadosException {
         Connection con = null;
         try {

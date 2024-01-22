@@ -101,6 +101,11 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
     @Override
     public boolean remover(Integer id, Aluno aluno) throws BancoDeDadosException {
+        return false;
+    }
+
+    @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -214,8 +219,8 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     }
 
 
-    public List<Aluno> BuscarAlunoPorId(Integer idUsuario) throws BancoDeDadosException {
-        List<Aluno> alunoBanco = new ArrayList<>();
+    public Aluno BuscarAlunoPorId(Integer idUsuario) throws BancoDeDadosException {
+        Aluno aluno = new Aluno();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -226,7 +231,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
                 try (ResultSet res = stmt.executeQuery()) {
                     while (res.next()) {
-                        Aluno aluno = new Aluno();
+
                         aluno.setIdUsuario(res.getInt("id_usuario"));
                         aluno.setNome(res.getString("nome"));
                         aluno.setSobrenome(res.getString("sobrenome"));
@@ -236,13 +241,11 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                         aluno.setSexo(res.getString("sexo"));
                         aluno.setSenha(res.getString("senha"));
                         aluno.setCpf(res.getString("cpf"));
-                        alunoBanco.add(aluno);
                     }
                 }
             }
 
-            System.out.println(alunoBanco);
-            return alunoBanco;
+            return aluno;
 
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
