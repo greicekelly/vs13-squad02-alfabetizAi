@@ -137,6 +137,11 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
+        return false;
+    }
+
+    @Override
     public boolean editar(Integer id, Admin admin) throws BancoDeDadosException {
         Connection con = null;
         try {

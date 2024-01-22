@@ -1,16 +1,20 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.implement.ProfessorImplementa;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Professor extends Usuario implements ProfessorImplementa {
 
     private Integer idProfessor;
 
     private String descricao;
-
-    public Professor() {}
 
     public Professor(int idUsuario, String nome, String sobrenome, String telefone, String email, LocalDate dataDeNascimento, String ativo, String sexo, String senha, String cpf, Integer idProfessor, String descricao) {
         super(idUsuario, nome, sobrenome, telefone, email, dataDeNascimento, ativo, sexo, senha, cpf);
@@ -44,14 +48,5 @@ public class Professor extends Usuario implements ProfessorImplementa {
         System.out.println("\nConteudo Modificado com sucesso");
     }
 
-
-    @Override
-    public String toString() {
-        return "Professor: " +
-                "Id: " + getId() +
-                " - Nome: " + getNome() +
-                " - Data de Nascimento: " + getDataDeNascimento() +
-                " - Email: " + getEmail() + "\'";
-    }
 }
 

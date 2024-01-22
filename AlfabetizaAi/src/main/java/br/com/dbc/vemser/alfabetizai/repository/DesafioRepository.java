@@ -96,6 +96,11 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
     }
 
     @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
+        return false;
+    }
+
+    @Override
     public boolean editar(Integer id, Desafio desafio) throws BancoDeDadosException {
         Connection con = null;
         try {
