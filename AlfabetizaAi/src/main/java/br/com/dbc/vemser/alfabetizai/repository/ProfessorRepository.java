@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -112,7 +113,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     }
 
     @Override
-    public boolean remover(Integer id, Professor professor) throws BancoDeDadosException {
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -144,7 +145,8 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         }
     }
 
-    public boolean editar(Integer id, Professor professor) throws BancoDeDadosException {
+    @Override
+    public Professor editar(Integer id, Professor professor) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -161,7 +163,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             sql.append("CPF = ? ");
             sql.append("WHERE ID_USUARIO = ?");  // Corrigindo para o nome correto da coluna
 
-            try (PreparedStatement stmt = con.prepareStatement(sql.toString())) {
+             PreparedStatement stmt = con.prepareStatement(sql.toString());
                 stmt.setString(1, professor.getNome());
                 stmt.setString(2, professor.getSobrenome());
                 stmt.setString(3, professor.getTelefone());
@@ -175,13 +177,13 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 int res = stmt.executeUpdate();
                 System.out.println("editarUsuario.res=" + res);
 
-                Professor professorAtualizado = buscarProfessorPorId(id);
+                //Professor professorAtualizado = buscarProfessorPorId(id);
 
-                professor.setIdProfessor(professorAtualizado.getIdProfessor());
-                professor.setIdUsuario(professorAtualizado.getIdUsuario());
 
-                return res > 0;
-            }
+//                professor.setIdProfessor(professorAtualizado.getIdProfessor());
+//                professor.setIdUsuario(professorAtualizado.getIdUsuario());
+
+                return professor;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {

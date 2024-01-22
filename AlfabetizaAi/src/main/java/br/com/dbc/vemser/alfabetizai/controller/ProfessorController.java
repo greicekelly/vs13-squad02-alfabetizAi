@@ -25,7 +25,7 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
 
-    public ResponseEntity<List<ProfessorDTO>> list() {
+    public ResponseEntity<List<ProfessorDTO>> list() throws Exception {
         List<ProfessorDTO> professores = professorService.visualizarTodos();
         return ResponseEntity.ok(professores);
     }
@@ -56,7 +56,7 @@ public class ProfessorController {
     @DeleteMapping("/delete/{idProfessor}")
     public ResponseEntity<ProfessorDTO> delete(@PathVariable("idProfessor") Integer id) {
         try {
-            Professor professorRemovido = professorService.remover(id, null);
+            Professor professorRemovido = professorService.remover(id);
             return ResponseEntity.ok(ProfessorDTO.fromProfessor(professorRemovido));
         } catch (BancoDeDadosException e) {
             log.error("Erro ao tentar remover o professor | ID: {}", id, e);
@@ -64,11 +64,11 @@ public class ProfessorController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<ProfessorDTO> login(@RequestParam String email, @RequestParam String senha) {
-        Optional<Professor> optionalProfessor = professorService.loginProfessor(email, senha);
-        return optionalProfessor
-                .map(p -> ResponseEntity.ok(ProfessorDTO.fromProfessor(p)))
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<ProfessorDTO> login(@RequestParam String email, @RequestParam String senha) {
+//        Optional<Professor> optionalProfessor = professorService.loginProfessor(email, senha);
+//        return optionalProfessor
+//                .map(p -> ResponseEntity.ok(ProfessorDTO.fromProfessor(p)))
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 }

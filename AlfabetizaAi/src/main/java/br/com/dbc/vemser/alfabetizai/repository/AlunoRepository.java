@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import org.springframework.stereotype.Repository;
 
@@ -100,11 +101,6 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     }
 
     @Override
-    public boolean remover(Integer id, Aluno aluno) throws BancoDeDadosException {
-        return false;
-    }
-
-    @Override
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
@@ -134,7 +130,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     }
 
     @Override
-    public boolean editar(Integer id, Aluno aluno) throws BancoDeDadosException {
+    public Aluno editar(Integer id, Aluno aluno) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -165,7 +161,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 int res = stmt.executeUpdate();
                 System.out.println("editarAluno.res=" + res);
 
-                return res > 0;
+                return aluno;
             }
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

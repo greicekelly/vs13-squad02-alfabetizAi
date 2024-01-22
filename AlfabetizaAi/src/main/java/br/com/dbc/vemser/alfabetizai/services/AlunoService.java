@@ -54,10 +54,10 @@ public class AlunoService {
         }
     }
 
-    public boolean atualizar(Integer id, AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException {
+    public AlunoDTO atualizar(Integer id, AlunoCreateDTO alunoCreateDTO) throws RegraDeNegocioException {
         try {
             Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
-           return alunoRepository.editar(id, alunoEntity);
+           return  objectMapper.convertValue(alunoRepository.editar(id, alunoEntity), AlunoDTO.class);
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Algum problema ocorreu ao atualizar aluno" + e.getMessage());
         }

@@ -3,12 +3,11 @@ package br.com.dbc.vemser.alfabetizai.services;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.ModuloRepository;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class ModuloService extends Modulo {
-    private ModuloRepository moduloRepository;
-    public ModuloService() {
-        moduloRepository = new ModuloRepository();
-    }
+    private final ModuloRepository moduloRepository;
 
     // criação de um objeto
     public void adicionarModulo(Modulo modulo) {
@@ -20,9 +19,9 @@ public class ModuloService extends Modulo {
         }
     }
     // remoção
-    public void remover(Integer id, Modulo modulo) {
+    public void remover(Integer id) {
         try {
-            boolean conseguiuRemover = moduloRepository.remover(id, modulo);
+            boolean conseguiuRemover = moduloRepository.remover(id);
             System.out.println("removido? " + conseguiuRemover + "| com id=" + id);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
@@ -30,14 +29,16 @@ public class ModuloService extends Modulo {
     }
 
     // atualização de um objeto
-    public void editar(Integer id, Modulo modulo) {
-        try {
-            boolean conseguiuEditar = moduloRepository.editar(id, modulo);
-            System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
+//    public void editar(Integer id, Modulo modulo) {
+//        try {
+//            boolean conseguiuEditar = moduloRepository.editar(id, modulo);
+//            System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
+//        } catch (BancoDeDadosException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
         try {
             boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
             System.out.println("editado? " + conseguiuEditar + "| com id=" + idModulo);
@@ -78,14 +79,14 @@ public class ModuloService extends Modulo {
         }
     }
 
-    public Modulo BuscarModuloPorId(Integer idUsuario){
-        try {
-            return moduloRepository.buscarModuloPorId(idUsuario);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public Modulo BuscarModuloPorId(Integer idUsuario){
+//        try {
+//            return moduloRepository.buscarModuloPorId(idUsuario);
+//        } catch (BancoDeDadosException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     @Override
     public String toString() {
