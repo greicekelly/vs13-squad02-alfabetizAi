@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
-    ProfessorService professorService = new ProfessorService();
+//    ProfessorService professorService = new ProfessorService();
     AdminService adminService = new AdminService();
 
     @Override
@@ -348,7 +348,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT * FROM MODULO M" +
+            String sql = "SELECT * FROM MODULO M " +
                     "WHERE M.ID_MODULO = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -359,7 +359,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             while (res.next()) {
 
                 modulo.setId(res.getInt("id_modulo"));
-                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
+//                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
                 modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
