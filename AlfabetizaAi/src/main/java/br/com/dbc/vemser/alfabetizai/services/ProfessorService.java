@@ -24,6 +24,19 @@ public class ProfessorService {
     private ProfessorRepository professorRepository;
     private final ObjectMapper objectMapper;
 
+    private ProfessorDTO converterParaDTO(Professor professor) {
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setIdProfessor(professor.getIdProfessor());
+        professorDTO.setIdUsuario(professor.getIdUsuario());
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setSobrenome(professor.getSobrenome());
+        professorDTO.setTelefone(professor.getTelefone());
+        professorDTO.setEmail(professor.getEmail());
+        professorDTO.setDescricao(professor.getDescricao());
+
+        return professorDTO;
+    }
+
     private void validarCpf(String cpf) throws RegraDeNegocioException {
         if (cpf.length() != 11) {
             throw new RegraDeNegocioException("CPF Inválido!");
@@ -48,24 +61,12 @@ public class ProfessorService {
         try {
             List<Professor> professores = professorRepository.listar();
             return professores.stream()
-                    .map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class))
+                    .map(this::converterParaDTO)
                     .collect(Collectors.toList());
         } catch (BancoDeDadosException e) {
             log.error("Erro ao buscar professores: {}", e.getMessage(), e);
             return Collections.emptyList();
         }
-    }
-
-    private ProfessorDTO converterParaDTO(Professor professor) {
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setIdUsuario(professor.getIdUsuario());
-        professorDTO.setNome(professor.getNome());
-        professorDTO.setSobrenome(professor.getSobrenome());
-        professorDTO.setTelefone(professor.getTelefone());
-        professorDTO.setEmail(professor.getEmail());
-        professorDTO.setDescricao(professor.getDescricao());
-
-        return professorDTO;
     }
 
     public Professor buscarProfessorPorId(Integer idUsuario){
