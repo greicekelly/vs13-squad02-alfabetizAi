@@ -23,7 +23,9 @@ public class Professor extends Usuario implements ProfessorImplementa {
     @Size(max = 255)
     private String descricao;
 
-    public Professor() {}
+    public Professor() {
+
+    }
 
     @Override
     public Modulo criarModulo(){

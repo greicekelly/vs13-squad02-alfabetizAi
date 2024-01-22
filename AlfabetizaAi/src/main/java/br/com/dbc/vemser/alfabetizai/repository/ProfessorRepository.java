@@ -317,6 +317,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                         professor.setDescricao(res.getString("descricao"));
 
                         return professor;
+
                     }
                 }
             }

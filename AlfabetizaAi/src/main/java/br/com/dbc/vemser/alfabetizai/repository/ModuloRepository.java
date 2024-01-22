@@ -104,6 +104,11 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     }
 
     @Override
+    public boolean remover(Integer id) throws BancoDeDadosException {
+        return false;
+    }
+
+    @Override
     public boolean editar(Integer id, Modulo modulo) throws BancoDeDadosException {
         Connection con = null;
         try {
