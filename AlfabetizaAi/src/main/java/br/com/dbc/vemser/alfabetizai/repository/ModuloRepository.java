@@ -19,6 +19,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     private final ProfessorService professorService;
     private final AdminService adminService;
 
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT seq_modulo.nextval mysequence from DUAL";
@@ -345,7 +346,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT * FROM MODULO M" +
+            String sql = "SELECT * FROM MODULO M " +
                     "WHERE M.ID_MODULO = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -356,8 +357,8 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             while (res.next()) {
 
                 modulo.setId(res.getInt("id_modulo"));
-                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
                 //modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
+//                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
