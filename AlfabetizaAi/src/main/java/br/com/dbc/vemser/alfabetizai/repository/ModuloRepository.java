@@ -7,15 +7,17 @@ import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
+import lombok.AllArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
-    ProfessorService professorService = new ProfessorService();
-    AdminService adminService = new AdminService();
+    private final ProfessorService professorService;
+    private final AdminService adminService;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -74,7 +76,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     }
 
     @Override
-    public boolean remover(Integer id, Modulo modulo) throws BancoDeDadosException {
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -104,12 +106,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     }
 
     @Override
-    public boolean remover(Integer id) throws BancoDeDadosException {
-        return false;
-    }
-
-    @Override
-    public boolean editar(Integer id, Modulo modulo) throws BancoDeDadosException {
+    public Modulo editar(Integer id, Modulo modulo) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -137,7 +134,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             int res = stmt.executeUpdate();
             System.out.println("editarModulo.res=" + res);
 
-            return res > 0;
+            return modulo;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -343,7 +340,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         }
         return modulos;
     }
-    public Modulo buscarModuloPorId(Integer idModulo) throws BancoDeDadosException {
+    public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -360,7 +357,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
                 modulo.setId(res.getInt("id_modulo"));
                 modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
-                modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
+                //modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));

@@ -42,10 +42,10 @@ public class AlunoController {
     }
 
     @PutMapping("/{idAluno}")
-    public ResponseEntity<Boolean> atualizar(@PathVariable("idAluno") Integer id,
+    public ResponseEntity<AlunoDTO> atualizar(@PathVariable("idAluno") Integer id,
                                                 @Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception {
         log.info("Atualizando aluno");
-        boolean alunoAtualizado = alunoService.atualizar(id, alunoCreateDTO);
+        AlunoDTO alunoAtualizado = alunoService.atualizar(id, alunoCreateDTO);
         log.info("Aluno atualizado");
         return new ResponseEntity<>(alunoAtualizado, HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
 import java.sql.*;
@@ -96,7 +97,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         }
     }
     @Override
-    public boolean remover(Integer id, Professor professor) throws BancoDeDadosException {
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -129,12 +130,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     }
 
     @Override
-    public boolean remover(Integer id) throws BancoDeDadosException {
-        return false;
-    }
-
-    @Override
-    public boolean editar(Integer id, Professor professor) throws BancoDeDadosException {
+    public Professor editar(Integer id, Professor professor) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -165,7 +161,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             int res = stmt.executeUpdate();
             System.out.println("editarUsuario.res=" + res);
 
-            return res > 0;
+            return professor;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {

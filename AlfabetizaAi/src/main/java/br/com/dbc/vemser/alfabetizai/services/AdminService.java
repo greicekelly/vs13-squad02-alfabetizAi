@@ -1,70 +1,57 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.repository.AdminRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
+@Service
 public class AdminService {
 
-    private  AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
+    private final ObjectMapper objectMapper;
 
-    public AdminService() {
-        adminRepository = new AdminRepository();
+    public List<AdminDTO> listar() throws Exception {
+        List<Admin> listaAdminBanco = adminRepository.listar();
+
+        return listaAdminBanco.stream()
+                .map(admin -> objectMapper.convertValue(admin, AdminDTO.class))
+                .collect(Collectors.toList());
+
     }
 
-    public void adicionar(Admin admin) {
-        try {
-            if (admin.getCpf().length() != 11) {
-                throw new Exception("CPF Invalido!");
-            }
-            Admin adminAdicionado = adminRepository.adicionar(admin);
-            System.out.println("admin adicinado com sucesso! " + adminAdicionado);
-        } catch (BancoDeDadosException e) {
-            System.out.println("ERRO: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("ERRO: " + e.getMessage());
-            e.printStackTrace();
-        }
+    public AdminDTO BuscarAdminPorId(Integer idUsuario) throws Exception{
+        Admin admin = adminRepository.BuscarAdminPorId(idUsuario);
+
+        return objectMapper.convertValue(admin, AdminDTO.class);
+
     }
 
+    public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
+        Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
+        adminEntity = adminRepository.adicionar(adminEntity);
 
-    public void visualizarTodos() {
-        try {
-            List<Admin> listar = adminRepository.listar();
-            listar.forEach(System.out::println);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
+        return objectMapper.convertValue(adminEntity, AdminDTO.class);
     }
 
-    public Admin BuscarAdminPorId(Integer idUsuario){
-        try {
-            return adminRepository.BuscarAdminPorId(idUsuario);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public AdminDTO atualizar(Integer id, AdminCreateDTO adminCreateDTO) throws Exception {
+        Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
+        adminEntity = adminRepository.editar(id, adminEntity);
+
+        return objectMapper.convertValue(adminEntity, AdminDTO.class);
     }
 
-    public void editar(Integer id, Admin adminEditado) {
-        try {
-            boolean conseguiuEditar = adminRepository.editar(id, adminEditado);
-            System.out.println("admin editado com sucesso? " + conseguiuEditar + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void remover(Integer id, Admin admin) {
-        try {
-            boolean conseguiuRemover = adminRepository.remover(id, admin);
-            System.out.println("pessoa removida? " + conseguiuRemover + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
+    public void remover(Integer id) throws Exception {
+        boolean conseguiuRemover = adminRepository.remover(id);
     }
 
     public Admin loginAdmin(String email, String senha) {

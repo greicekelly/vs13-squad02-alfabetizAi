@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 
 import java.sql.*;
@@ -66,7 +67,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
     }
 
     @Override
-    public boolean remover(Integer id, Desafio desafio) throws BancoDeDadosException {
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -96,12 +97,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
     }
 
     @Override
-    public boolean remover(Integer id) throws BancoDeDadosException {
-        return false;
-    }
-
-    @Override
-    public boolean editar(Integer id, Desafio desafio) throws BancoDeDadosException {
+    public Desafio editar(Integer id, Desafio desafio) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -125,7 +121,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
             int res = stmt.executeUpdate();
             System.out.println("editarDesafio.res=" + res);
 
-            return res > 0;
+            return desafio;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {

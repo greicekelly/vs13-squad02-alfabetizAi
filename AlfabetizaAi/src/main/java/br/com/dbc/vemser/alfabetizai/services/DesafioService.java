@@ -48,23 +48,23 @@ public class DesafioService {
         }
     }
 
-    public void editar(Integer id, Desafio desafioEditado) {
-        try {
-            boolean conseguiuEditar = desafioRepository.editar(id, desafioEditado);
-            System.out.println("Desafio editado com sucesso? " + conseguiuEditar + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void editar(Integer id, Desafio desafioEditado) {
+//        try {
+//            boolean conseguiuEditar = desafioRepository.editar(id, desafioEditado);
+//            System.out.println("Desafio editado com sucesso? " + conseguiuEditar + "| com id=" + id);
+//        } catch (BancoDeDadosException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void remover(Integer id, Desafio desafio) {
-        try {
-            boolean conseguiuRemover = desafioRepository.remover(id, desafio);
-            System.out.println("Desafio removido? " + conseguiuRemover + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void remover(Integer id, Desafio desafio) {
+//        try {
+//            boolean conseguiuRemover = desafioRepository.remover(id, desafio);
+//            System.out.println("Desafio removido? " + conseguiuRemover + "| com id=" + id);
+//        } catch (BancoDeDadosException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void listarDesafiosPorModulo(int idModuloEscolhido) {
         try {

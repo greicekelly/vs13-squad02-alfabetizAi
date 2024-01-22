@@ -2,12 +2,15 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
+@Repository
 public class AdminRepository implements Repositorio<Integer, Admin>{
 
     @Override
@@ -73,7 +76,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(10, admin.getCpf());
 
             int resUsuario = stmt.executeUpdate();
-            System.out.println("adicionarUsuario.res=" + resUsuario);
+            log.info("adicionarUsuario.res=" + resUsuario);
 
             String sqlAdmin = "INSERT INTO ADMIN\n" +
                     "(ID_ADMIN, ID_USUARIO, DESCRICAO)\n" +
@@ -86,7 +89,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmtAdmin.setString(3, admin.getDescricao());
 
             int resAdmin = stmtAdmin.executeUpdate();
-            System.out.println("adicionarAdmin.res=" + resAdmin);
+            log.info("adicionarAdmin.res=" + resAdmin);
 
             return admin;
 
@@ -104,7 +107,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     @Override
-    public boolean remover(Integer id, Admin admin) throws BancoDeDadosException {
+    public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -120,7 +123,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setInt(2, id);
 
             int res = stmt.executeUpdate();
-            System.out.println("editarUsuario.res=" + res);
+            log.info("editarUsuario.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -137,12 +140,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     @Override
-    public boolean remover(Integer id) throws BancoDeDadosException {
-        return false;
-    }
-
-    @Override
-    public boolean editar(Integer id, Admin admin) throws BancoDeDadosException {
+    public Admin editar(Integer id, Admin admin) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -188,9 +186,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 stmtAdmin.executeUpdate();
             }
 
-            System.out.println("editarUsuario.res=" + res);
+            log.info("editarUsuario.res=" + res);
 
-            return res > 0;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -202,6 +199,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 e.printStackTrace();
             }
         }
+
+        return admin;
     }
 
 
@@ -213,7 +212,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT U.*, A.DESCRICAO " +
+            String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) ";
 
@@ -222,14 +221,17 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             while (res.next()) {
                 Admin admin = new Admin();
                 admin.setIdUsuario(res.getInt("id_usuario"));
+                admin.setIdAdmin(res.getInt("id_admin"));
                 admin.setNome(res.getString("nome"));
                 admin.setSobrenome(res.getString("sobrenome"));
                 admin.setTelefone(res.getString("telefone"));
                 admin.setEmail(res.getString("email"));
                 admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                admin.setAtivo(res.getString("ativo"));
                 admin.setSexo(res.getString("sexo"));
                 admin.setSenha(res.getString("senha"));
                 admin.setCpf(res.getString("cpf"));
+                admin.setDescricao(res.getString("descricao"));
                 adminBanco.add(admin);
             }
         } catch (SQLException e) {
@@ -247,12 +249,12 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     }
 
     public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
-
+        Admin admin = new Admin();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT U.*, A.DESCRICAO " +
+            String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
                     "WHERE U.ID_USUARIO = ? ";
@@ -261,27 +263,24 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setInt(1, idUsuasrio);
 
             ResultSet res = stmt.executeQuery();
-            Admin admin = new Admin();
             while (res.next()) {
 
                 admin.setIdUsuario(res.getInt("id_usuario"));
+                admin.setIdAdmin(res.getInt("id_admin"));
                 admin.setNome(res.getString("nome"));
                 admin.setSobrenome(res.getString("sobrenome"));
                 admin.setTelefone(res.getString("telefone"));
                 admin.setEmail(res.getString("email"));
                 admin.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                admin.setAtivo(res.getString("ativo"));
                 admin.setSexo(res.getString("sexo"));
                 admin.setSenha(res.getString("senha"));
                 admin.setCpf(res.getString("cpf"));
-
+                admin.setDescricao(res.getString("descricao"));
             }
-            System.out.println(admin);
-            return admin;
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
-
         } finally {
             try {
                 if (con != null) {
@@ -291,6 +290,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 e.printStackTrace();
             }
         }
+        return admin;
     }
 
     public Admin LoginAdmin(String email, String senha) throws BancoDeDadosException {
@@ -298,7 +298,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
-            String sql = "SELECT U.*, A.ID_ADMIN, A.DESCRICAO " +
+            String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+
                     "WHERE U.EMAIL = ? "+
