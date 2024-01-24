@@ -19,4 +19,14 @@ public class Desafio {
     private String conteudo;
 
     private TipoDesafio tipoDesafio;
+
+    public Desafio() {
+
+        this.id = id;
+        this.idModulo = idModulo;
+        this.titulo = titulo;
+        this.conteudo = conteudo;
+        this.tipoDesafio = tipoDesafio;
+
+    }
 }

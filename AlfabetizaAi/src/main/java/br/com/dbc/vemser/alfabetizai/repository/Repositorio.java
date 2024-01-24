@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ public interface Repositorio<CHAVE, OBJETO> {
 
     boolean remover(CHAVE id) throws BancoDeDadosException;
 
-    OBJETO editar(CHAVE id, OBJETO objeto) throws BancoDeDadosException;
+    OBJETO editar(Integer id, DesafioCreateDTO desafio) throws BancoDeDadosException;
 
     List<OBJETO> listar() throws BancoDeDadosException;
 }
