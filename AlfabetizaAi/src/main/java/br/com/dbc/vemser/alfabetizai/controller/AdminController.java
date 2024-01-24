@@ -32,7 +32,7 @@ public class AdminController {
     @GetMapping("/{idUsuario}")
     public ResponseEntity<AdminDTO> BuscarAdminPorId(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
         log.info("Buscando Admin por ID");
-        AdminDTO adminDTO = adminService.BuscarAdminPorId(idUsuario);
+        AdminDTO adminDTO = adminService.buscarAdminPorId(idUsuario);
         log.info("Admin por ID Retornado");
         return new ResponseEntity<>(adminDTO, HttpStatus.OK);
     }
