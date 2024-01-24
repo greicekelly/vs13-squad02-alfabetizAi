@@ -203,8 +203,6 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return admin;
     }
 
-
-
     public List<Admin> listar() throws BancoDeDadosException {
         List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;

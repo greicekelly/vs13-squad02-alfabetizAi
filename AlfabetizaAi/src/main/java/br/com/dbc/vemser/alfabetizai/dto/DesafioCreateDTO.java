@@ -27,4 +27,11 @@ public class DesafioCreateDTO {
     @NotNull(message = "O Tipo de desafio não pode ser Nulo!")
     private TipoDesafio tipoDesafio;
 
+    public DesafioCreateDTO(DesafioCreateDTO atualizarDesafio) {
+        this.idModulo = atualizarDesafio.idModulo;
+        this.conteudo = atualizarDesafio.conteudo;
+        this.titulo = atualizarDesafio.titulo;
+        this.tipoDesafio = atualizarDesafio.tipoDesafio;
+
+    }
 }

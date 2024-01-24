@@ -49,7 +49,7 @@ public class DesafioService {
         }
     }
 
-public DesafioDTO adicionar(DesafioCreateDTO desafioCreateDTO) throws Exception {
+public DesafioDTO adicionar(DesafioCreateDTO desafioCreateDTO) throws RegraDeNegocioException{
     try {
         Desafio desafioEntity = objectMapper.convertValue(desafioCreateDTO, Desafio.class);
         desafioEntity = desafioRepository.adicionar(desafioEntity);
@@ -57,35 +57,32 @@ public DesafioDTO adicionar(DesafioCreateDTO desafioCreateDTO) throws Exception 
 
         return desafioDTO;
     } catch (BancoDeDadosException e) {
-        System.out.println("Erro ao adicionar desafio no banco de dados: " + e.getMessage());
         e.printStackTrace();
-        throw new Exception("Erro ao adicionar desafio", e);
-    }
-}
+        throw new RegraDeNegocioException("Erro ao adicionar desafio no banco de dados: " + e.getMessage());
+    }}
 
-    public DesafioDTO editar(Integer id, DesafioCreateDTO atualizarDesafio) {
+
+    public DesafioDTO editar(Integer id, DesafioCreateDTO atualizarDesafio)throws RegraDeNegocioException {
         try {
-            DesafioCreateDTO desafiorecuperado = atualizarDesafio;
-            desafiorecuperado.setIdModulo(atualizarDesafio.getIdModulo());
-            desafiorecuperado.setConteudo(atualizarDesafio.getConteudo());
-            desafiorecuperado.setTitulo(atualizarDesafio.getTitulo());
-            desafiorecuperado.setConteudo(atualizarDesafio.getConteudo());
+            Desafio desafioEntity = objectMapper.convertValue(atualizarDesafio, Desafio.class);
+            desafioEntity = desafioRepository.editar(id, desafioEntity);
 
-            return objectMapper.convertValue(desafioRepository.editar(id, desafiorecuperado) DesafioDTO.class);
+            return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
 
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
+            throw new RegraDeNegocioException("Erro ao editar desafio no banco de dados: " + e.getMessage());
         }
     }
 
-//    public void remover(Integer id) {
-//        try {
-//            Desafio desafioRecuperado = getDesafio(id);
-//            desafioRepository.remover(desafioRecuperado);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void remover(Integer id)throws RegraDeNegocioException {
+        try {
+            boolean removeuDesafio = desafioRepository.remover(id);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+            throw new RegraDeNegocioException("Erro ao editar desafio no banco de dados: " + e.getMessage());
+        }
+    }}
 
 
 

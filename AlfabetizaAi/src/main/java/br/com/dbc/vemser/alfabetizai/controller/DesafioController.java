@@ -3,7 +3,6 @@ package br.com.dbc.vemser.alfabetizai.controller;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

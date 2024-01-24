@@ -16,7 +16,7 @@ public interface Repositorio<CHAVE, OBJETO> {
 
     boolean remover(CHAVE id) throws BancoDeDadosException;
 
-    OBJETO editar(Integer id, DesafioCreateDTO desafio) throws BancoDeDadosException;
+    OBJETO editar(CHAVE id, OBJETO objeto) throws BancoDeDadosException;
 
     List<OBJETO> listar() throws BancoDeDadosException;
 }

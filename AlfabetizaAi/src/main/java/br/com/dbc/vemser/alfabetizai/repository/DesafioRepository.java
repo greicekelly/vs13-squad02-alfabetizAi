@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
@@ -126,32 +125,33 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
         }
     }
     @Override
-    public Desafio editar(Integer id, DesafioCreateDTO desafio) throws BancoDeDadosException {
+    public Desafio editar(Integer id, Desafio desafio) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE DESAFIO SET ");
-            sql.append(" id_modulo = ?,");
-            sql.append(" titulo = ?,");
-            sql.append(" conteudo = ?,");
-            sql.append(" tipo_desafio = ? ");
-            sql.append(" WHERE id_desafio = ? ");
+            sql.append("id_modulo = ?, ");
+            sql.append("titulo = ?, ");
+            sql.append("conteudo = ?, ");
+            sql.append("tipo_desafio = ? ");
+            sql.append("WHERE id_desafio = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
-
             stmt.setInt(1, desafio.getIdModulo());
             stmt.setString(2, desafio.getTitulo());
             stmt.setString(3, desafio.getConteudo());
             stmt.setInt(4, desafio.getTipoDesafio().ordinal()+1);
+            stmt.setInt(5, id);
 
             int res = stmt.executeUpdate();
-            System.out.println("editarDesafio.res=" + res);
 
+            desafio.setId(id);
             return desafio;
         } catch (SQLException e) {
-            throw new BancoDeDadosException(e.getCause());
+            throw new BancoDeDadosException( e.getCause() != null ? e.getCause() : e);
+
         } finally {
             try {
                 if (con != null) {
@@ -175,7 +175,6 @@ public class DesafioRepository implements Repositorio<Integer, Desafio>{
 
             stmt.setInt(1, id);
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
             System.out.println("removerDesafioPorId.res=" + res);
 
