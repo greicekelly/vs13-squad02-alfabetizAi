@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -31,44 +32,27 @@ public class ProfessorController {
     }
 
     @GetMapping("/{idProfessor}")
-    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idProfessor") Integer idProfessor) {
-        Professor professor = professorService.buscarProfessorPorId(idProfessor);
-        return Optional.ofNullable(professor)
-                .map(p -> ResponseEntity.ok(ProfessorDTO.fromProfessor(p)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idProfessor") Integer idProfessor) throws Exception {
+        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
+        return ResponseEntity.ok(professor);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody Professor professor) throws RegraDeNegocioException {
-        Professor professorAdicionado = professorService.adicionar(professor);
-        return ResponseEntity.ok(ProfessorDTO.fromProfessor(professorAdicionado));
+    @PostMapping()
+    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
+        ProfessorDTO professorAdicionado = professorService.adicionar(professorCreateDTO);
+        return ResponseEntity.ok(professorAdicionado);
     }
 
-    @PutMapping("/editar/{idProfessor}")
+    @PutMapping("/{idProfessor}")
     public ResponseEntity<ProfessorDTO> update(@Valid @PathVariable("idProfessor") Integer id,
-                                               @RequestBody Professor professorAtualiza) {
-        Professor professorAtualizado = professorService.editar(id, professorAtualiza);
-        return Optional.ofNullable(professorAtualizado)
-                .map(p -> ResponseEntity.ok(ProfessorDTO.fromProfessor(p)))
-                .orElse(ResponseEntity.notFound().build());
+                                               @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
+        ProfessorDTO professorAtualizado = professorService.editar(id, professorCreateDTO);
+        return ResponseEntity.ok(professorAtualizado);
     }
 
     @DeleteMapping("/delete/{idProfessor}")
-    public ResponseEntity<ProfessorDTO> delete(@PathVariable("idProfessor") Integer id) {
-        try {
-            Professor professorRemovido = professorService.remover(id);
-            return ResponseEntity.ok(ProfessorDTO.fromProfessor(professorRemovido));
-        } catch (BancoDeDadosException e) {
-            log.error("Erro ao tentar remover o professor | ID: {}", id, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Void> delete(@PathVariable("idProfessor") Integer id) throws Exception {
+        professorService.remover(id);
+        return ResponseEntity.ok().build();
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<ProfessorDTO> login(@RequestParam String email, @RequestParam String senha) {
-//        Optional<Professor> optionalProfessor = professorService.loginProfessor(email, senha);
-//        return optionalProfessor
-//                .map(p -> ResponseEntity.ok(ProfessorDTO.fromProfessor(p)))
-//                .orElse(ResponseEntity.notFound().build());
-//    }
 }

@@ -30,9 +30,4 @@ public abstract class Usuario {
     private String senha;
 
     private String cpf;
-
-    public int getIdade() {
-        LocalDate hoje = LocalDate.now();
-        return Period.between(this.dataDeNascimento, hoje).getYears();
-    }
 }

@@ -8,12 +8,14 @@ import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
+@Repository
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     private final ProfessorService professorService;

@@ -240,7 +240,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         return professorBanco;
     }
 
-    public Professor buscarProfessorPorId(Integer idUsuasrio) throws BancoDeDadosException {
+    public Professor buscarProfessorPorId(Integer idUsuario) throws BancoDeDadosException {
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
@@ -251,7 +251,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                     "WHERE U.ID_USUARIO = ? ";
 
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idUsuasrio);
+            stmt.setInt(1, idUsuario);
 
             ResultSet res = stmt.executeQuery();
             Professor professor = new Professor();
@@ -267,13 +267,6 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 professor.setSenha(res.getString("senha"));
                 professor.setCpf(res.getString("cpf"));
                 professor.setDescricao(res.getString("descricao")); // Adicione esta linha
-            }
-
-
-            if (professor.getIdUsuario() == null) {
-                System.out.println("Professor não encontrado para o ID: " + idUsuasrio);
-            } else {
-                System.out.println("Professor encontrado: " + professor);
             }
 
             return professor;

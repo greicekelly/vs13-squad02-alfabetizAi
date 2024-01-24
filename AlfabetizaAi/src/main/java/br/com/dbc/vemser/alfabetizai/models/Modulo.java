@@ -100,18 +100,6 @@ public class Modulo {
         this.classificacao = classificacao;
     }
 
-//    public void visualizarDesafios() {
-//        for (int i = 0; i < desafios.size(); i++) {
-//            System.out.printf("""
-//                __________Desafio %d___________
-//                Titulo: %s
-//                Autor: %s
-//                Tipo: %s
-//                """, i + 1, desafios.get(i).getTitulo(), desafios.get(i).getAutor().getNome(), desafios.get(i).getTipoDesafio().getNome());
-//            System.out.println("--------------------------------");
-//        }
-//    }
-
     @Override
     public String toString() {
         return "Id: "+getId()+" - Titulo: "+getTitulo() +" - Classificação: "+getClassificacao();
