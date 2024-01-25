@@ -1,78 +1,74 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.repository.DesafioRepository;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
+@Service
+@Slf4j
 public class DesafioService {
-
-    private DesafioRepository desafioRepository;
-
-    public DesafioService() {
-        desafioRepository = new DesafioRepository();
-    }
-
-    public void adicionar(Desafio desafio) {
+    private final DesafioRepository desafioRepository;
+    private final ObjectMapper objectMapper;
+    public List<DesafioDTO> listarDesafios() throws RegraDeNegocioException {
         try {
-
-            Desafio desafioAdicionado = desafioRepository.adicionar(desafio);
-
-            System.out.println("Desafio adicionado com sucesso! " + desafioAdicionado);
+            List<Desafio> desafios = desafioRepository.listar();
+            return desafios.stream()
+                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
+                    .collect(Collectors.toList());
         } catch (BancoDeDadosException e) {
-            System.out.println("ERRO: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("ERRO: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro ao listar desafios", e);
+            throw new RegraDeNegocioException("Algum problema ocorreu ao listar desafios, revise os dados");
         }
     }
-
-
-    public List getListaDesafios() {
+    public List<DesafioDTO> listarModuloPorId(int idModuloEscolhido) throws RegraDeNegocioException {
         try {
-            return desafioRepository.listar();
+            List<Desafio> desafios = desafioRepository.listarModuloporId(idModuloEscolhido);
+            if (desafios.isEmpty()) {
+                throw new RegraDeNegocioException("Nenhum desafio encontrado para o módulo com ID: " + idModuloEscolhido);
+            }
+            return desafios.stream()
+                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
+                    .collect(Collectors.toList());
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            return null;
+            log.error("Erro ao listar desafios por módulo", e);
+            throw new RegraDeNegocioException("Erro ao listar desafios por módulo: " + e.getMessage());
         }
     }
-
-    public void visualizarTodos() {
+    public DesafioDTO adicionar(DesafioCreateDTO desafioCreateDTO) throws RegraDeNegocioException {
         try {
-            List<Desafio> listar = desafioRepository.listar();
-            listar.forEach(System.out::println);
+            Desafio desafioEntity = objectMapper.convertValue(desafioCreateDTO, Desafio.class);
+            desafioEntity = desafioRepository.adicionar(desafioEntity);
+            return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            log.error("Erro ao adicionar desafio", e);
+            throw new RegraDeNegocioException("Erro ao adicionar desafio no banco de dados: " + e.getMessage());
         }
     }
-
-//    public void editar(Integer id, Desafio desafioEditado) {
-//        try {
-//            boolean conseguiuEditar = desafioRepository.editar(id, desafioEditado);
-//            System.out.println("Desafio editado com sucesso? " + conseguiuEditar + "| com id=" + id);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public void remover(Integer id, Desafio desafio) {
-//        try {
-//            boolean conseguiuRemover = desafioRepository.remover(id, desafio);
-//            System.out.println("Desafio removido? " + conseguiuRemover + "| com id=" + id);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public void listarDesafiosPorModulo(int idModuloEscolhido) {
+    public DesafioDTO editar(Integer id, DesafioCreateDTO atualizarDesafio) throws RegraDeNegocioException {
         try {
-            List<Desafio> listar = desafioRepository.listarPorModulo(idModuloEscolhido);
-            listar.forEach(System.out::println);
+            Desafio desafioEntity = objectMapper.convertValue(atualizarDesafio, Desafio.class);
+            desafioEntity = desafioRepository.editar(id, desafioEntity);
+            return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
         } catch (BancoDeDadosException e) {
-            e.printStackTrace();
+            log.error("Erro ao editar desafio", e);
+            throw new RegraDeNegocioException("Erro ao editar desafio no banco de dados: " + e.getMessage());
         }
     }
-
+    public void remover(Integer id) throws RegraDeNegocioException {
+        try {
+            desafioRepository.remover(id);
+        } catch (BancoDeDadosException e) {
+            log.error("Erro ao remover desafio", e);
+            throw new RegraDeNegocioException("Erro ao remover desafio no banco de dados: " + e);
+        }}
 }
