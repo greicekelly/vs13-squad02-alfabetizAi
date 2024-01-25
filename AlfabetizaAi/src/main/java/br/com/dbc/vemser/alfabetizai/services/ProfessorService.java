@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
@@ -19,12 +20,17 @@ public class ProfessorService {
     @Autowired
     private final ProfessorRepository professorRepository;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     public ProfessorDTO adicionar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
         professorEntity = professorRepository.adicionar(professorEntity);
 
-        return objectMapper.convertValue(professorEntity, ProfessorDTO.class);
+        ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
+
+        emailService.sendEmailProfessor(professorDTO, "Cadastro efetuado, ", "create");
+
+        return professorDTO;
     }
 
     public List<ProfessorDTO> visualizarTodos() throws Exception {
@@ -54,6 +60,11 @@ public class ProfessorService {
         professorEntity = professorRepository.editar(id, professorEntity);
 
         return objectMapper.convertValue(professorEntity, ProfessorDTO.class);
+
+        ProfessorDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
+
+        emailService.sendEmailAdmin(adminDTO, "Cadastro atualizado, ","update");
+        return adminDTO;
     }
 
     public void remover(Integer id) throws Exception {
