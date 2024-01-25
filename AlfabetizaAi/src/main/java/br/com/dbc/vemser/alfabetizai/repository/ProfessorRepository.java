@@ -1,8 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -153,37 +154,47 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET ");
-            sql.append("NOME = ?, ");
-            sql.append("SOBRENOME = ?, ");
-            sql.append("TELEFONE = ?, ");
-            sql.append("EMAIL = ?, ");
-            sql.append("DATA_NASCIMENTO = ?, ");
-            sql.append("SEXO = ?, ");
-            sql.append("SENHA = ?, ");
-            sql.append("CPF = ? ");
-            sql.append("WHERE ID_USUARIO = ?");  // Corrigindo para o nome correto da coluna
+            sql.append(" NOME = ?,");
+            sql.append(" SOBRENOME = ?,");
+            sql.append(" TELEFONE = ?,");
+            sql.append(" EMAIL = ?,");
+            sql.append(" DATA_NASCIMENTO = ?,");
+            sql.append(" SEXO = ?,");
+            sql.append(" SENHA = ?,");
+            sql.append(" CPF = ?,");
+            sql.append(" WHERE ID_PROFESSOR = ? ");
 
-             PreparedStatement stmt = con.prepareStatement(sql.toString());
-                stmt.setString(1, professor.getNome());
-                stmt.setString(2, professor.getSobrenome());
-                stmt.setString(3, professor.getTelefone());
-                stmt.setString(4, professor.getEmail());
-                stmt.setDate(5, Date.valueOf(professor.getDataDeNascimento()));
-                stmt.setString(6, professor.getSexo());
-                stmt.setString(7, professor.getSenha());
-                stmt.setString(8, professor.getCpf());
-                stmt.setInt(9, id);
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-                int res = stmt.executeUpdate();
-                System.out.println("editarUsuario.res=" + res);
+            stmt.setString(1, professor.getNome());
+            stmt.setString(2, professor.getSobrenome());
+            stmt.setString(3, professor.getTelefone());
+            stmt.setString(4, professor.getEmail());
+            stmt.setDate(5, Date.valueOf(professor.getDataDeNascimento()));
+            stmt.setString(6, professor.getSexo());
+            stmt.setString(7, professor.getSenha());
+            stmt.setString(8, professor.getCpf());
+            stmt.setInt(9, id);
 
-                //Professor professorAtualizado = buscarProfessorPorId(id);
+            int res = stmt.executeUpdate();
+
+            if(professor.getDescricao() != null){
+                StringBuilder sqlProfessor = new StringBuilder();
+                sqlProfessor.append("UPDATE PROFESSOR SET ");
+                sqlProfessor.append(" DESCRICAO = ?,");
+                sqlProfessor.append(" WHERE id_professor = ? ");
+
+                PreparedStatement stmtProfessor = con.prepareStatement(sqlProfessor.toString());
+
+                stmtProfessor.setString(1, professor.getDescricao());
+                stmtProfessor.setInt(2, professor.getIdProfessor());
 
 
-//                professor.setIdProfessor(professorAtualizado.getIdProfessor());
-//                professor.setIdUsuario(professorAtualizado.getIdUsuario());
+                stmtProfessor.executeUpdate();
+            }
 
-                return professor;
+            log.info("editarUsuario.res=" + res);
+
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
@@ -195,6 +206,8 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 e.printStackTrace();
             }
         }
+
+        return professor;
     }
 
     @Override
@@ -241,40 +254,38 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     }
 
     public Professor buscarProfessorPorId(Integer idUsuario) throws BancoDeDadosException {
+        Professor professor = new Professor();
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT U.*, P.ID_PROFESSOR, P.DESCRICAO " +
+            String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
-                    "INNER JOIN PROFESSOR P ON (P.ID_USUARIO = U.ID_USUARIO) "+
+                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) "+
                     "WHERE U.ID_USUARIO = ? ";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idUsuario);
 
             ResultSet res = stmt.executeQuery();
-            Professor professor = new Professor();
             while (res.next()) {
+
                 professor.setIdUsuario(res.getInt("id_usuario"));
-                professor.setIdProfessor(res.getInt("id_professor")); // Adicione esta linha
+                professor.setIdProfessor(res.getInt("id_professor"));
                 professor.setNome(res.getString("nome"));
                 professor.setSobrenome(res.getString("sobrenome"));
                 professor.setTelefone(res.getString("telefone"));
                 professor.setEmail(res.getString("email"));
                 professor.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                professor.setAtivo(res.getString("ativo"));
                 professor.setSexo(res.getString("sexo"));
                 professor.setSenha(res.getString("senha"));
                 professor.setCpf(res.getString("cpf"));
-                professor.setDescricao(res.getString("descricao")); // Adicione esta linha
+                professor.setDescricao(res.getString("descricao"));
             }
-
-            return professor;
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
-
         } finally {
             try {
                 if (con != null) {
@@ -284,6 +295,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 e.printStackTrace();
             }
         }
+        return professor;
     }
 
     public Professor loginProfessor(String email, String senha) throws BancoDeDadosException {

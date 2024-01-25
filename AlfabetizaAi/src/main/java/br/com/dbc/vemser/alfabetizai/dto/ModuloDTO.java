@@ -15,8 +15,7 @@ public class ModuloDTO {
 
     private String conteudo;
 
-    private Integer idProfessor;
+    private AutorDTO autor;
 
     private ClassificacaoModulo classificacao;
-
 }

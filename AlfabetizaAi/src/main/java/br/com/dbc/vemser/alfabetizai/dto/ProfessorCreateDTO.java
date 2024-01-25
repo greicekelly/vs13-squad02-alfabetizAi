@@ -20,9 +20,6 @@ import java.time.LocalDate;
 public class ProfessorCreateDTO {
 
     @NotNull
-    private Integer idUsuario;
-
-    @NotNull
     @NotBlank
     @Size(min=2, max=255)
     private String nome;

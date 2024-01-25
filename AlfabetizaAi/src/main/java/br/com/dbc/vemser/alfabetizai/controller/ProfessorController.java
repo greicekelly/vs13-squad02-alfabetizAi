@@ -26,6 +26,7 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
 
+    @GetMapping()
     public ResponseEntity<List<ProfessorDTO>> list() throws Exception {
         List<ProfessorDTO> professores = professorService.visualizarTodos();
         return ResponseEntity.ok(professores);

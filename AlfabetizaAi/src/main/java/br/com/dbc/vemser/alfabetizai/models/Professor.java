@@ -17,11 +17,8 @@ import java.time.LocalDate;
 @Entity
 public class Professor extends Usuario implements ProfessorImplementa {
 
-    @Id
     private Integer idProfessor;
 
-    @NotBlank
-    @Size(max = 255)
     private String descricao;
 
     @Override

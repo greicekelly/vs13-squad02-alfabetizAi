@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class ModuloService extends Modulo {
+public class ModuloService {
 
     private final ModuloRepository moduloRepository;
 
@@ -28,9 +28,11 @@ public class ModuloService extends Modulo {
 
 
     public ModuloDTO criar(ModuloCreateDTO moduloCreateDTO) throws Exception {
-        Modulo modulo = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
         ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloCreateDTO.getIdProfessor());
+        Modulo modulo = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
+
         Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
+        System.out.println(professor);
         modulo.setAutor(professor);
         Modulo moduloAdicionado = moduloRepository.adicionar(modulo);
 

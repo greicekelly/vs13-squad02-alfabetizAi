@@ -22,6 +22,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     private final AdminService adminService;
 
 
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT seq_modulo.nextval mysequence from DUAL";
@@ -131,7 +132,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             stmt.setString(3, modulo.getTitulo());
             stmt.setString(4, modulo.getConteudo());
             stmt.setInt(5, modulo.getClassificacao().ordinal()+1);
-            stmt.setString(6, String.valueOf(modulo.isFoiAprovado()));
+            stmt.setString(6, String.valueOf(modulo.getFoiAprovado()));
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
@@ -200,9 +201,9 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             while (res.next()) {
                 Modulo modulo = new Modulo();
                 Professor professor = new Professor();
+
                 Admin admin = new Admin();
                 modulo.setId(res.getInt("id_modulo"));
-                modulo.setAutor(professor);
                 professor.setIdUsuario(res.getInt("id_professor"));
                 modulo.setAdminAprova(admin);
                 admin.setIdUsuario(res.getInt("id_admin"));
@@ -210,6 +211,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
                 modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulo.setAutor(professor);
                 modulos.add(modulo);
             }
 
