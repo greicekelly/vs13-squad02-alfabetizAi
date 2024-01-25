@@ -24,13 +24,13 @@ public class AlunoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AlunoDTO>> listar() throws RegraDeNegocioException {
+    public ResponseEntity<List<AlunoDTO>> listar() throws Exception {
         return new ResponseEntity<>(alunoService.listar(), HttpStatus.OK);
     }
 
     @GetMapping("/{idAluno}")
-    public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws RegraDeNegocioException {
-        return new ResponseEntity<>(alunoService.BuscarAlunoPorId(idAluno), HttpStatus.OK);
+    public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.buscarAlunoPorId(idAluno), HttpStatus.OK);
     }
 
     @PostMapping

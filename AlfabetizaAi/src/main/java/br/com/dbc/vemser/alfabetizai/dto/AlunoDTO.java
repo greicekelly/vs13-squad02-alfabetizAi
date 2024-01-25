@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class AlunoDTO {
+    private Integer idUsuario;
+
+    private Integer idAluno;
 
     private String nome;
 

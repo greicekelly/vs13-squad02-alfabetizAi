@@ -215,7 +215,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     }
 
 
-    public Aluno BuscarAlunoPorId(Integer idUsuario) throws BancoDeDadosException {
+    public Aluno buscarAlunoPorId(Integer idUsuario) throws BancoDeDadosException {
         Aluno aluno = new Aluno();
         Connection con = null;
         try {
