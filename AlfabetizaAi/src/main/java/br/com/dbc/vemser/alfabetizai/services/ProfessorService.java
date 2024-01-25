@@ -59,16 +59,16 @@ public class ProfessorService {
 
         professorEntity = professorRepository.editar(id, professorEntity);
 
-        return objectMapper.convertValue(professorEntity, ProfessorDTO.class);
+        ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
 
-        ProfessorDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
-
-        emailService.sendEmailAdmin(adminDTO, "Cadastro atualizado, ","update");
-        return adminDTO;
+        emailService.sendEmailProfessor(professorDTO, "Cadastro atualizado, ","update");
+        return professorDTO;
     }
 
     public void remover(Integer id) throws Exception {
         //TODO ADICIONAR VALIDACAO ID
         professorRepository.remover(id);
+        ProfessorDTO professorDTO = buscarProfessorPorIdUsuario(id);
+        emailService.sendEmailProfessor(professorDTO, "Cadastro excluido, ","delete");
     }
 }
