@@ -34,7 +34,6 @@ public class AdminService {
         Admin admin = adminRepository.buscarAdminPorId(idUsuario);
 
         return objectMapper.convertValue(admin, AdminDTO.class);
-
     }
 
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {

@@ -13,19 +13,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Professor extends Usuario implements ProfessorImplementa {
 
-    @Id
     private Integer idProfessor;
 
-    @NotBlank
-    @Size(max = 255)
     private String descricao;
-
-    public Professor() {
-
-    }
 
     @Override
     public Modulo criarModulo(){

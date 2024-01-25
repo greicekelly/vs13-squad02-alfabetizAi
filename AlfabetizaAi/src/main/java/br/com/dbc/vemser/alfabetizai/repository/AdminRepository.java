@@ -70,7 +70,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(4, admin.getTelefone());
             stmt.setString(5, admin.getEmail());
             stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
-            stmt.setString(7, admin.getAtivo());
+            stmt.setString(7, "S");
             stmt.setString(8, admin.getSexo());
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
@@ -204,8 +204,6 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         admin.setIdAdmin(adminBanco.getIdAdmin());
         return admin;
     }
-
-
 
     public List<Admin> listar() throws BancoDeDadosException {
         List<Admin> adminBanco = new ArrayList<>();
