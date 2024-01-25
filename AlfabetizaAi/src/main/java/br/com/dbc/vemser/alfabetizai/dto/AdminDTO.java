@@ -18,7 +18,6 @@ public class AdminDTO {
     private LocalDate dataDeNascimento;
     private String ativo;
     private String sexo;
-    private String senha;
     private String cpf;
     private String descricao;
 }

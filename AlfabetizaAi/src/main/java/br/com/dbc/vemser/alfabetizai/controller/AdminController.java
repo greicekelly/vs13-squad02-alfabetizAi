@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAdminController;
 import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @AllArgsConstructor
 @Slf4j
-public class AdminController {
+public class AdminController implements IAdminController {
 
     private final AdminService adminService;
 
@@ -32,7 +33,7 @@ public class AdminController {
     @GetMapping("/{idUsuario}")
     public ResponseEntity<AdminDTO> BuscarAdminPorId(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
         log.info("Buscando Admin por ID");
-        AdminDTO adminDTO = adminService.BuscarAdminPorId(idUsuario);
+        AdminDTO adminDTO = adminService.buscarAdminPorId(idUsuario);
         log.info("Admin por ID Retornado");
         return new ResponseEntity<>(adminDTO, HttpStatus.OK);
     }
