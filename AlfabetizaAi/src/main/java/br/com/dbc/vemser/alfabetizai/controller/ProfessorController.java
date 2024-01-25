@@ -37,7 +37,11 @@ public class ProfessorController {
         ProfessorDTO professor = professorService.buscarProfessorPorIdUsuario(idUsuario);
         return ResponseEntity.ok(professor);
     }
-
+    @GetMapping("/id/{idProfessor}")
+    public ResponseEntity<ProfessorDTO> getByIdProfessor(@PathVariable("idProfessor") Integer idProfessor) throws Exception {
+        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
+        return ResponseEntity.ok(professor);
+    }
     @PostMapping()
     public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
         ProfessorDTO professorAdicionado = professorService.adicionar(professorCreateDTO);
