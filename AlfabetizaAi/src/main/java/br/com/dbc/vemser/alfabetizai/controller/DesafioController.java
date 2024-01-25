@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/desafio")
 @Slf4j
-public class DesafioController {
+public class DesafioController implements IDesafioController {
     private final DesafioService desafioService;
     @GetMapping
     public ResponseEntity<List<DesafioDTO>> listar(
