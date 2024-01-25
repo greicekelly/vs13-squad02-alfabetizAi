@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IProfessorController;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Validated
 @Slf4j
-public class ProfessorController {
+public class ProfessorController implements IProfessorController {
 
     private final ProfessorService professorService;
 
