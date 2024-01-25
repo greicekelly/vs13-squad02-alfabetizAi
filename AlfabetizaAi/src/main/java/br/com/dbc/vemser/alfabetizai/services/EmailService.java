@@ -2,6 +2,8 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.config.PropertieReader;
 import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -33,46 +35,6 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final PropertieReader propertieReader;
 
-    public void sendSimpleMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject("Assunto TESTE");
-        message.setText("Meu e-mail!");
-        emailSender.send(message);
-    }
-
-    public void sendWithAttachment() throws Exception {
-        MimeMessage message = emailSender.createMimeMessage();
-
-        MimeMessageHelper mimeMessageHelper = null;
-        try {
-            mimeMessageHelper = new MimeMessageHelper(message,
-                    true);
-        } catch (MessagingException e) {
-            throw new Exception(e.getMessage());
-        }
-
-        mimeMessageHelper.setFrom(from);
-        mimeMessageHelper.setTo(to);
-        mimeMessageHelper.setSubject("Assunto 1");
-        mimeMessageHelper.setText("Meu e-mail!");
-
-//        File file = new File("static/imagem.jpg");
-//        FileSystemResource fileSr
-//                = new FileSystemResource(file);
-//        mimeMessageHelper.addAttachment(file.getName(), fileSr);
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("static/imagem.jpg").getFile());
-        FileSystemResource fileRs = new FileSystemResource(file);
-        mimeMessageHelper.addAttachment(file.getName(), fileRs);
-
-        System.out.println("File: " + file.getPath());
-
-        emailSender.send(message);
-    }
 
     public void sendEmailAdmin(AdminDTO adminDTO, String subject, String opcaoEmail) throws Exception {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
@@ -97,6 +59,96 @@ public class EmailService {
 
         dados.put("nome", adminDTO.getNome());
         dados.put("id", adminDTO.getIdUsuario());
+        dados.put("emailSuporte", propertieReader.getFrom());
+        dados.put("app", propertieReader.getApp());
+
+        Template template = null;
+        switch (opcaoEmail){
+            case "create" :
+                template = fmConfiguration.getTemplate("email-boas-vindas.ftl");
+                break;
+            case "update" :
+                dados.put("texto", "Seu cadastro foi atualizado ");
+                dados.put("imagem", "https://images.pexels.com/photos/18524162/pexels-photo-18524162/free-photo-of-ajuda-auxilio-assistencia-alfabeto.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+                template = fmConfiguration.getTemplate("email-atualizacao.ftl");
+                break;
+            case "delete" :
+                template = fmConfiguration.getTemplate("email-exclusao.ftl");
+                break;
+        }
+
+        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+        return html;
+    }
+
+    public void sendEmailAluno(AlunoDTO alunoDTO, String subject, String opcaoEmail) throws Exception {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
+
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(alunoDTO.getEmail());
+            mimeMessageHelper.setSubject(subject+propertieReader.getApp());
+            mimeMessageHelper.setText(getContentFromTemplateAluno(alunoDTO, opcaoEmail), true);
+
+            emailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public String getContentFromTemplateAluno(AlunoDTO alunoDTO, String opcaoEmail) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.put("nome", alunoDTO.getNome());
+        dados.put("id", alunoDTO.getIdUsuario());
+        dados.put("emailSuporte", propertieReader.getFrom());
+        dados.put("app", propertieReader.getApp());
+
+        Template template = null;
+        switch (opcaoEmail){
+            case "create" :
+                template = fmConfiguration.getTemplate("email-boas-vindas.ftl");
+                break;
+            case "update" :
+                dados.put("texto", "Seu cadastro foi atualizado ");
+                dados.put("imagem", "https://images.pexels.com/photos/18524162/pexels-photo-18524162/free-photo-of-ajuda-auxilio-assistencia-alfabeto.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+                template = fmConfiguration.getTemplate("email-atualizacao.ftl");
+                break;
+            case "delete" :
+                template = fmConfiguration.getTemplate("email-exclusao.ftl");
+                break;
+        }
+
+        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
+        return html;
+    }
+
+    public void sendEmailProfessor(ProfessorDTO professorDTO, String subject, String opcaoEmail) throws Exception {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
+
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(professorDTO.getEmail());
+            mimeMessageHelper.setSubject(subject+propertieReader.getApp());
+            mimeMessageHelper.setText(getContentFromTemplateAluno(professorDTO, opcaoEmail), true);
+
+            emailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public String getContentFromTemplateProfessor(ProfessorDTO professorDTO, String opcaoEmail) throws IOException, TemplateException {
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.put("nome", professorDTO.getNome());
+        dados.put("id", professorDTO.getIdUsuario());
         dados.put("emailSuporte", propertieReader.getFrom());
         dados.put("app", propertieReader.getApp());
 
