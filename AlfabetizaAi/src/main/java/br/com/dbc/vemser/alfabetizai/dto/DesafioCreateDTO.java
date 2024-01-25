@@ -3,11 +3,13 @@ package br.com.dbc.vemser.alfabetizai.dto;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class DesafioCreateDTO {
@@ -26,12 +28,4 @@ public class DesafioCreateDTO {
 
     @NotNull(message = "O Tipo de desafio não pode ser Nulo!")
     private TipoDesafio tipoDesafio;
-
-    public DesafioCreateDTO(DesafioCreateDTO atualizarDesafio) {
-        this.idModulo = atualizarDesafio.idModulo;
-        this.conteudo = atualizarDesafio.conteudo;
-        this.titulo = atualizarDesafio.titulo;
-        this.tipoDesafio = atualizarDesafio.tipoDesafio;
-
-    }
 }
