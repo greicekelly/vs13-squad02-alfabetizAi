@@ -145,6 +145,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
             sql.append(" SEXO = ?,");
             sql.append(" SENHA = ?,");
             sql.append(" CPF = ? ");
+            sql.append(" PONTUACAO = ? ");
             sql.append(" WHERE ID_ALUNO = ? ");
 
             try (PreparedStatement stmt = con.prepareStatement(sql.toString())) {
@@ -156,7 +157,8 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 stmt.setString(6, aluno.getSexo());
                 stmt.setString(7, aluno.getSenha());
                 stmt.setString(8, aluno.getCpf());
-                stmt.setInt(9, id);
+                stmt.setInt(9, aluno.getPontuacao());
+                stmt.setInt(10, id);
 
                 int res = stmt.executeUpdate();
                 System.out.println("editarAluno.res=" + res);
@@ -197,6 +199,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                     aluno.setSexo(res.getString("sexo"));
                     aluno.setSenha(res.getString("senha"));
                     aluno.setCpf(res.getString("cpf"));
+                    aluno.setPontuacao(res.getInt("pontuacao"));
                     adminBanco.add(aluno);
                 }
             }
@@ -237,6 +240,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                         aluno.setSexo(res.getString("sexo"));
                         aluno.setSenha(res.getString("senha"));
                         aluno.setCpf(res.getString("cpf"));
+                        aluno.setPontuacao(res.getInt("pontuacao"));
                     }
                 }
             }

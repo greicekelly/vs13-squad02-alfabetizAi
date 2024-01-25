@@ -37,4 +37,6 @@ public class AlunoDTO {
     private LocalDate dataNascimentoAluno;
 
     private String sexoAluno;
+
+    private int pontuacao;
 }

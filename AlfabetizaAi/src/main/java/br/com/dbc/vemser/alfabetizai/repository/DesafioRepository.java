@@ -80,6 +80,9 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
                     "ID_MODULO, " +
                     "TITULO, " +
                     "CONTEUDO, " +
+//                    "INSTRUCAO, " +
+//                    "ALTERNATIVA_CORRETA, " +
+//                    "PONTOS, " +
                     "TIPO_DESAFIO)" +
                     "VALUES(?, ?, ?, ?,?)";
 
