@@ -1,42 +1,58 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+
+import br.com.dbc.vemser.alfabetizai.dto.ModuloCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.ModuloRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class ModuloService extends Modulo {
+@Service
+public class ModuloService {
+
     private final ModuloRepository moduloRepository;
 
-    // criação de um objeto
-    public void adicionarModulo(Modulo modulo) {
-        try {
-            Modulo moduloAdicionado = moduloRepository.adicionar(modulo);
-            System.out.println("Módulo adicionado com sucesso! " + moduloAdicionado);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
-    }
-    // remoção
-    public void remover(Integer id) {
-        try {
-            boolean conseguiuRemover = moduloRepository.remover(id);
-            System.out.println("removido? " + conseguiuRemover + "| com id=" + id);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
+    private final ProfessorService professorService;
+
+    private final ObjectMapper objectMapper;
+
+
+    public ModuloDTO criar(ModuloCreateDTO moduloCreateDTO) throws Exception {
+        ProfessorDTO professorDTO = professorService.buscarProfessorPorIdUsuario(moduloCreateDTO.getIdProfessor());
+        Modulo modulo = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
+
+        Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
+        modulo.setAutor(professor);
+
+        Modulo moduloAdicionado = moduloRepository.adicionar(modulo);
+
+        return objectMapper.convertValue(moduloAdicionado, ModuloDTO.class);
     }
 
-    // atualização de um objeto
-//    public void editar(Integer id, Modulo modulo) {
-//        try {
-//            boolean conseguiuEditar = moduloRepository.editar(id, modulo);
-//            System.out.println("editado? " + conseguiuEditar + "| com id=" + id);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void remover(Integer id) throws Exception {
+        //TODO ADICIONAR VALIDACAO ID
+        boolean conseguiuRemover = moduloRepository.remover(id);
+    }
+
+    public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {
+        ProfessorDTO professorDTO = professorService.buscarProfessorPorIdUsuario(moduloCreateDTO.getIdProfessor());
+        Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
+        Modulo moduloEntity = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
+        moduloEntity.setAutor(professor);
+        moduloEntity = moduloRepository.editar(id, moduloEntity);
+
+        return objectMapper.convertValue(moduloEntity, ModuloDTO.class);
+    }
 
     public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
         try {
@@ -46,13 +62,13 @@ public class ModuloService extends Modulo {
             e.printStackTrace();
         }
     }
-    // leitura
-    public void listar() {
-        try {
-            moduloRepository.listar().forEach(System.out::println);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-        }
+
+    public List<ModuloDTO> listar() throws Exception {
+        List<Modulo> listaModuloBanco = moduloRepository.listar();
+
+        return listaModuloBanco.stream()
+                .map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class))
+                .collect(Collectors.toList());
     }
 
     public void listarSemAprovacao() {
@@ -79,17 +95,9 @@ public class ModuloService extends Modulo {
         }
     }
 
-//    public Modulo BuscarModuloPorId(Integer idUsuario){
-//        try {
-//            return moduloRepository.buscarModuloPorId(idUsuario);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public ModuloDTO buscarModuloPorId(Integer idUsuario) throws Exception {
+       Modulo modulo = moduloRepository.buscarModuloPorId(idUsuario);
 
-    @Override
-    public String toString() {
-        return "Titulo: "+getTitulo() +" - Autor: "+getAutor()+" - Classificação: "+getClassificacao();
+        return objectMapper.convertValue(modulo, ModuloDTO.class);
     }
 }

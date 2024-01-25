@@ -1,24 +1,16 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProfessorDTO {
-
-    private Integer idProfessor;
-
-    private Integer idUsuario;
-
+public class AutorDTO {
     private String nome;
-
     private String sobrenome;
-
     private String telefone;
-
     private String email;
-
     private String descricao;
 }
