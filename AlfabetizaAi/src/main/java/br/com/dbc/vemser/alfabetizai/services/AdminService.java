@@ -19,6 +19,7 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     public List<AdminDTO> listar() throws Exception {
         List<Admin> listaAdminBanco = adminRepository.listar();
@@ -29,8 +30,8 @@ public class AdminService {
 
     }
 
-    public AdminDTO BuscarAdminPorId(Integer idUsuario) throws Exception{
-        Admin admin = adminRepository.BuscarAdminPorId(idUsuario);
+    public AdminDTO buscarAdminPorId(Integer idUsuario) throws Exception{
+        Admin admin = adminRepository.buscarAdminPorId(idUsuario);
 
         return objectMapper.convertValue(admin, AdminDTO.class);
     }
@@ -39,18 +40,27 @@ public class AdminService {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
         adminEntity = adminRepository.adicionar(adminEntity);
 
-        return objectMapper.convertValue(adminEntity, AdminDTO.class);
+        AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
+
+        emailService.sendEmailAdmin(adminDTO, "Cadastro efetuado, ", "create");
+
+        return adminDTO;
     }
 
     public AdminDTO atualizar(Integer id, AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
         adminEntity = adminRepository.editar(id, adminEntity);
 
-        return objectMapper.convertValue(adminEntity, AdminDTO.class);
+        AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
+
+        emailService.sendEmailAdmin(adminDTO, "Cadastro atualizado, ","update");
+        return adminDTO;
     }
 
     public void remover(Integer id) throws Exception {
         boolean conseguiuRemover = adminRepository.remover(id);
+        AdminDTO adminDTO = buscarAdminPorId(id);
+        emailService.sendEmailAdmin(adminDTO, "Cadastro excluido, ","delete");
     }
 
     public Admin loginAdmin(String email, String senha) {

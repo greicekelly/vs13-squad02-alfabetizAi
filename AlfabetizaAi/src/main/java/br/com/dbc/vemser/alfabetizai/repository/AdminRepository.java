@@ -70,7 +70,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             stmt.setString(4, admin.getTelefone());
             stmt.setString(5, admin.getEmail());
             stmt.setDate(6, Date.valueOf(admin.getDataDeNascimento()));
-            stmt.setString(7, admin.getAtivo());
+            stmt.setString(7, "S");
             stmt.setString(8, admin.getSexo());
             stmt.setString(9, admin.getSenha());
             stmt.setString(10, admin.getCpf());
@@ -113,9 +113,9 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE USUARIO SET ");
-            sql.append(" ATIVO = ?,");
-            sql.append(" WHERE id_pessoa = ? ");
+            sql.append("UPDATE USUARIO SET");
+            sql.append(" ATIVO = ?");
+            sql.append(" WHERE id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -141,12 +141,13 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
     @Override
     public Admin editar(Integer id, Admin admin) throws BancoDeDadosException {
+        Admin adminBanco = buscarAdminPorId(id);
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE USUARIO SET ");
+            sql.append("UPDATE USUARIO SET");
             sql.append(" NOME = ?,");
             sql.append(" SOBRENOME = ?,");
             sql.append(" TELEFONE = ?,");
@@ -154,8 +155,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
             sql.append(" DATA_NASCIMENTO = ?,");
             sql.append(" SEXO = ?,");
             sql.append(" SENHA = ?,");
-            sql.append(" CPF = ?,");
-            sql.append(" WHERE id_pessoa = ? ");
+            sql.append(" CPF = ?");
+            sql.append(" WHERE id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -173,14 +174,14 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
 
             if(admin.getDescricao() != null){
                 StringBuilder sqlAdmin = new StringBuilder();
-                sqlAdmin.append("UPDATE ADMIN SET ");
-                sqlAdmin.append(" DESCRICAO = ?,");
-                sqlAdmin.append(" WHERE id_admin = ? ");
+                sqlAdmin.append("UPDATE ADMIN SET");
+                sqlAdmin.append(" DESCRICAO = ?");
+                sqlAdmin.append(" WHERE id_admin = ?");
 
                 PreparedStatement stmtAdmin = con.prepareStatement(sqlAdmin.toString());
 
                 stmtAdmin.setString(1, admin.getDescricao());
-                stmtAdmin.setInt(2, admin.getIdAdmin());
+                stmtAdmin.setInt(2, adminBanco.getIdAdmin());
 
 
                 stmtAdmin.executeUpdate();
@@ -199,7 +200,8 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                 e.printStackTrace();
             }
         }
-
+        admin.setIdUsuario(adminBanco.getIdUsuario());
+        admin.setIdAdmin(adminBanco.getIdAdmin());
         return admin;
     }
 
@@ -248,7 +250,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public Admin BuscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+    public Admin buscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
         Admin admin = new Admin();
         Connection con = null;
         try {
