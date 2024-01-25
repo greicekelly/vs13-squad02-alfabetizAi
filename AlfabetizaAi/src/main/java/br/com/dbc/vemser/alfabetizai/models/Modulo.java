@@ -22,6 +22,9 @@ public class Modulo {
         System.out.println("Exibindo conteúdo do módulo.");
     }
 
+    public Character isFoiAprovado() {
+        return foiAprovado;
+    }
 
     public void setFoiAprovado(Character foiAprovado) {
 
@@ -43,4 +46,6 @@ public class Modulo {
                 break;
         }
     }
+
+
 }

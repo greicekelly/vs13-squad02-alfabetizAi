@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
@@ -52,16 +53,17 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             modulo.setId(proximoId);
 
             String sql = "INSERT INTO MODULO\n" +
-                    "(ID_PROFESSOR, TITULO, CONTEUDO, CLASSIFICACAO_MODULO, MODULO_APROVADO)\n" +
-                    "VALUES(?, ?, ?, ?, ?)\n";
+                    "(ID_MODULO,ID_PROFESSOR, TITULO, CONTEUDO, CLASSIFICACAO_MODULO, MODULO_APROVADO)\n" +
+                    "VALUES(?,?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, modulo.getAutor().getIdProfessor());
-            stmt.setString(2, modulo.getTitulo());
-            stmt.setString(3, modulo.getConteudo());
-            stmt.setInt(4, modulo.getClassificacao().ordinal()+1);
-            stmt.setString(5, "N");
+            stmt.setInt(1, modulo.getId());
+            stmt.setInt(2, modulo.getAutor().getIdProfessor());
+            stmt.setString(3, modulo.getTitulo());
+            stmt.setString(4, modulo.getConteudo());
+            stmt.setInt(5, modulo.getClassificacao().ordinal()+1);
+            stmt.setString(6, "N");
 
             int res = stmt.executeUpdate();
             System.out.println("adicionarModulo.res=" + res);
@@ -118,21 +120,18 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE MODULO SET ");
             sql.append(" id_professor = ?,");
-            sql.append(" id_admin = ?,");
             sql.append(" titulo = ?,");
             sql.append(" conteudo = ?,");
             sql.append(" classificacao_modulo = ? ");
-            sql.append(" modulo_aprovado = ? ");
             sql.append(" WHERE id_modulo = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
             stmt.setInt(1, modulo.getAutor().getIdProfessor());
-            stmt.setInt(2, modulo.getAdminAprova().getIdAdmin());
-            stmt.setString(3, modulo.getTitulo());
-            stmt.setString(4, modulo.getConteudo());
-            stmt.setInt(5, modulo.getClassificacao().ordinal()+1);
-            stmt.setString(6, String.valueOf(modulo.getFoiAprovado()));
+            stmt.setString(2, modulo.getTitulo());
+            stmt.setString(3, modulo.getConteudo());
+            stmt.setInt(4, modulo.getClassificacao().ordinal()+1);
+            stmt.setInt(5, id);
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
@@ -186,7 +185,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     }
 
     @Override
-    public List<Modulo> listar() throws BancoDeDadosException {
+    public List<Modulo> listar() throws Exception {
         List<Modulo> modulos = new ArrayList<>();
         Connection con = null;
         try {
@@ -201,10 +200,17 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             while (res.next()) {
                 Modulo modulo = new Modulo();
                 Professor professor = new Professor();
-
                 Admin admin = new Admin();
+
                 modulo.setId(res.getInt("id_modulo"));
-                professor.setIdUsuario(res.getInt("id_professor"));
+                professor.setIdProfessor(res.getInt("id_professor"));
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
+                professor.setTelefone(professorDTO.getTelefone());
                 modulo.setAdminAprova(admin);
                 admin.setIdUsuario(res.getInt("id_admin"));
                 modulo.setTitulo(res.getString("titulo"));

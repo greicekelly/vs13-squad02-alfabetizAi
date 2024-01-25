@@ -2,9 +2,7 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.models.Professor;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -148,12 +146,13 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
     @Override
     public Professor editar(Integer id, Professor professor) throws BancoDeDadosException {
+        Professor professorBanco = buscarProfessorPorId(id);
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE USUARIO SET ");
+            sql.append("UPDATE USUARIO SET");
             sql.append(" NOME = ?,");
             sql.append(" SOBRENOME = ?,");
             sql.append(" TELEFONE = ?,");
@@ -161,8 +160,8 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             sql.append(" DATA_NASCIMENTO = ?,");
             sql.append(" SEXO = ?,");
             sql.append(" SENHA = ?,");
-            sql.append(" CPF = ?,");
-            sql.append(" WHERE ID_PROFESSOR = ? ");
+            sql.append(" CPF = ?");
+            sql.append(" WHERE id_usuario = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -180,14 +179,14 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
             if(professor.getDescricao() != null){
                 StringBuilder sqlProfessor = new StringBuilder();
-                sqlProfessor.append("UPDATE PROFESSOR SET ");
-                sqlProfessor.append(" DESCRICAO = ?,");
-                sqlProfessor.append(" WHERE id_professor = ? ");
+                sqlProfessor.append("UPDATE PROFESSOR SET");
+                sqlProfessor.append(" DESCRICAO = ?");
+                sqlProfessor.append(" WHERE id_professor = ?");
 
                 PreparedStatement stmtProfessor = con.prepareStatement(sqlProfessor.toString());
 
                 stmtProfessor.setString(1, professor.getDescricao());
-                stmtProfessor.setInt(2, professor.getIdProfessor());
+                stmtProfessor.setInt(2, professorBanco.getIdProfessor());
 
 
                 stmtProfessor.executeUpdate();
@@ -206,7 +205,8 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
                 e.printStackTrace();
             }
         }
-
+        professor.setIdUsuario(professorBanco.getIdUsuario());
+        professor.setIdProfessor(professorBanco.getIdProfessor());
         return professor;
     }
 
@@ -218,15 +218,16 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             con = ConexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT U.*, A.DESCRICAO " +
+            String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
-                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO)";
+                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) ";
 
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
                 Professor professor = new Professor();
                 professor.setIdUsuario(res.getInt("id_usuario"));
+                professor.setIdProfessor(res.getInt("id_professor"));
                 professor.setNome(res.getString("nome"));
                 professor.setSobrenome(res.getString("sobrenome"));
                 professor.setTelefone(res.getString("telefone"));
@@ -253,7 +254,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         return professorBanco;
     }
 
-    public Professor buscarProfessorPorId(Integer idUsuario) throws BancoDeDadosException {
+    public Professor buscarProfessorPorIdUsuario(Integer idUsuario) throws BancoDeDadosException {
         Professor professor = new Professor();
         Connection con = null;
         try {
@@ -266,6 +267,51 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idUsuario);
+
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+
+                professor.setIdUsuario(res.getInt("id_usuario"));
+                professor.setIdProfessor(res.getInt("id_professor"));
+                professor.setNome(res.getString("nome"));
+                professor.setSobrenome(res.getString("sobrenome"));
+                professor.setTelefone(res.getString("telefone"));
+                professor.setEmail(res.getString("email"));
+                professor.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                professor.setAtivo(res.getString("ativo"));
+                professor.setSexo(res.getString("sexo"));
+                professor.setSenha(res.getString("senha"));
+                professor.setCpf(res.getString("cpf"));
+                professor.setDescricao(res.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return professor;
+    }
+
+    public Professor buscarProfessorPorId(Integer id) throws BancoDeDadosException {
+        Professor professor = new Professor();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*, A.* " +
+                    "FROM USUARIO U " +
+                    "INNER JOIN PROFESSOR A ON (A.ID_USUARIO = U.ID_USUARIO) "+
+                    "WHERE A.ID_PROFESSOR = ? ";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
 
             ResultSet res = stmt.executeQuery();
             while (res.next()) {

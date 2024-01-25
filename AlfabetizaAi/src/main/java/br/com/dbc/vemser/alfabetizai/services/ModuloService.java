@@ -28,12 +28,12 @@ public class ModuloService {
 
 
     public ModuloDTO criar(ModuloCreateDTO moduloCreateDTO) throws Exception {
-        ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloCreateDTO.getIdProfessor());
+        ProfessorDTO professorDTO = professorService.buscarProfessorPorIdUsuario(moduloCreateDTO.getIdProfessor());
         Modulo modulo = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
 
         Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
-        System.out.println(professor);
         modulo.setAutor(professor);
+
         Modulo moduloAdicionado = moduloRepository.adicionar(modulo);
 
         return objectMapper.convertValue(moduloAdicionado, ModuloDTO.class);
@@ -45,7 +45,10 @@ public class ModuloService {
     }
 
     public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {
+        ProfessorDTO professorDTO = professorService.buscarProfessorPorIdUsuario(moduloCreateDTO.getIdProfessor());
+        Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
         Modulo moduloEntity = objectMapper.convertValue(moduloCreateDTO, Modulo.class);
+        moduloEntity.setAutor(professor);
         moduloEntity = moduloRepository.editar(id, moduloEntity);
 
         return objectMapper.convertValue(moduloEntity, ModuloDTO.class);

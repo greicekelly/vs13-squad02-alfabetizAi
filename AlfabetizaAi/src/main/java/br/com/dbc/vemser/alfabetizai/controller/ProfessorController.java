@@ -32,9 +32,9 @@ public class ProfessorController {
         return ResponseEntity.ok(professores);
     }
 
-    @GetMapping("/{idProfessor}")
-    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idProfessor") Integer idProfessor) throws Exception {
-        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
+        ProfessorDTO professor = professorService.buscarProfessorPorIdUsuario(idUsuario);
         return ResponseEntity.ok(professor);
     }
 
@@ -51,7 +51,7 @@ public class ProfessorController {
         return ResponseEntity.ok(professorAtualizado);
     }
 
-    @DeleteMapping("/delete/{idProfessor}")
+    @DeleteMapping("/{idProfessor}")
     public ResponseEntity<Void> delete(@PathVariable("idProfessor") Integer id) throws Exception {
         professorService.remover(id);
         return ResponseEntity.ok().build();

@@ -35,8 +35,14 @@ public class ProfessorService {
                 .collect(Collectors.toList());
     }
 
-    public ProfessorDTO buscarProfessorPorId(Integer idUsuario) throws Exception {
-        Professor professor = professorRepository.buscarProfessorPorId(idUsuario);
+    public ProfessorDTO buscarProfessorPorIdUsuario(Integer idUsuario) throws Exception {
+        Professor professor = professorRepository.buscarProfessorPorIdUsuario(idUsuario);
+
+        return objectMapper.convertValue(professor, ProfessorDTO.class);
+    }
+
+    public ProfessorDTO buscarProfessorPorId(Integer id) throws Exception {
+        Professor professor = professorRepository.buscarProfessorPorId(id);
 
         return objectMapper.convertValue(professor, ProfessorDTO.class);
     }
