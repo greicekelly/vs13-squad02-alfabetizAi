@@ -254,7 +254,6 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idProfessor);
-
             ResultSet res = stmt.executeQuery();
             log.info("Consulta SQL executada com sucesso.");
             while (res.next()) {
@@ -264,7 +263,8 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
                 moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("CLASSIFICACAO_MODULO")));
-                moduloResponse.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+               // verificar essa linha estao com nomes diferentes
+                moduloResponse.setFoiAprovado((res.getString("MODULO_APROVADO").charAt(0)));
                 moduloPorProfessor.add(moduloResponse);
             }
 

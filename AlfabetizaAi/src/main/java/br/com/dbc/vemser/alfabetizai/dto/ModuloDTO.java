@@ -11,11 +11,10 @@ import lombok.Setter;
 @Setter
 public class ModuloDTO {
 
+    private Integer id;
+    private Integer idProfessor;
     private String titulo;
-
     private String conteudo;
-
-    private AutorDTO autor;
-
-    private ClassificacaoModulo classificacao;
+    private String classificacaoModulo;
+    private Character moduloAprovado;
 }
