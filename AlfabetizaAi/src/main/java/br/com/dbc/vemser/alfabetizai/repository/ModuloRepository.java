@@ -2,11 +2,11 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
-import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import lombok.extern.slf4j.Slf4j;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @AllArgsConstructor
 @Repository
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
@@ -242,11 +242,11 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
-            String sql = "SELECT M.ID_MODULO, " +
-                    "P.ID_PROFESSOR, " +
-                    "M.TITULO, M.CONTEUDO, " +
-                    "M.CLASSIFICACAO_MODULO, " +
-                    "M.MODULO_APROVADO " +
+            if (!existeProfessor(idProfessor, con)) {
+                throw new RegraDeNegocioException("Professor com ID " + idProfessor + " não encontrado");
+            }
+
+            String sql = "SELECT M.ID_MODULO, P.ID_PROFESSOR, M.TITULO, M.CONTEUDO, M.CLASSIFICACAO_MODULO, M.MODULO_APROVADO " +
                     "FROM MODULO M " +
                     "JOIN PROFESSOR P ON " +
                     "M.ID_PROFESSOR = P.ID_PROFESSOR " +
@@ -256,7 +256,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             stmt.setInt(1, idProfessor);
 
             ResultSet res = stmt.executeQuery();
-
+            log.info("Consulta SQL executada com sucesso.");
             while (res.next()) {
                 Modulo moduloResponse = new Modulo();
                 moduloResponse.setId(res.getInt("ID_MODULO"));
@@ -264,8 +264,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
                 moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("CLASSIFICACAO_MODULO")));
-                moduloResponse.setFoiAprovado(res.getObject("MODULO_APROVADO", Character.class));
-
+                moduloResponse.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
                 moduloPorProfessor.add(moduloResponse);
             }
 
@@ -273,11 +272,12 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 throw new RegraDeNegocioException("Nenhum modulo " +
                         "encontrado para o professor com ID: " + idProfessor);
             }
-
             return moduloPorProfessor;
         } catch (SQLException e) {
+            log.error("Erro ao executar consulta SQL. Mensagem: {}", e.getMessage());
             throw new BancoDeDadosException(e.getCause());
         } catch (Exception e) {
+            log.error("Erro inesperado. Mensagem: {}", e.getMessage());
             throw new RuntimeException(e);
         } finally {
             try {
@@ -447,4 +447,11 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
     }
-}
+    private boolean existeProfessor(Integer idProfessor, Connection connection) throws SQLException {
+        String sql = "SELECT * FROM PROFESSOR WHERE ID_PROFESSOR  = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idProfessor);
+            ResultSet resultSet = stmt.executeQuery();
+            return resultSet.next();
+        }
+}}

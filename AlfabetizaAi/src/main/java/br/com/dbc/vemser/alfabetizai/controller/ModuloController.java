@@ -32,6 +32,13 @@ public class ModuloController {
     public ResponseEntity<ModuloDTO> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
         return new ResponseEntity<>(moduloService.buscarModuloPorId(idModulo), HttpStatus.OK);
     }
+    @GetMapping("professor/{idProfessor}")
+    public ResponseEntity<List<ModuloDTO>>listarPorIdProfessor(
+                        @PathVariable("idProfessor") Integer idProfessor)throws Exception{
+        log.info("Listando modulo por idProfessor");
+        return new ResponseEntity<>(moduloService.listarPorIdProfessor(idProfessor), HttpStatus.OK);
+    }
+
 
     @PostMapping
     public ResponseEntity<ModuloDTO> criar(@Valid @RequestBody ModuloCreateDTO moduloCreateDTO) throws Exception {
