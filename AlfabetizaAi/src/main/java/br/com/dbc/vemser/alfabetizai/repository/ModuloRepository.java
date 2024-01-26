@@ -20,7 +20,6 @@ import java.util.List;
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     private final ProfessorService professorService;
-    private final AdminService adminService;
 
 
 
