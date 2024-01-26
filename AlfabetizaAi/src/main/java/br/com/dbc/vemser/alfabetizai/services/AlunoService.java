@@ -83,7 +83,7 @@ public class AlunoService {
         }
     }
 
-    public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
+    public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
         try {
             List<Desafio> desafios = alunoRepository.listardesafiosConcluidos(idAluno);
 

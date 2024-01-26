@@ -2,12 +2,15 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
+import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +25,8 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     private final ModuloService moduloService;
 
     private final DesafioService desafioService;
+
+    private final ProfessorService professorService;
 
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
@@ -322,19 +327,27 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
             String sql = "SELECT U.*" +
                     "FROM MODULO_ALUNO_DESAFIO U " +
-                    "WHERE U.ID_ALUNO = ? AND U.DESAFIO_CONCLUIDO = 'S'";
+                    "WHERE U.ID_ALUNO = ? AND U.MODULO_CONCLUIDO = 'S'";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, idAluno);
 
-            ResultSet res = stmt.executeQuery(sql);
+            ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
                 Modulo modulo = new Modulo();
+                Professor professor = new Professor();
                 modulo.setId(res.getInt("id_modulo"));
                 ModuloDTO moduloDTO = moduloService.buscarModuloPorId(modulo.getId());
-
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloDTO.getAutor().getIdProfessor());
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
+                professor.setTelefone(professorDTO.getTelefone());
+                modulo.setAutor(professor);
                 modulo.setTitulo(moduloDTO.getTitulo());
                 modulo.setConteudo(moduloDTO.getConteudo());
                 modulo.setClassificacao(moduloDTO.getClassificacao());
@@ -355,19 +368,22 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         return modulos;
     }
 
-    public List<Desafio> listardesafiosConcluidos(Integer idAluno) throws BancoDeDadosException {
+    public List<Desafio> listardesafiosConcluidos(Integer idAluno) throws Exception {
         List<Desafio> desafios = new ArrayList<>();
 
         Connection con = null;
         try {
             con = ConexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT * FROM MODULO_ALUNO_DESAFIO M WHERE M.DESAFIO_CONCLUIDO = 'S' AND M.ID_ALUNO = ?";
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.DESAFIO_CONCLUIDO = 'S'";
 
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                stmt.setInt(1, idAluno);
+            PreparedStatement stmt = con.prepareStatement(sql);
 
-                ResultSet res = stmt.executeQuery(sql);
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery();
 
                 while (res.next()) {
                     Desafio desafio = new Desafio();
@@ -381,9 +397,6 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                     desafios.add(desafio);
                 }
 
-            } catch (Exception e) {
-                throw new BancoDeDadosException(e.getCause());
-            }
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AutorDTO {
+    private Integer idProfessor;
     private String nome;
     private String sobrenome;
     private String telefone;
