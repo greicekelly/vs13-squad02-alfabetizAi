@@ -71,6 +71,14 @@ public class ModuloService {
                 .collect(Collectors.toList());
     }
 
+    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor)throws Exception{
+        List<Modulo> listaPorId = moduloRepository.listarPorIdProfessor(idProfessor);
+
+        return listaPorId.stream()
+                .map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public void listarSemAprovacao() {
         try {
             moduloRepository.listarSemAprovacao().forEach(System.out::println);
