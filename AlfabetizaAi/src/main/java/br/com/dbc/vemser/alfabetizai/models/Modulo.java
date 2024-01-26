@@ -11,6 +11,7 @@ import lombok.*;
 public class Modulo {
 
     private int id;
+    private int idProfessor;
     private String titulo;
     private String conteudo;
     private Professor autor;

@@ -91,7 +91,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
             stmt.setInt(5, desafio.getTipoDesafio().ordinal() + 1);
 
             int res = stmt.executeUpdate();
-            System.out.println("adicionarDesafio.res=" + res);
+
             return desafio;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());

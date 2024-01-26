@@ -2,8 +2,11 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
+import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
@@ -233,6 +236,58 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
         return modulos;
+    }
+    public List<Modulo> listarPorIdProfessor(Integer idProfessor) throws BancoDeDadosException {
+        List<Modulo> moduloPorProfessor = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            String sql = "SELECT M.ID_MODULO, " +
+                    "P.ID_PROFESSOR, " +
+                    "M.TITULO, M.CONTEUDO, " +
+                    "M.CLASSIFICACAO_MODULO, " +
+                    "M.MODULO_APROVADO " +
+                    "FROM MODULO M " +
+                    "JOIN PROFESSOR P ON " +
+                    "M.ID_PROFESSOR = P.ID_PROFESSOR " +
+                    "WHERE P.ID_PROFESSOR = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, idProfessor);
+
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                Modulo moduloResponse = new Modulo();
+                moduloResponse.setId(res.getInt("ID_MODULO"));
+                moduloResponse.setIdProfessor(res.getInt("ID_PROFESSOR"));
+                moduloResponse.setTitulo(res.getString("TITULO"));
+                moduloResponse.setConteudo(res.getString("CONTEUDO"));
+                moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("CLASSIFICACAO_MODULO")));
+                moduloResponse.setFoiAprovado(res.getObject("MODULO_APROVADO", Character.class));
+
+                moduloPorProfessor.add(moduloResponse);
+            }
+
+            if (moduloPorProfessor.isEmpty()) {
+                throw new RegraDeNegocioException("Nenhum modulo " +
+                        "encontrado para o professor com ID: " + idProfessor);
+            }
+
+            return moduloPorProfessor;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<Modulo> listarSemAprovacao() throws BancoDeDadosException {
