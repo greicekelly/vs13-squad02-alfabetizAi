@@ -32,6 +32,7 @@ CREATE TABLE ALUNO(
   sobrenome_aluno VARCHAR2(255) NOT NULL,
   data_nascimento_aluno DATE NOT NULL,
   sexo_aluno CHAR(1) NOT NULL CHECK(sexo_aluno IN ('M', 'F', 'O')),
+  pontuacao NUMBER(38) DEFAULT 0 NOT NULL,
   PRIMARY KEY (id_aluno),
   CONSTRAINT FK_ALUNO_ID_USUARIO
     FOREIGN KEY (id_usuario)
@@ -77,12 +78,30 @@ CREATE TABLE DESAFIO(
   titulo VARCHAR2(255) NOT NULL,
   conteudo CLOB NOT NULL,
   tipo_desafio NUMBER(1) NOT NULL,
+  instrucao VARCHAR2(255) NOT NULL,
+  pontos NUMBER(38) NOT NULL,
   PRIMARY KEY (id_desafio),
   CONSTRAINT FK_DESAFIO_ID_MODULO
     FOREIGN KEY (id_modulo)
       REFERENCES MODULO(id_modulo)
       
 );
+
+CREATE TABLE DESAFIO_ALTERNATIVAS(
+  id_desafio_alternativas NUMBER(38) NOT NULL,
+  id_desafio NUMBER(38) NOT NULL,
+  a VARCHAR2(255) NOT NULL,
+  b VARCHAR2(255) NOT NULL,
+  c VARCHAR2(255),
+  d VARCHAR2(255),
+  e VARCHAR2(255),
+  correta CHAR(1) NOT NULL,
+  PRIMARY KEY (id_desafio_alternativas),
+  CONSTRAINT FK_DESAFIO_ALTERNATIVAS
+    FOREIGN KEY (id_desafio)
+      REFERENCES DESAFIO(id_desafio)
+
+);  
 
 CREATE TABLE MODULO_ALUNO_DESAFIO(
 
