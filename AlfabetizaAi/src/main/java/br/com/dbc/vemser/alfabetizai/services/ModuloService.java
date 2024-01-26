@@ -11,11 +11,13 @@ import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.ModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class ModuloService {
@@ -57,7 +59,7 @@ public class ModuloService {
     public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
         try {
             boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
-            System.out.println("editado? " + conseguiuEditar + "| com id=" + idModulo);
+            log.info("editado? " + conseguiuEditar + "| com id=" + idModulo);
         } catch (BancoDeDadosException e) {
             e.printStackTrace();
         }

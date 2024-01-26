@@ -9,7 +9,6 @@ import br.com.dbc.vemser.alfabetizai.models.Admin;
 import lombok.extern.slf4j.Slf4j;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     private final ProfessorService professorService;
-    private final AdminService adminService;
 
 
 

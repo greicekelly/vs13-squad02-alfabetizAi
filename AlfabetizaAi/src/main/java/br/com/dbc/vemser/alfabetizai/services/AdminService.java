@@ -8,6 +8,7 @@ import br.com.dbc.vemser.alfabetizai.repository.AdminRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
+    private final ModuloService moduloService;
 
     public List<AdminDTO> listar() throws Exception {
         List<Admin> listaAdminBanco = adminRepository.listar();
@@ -63,12 +65,7 @@ public class AdminService {
         emailService.sendEmailAdmin(adminDTO, "Cadastro excluido, ","delete");
     }
 
-    public Admin loginAdmin(String email, String senha) {
-        try {
-            return adminRepository.LoginAdmin(email, senha);
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+ public void aprovacaoModulo(Integer idModulo, Integer idAdmin, String aprovacao){
+        moduloService.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacao);
+ }
 }
