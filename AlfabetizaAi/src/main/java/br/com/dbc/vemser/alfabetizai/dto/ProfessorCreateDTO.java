@@ -46,9 +46,10 @@ public class ProfessorCreateDTO {
     private String email;
 
     @NotNull
-    @Schema(description = "Data de nascimento do professor", required = true, example = "01/01/1990")
+    @Schema(description = "Data de nascimento do professor", required = true, example = "1990-01-26")
     private LocalDate dataDeNascimento;
 
+    @Schema(description = "Informa se o cadastro esta ativo", example = "Sim")
     private String ativo;
 
     @NotNull
