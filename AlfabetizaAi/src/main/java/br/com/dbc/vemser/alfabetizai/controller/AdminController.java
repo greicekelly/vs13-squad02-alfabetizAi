@@ -63,4 +63,13 @@ public class AdminController implements IAdminController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/analisarmodulo/{idModulo}")
+    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer id,
+                                                  @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception {
+        log.info("Atualizando modulo");
+        adminService.aprovacaoModulo(id, idAdmin, aprovacao);
+        log.info("Modulo atualizado");
+        return ResponseEntity.ok().build();
+    }
+
 }
