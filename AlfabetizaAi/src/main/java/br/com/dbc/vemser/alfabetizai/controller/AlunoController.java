@@ -2,6 +2,8 @@ package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,16 @@ public class AlunoController {
     @GetMapping("/{idAluno}")
     public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception {
         return new ResponseEntity<>(alunoService.buscarAlunoPorId(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/desafios")
+    public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/modulos")
+    public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
     }
 
     @PostMapping

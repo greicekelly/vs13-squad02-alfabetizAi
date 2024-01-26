@@ -1,8 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.Modulo;
+import br.com.dbc.vemser.alfabetizai.services.DesafioService;
+import br.com.dbc.vemser.alfabetizai.services.ModuloService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,7 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class AlunoRepository implements Repositorio<Integer, Aluno> {
+
+    private final ModuloService moduloService;
+
+    private final DesafioService desafioService;
 
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
@@ -300,6 +311,91 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Modulo> listarModulosConcluidos(int idAluno) throws Exception {
+        List<Modulo> modulos = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.DESAFIO_CONCLUIDO = 'S'";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Modulo modulo = new Modulo();
+                modulo.setId(res.getInt("id_modulo"));
+                ModuloDTO moduloDTO = moduloService.buscarModuloPorId(modulo.getId());
+
+                modulo.setTitulo(moduloDTO.getTitulo());
+                modulo.setConteudo(moduloDTO.getConteudo());
+                modulo.setClassificacao(moduloDTO.getClassificacao());
+                modulo.setFoiAprovado(moduloDTO.getFoiAprovado());
+                modulos.add(modulo);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
+    public List<Desafio> listardesafiosConcluidos(Integer idAluno) throws BancoDeDadosException {
+        List<Desafio> desafios = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT * FROM MODULO_ALUNO_DESAFIO M WHERE M.DESAFIO_CONCLUIDO = 'S' AND M.ID_ALUNO = ?";
+
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setInt(1, idAluno);
+
+                ResultSet res = stmt.executeQuery(sql);
+
+                while (res.next()) {
+                    Desafio desafio = new Desafio();
+                    desafio.setId(res.getInt("id_desafio"));
+                    DesafioDTO desafioDTO = desafioService.buscarDesafioPorId(desafio.getId());
+                    desafio.setTitulo(desafioDTO.getTitulo());
+                    desafio.setConteudo(desafioDTO.getConteudo());
+                    desafio.setTipoDesafio(desafioDTO.getTipoDesafio());
+                    desafio.setIdModulo(desafioDTO.getIdModulo());
+
+                    desafios.add(desafio);
+                }
+
+            } catch (Exception e) {
+                throw new BancoDeDadosException(e.getCause());
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return desafios;
     }
 }
 

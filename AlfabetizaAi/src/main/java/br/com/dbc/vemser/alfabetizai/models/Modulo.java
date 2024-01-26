@@ -3,6 +3,8 @@ package br.com.dbc.vemser.alfabetizai.models;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -17,6 +19,7 @@ public class Modulo {
     private Character foiAprovado;
     private Admin adminAprova;
     private ClassificacaoModulo classificacao;
+    private List<Desafio> desafios;
 
     public void ExibirConteudo(){
         System.out.println("Exibindo conteúdo do módulo.");
@@ -46,6 +49,4 @@ public class Modulo {
                 break;
         }
     }
-
-
 }
