@@ -28,6 +28,8 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
     private final ProfessorService professorService;
 
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
+
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
         try {
@@ -64,7 +66,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno adicionar(Aluno aluno) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             Integer proximoIdUsuario = this.getProximoIdUsuario(con);
             Integer proximoIdAluno = this.getProximoId(con);
@@ -120,7 +122,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "UPDATE USUARIO SET ATIVO = ? WHERE ID_USUARIO = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -149,7 +151,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno editar(Integer id, Aluno aluno) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET ");
@@ -197,7 +199,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         List<Aluno> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO)";
@@ -235,7 +237,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         Aluno aluno = new Aluno();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.ID_USUARIO = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -275,7 +277,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno loginAluno(String email, String senha) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT * FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.EMAIL = ? AND U.SENHA = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -323,7 +325,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*" +
                     "FROM MODULO_ALUNO_DESAFIO U " +
@@ -373,7 +375,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*" +
                     "FROM MODULO_ALUNO_DESAFIO U " +

@@ -4,18 +4,22 @@ import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
+@AllArgsConstructor
 public class DesafioRepository implements Repositorio<Integer, Desafio> {
+
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
    @Override
     public List<Desafio> listar() throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
             String sql = "SELECT * FROM DESAFIO";
 
@@ -40,7 +44,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     public List<Desafio> listarModuloporId(int idModulo) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             String sql = "SELECT * FROM DESAFIO WHERE id_modulo = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idModulo);
@@ -72,7 +76,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     public Desafio adicionar(Desafio desafio) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Integer proximoId = this.getProximoId(con);
             desafio.setId(proximoId);
             String sql = "INSERT INTO DESAFIO" +
@@ -111,7 +115,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     public Desafio editar(Integer id, Desafio desafio) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE DESAFIO SET ");
             sql.append("id_modulo = ?, ");
@@ -147,7 +151,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             String sql = "DELETE FROM DESAFIO WHERE id_desafio = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -173,7 +177,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     public Desafio buscarDesafioPorId(int idDesafio) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             String sql = "SELECT * FROM DESAFIO WHERE id_desafio = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, idDesafio);
