@@ -364,10 +364,16 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             ResultSet res = stmt.executeQuery();
             Modulo modulo = new Modulo();
             while (res.next()) {
-
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(res.getInt("id_professor"));
+                Professor professor = new Professor();
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setTelefone(professorDTO.getTelefone());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
                 modulo.setId(res.getInt("id_modulo"));
-                //modulo.setAdminAprova(adminService.BuscarAdminPorId(res.getInt("id_admin")));
-//                modulo.setAutor(professorService.buscarProfessorPorId(res.getInt("id_professor")));
+                modulo.setAutor(professor);
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));

@@ -70,5 +70,12 @@ public class DesafioService {
         } catch (BancoDeDadosException e) {
             log.error("Erro ao remover desafio", e);
             throw new RegraDeNegocioException("Erro ao remover desafio no banco de dados: " + e);
-        }}
+        }
+    }
+
+    public DesafioDTO buscarDesafioPorId(int idDesafio) throws Exception {
+        Desafio desafio = desafioRepository.buscarDesafioPorId(idDesafio);
+
+        return objectMapper.convertValue(desafio, DesafioDTO.class);
+    }
 }

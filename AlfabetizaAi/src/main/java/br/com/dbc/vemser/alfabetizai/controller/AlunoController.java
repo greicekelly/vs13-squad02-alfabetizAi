@@ -3,6 +3,8 @@ package br.com.dbc.vemser.alfabetizai.controller;
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAlunoController;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,16 @@ public class AlunoController implements IAlunoController {
         return new ResponseEntity<>(alunoService.buscarAlunoPorId(idAluno), HttpStatus.OK);
     }
 
+    @GetMapping("/{idAluno}/desafios")
+    public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/modulos")
+    public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<AlunoDTO> criar(@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception {
         log.info("Criando aluno");
@@ -56,5 +68,4 @@ public class AlunoController implements IAlunoController {
         log.info("Aluno deletado");
         return ResponseEntity.ok().build();
     }
-
 }
