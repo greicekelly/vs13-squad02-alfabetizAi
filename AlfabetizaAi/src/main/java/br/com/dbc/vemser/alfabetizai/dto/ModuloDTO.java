@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,6 @@ public class ModuloDTO {
     private Integer idProfessor;
     private String titulo;
     private String conteudo;
-    private String classificacaoModulo;
-    private Character moduloAprovado;
+    private Character foiAprovado;
+    private ClassificacaoModulo classificacao;
 }
