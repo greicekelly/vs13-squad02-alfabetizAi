@@ -18,35 +18,26 @@ public class Modulo {
     private Character foiAprovado;
     private Admin adminAprova;
     private ClassificacaoModulo classificacao;
-
+  
     public void ExibirConteudo(){
         System.out.println("Exibindo conteúdo do módulo.");
     }
 
-    public Character isFoiAprovado() {
-        return foiAprovado;
-    }
-
-    public void setFoiAprovado(Character foiAprovado) {
-
-        switch (foiAprovado){
-            case 'S':
-                this.foiAprovado = foiAprovado;
-                break;
-            case 's':
-                this.foiAprovado = foiAprovado;
-                break;
-            case 'N':
-                this.foiAprovado = foiAprovado;
-                break;
-            case 'n':
-                this.foiAprovado = foiAprovado;
-                break;
-            default:
-                this.foiAprovado = null;
-                break;
+        public void setFoiAprovado(Character foiAprovado) {
+            switch (Character.toUpperCase(foiAprovado)) {
+                case 'S':
+                    this.foiAprovado = 'S';
+                    break;
+                case 'N':
+                    this.foiAprovado = 'N';
+                    break;
+                default:
+                    this.foiAprovado = null;
+                    break;
+            }
         }
+
     }
 
 
-}
+

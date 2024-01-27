@@ -1,8 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.repository;
-
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
-
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
@@ -22,8 +20,6 @@ import java.util.List;
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     private final ProfessorService professorService;
-
-
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -217,6 +213,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
+                System.out.println("Valor da coluna modulo_aprovado: " + res.getString("modulo_aprovado").charAt(0));
                 modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
                 modulo.setAutor(professor);
                 modulos.add(modulo);
@@ -260,9 +257,10 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 moduloResponse.setIdProfessor(res.getInt("ID_PROFESSOR"));
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
-                moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("CLASSIFICACAO_MODULO")));
-               // verificar essa linha estao com nomes diferentes
-                moduloResponse.setFoiAprovado((res.getString("MODULO_APROVADO").charAt(0)));
+                System.out.println("Valor da coluna CLASSIFICACAO_MODULO 264: " + res.getInt(5));
+                moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt(5)));
+                System.out.println("Valor da coluna modulo_aprovado 266: " + res.getString("modulo_aprovado").charAt(0));
+                moduloResponse.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
                 moduloPorProfessor.add(moduloResponse);
             }
 
