@@ -1,9 +1,12 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAlunoController;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +16,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/aluno")
 @Slf4j
-public class AlunoController {
+
+public class AlunoController implements IAlunoController {
 
     private final AlunoService alunoService;
-
-    public AlunoController(AlunoService alunoService) {
-        this.alunoService = alunoService;
-    }
 
     @GetMapping
     public ResponseEntity<List<AlunoDTO>> listar() throws Exception {
@@ -31,6 +32,16 @@ public class AlunoController {
     @GetMapping("/{idAluno}")
     public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception {
         return new ResponseEntity<>(alunoService.buscarAlunoPorId(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/desafios")
+    public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/modulos")
+    public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
     }
 
     @PostMapping
@@ -57,5 +68,4 @@ public class AlunoController {
         log.info("Aluno deletado");
         return ResponseEntity.ok().build();
     }
-
 }

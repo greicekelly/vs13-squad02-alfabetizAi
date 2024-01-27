@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IProfessorController;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Validated
 @Slf4j
-public class ProfessorController {
+public class ProfessorController implements IProfessorController {
 
     private final ProfessorService professorService;
 
@@ -37,7 +38,11 @@ public class ProfessorController {
         ProfessorDTO professor = professorService.buscarProfessorPorIdUsuario(idUsuario);
         return ResponseEntity.ok(professor);
     }
-
+    @GetMapping("/id/{idProfessor}")
+    public ResponseEntity<ProfessorDTO> getByIdProfessor(@PathVariable("idProfessor") Integer idProfessor) throws Exception {
+        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
+        return ResponseEntity.ok(professor);
+    }
     @PostMapping()
     public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
         ProfessorDTO professorAdicionado = professorService.adicionar(professorCreateDTO);

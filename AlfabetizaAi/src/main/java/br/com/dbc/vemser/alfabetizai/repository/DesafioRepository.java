@@ -172,6 +172,38 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
             }
         }
     }
+
+    public Desafio buscarDesafioPorId(int idDesafio) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            String sql = "SELECT * FROM DESAFIO WHERE id_desafio = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, idDesafio);
+
+            ResultSet res = stmt.executeQuery();
+
+            Desafio desafio = new Desafio();
+
+            while (res.next()) {
+                desafio = mapperUsuario(res);
+            }
+
+            return desafio;
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }}
+    }
     @Override
     public Integer getProximoIdUsuario(Connection connection) throws BancoDeDadosException {
         return null;
