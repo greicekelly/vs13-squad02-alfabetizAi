@@ -78,18 +78,18 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
-            if (isModuloVinculado(id)) {
-                throw new RegraDeNegocioException("Módulo vinculado a outros registros. Não pode ser excluído.");
-            }
 
-            String sql = "DELETE FROM MODULO WHERE id_modulo = ?";
+            if (RegistroInativo(con, id)) {
+                throw new RegraDeNegocioException("Registro já inativo para o ID: " + id);
+            }
+            String sql = "UPDATE MODULO SET STATUS_MODULO = 1 WHERE id_modulo = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
 
             int res = stmt.executeUpdate();
             if (res == 0) {
-                throw new RegraDeNegocioException("Dados do Modulo Não Encontrado para o  ID: " + id);
+                throw new RegraDeNegocioException("Dados do Modulo Não Encontrado ou ja inativado para o  ID: " + id);
             }return res > 0;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -462,24 +462,14 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             return resultSet.next();
         }
 }
-    private boolean isModuloVinculado(Integer id) throws SQLException {
-        Connection con = null;
-        try {
-            con = conexaoBancoDeDados.getConnection();
+    private boolean RegistroInativo(Connection con, Integer id) throws SQLException {
+        String checkSql = "SELECT * FROM MODULO WHERE id_modulo = ? AND STATUS_MODULO = 1";
+        try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, id);
+            try (ResultSet resultSet = checkStmt.executeQuery()) {
+                System.out.println(resultSet);
+                return resultSet.next();
 
-            String sql = "SELECT COUNT(*) FROM DESAFIO WHERE id_modulo = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, id);
-
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
-                return count > 0;
-            }
-            return false;
-        } finally {
-            if (con != null) {
-                con.close();
             }
         }
     }
