@@ -32,7 +32,6 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
         return null;
     }
-
     @Override
     public Integer getProximoIdUsuario(Connection connection) throws SQLException {
         try {
@@ -99,7 +98,6 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
             System.out.println("adicionarUsuario.res=" + resUsuario);
         }
     }
-
 
     private void adicionarProfessor(Connection con, Professor professor) throws SQLException {
         String sqlProfessor = "INSERT INTO PROFESSOR\n" +

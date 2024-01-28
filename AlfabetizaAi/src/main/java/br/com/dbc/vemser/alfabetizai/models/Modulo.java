@@ -13,13 +13,13 @@ import java.util.List;
 public class Modulo {
 
     private int id;
+    private int idProfessor;
     private String titulo;
     private String conteudo;
     private Professor autor;
     private Character foiAprovado;
     private Admin adminAprova;
     private ClassificacaoModulo classificacao;
-    private List<Desafio> desafios;
 
     public void ExibirConteudo(){
         System.out.println("Exibindo conteúdo do módulo.");
@@ -49,4 +49,9 @@ public class Modulo {
                 break;
         }
     }
+
+
 }
+
+
+
