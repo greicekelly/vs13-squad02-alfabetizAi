@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,10 @@ import java.util.List;
 
 @Slf4j
 @Repository
+@AllArgsConstructor
 public class AdminRepository implements Repositorio<Integer, Admin>{
+
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
 
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
@@ -50,7 +54,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     public Admin adicionar(Admin admin) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             Integer proximoIdUsuario = this.getProximoIdUsuario(con);
             Integer proximoIdAdmin = this.getProximoId(con);
@@ -110,7 +114,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET");
@@ -144,7 +148,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         Admin adminBanco = buscarAdminPorId(id);
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET");
@@ -209,7 +213,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT U.*, A.* " +
@@ -252,7 +256,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         Admin admin = new Admin();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
@@ -297,7 +301,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         List<Admin> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
                     "INNER JOIN ADMIN A ON (A.ID_USUARIO = U.ID_USUARIO) "+

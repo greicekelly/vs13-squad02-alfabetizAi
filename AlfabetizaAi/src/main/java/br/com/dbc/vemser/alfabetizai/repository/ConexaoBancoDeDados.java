@@ -1,24 +1,37 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+@Repository
 public class ConexaoBancoDeDados {
-    private static final String SERVER = "vemser-dbc.dbccompany.com.br";
-    private static final String PORT = "25000";
-    private static final String DATABASE = "xe";
-    private static final String USER = "VS_13_EQUIPE_2";
-    private static final String PASS = "oracle";
-    private static final String SCHEMA = "VS_13_EQUIPE_2";
 
-    public static Connection getConnection() throws SQLException {
-        String url = "jdbc:oracle:thin:@" + SERVER + ":" + PORT + ":" + DATABASE;
+    @Value("${spring.datasource.url}")
+    private String SERVER;
+    @Value("${spring.datasource.username}")
+    private String USER;
+    @Value("${spring.datasource.password}")
+    private String PASS;
+    @Value("${spring.jpa.properties.hibernate.default_schema}")
+    private String SCHEMA;
 
-        Connection con = DriverManager.getConnection(url, USER, PASS);
 
+    public Connection getConnection() throws SQLException {
+        Connection con = DriverManager.getConnection(SERVER, USER, PASS);
         con.createStatement().execute("alter session set current_schema=" + SCHEMA);
 
         return con;
+    }
+
+    public void closeConnection(Connection connection) {
+        try {
+            if (connection != null)
+                connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
