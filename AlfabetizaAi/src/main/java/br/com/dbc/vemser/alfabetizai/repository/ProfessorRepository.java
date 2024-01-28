@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.repository;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,11 @@ import java.util.List;
 
 @Slf4j
 @Repository
+@AllArgsConstructor
 public class ProfessorRepository implements Repositorio<Integer, Professor> {
+
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
+
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT seq_professor.nextval mysequence from DUAL";
@@ -46,7 +51,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
 
     @Override
     public Professor adicionar(Professor professor) throws BancoDeDadosException {
-        try (Connection con = ConexaoBancoDeDados.getConnection()) {
+        try (Connection con = conexaoBancoDeDados.getConnection()) {
             con.setAutoCommit(false);
 
             Integer proximoIdUsuario = getProximoIdUsuario(con);
@@ -115,7 +120,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET ");
@@ -149,7 +154,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         Professor professorBanco = buscarProfessorPorId(id);
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET");
@@ -215,7 +220,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         List<Professor> professorBanco = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT U.*, A.* " +
@@ -258,7 +263,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         Professor professor = new Professor();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
@@ -303,7 +308,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
         Professor professor = new Professor();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*, A.* " +
                     "FROM USUARIO U " +
@@ -347,7 +352,7 @@ public class ProfessorRepository implements Repositorio<Integer, Professor> {
     public Professor loginProfessor(String email, String senha) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT * FROM USUARIO U INNER JOIN PROFESSOR P ON (P.ID_USUARIO = U.ID_USUARIO) WHERE U.EMAIL = ? AND U.SENHA = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
