@@ -60,6 +60,21 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         }
     }
 
+    public Integer getProximoIdAlternativas(Connection connection) throws BancoDeDadosException {
+        try {
+            String sql = "SELECT SEQ_DESAFIO_ALTERNATIVA.nextval as mysequence FROM DUAL";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet res = stmt.executeQuery(sql)) {
+                if (res.next()) {
+                    return res.getInt("mysequence");
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        }
+    }
+
     @Override
     public Aluno adicionar(Aluno aluno) throws BancoDeDadosException {
         Connection con = null;

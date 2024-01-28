@@ -97,6 +97,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
         try {
             con = ConexaoBancoDeDados.getConnection();
             Integer proximoId = this.getProximoId(con);
+            Integer proximoIdAlternativas = this.getProximoIdAlternativas(con);
             desafio.setId(proximoId);
             String sql = "INSERT INTO DESAFIO" +
                     "(ID_DESAFIO, " +
@@ -132,7 +133,7 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1, desafio.getId()); //ajustar forma de pegar id
+            stmt.setInt(1, proximoIdAlternativas);
             stmt.setInt(2, desafio.getId());
             stmt.setString(3, desafio.getAlternativas().get(0));
             stmt.setString(4, desafio.getAlternativas().get(1));
@@ -262,6 +263,15 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
         String sql = "SELECT seq_desafio.nextval mysequence from DUAL";
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery(sql);
+        if (res.next()) {
+            return res.getInt("mysequence");
+        }return null;
+    }
+
+    public Integer getProximoIdAlternativas(Connection connection) throws SQLException {
+        String sql = "SELECT SEQ_DESAFIO_ALTERNATIVA.nextval mysequence from DUAL";
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);
         if (res.next()) {
