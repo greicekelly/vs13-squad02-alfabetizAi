@@ -1,4 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.repository;
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -194,11 +195,15 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
                 modulo.setId(res.getInt("id_modulo"));
                 modulo.setIdProfessor(res.getInt("id_professor"));
-                professor.setNome(professor.getNome());
-                professor.setSobrenome(professor.getSobrenome());
-                professor.setEmail(professor.getEmail());
-                professor.setDescricao(professor.getDescricao());
-                professor.setTelefone(professor.getTelefone());
+
+                professor.setIdProfessor(res.getInt("id_professor"));
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
+                professor.setTelefone(professorDTO.getTelefone());
 
                 modulo.setAdminAprova(admin);
                 admin.setIdUsuario(res.getInt("id_admin"));
@@ -244,8 +249,21 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 Modulo moduloResponse = new Modulo();
+                Professor professor = new Professor();
                 moduloResponse.setId(res.getInt("ID_MODULO"));
                 moduloResponse.setIdProfessor(res.getInt("ID_PROFESSOR"));
+
+                professor.setIdProfessor(res.getInt("id_professor"));
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
+                professor.setTelefone(professorDTO.getTelefone());
+
+                moduloResponse.setAutor(professor);
+
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
                 moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt(5)));
@@ -400,9 +418,21 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 throw new RegraDeNegocioException("Dados do Módulo Não Encontrado para o ID: " + idModulo);
             }
             Modulo modulo = new Modulo();
+            Professor professor = new Professor();
 
             modulo.setId(res.getInt("id_modulo"));
             modulo.setIdProfessor(res.getInt("id_professor"));
+
+            professor.setIdProfessor(res.getInt("id_professor"));
+            ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
+            professor.setIdProfessor(professorDTO.getIdProfessor());
+            professor.setNome(professorDTO.getNome());
+            professor.setSobrenome(professorDTO.getSobrenome());
+            professor.setEmail(professorDTO.getEmail());
+            professor.setDescricao(professorDTO.getDescricao());
+            professor.setTelefone(professorDTO.getTelefone());
+
+            modulo.setAutor(professor);
             modulo.setTitulo(res.getString("titulo"));
             modulo.setConteudo(res.getString("conteudo"));
             modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
