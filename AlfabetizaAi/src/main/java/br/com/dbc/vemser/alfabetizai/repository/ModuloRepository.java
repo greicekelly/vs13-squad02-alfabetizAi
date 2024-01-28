@@ -18,6 +18,7 @@ import java.util.List;
 public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
     private final ProfessorService professorService;
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
 
     @Override
     public Integer getProximoId(Connection connection) throws SQLException {
@@ -38,7 +39,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     public Modulo adicionar(Modulo modulo) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             Integer proximoId = this.getProximoId(con);
             modulo.setId(proximoId);
@@ -75,7 +76,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             if (isModuloVinculado(id)) {
                 throw new RegraDeNegocioException("Módulo vinculado a outros registros. Não pode ser excluído.");
             }
@@ -107,7 +108,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     public Modulo editar(Integer id, Modulo modulo) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             String sql = "UPDATE MODULO SET " +
                     "id_professor = ?, " +
                     "titulo = ?, " +
@@ -144,7 +145,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     public boolean editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE MODULO SET ");
@@ -181,7 +182,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         List<Modulo> modulos = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
             String sql = "SELECT * FROM MODULO";
 
@@ -228,7 +229,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         List<Modulo> moduloPorProfessor = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             if (!existeProfessor(idProfessor, con)) {
                 throw new RegraDeNegocioException("Professor com ID " + idProfessor + " não encontrado");
             }
@@ -275,7 +276,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         List<Modulo> modulos = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'N' OR MODULO_APROVADO = 'n'";
@@ -308,7 +309,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         List<Modulo> modulos = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'S' OR MODULO_APROVADO = 's'";
@@ -347,7 +348,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         List<Modulo> modulos = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM MODULO WHERE MODULO_APROVADO = 'R' OR MODULO_APROVADO = 'r'";
@@ -386,7 +387,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT * FROM MODULO M " +
                     "WHERE M.ID_MODULO = ?";
@@ -434,7 +435,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
     private boolean isModuloVinculado(Integer id) throws SQLException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT COUNT(*) FROM DESAFIO WHERE id_modulo = ?";
             PreparedStatement stmt = con.prepareStatement(sql);

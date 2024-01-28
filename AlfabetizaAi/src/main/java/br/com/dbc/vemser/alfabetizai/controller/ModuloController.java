@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IModuloController;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 
-public class ModuloController {
+public class ModuloController implements IModuloController {
 
     private final ModuloService moduloService;
 
