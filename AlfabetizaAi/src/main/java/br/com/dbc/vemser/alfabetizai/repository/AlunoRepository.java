@@ -1,8 +1,17 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.Modulo;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
+import br.com.dbc.vemser.alfabetizai.services.DesafioService;
+import br.com.dbc.vemser.alfabetizai.services.ModuloService;
+import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,7 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class AlunoRepository implements Repositorio<Integer, Aluno> {
+
+    private final ModuloService moduloService;
+
+    private final DesafioService desafioService;
+
+    private final ProfessorService professorService;
+
+    private final ConexaoBancoDeDados conexaoBancoDeDados;
 
     @Override
     public Integer getProximoId(Connection connection) throws BancoDeDadosException {
@@ -48,7 +66,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno adicionar(Aluno aluno) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             Integer proximoIdUsuario = this.getProximoIdUsuario(con);
             Integer proximoIdAluno = this.getProximoId(con);
@@ -104,7 +122,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public boolean remover(Integer id) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "UPDATE USUARIO SET ATIVO = ? WHERE ID_USUARIO = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -133,7 +151,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno editar(Integer id, Aluno aluno) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USUARIO SET ");
@@ -181,7 +199,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         List<Aluno> adminBanco = new ArrayList<>();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO)";
@@ -219,7 +237,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
         Aluno aluno = new Aluno();
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.ID_USUARIO = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -259,7 +277,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno loginAluno(String email, String senha) throws BancoDeDadosException {
         Connection con = null;
         try {
-            con = ConexaoBancoDeDados.getConnection();
+            con = conexaoBancoDeDados.getConnection();
 
             String sql = "SELECT * FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.EMAIL = ? AND U.SENHA = ?";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -300,6 +318,99 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<Modulo> listarModulosConcluidos(int idAluno) throws Exception {
+        List<Modulo> modulos = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = conexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.MODULO_CONCLUIDO = 'S'";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                Modulo modulo = new Modulo();
+                Professor professor = new Professor();
+                modulo.setId(res.getInt("id_modulo"));
+                ModuloDTO moduloDTO = moduloService.buscarModuloPorId(modulo.getId());
+                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloDTO.getAutor().getIdProfessor());
+                professor.setIdProfessor(professorDTO.getIdProfessor());
+                professor.setNome(professorDTO.getNome());
+                professor.setSobrenome(professorDTO.getSobrenome());
+                professor.setEmail(professorDTO.getEmail());
+                professor.setDescricao(professorDTO.getDescricao());
+                professor.setTelefone(professorDTO.getTelefone());
+                modulo.setAutor(professor);
+                modulo.setTitulo(moduloDTO.getTitulo());
+                modulo.setConteudo(moduloDTO.getConteudo());
+                modulo.setClassificacao(moduloDTO.getClassificacao());
+                modulo.setFoiAprovado(moduloDTO.getFoiAprovado());
+                modulos.add(modulo);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
+    public List<Desafio> listardesafiosConcluidos(Integer idAluno) throws Exception {
+        List<Desafio> desafios = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = conexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.DESAFIO_CONCLUIDO = 'S'";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery();
+
+                while (res.next()) {
+                    Desafio desafio = new Desafio();
+                    desafio.setId(res.getInt("id_desafio"));
+                    DesafioDTO desafioDTO = desafioService.buscarDesafioPorId(desafio.getId());
+                    desafio.setTitulo(desafioDTO.getTitulo());
+                    desafio.setConteudo(desafioDTO.getConteudo());
+                    desafio.setTipoDesafio(desafioDTO.getTipoDesafio());
+                    desafio.setIdModulo(desafioDTO.getIdModulo());
+
+                    desafios.add(desafio);
+                }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return desafios;
     }
 }
 

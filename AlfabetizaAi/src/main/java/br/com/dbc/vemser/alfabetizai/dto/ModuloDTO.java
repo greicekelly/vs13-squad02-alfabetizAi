@@ -17,5 +17,7 @@ public class ModuloDTO {
     private String titulo;
     private String conteudo;
     private Character foiAprovado;
+    private AutorDTO autor;
+    private Character foiAprovado;
     private ClassificacaoModulo classificacao;
 }
