@@ -3,11 +3,15 @@ package br.com.dbc.vemser.alfabetizai.models;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Desafio {
 
     private int id;
@@ -20,13 +24,11 @@ public class Desafio {
 
     private TipoDesafio tipoDesafio;
 
-    public Desafio() {
+    private String instrucao;
 
-        this.id = id;
-        this.idModulo = idModulo;
-        this.titulo = titulo;
-        this.conteudo = conteudo;
-        this.tipoDesafio = tipoDesafio;
+    private List<String> alternativas;
 
-    }
+    private String alternativaCorreta;
+
+    private int pontos;
 }

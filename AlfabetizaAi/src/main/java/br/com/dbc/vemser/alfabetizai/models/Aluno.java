@@ -22,4 +22,6 @@ public class Aluno extends Usuario {
     private LocalDate dataNascimentoAluno;
 
     private String sexoAluno;
+
+    private int pontuacao;
 }
