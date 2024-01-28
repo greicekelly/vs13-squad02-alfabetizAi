@@ -252,7 +252,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
         return adminBanco;
     }
 
-    public Admin buscarAdminPorId(Integer idUsuasrio) throws BancoDeDadosException {
+    public Admin buscarAdminPorId(Integer idUsuario) throws BancoDeDadosException {
         Admin admin = new Admin();
         Connection con = null;
         try {
@@ -264,7 +264,7 @@ public class AdminRepository implements Repositorio<Integer, Admin>{
                     "WHERE U.ID_USUARIO = ? ";
 
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, idUsuasrio);
+            stmt.setInt(1, idUsuario);
 
             ResultSet res = stmt.executeQuery();
             while (res.next()) {

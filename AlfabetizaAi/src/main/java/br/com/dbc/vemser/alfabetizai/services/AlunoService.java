@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.services;
 import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
@@ -30,7 +31,7 @@ public class AlunoService {
 
             AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
-            emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
+            //emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
 
             return alunoDTO;
         } catch (BancoDeDadosException e) {
@@ -62,13 +63,16 @@ public class AlunoService {
         try {
             Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 
-            AlunoDTO alunoDTO = objectMapper.convertValue(alunoRepository.editar(id, alunoEntity), AlunoDTO.class);
+            alunoEntity = alunoRepository.editar(id, alunoEntity);
 
-            emailService.sendEmailAluno(alunoDTO, "Cadastro atualizado, ", "update");
+            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
+
+           // emailService.sendEmailAluno(alunoDTO, "Cadastro atualizado, ", "update");
 
             return alunoDTO;
 
         } catch (BancoDeDadosException e) {
+            e.printStackTrace();
             throw new RegraDeNegocioException("Algum problema ocorreu ao atualizar aluno" + e.getMessage());
         }
     }
@@ -77,7 +81,7 @@ public class AlunoService {
         try {
             alunoRepository.remover(id);
             AlunoDTO alunoDTO = buscarAlunoPorId(id);
-            emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
+            //emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Algum problema ocorreu ao deletar aluno" + e.getMessage());
         }

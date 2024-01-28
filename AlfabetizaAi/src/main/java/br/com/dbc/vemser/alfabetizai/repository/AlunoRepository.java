@@ -4,14 +4,12 @@ import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.Aluno;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.Modulo;
-import br.com.dbc.vemser.alfabetizai.models.Professor;
+import br.com.dbc.vemser.alfabetizai.models.*;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -20,6 +18,7 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
     private final ModuloService moduloService;
@@ -105,7 +104,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 System.out.println("adicionarUsuario.res=" + resUsuario);
             }
 
-            String sqlAluno = "INSERT INTO ALUNO (ID_ALUNO, ID_USUARIO, NOME_ALUNO, SOBRENOME_ALUNO, DATA_NASCIMENTO_ALUNO, SEXO_ALUNO) VALUES (?, ?, ?, ?, ?, ?)";
+            String sqlAluno = "INSERT INTO ALUNO (ID_ALUNO, ID_USUARIO, NOME_ALUNO, SOBRENOME_ALUNO, DATA_NASCIMENTO_ALUNO, SEXO_ALUNO, PONTUACAO) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmtAluno = con.prepareStatement(sqlAluno)) {
                 stmtAluno.setInt(1, aluno.getIdAluno());
                 stmtAluno.setInt(2, aluno.getIdUsuario());
@@ -113,14 +112,16 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 stmtAluno.setString(4, aluno.getSobrenomeAluno());
                 stmtAluno.setDate(5, Date.valueOf(aluno.getDataDeNascimento()));
                 stmtAluno.setString(6, aluno.getSexoAluno());
+                stmtAluno.setInt(7, 0);
+
 
                 int resAluno = stmtAluno.executeUpdate();
-                System.out.println("adicionarAluno.res=" + resAluno);
             }
 
             return aluno;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
@@ -145,7 +146,6 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 stmt.setInt(2, id);
 
                 int res = stmt.executeUpdate();
-                System.out.println("editarUsuario.res=" + res);
 
                 return res > 0;
             }
@@ -164,7 +164,9 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
 
     @Override
     public Aluno editar(Integer id, Aluno aluno) throws BancoDeDadosException {
+        Aluno alunoBanco = buscarAlunoPorId(id);
         Connection con = null;
+
         try {
             con = conexaoBancoDeDados.getConnection();
 
@@ -175,30 +177,46 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
             sql.append(" TELEFONE = ?,");
             sql.append(" EMAIL = ?,");
             sql.append(" DATA_NASCIMENTO = ?,");
+            sql.append(" ATIVO = 'S',");
             sql.append(" SEXO = ?,");
             sql.append(" SENHA = ?,");
-            sql.append(" CPF = ? ");
-            sql.append(" PONTUACAO = ? ");
-            sql.append(" WHERE ID_ALUNO = ? ");
+            sql.append(" CPF = ?");
+            sql.append(" WHERE ID_USUARIO = ? ");
 
-            try (PreparedStatement stmt = con.prepareStatement(sql.toString())) {
-                stmt.setString(1, aluno.getNome());
-                stmt.setString(2, aluno.getSobrenome());
-                stmt.setString(3, aluno.getTelefone());
-                stmt.setString(4, aluno.getEmail());
-                stmt.setDate(5, Date.valueOf(aluno.getDataDeNascimento()));
-                stmt.setString(6, aluno.getSexo());
-                stmt.setString(7, aluno.getSenha());
-                stmt.setString(8, aluno.getCpf());
-                stmt.setInt(9, aluno.getPontuacao());
-                stmt.setInt(10, id);
+            PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-                int res = stmt.executeUpdate();
-                System.out.println("editarAluno.res=" + res);
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getSobrenome());
+            stmt.setString(3, aluno.getTelefone());
+            stmt.setString(4, aluno.getEmail());
+            stmt.setDate(5, Date.valueOf(aluno.getDataDeNascimento()));
+            stmt.setString(6, aluno.getSexo());
+            stmt.setString(7, aluno.getSenha());
+            stmt.setString(8, aluno.getCpf());
+            stmt.setInt(9, id);
 
-                return aluno;
-            }
+            int res = stmt.executeUpdate();
+
+            StringBuilder sqlAluno = new StringBuilder();
+            sqlAluno.append("UPDATE ALUNO SET");
+            sqlAluno.append(" NOME_ALUNO = ?,");
+            sqlAluno.append(" SOBRENOME_ALUNO = ?,");
+            sqlAluno.append(" DATA_NASCIMENTO_ALUNO = ?,");
+            sqlAluno.append(" SEXO_ALUNO = ?");
+            sqlAluno.append(" WHERE ID_ALUNO = ? ");
+
+            PreparedStatement stmtAluno = con.prepareStatement(sqlAluno.toString());
+
+            stmtAluno.setString(1, aluno.getNomeAluno());
+            stmtAluno.setString(2, aluno.getSobrenomeAluno());
+            stmtAluno.setDate(3, Date.valueOf(aluno.getDataNascimentoAluno()));
+            stmtAluno.setString(4, aluno.getSexoAluno());
+            stmtAluno.setInt(5, alunoBanco.getIdAluno());
+
+            stmtAluno.executeUpdate();
+
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
@@ -209,12 +227,17 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 e.printStackTrace();
             }
         }
+        aluno.setIdUsuario(alunoBanco.getIdUsuario());
+        aluno.setIdAluno(alunoBanco.getIdAluno());
+        return aluno;
     }
 
     @Override
     public List<Aluno> listar() throws BancoDeDadosException {
         List<Aluno> adminBanco = new ArrayList<>();
         Connection con = null;
+
+
         try {
             con = conexaoBancoDeDados.getConnection();
             Statement stmt = con.createStatement();
@@ -260,33 +283,39 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
     public Aluno buscarAlunoPorId(Integer idUsuario) throws BancoDeDadosException {
         Aluno aluno = new Aluno();
         Connection con = null;
+
         try {
             con = conexaoBancoDeDados.getConnection();
 
-            String sql = "SELECT U.*, A.* FROM USUARIO U INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) WHERE U.ID_USUARIO = ?";
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                stmt.setInt(1, idUsuario);
+            String sql = "SELECT U.*, A.* " +
+                    "FROM USUARIO U " +
+                    "INNER JOIN ALUNO A ON (A.ID_USUARIO = U.ID_USUARIO) " +
+                    "WHERE U.ID_USUARIO = ? ";
 
-                try (ResultSet res = stmt.executeQuery()) {
-                    while (res.next()) {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, idUsuario);
 
-                        aluno.setIdUsuario(res.getInt("id_usuario"));
-                        aluno.setNome(res.getString("nome"));
-                        aluno.setSobrenome(res.getString("sobrenome"));
-                        aluno.setTelefone(res.getString("telefone"));
-                        aluno.setEmail(res.getString("email"));
-                        aluno.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
-                        aluno.setSexo(res.getString("sexo"));
-                        aluno.setSenha(res.getString("senha"));
-                        aluno.setCpf(res.getString("cpf"));
-                        aluno.setPontuacao(res.getInt("pontuacao"));
-                    }
-                }
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+
+                aluno.setIdUsuario(res.getInt("id_usuario"));
+                aluno.setNome(res.getString("nome"));
+                aluno.setSobrenome(res.getString("sobrenome"));
+                aluno.setTelefone(res.getString("telefone"));
+                aluno.setEmail(res.getString("email"));
+                aluno.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                aluno.setAtivo(res.getString("ativo"));
+                aluno.setSexo(res.getString("sexo"));
+                aluno.setSenha(res.getString("senha"));
+                aluno.setCpf(res.getString("cpf"));
+                aluno.setPontuacao(res.getInt("pontuacao"));
+                aluno.setIdAluno(res.getInt("id_aluno"));
+                aluno.setNomeAluno(res.getString("nome_aluno"));
+                aluno.setSobrenomeAluno(res.getString("sobrenome_aluno"));
+                aluno.setDataNascimentoAluno(res.getDate("data_nascimento_aluno").toLocalDate());
+                aluno.setSexoAluno(res.getString("sexo_aluno"));
             }
-
-            return aluno;
-
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
@@ -297,6 +326,7 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 e.printStackTrace();
             }
         }
+        return aluno;
     }
 
     public Aluno loginAluno(String email, String senha) throws BancoDeDadosException {
