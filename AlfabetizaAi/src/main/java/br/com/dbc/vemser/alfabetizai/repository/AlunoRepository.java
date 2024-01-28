@@ -229,10 +229,16 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                     aluno.setTelefone(res.getString("telefone"));
                     aluno.setEmail(res.getString("email"));
                     aluno.setDataDeNascimento(res.getDate("data_nascimento").toLocalDate());
+                    aluno.setAtivo(res.getString("ativo"));
                     aluno.setSexo(res.getString("sexo"));
                     aluno.setSenha(res.getString("senha"));
                     aluno.setCpf(res.getString("cpf"));
                     aluno.setPontuacao(res.getInt("pontuacao"));
+                    aluno.setIdAluno(res.getInt("id_aluno"));
+                    aluno.setNomeAluno(res.getString("nome_aluno"));
+                    aluno.setSobrenomeAluno(res.getString("sobrenome_aluno"));
+                    aluno.setDataNascimentoAluno(res.getDate("data_nascimento_aluno").toLocalDate());
+                    aluno.setSexoAluno(res.getString("sexo_aluno"));
                     adminBanco.add(aluno);
                 }
             }

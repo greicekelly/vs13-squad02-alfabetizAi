@@ -13,42 +13,38 @@ import java.time.LocalDate;
 public class AlunoCreateDTO {
 
     @NotBlank
-    @Schema(description = "Nome do Usuario", required = true, example = "Rafael")
+    @Schema(description = "Nome do Responsável", required = true, example = "Rafael")
     private String nome;
 
     @NotBlank
-    @Schema(description = "Sobrenome do Usuario", required = true, example = "Silveira")
+    @Schema(description = "Sobrenome do Responsável", required = true, example = "Silveira")
     private String sobrenome;
 
     @NotBlank
     @Size(min = 9)
-    @Schema(description = "Número do telefone do Usuario", required = true, example = "(51) 99136-4015")
+    @Schema(description = "Número do telefone do Responsável", required = true, example = "(51) 99136-4015")
     private String telefone;
 
     @Email
-    @Schema(description = "Email do Usuario", required = true, example = "rafael@email")
+    @Schema(description = "Email do Responsável", required = true, example = "rafael@email")
     private String email;
 
     @NotNull
     @Past
-    @Schema(description = "Data de nascimento do Usuario", required = true, example = "1990-01-26")
+    @Schema(description = "Data de nascimento do Responsável", required = true, example = "1990-01-26")
     private LocalDate dataDeNascimento;
 
     @NotBlank
-    @Schema(description = "Informa se o cadastro do usuario esta ativo", example = "Sim")
-    private String ativo;
-
-    @NotBlank
-    @Schema(description = "Sexo do Usuario - M=Masculino | F=Feminino | O=Outros", required = true, example = "M")
+    @Schema(description = "Sexo do Responsável - M=Masculino | F=Feminino | O=Outros", required = true, example = "M")
     private String sexo;
 
     @NotBlank
-    @Schema(description = "Senha do Usuario", required = true, example = "1111")
+    @Schema(description = "Senha do Responsável", required = true, example = "1111")
     private String senha;
 
     @NotBlank
     @Size(max = 11, min = 11)
-    @Schema(description = "CPF do Usuario - 11 digitos", required = true, example = "05474124015")
+    @Schema(description = "CPF do Responsável - 11 digitos", required = true, example = "05474124015")
     private String cpf;
 
     @NotBlank
