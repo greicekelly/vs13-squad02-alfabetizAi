@@ -467,7 +467,6 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
             checkStmt.setInt(1, id);
             try (ResultSet resultSet = checkStmt.executeQuery()) {
-                System.out.println(resultSet);
                 return resultSet.next();
 
             }

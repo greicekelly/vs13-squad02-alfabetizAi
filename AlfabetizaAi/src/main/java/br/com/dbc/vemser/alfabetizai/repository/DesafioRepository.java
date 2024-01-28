@@ -207,12 +207,15 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
+            if (RegistroInativo(con, id)) {
+                throw new RegraDeNegocioException("Registro já inativo para o ID: " + id);
+            }
             String sql = "UPDATE DESAFIO SET status = 1 WHERE id_desafio = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
             int res = stmt.executeUpdate();
             if (res == 0) {
-                throw new RegraDeNegocioException("Dados do Usuário Não Encontrado ou Já Inativado. ID: " + id);
+                throw new RegraDeNegocioException("Dados do Desafio Não Encontrado ou Já Inativado para o ID: " + id);
             }return res > 0;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
@@ -305,6 +308,15 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
         desafio.setAlternativas(alternativas);
 
         return desafio;
+    }
+    private boolean RegistroInativo(Connection con, Integer id) throws SQLException {
+        String checkSql = "SELECT * FROM DESAFIO WHERE id_DESAFIO = ? AND STATUS = 1";
+        try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, id);
+            try (ResultSet resultSet = checkStmt.executeQuery()) {
+                return resultSet.next();
+            }
+        }
     }
 }
 
