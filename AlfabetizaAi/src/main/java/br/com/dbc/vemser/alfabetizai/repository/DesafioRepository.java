@@ -207,12 +207,12 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
-            String sql = "DELETE FROM DESAFIO WHERE id_desafio = ?";
+            String sql = "UPDATE DESAFIO SET status = 1 WHERE id_desafio = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
             int res = stmt.executeUpdate();
             if (res == 0) {
-                throw new RegraDeNegocioException("Dados do Usuário Não Encontrado. ID: " + id);
+                throw new RegraDeNegocioException("Dados do Usuário Não Encontrado ou Já Inativado. ID: " + id);
             }return res > 0;
         } catch (SQLException e) {
             throw new BancoDeDadosException(e.getCause());
