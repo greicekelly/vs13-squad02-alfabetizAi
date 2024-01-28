@@ -54,7 +54,6 @@ public class ProfessorService {
     }
 
     public ProfessorDTO editar(Integer id, ProfessorCreateDTO professorCreateDTO) throws Exception {
-        //TODO ADICIONAR VALIDACAO ID
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
 
         professorEntity = professorRepository.editar(id, professorEntity);
@@ -66,7 +65,6 @@ public class ProfessorService {
     }
 
     public void remover(Integer id) throws Exception {
-        //TODO ADICIONAR VALIDACAO ID
         professorRepository.remover(id);
         ProfessorDTO professorDTO = buscarProfessorPorIdUsuario(id);
         emailService.sendEmailProfessor(professorDTO, "Cadastro excluido, ","delete");

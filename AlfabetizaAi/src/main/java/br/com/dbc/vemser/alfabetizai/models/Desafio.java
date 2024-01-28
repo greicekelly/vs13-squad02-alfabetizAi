@@ -3,11 +3,13 @@ package br.com.dbc.vemser.alfabetizai.models;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
 @Setter
+
 public class Desafio {
 
     private int id;

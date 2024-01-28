@@ -33,9 +33,6 @@ public class DesafioService {
     public List<DesafioDTO> listarModuloPorId(int idModuloEscolhido) throws RegraDeNegocioException {
         try {
             List<Desafio> desafios = desafioRepository.listarModuloporId(idModuloEscolhido);
-            if (desafios.isEmpty()) {
-                throw new RegraDeNegocioException("Nenhum desafio encontrado para o módulo com ID: " + idModuloEscolhido);
-            }
             return desafios.stream()
                     .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
                     .collect(Collectors.toList());
