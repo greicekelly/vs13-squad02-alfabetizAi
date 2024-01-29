@@ -61,7 +61,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             Professor professor = new Professor();
             professor.setIdProfessor(modulo.getIdProfessor());
             modulo.setAutor(mapperProfessor(professor));
-            modulo.setFoiAprovado('N');
+            modulo.setFoiAprovado("N");
 
             int res = stmt.executeUpdate();
             return modulo;
@@ -212,8 +212,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
-                String moduloAprovadoStr = res.getString("modulo_aprovado");
-                modulo.setFoiAprovado((moduloAprovadoStr != null && moduloAprovadoStr.length() > 0) ? moduloAprovadoStr.charAt(0) : ' ');
+                modulo.setFoiAprovado(res.getString("modulo_aprovado"));
                 modulo.setAutor(mapperProfessor(professor));
                 modulos.add(modulo);
             }
@@ -262,8 +261,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
                 moduloResponse.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt(5)));
-                String moduloAprovadoStr = res.getString("modulo_aprovado");
-                moduloResponse.setFoiAprovado((moduloAprovadoStr != null && moduloAprovadoStr.length() > 0) ? moduloAprovadoStr.charAt(0) : ' ');
+                moduloResponse.setFoiAprovado(res.getString("modulo_aprovado"));
                 moduloPorProfessor.add(moduloResponse);
             }
             if (moduloPorProfessor.isEmpty()) {
@@ -301,7 +299,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
-                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulo.setFoiAprovado(res.getString("modulo_aprovado"));
                 modulos.add(modulo);
             }
 
@@ -340,7 +338,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
-                modulo.setFoiAprovado((res.getString("modulo_aprovado").charAt(0)));
+                modulo.setFoiAprovado(res.getString("modulo_aprovado"));
                 modulos.add(modulo);
             }
 
@@ -379,8 +377,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setTitulo(res.getString("titulo"));
                 modulo.setConteudo(res.getString("conteudo"));
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
-                String moduloAprovadoStr = res.getString("modulo_aprovado");
-                modulo.setFoiAprovado((moduloAprovadoStr != null && moduloAprovadoStr.length() > 0) ? moduloAprovadoStr.charAt(0) : ' ');
+                modulo.setFoiAprovado(res.getString("modulo_aprovado"));
                 modulos.add(modulo);
             }
 
@@ -424,8 +421,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             modulo.setTitulo(res.getString("titulo"));
             modulo.setConteudo(res.getString("conteudo"));
             modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
-            String moduloAprovadoStr = res.getString("modulo_aprovado");
-            modulo.setFoiAprovado((moduloAprovadoStr != null && moduloAprovadoStr.length() > 0) ? moduloAprovadoStr.charAt(0) : ' ');
+            modulo.setFoiAprovado(res.getString("modulo_aprovado"));
 
             return modulo;
         } catch (SQLException e) {
