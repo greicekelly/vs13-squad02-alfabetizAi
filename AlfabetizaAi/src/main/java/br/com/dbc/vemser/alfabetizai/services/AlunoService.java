@@ -35,7 +35,7 @@ public class AlunoService {
 
             AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
-            //emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
+            emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
 
             return alunoDTO;
         } catch (BancoDeDadosException e) {
@@ -71,7 +71,7 @@ public class AlunoService {
 
             AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
-           // emailService.sendEmailAluno(alunoDTO, "Cadastro atualizado, ", "update");
+           emailService.sendEmailAluno(alunoDTO, "Cadastro atualizado, ", "update");
 
             return alunoDTO;
 
@@ -85,7 +85,7 @@ public class AlunoService {
         try {
             alunoRepository.remover(id);
             AlunoDTO alunoDTO = buscarAlunoPorId(id);
-            //emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
+            emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
         } catch (BancoDeDadosException e) {
             throw new RegraDeNegocioException("Algum problema ocorreu ao deletar aluno" + e.getMessage());
         }
