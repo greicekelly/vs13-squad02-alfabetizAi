@@ -12,11 +12,11 @@ public interface Repositorio<CHAVE, OBJETO> {
 
     Integer getProximoIdUsuario(Connection connection) throws SQLException;
 
-    OBJETO adicionar(OBJETO object) throws BancoDeDadosException;
+    OBJETO adicionar(OBJETO object) throws BancoDeDadosException, Exception;
 
     boolean remover(CHAVE id) throws BancoDeDadosException;
 
-    OBJETO editar(CHAVE id, OBJETO objeto) throws BancoDeDadosException;
+    OBJETO editar(CHAVE id, OBJETO objeto) throws BancoDeDadosException, Exception;
 
     List<OBJETO> listar() throws BancoDeDadosException, Exception;
 }

@@ -1,5 +1,4 @@
 package br.com.dbc.vemser.alfabetizai.repository;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
@@ -38,7 +37,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             return null;
     }
     @Override
-    public Modulo adicionar(Modulo modulo) throws BancoDeDadosException {
+    public Modulo adicionar(Modulo modulo) throws Exception {
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
@@ -58,6 +57,11 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             stmt.setString(4, modulo.getConteudo());
             stmt.setInt(5, modulo.getClassificacao().ordinal()+1);
             stmt.setString(6, "N");
+
+            Professor professor = new Professor();
+            professor.setIdProfessor(modulo.getIdProfessor());
+            modulo.setAutor(mapperProfessor(professor));
+            modulo.setFoiAprovado('N');
 
             int res = stmt.executeUpdate();
             return modulo;
@@ -107,7 +111,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
         }
     }
     @Override
-    public Modulo editar(Integer id, Modulo modulo) throws BancoDeDadosException {
+    public Modulo editar(Integer id, Modulo modulo) throws Exception {
         Connection con = null;
         try {
             con = conexaoBancoDeDados.getConnection();
@@ -128,6 +132,10 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             if (stmt.executeUpdate() == 0) {
                 throw new RegraDeNegocioException("Dados do Módulo Não Encontrados. ID: " + id);
             }
+            Professor professor = new Professor();
+            professor.setIdProfessor(modulo.getIdProfessor());
+            modulo.setAutor(mapperProfessor(professor));
+
             modulo.setId(id);
             return modulo;
         } catch (SQLException e) {
@@ -198,13 +206,6 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setIdProfessor(res.getInt("id_professor"));
 
                 professor.setIdProfessor(res.getInt("id_professor"));
-                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
-                professor.setIdProfessor(professorDTO.getIdProfessor());
-                professor.setNome(professorDTO.getNome());
-                professor.setSobrenome(professorDTO.getSobrenome());
-                professor.setEmail(professorDTO.getEmail());
-                professor.setDescricao(professorDTO.getDescricao());
-                professor.setTelefone(professorDTO.getTelefone());
 
                 modulo.setAdminAprova(admin);
                 admin.setIdUsuario(res.getInt("id_admin"));
@@ -213,7 +214,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 modulo.setClassificacao(ClassificacaoModulo.trazEnumPeloOrdinal(res.getInt("classificacao_modulo")));
                 String moduloAprovadoStr = res.getString("modulo_aprovado");
                 modulo.setFoiAprovado((moduloAprovadoStr != null && moduloAprovadoStr.length() > 0) ? moduloAprovadoStr.charAt(0) : ' ');
-                modulo.setAutor(professor);
+                modulo.setAutor(mapperProfessor(professor));
                 modulos.add(modulo);
             }
         } catch (SQLException e) {
@@ -255,15 +256,8 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
                 moduloResponse.setIdProfessor(res.getInt("ID_PROFESSOR"));
 
                 professor.setIdProfessor(res.getInt("id_professor"));
-                ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
-                professor.setIdProfessor(professorDTO.getIdProfessor());
-                professor.setNome(professorDTO.getNome());
-                professor.setSobrenome(professorDTO.getSobrenome());
-                professor.setEmail(professorDTO.getEmail());
-                professor.setDescricao(professorDTO.getDescricao());
-                professor.setTelefone(professorDTO.getTelefone());
 
-                moduloResponse.setAutor(professor);
+                moduloResponse.setAutor(mapperProfessor(professor));
 
                 moduloResponse.setTitulo(res.getString("TITULO"));
                 moduloResponse.setConteudo(res.getString("CONTEUDO"));
@@ -425,15 +419,8 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             modulo.setIdProfessor(res.getInt("id_professor"));
 
             professor.setIdProfessor(res.getInt("id_professor"));
-            ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
-            professor.setIdProfessor(professorDTO.getIdProfessor());
-            professor.setNome(professorDTO.getNome());
-            professor.setSobrenome(professorDTO.getSobrenome());
-            professor.setEmail(professorDTO.getEmail());
-            professor.setDescricao(professorDTO.getDescricao());
-            professor.setTelefone(professorDTO.getTelefone());
 
-            modulo.setAutor(professor);
+            modulo.setAutor(mapperProfessor(professor));
             modulo.setTitulo(res.getString("titulo"));
             modulo.setConteudo(res.getString("conteudo"));
             modulo.setClassificacao(ClassificacaoModulo.ofTipo(res.getInt("classificacao_modulo")));
@@ -509,5 +496,17 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
 
             }
         }
+    }
+
+    private Professor mapperProfessor(Professor professor) throws Exception {
+        ProfessorDTO professorDTO = professorService.buscarProfessorPorId(professor.getIdProfessor());
+        professor.setIdProfessor(professorDTO.getIdProfessor());
+        professor.setNome(professorDTO.getNome());
+        professor.setSobrenome(professorDTO.getSobrenome());
+        professor.setEmail(professorDTO.getEmail());
+        professor.setDescricao(professorDTO.getDescricao());
+        professor.setTelefone(professorDTO.getTelefone());
+
+        return professor;
     }
 }
