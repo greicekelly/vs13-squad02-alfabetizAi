@@ -110,12 +110,50 @@ public class AlunoRepository implements Repositorio<Integer, Aluno> {
                 stmtAluno.setInt(2, aluno.getIdUsuario());
                 stmtAluno.setString(3, aluno.getNomeAluno());
                 stmtAluno.setString(4, aluno.getSobrenomeAluno());
-                stmtAluno.setDate(5, Date.valueOf(aluno.getDataDeNascimento()));
+                stmtAluno.setDate(5, Date.valueOf(aluno.getDataNascimentoAluno()));
                 stmtAluno.setString(6, aluno.getSexoAluno());
                 stmtAluno.setInt(7, 0);
 
 
                 int resAluno = stmtAluno.executeUpdate();
+            }
+
+            return aluno;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Aluno adicionarAluno(Integer id, Aluno aluno) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = conexaoBancoDeDados.getConnection();
+            Integer proximoIdAluno = this.getProximoId(con);
+            aluno.setIdAluno(proximoIdAluno);
+
+
+            String sqlAluno = "INSERT INTO ALUNO (ID_ALUNO, ID_USUARIO, NOME_ALUNO, SOBRENOME_ALUNO, DATA_NASCIMENTO_ALUNO, SEXO_ALUNO, PONTUACAO) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmtAluno = con.prepareStatement(sqlAluno)) {
+                stmtAluno.setInt(1, aluno.getIdAluno());
+                stmtAluno.setInt(2, id);
+                stmtAluno.setString(3, aluno.getNomeAluno());
+                stmtAluno.setString(4, aluno.getSobrenomeAluno());
+                stmtAluno.setDate(5, Date.valueOf(aluno.getDataNascimentoAluno()));
+                stmtAluno.setString(6, aluno.getSexoAluno());
+                stmtAluno.setInt(7, 0);
+
+
+                stmtAluno.executeUpdate();
             }
 
             return aluno;

@@ -1,10 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAlunoController;
-import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +65,16 @@ public class AlunoController implements IAlunoController {
         log.info("Aluno deletado");
         return ResponseEntity.ok().build();
     }
+
+
+    @PostMapping("/adicionar/{idUsuario}")
+    public ResponseEntity<AlunoDTO> adicionarAluno(@PathVariable("idUsuario")Integer id, @Valid @RequestBody AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) throws Exception {
+        log.info("Criando aluno");
+        AlunoDTO alunoDTO = alunoService.adicionarAluno(id, alunoAdicionarCreateDTO);
+        log.info("Aluno criado");
+        return new ResponseEntity<>(alunoDTO, HttpStatus.OK);
+    }
+
 
 
 }

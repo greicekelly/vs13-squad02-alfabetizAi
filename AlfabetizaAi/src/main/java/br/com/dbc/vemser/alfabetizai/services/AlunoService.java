@@ -43,6 +43,20 @@ public class AlunoService {
         }
     }
 
+    public AlunoDTO adicionarAluno(Integer id, AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) throws Exception {
+        try {
+            Aluno alunoEntity = objectMapper.convertValue(alunoAdicionarCreateDTO, Aluno.class);
+
+            alunoEntity = alunoRepository.adicionarAluno(id, alunoEntity);
+
+            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
+
+            return alunoDTO;
+        } catch (BancoDeDadosException e) {
+            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
+        }
+    }
+
     public List<AlunoDTO> listar() throws RegraDeNegocioException {
         try {
             List<Aluno> alunos = alunoRepository.listar();
