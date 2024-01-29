@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ public class AlunoCreateDTO {
     @Schema(description = "Senha do Responsável", required = true, example = "1111")
     private String senha;
 
+    @CPF
     @NotBlank
     @Size(max = 11, min = 11)
     @Schema(description = "CPF do Responsável - 11 digitos", required = true, example = "05474124015")

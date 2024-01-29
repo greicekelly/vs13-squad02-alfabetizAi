@@ -31,7 +31,7 @@ public class ProfessorCreateDTO {
 
     @NotBlank(message = "O Telefone não pode estar em branco ou ser Nulo!")
     @Size(min=9, max=12, message = "O Telefone deve conter entre 9 e 12 digitos.")
-    @Schema(description = "Número do telefone do professor", required = true, example = "(11) 99124-1515")
+    @Schema(description = "Número do telefone do professor", required = true, example = "11991241515")
     private String telefone;
 
     @NotBlank(message = "O Email não pode estar em branco ou ser Nulo!")
