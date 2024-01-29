@@ -40,6 +40,21 @@ O Software conta com Módulos de aprendizagem ajustáveis para qualquer idade e 
 
 ![avatar](https://github.com/victorgarciadss.png?size=150)
 
+- Shaienne Oliveira
+
+![avatar](https://github.com/shaienne23.png?size=150)
+
+- Brayan Benet
+
+![avatar](https://github.com/brayanbenet.png?size=150)
+
+- André Felipe
+
+![avatar](https://github.com/andr3felipe.png?size=150)
+
+
+
+
 ## Como acessar a documentação e o projeto
 
 Para acessar o projeto e a documentação você deverá clonar o repositório. Abra o terminal em uma pasta de sua preferência e digite:
@@ -57,6 +72,8 @@ Para acessar a documentação, entre na pasta: "AlfabetizaAi", depois entre na p
 [Relatorio_AlfabetizAi](https://github.com/greicekelly/vs13-squad02-alfabetizAi/blob/main/AlfabetizaAi/documentacao/Relatorio_AlfabetizAi.pdf)
 
 [UML_AlfabetizAi](https://github.com/greicekelly/vs13-squad02-alfabetizAi/blob/main/AlfabetizaAi/documentacao/UML_AlfabetizAi.pdf)
+
+[MER_AlfabetizAi](https://github.com/greicekelly/vs13-squad02-alfabetizAi/blob/main/AlfabetizaAi/documentacao/MER_AlfabetizAi.pdf)
 
 
 
