@@ -1,4 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.repository;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
@@ -454,6 +455,43 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             }
         }
     }
+
+    public List<Modulo> listarModulosConcluidos(int idAluno) throws Exception {
+        List<Modulo> modulos = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = conexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.MODULO_CONCLUIDO = 'S'";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                Modulo modulo = buscarModuloPorId(res.getInt("id_modulo"));
+
+                modulos.add(modulo);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return modulos;
+    }
+
     private boolean existeProfessor(Integer idProfessor, Connection connection) throws SQLException {
         String sql = "SELECT * FROM PROFESSOR WHERE ID_PROFESSOR  = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -461,7 +499,7 @@ public class ModuloRepository implements Repositorio<Integer, Modulo>{
             ResultSet resultSet = stmt.executeQuery();
             return resultSet.next();
         }
-}
+    }
     private boolean RegistroInativo(Connection con, Integer id) throws SQLException {
         String checkSql = "SELECT * FROM MODULO WHERE id_modulo = ? AND STATUS_MODULO = 1";
         try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {

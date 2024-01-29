@@ -75,4 +75,16 @@ public class DesafioService {
 
         return objectMapper.convertValue(desafio, DesafioDTO.class);
     }
+
+    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
+        try {
+            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
+            return desafios.stream()
+                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Erro ao listar desafios concluidos", e);
+            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
+        }
+    }
 }

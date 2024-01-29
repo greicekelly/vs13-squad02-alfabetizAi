@@ -21,6 +21,10 @@ public class AlunoService {
 
     private final ObjectMapper objectMapper;
 
+    private final DesafioService desafioService;
+
+    private final ModuloService moduloService;
+
     private final EmailService emailService;
 
     public AlunoDTO criar(AlunoCreateDTO alunoCreateDTO) throws Exception {
@@ -88,23 +92,11 @@ public class AlunoService {
     }
 
     public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
-        try {
-            List<Desafio> desafios = alunoRepository.listardesafiosConcluidos(idAluno);
-
-            return desafios.stream().map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class)).toList();
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao listar desafios concluidos" + e.getMessage());
-        }
+        return desafioService.listardesafiosConcluidos(idAluno);
     }
 
     public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
-        try {
-            List<Modulo> modulos = alunoRepository.listarModulosConcluidos(idAluno);
-
-            return modulos.stream().map(desafio -> objectMapper.convertValue(desafio, ModuloDTO.class)).toList();
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao listar modulos concluidos" + e.getMessage());
-        }
+        return moduloService.listarModulosConcluidos(idAluno);
     }
 
 }

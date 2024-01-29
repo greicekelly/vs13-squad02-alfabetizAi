@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -246,6 +247,16 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
 
             while (res.next()) {
                 desafio = mapperUsuario(res);
+
+                sql = "SELECT * FROM DESAFIO_ALTERNATIVAS WHERE id_desafio = ?";
+                PreparedStatement stmtAlternativas = con.prepareStatement(sql);
+                stmtAlternativas.setInt(1, desafio.getId());
+
+                ResultSet resAlternativas = stmtAlternativas.executeQuery();
+
+                while (resAlternativas.next()) {
+                    desafio = mapperDesafioAlternativas(resAlternativas, desafio);
+                }
             }
 
             return desafio;
@@ -263,6 +274,44 @@ public class DesafioRepository implements Repositorio<Integer, Desafio> {
                 e.printStackTrace();
             }}
     }
+
+    public List<Desafio> listardesafiosConcluidos(Integer idAluno) throws Exception {
+        List<Desafio> desafios = new ArrayList<>();
+
+        Connection con = null;
+        try {
+            con = conexaoBancoDeDados.getConnection();
+
+            String sql = "SELECT U.*" +
+                    "FROM MODULO_ALUNO_DESAFIO U " +
+                    "WHERE U.ID_ALUNO = ? AND U.DESAFIO_CONCLUIDO = 'S'";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, idAluno);
+
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+                Desafio desafio = buscarDesafioPorId(res.getInt("id_desafio"));
+
+                desafios.add(desafio);
+            }
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return desafios;
+    }
+
     @Override
     public Integer getProximoIdUsuario(Connection connection) throws BancoDeDadosException {
         return null;

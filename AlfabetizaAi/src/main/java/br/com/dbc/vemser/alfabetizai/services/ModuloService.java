@@ -1,9 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+
 import br.com.dbc.vemser.alfabetizai.dto.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.ModuloRepository;
@@ -97,5 +99,17 @@ public class ModuloService {
        Modulo modulo = moduloRepository.buscarModuloPorId(idUsuario);
 
         return objectMapper.convertValue(modulo, ModuloDTO.class);
+    }
+
+    public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws RegraDeNegocioException {
+        try {
+            List<Modulo> modulos = moduloRepository.listarModulosConcluidos(idAluno);
+            return modulos.stream()
+                    .map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Erro ao listar modulos concluidos", e);
+            throw new RegraDeNegocioException("Erro ao listar modulos concluidos: " + e.getMessage());
+        }
     }
 }
