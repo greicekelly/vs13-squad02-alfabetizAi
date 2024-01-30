@@ -8,6 +8,7 @@ import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.AlunoRepository;
+import br.com.dbc.vemser.alfabetizai.repository.IAlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class AlunoService {
-    private final AlunoRepository alunoRepository;
+    private final IAlunoRepository alunoRepository;
 
     private final ObjectMapper objectMapper;
 
@@ -31,7 +32,7 @@ public class AlunoService {
         try {
             Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 
-            alunoEntity = alunoRepository.adicionar(alunoEntity);
+            alunoEntity = alunoRepository.save(alunoEntity);
 
             AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
@@ -43,45 +44,33 @@ public class AlunoService {
         }
     }
 
-    public AlunoDTO adicionarAluno(Integer id, AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) throws Exception {
-        try {
-            Aluno alunoEntity = objectMapper.convertValue(alunoAdicionarCreateDTO, Aluno.class);
+    public AlunoDTO adicionarAluno(Integer id, AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) {
+        Aluno alunoEntity = objectMapper.convertValue(alunoAdicionarCreateDTO, Aluno.class);
 
-            alunoEntity = alunoRepository.adicionarAluno(id, alunoEntity);
+        alunoEntity = alunoRepository.save(alunoEntity);
 
-            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
+        AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
-            return alunoDTO;
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
-        }
+        return alunoDTO;
     }
 
     public List<AlunoDTO> listar() throws RegraDeNegocioException {
-        try {
-            List<Aluno> alunos = alunoRepository.listar();
+        List<Aluno> alunos = alunoRepository.findAll();
 
-            return alunos.stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao listar alunos" + e.getMessage());
-        }
+        return alunos.stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
     }
 
-    public AlunoDTO buscarAlunoPorId(Integer idUsuario) throws Exception {
-        try {
-            Aluno alunoEntity = alunoRepository.buscarAlunoPorId(idUsuario);
+    public AlunoDTO buscarAlunoPorId(Integer idUsuario) {
+        Aluno alunoEntity = alunoRepository.getById(idUsuario);
 
-            return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao buscar aluno" + e.getMessage());
-        }
+        return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
     }
 
     public AlunoDTO atualizar(Integer id, AlunoCreateDTO alunoCreateDTO) throws Exception {
         try {
             Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 
-            alunoEntity = alunoRepository.editar(id, alunoEntity);
+            alunoEntity = alunoRepository.save(alunoEntity);
 
             AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 
@@ -97,7 +86,8 @@ public class AlunoService {
 
     public void remover(int id) throws Exception {
         try {
-            alunoRepository.remover(id);
+            Aluno aluno = alunoRepository.getById(id);
+            alunoRepository.delete(aluno);
             AlunoDTO alunoDTO = buscarAlunoPorId(id);
             emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
         } catch (BancoDeDadosException e) {
