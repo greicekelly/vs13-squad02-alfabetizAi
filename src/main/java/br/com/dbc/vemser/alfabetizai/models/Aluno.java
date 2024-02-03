@@ -32,6 +32,8 @@ public class Aluno  {
     private String sexoAluno;
     @Column(name = "pontuacao")
     private int pontuacao;
+    @Column(name = "ativo")
+    private String ativo;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
