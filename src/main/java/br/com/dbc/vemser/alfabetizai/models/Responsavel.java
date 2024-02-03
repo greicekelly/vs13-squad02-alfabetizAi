@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,15 +19,7 @@ import java.time.LocalDate;
 @DiscriminatorValue("RESPONSAVEL")
 public class Responsavel extends Usuario{
 
-
-    @Column(name = "nome_aluno")
-    private String nomeAluno;
-    @Column(name = "sobrenome_aluno")
-    private String sobrenomeAluno;
-    @Column(name = "data_nascimento_aluno")
-    private LocalDate dataNascimentoAluno;
-    @Column(name = "sexo_aluno")
-    private String sexoAluno;
-    private int pontuacao;
+    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Aluno> alunos;
 
 }
