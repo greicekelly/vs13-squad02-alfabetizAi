@@ -3,17 +3,18 @@ package br.com.dbc.vemser.alfabetizai.models;
 import br.com.dbc.vemser.alfabetizai.implement.AdminImplementa;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
+@DiscriminatorValue("ADMIN")
 public class Admin extends Usuario implements AdminImplementa {
-
-    private Integer idAdmin;
 
     private String descricao;
 
