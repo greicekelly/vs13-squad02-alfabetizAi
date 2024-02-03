@@ -1,13 +1,19 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Period;
-@Data
-@Entity(name = "USUARIO")
-public abstract class Usuario {
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("tipo_usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIO_SEQ")

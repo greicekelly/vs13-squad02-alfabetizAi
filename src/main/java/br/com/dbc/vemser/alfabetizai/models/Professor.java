@@ -1,23 +1,20 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.implement.ProfessorImplementa;
-import jakarta.persistence.*;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("PROFESSOR")
 public class Professor extends Usuario implements ProfessorImplementa {
-
-    private Integer idProfessor;
 
     private String descricao;
 

@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AlfabetizAiApplication-dev" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="br.com.dbc.vemser.alfabetizai.AlfabetizAiApplication" />
+    <module name="AlfabetizaAi" />
+    <option name="VM_PARAMETERS" value="-Dspring.mail.username=alfabetizaaidbc@gmail.com -Dspring.mail.password=xkldnmkkdmtwuazg -Dspring.datasource.username=VEM_SER -Dspring.datasource.password=oracle" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="br.com.dbc.vemser.alfabetizai.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

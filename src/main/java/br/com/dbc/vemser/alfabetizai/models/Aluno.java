@@ -1,13 +1,20 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
-import jakarta.persistence.*;
+
 import lombok.*;
 
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@Data
-@Entity(name = "ALUNO")
-public class Aluno extends Usuario {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("Aluno")
+public class Aluno  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ALUNO_SEQ")
@@ -22,6 +29,6 @@ public class Aluno extends Usuario {
     private LocalDate dataNascimentoAluno;
     @Column(name = "sexo_aluno")
     private String sexoAluno;
-    @Column(name = "pontuacao")
     private int pontuacao;
+
 }
