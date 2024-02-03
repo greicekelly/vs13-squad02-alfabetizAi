@@ -20,6 +20,6 @@ import java.util.Set;
 public class Responsavel extends Usuario{
 
     @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Aluno> alunos;
+    private List<Aluno> alunos;
 
 }

@@ -10,25 +10,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class AlunoDTO {
-    private Integer idUsuario;
 
     private Integer idAluno;
-
-    private String nome;
-
-    private String sobrenome;
-
-    private String telefone;
-
-    private String email;
-
-    private LocalDate dataDeNascimento;
-
-    private String ativo;
-
-    private String sexo;
-
-    private String cpf;
 
     private String nomeAluno;
 

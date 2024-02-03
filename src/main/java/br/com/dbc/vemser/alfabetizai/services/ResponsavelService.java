@@ -1,11 +1,13 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.ResponsavelComAlunosDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,10 +44,32 @@ public class ResponsavelService {
         return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
     }
 
-    public ResponsavelDTO buscarResponsavelPorId(Integer idUsuario) {
-        Responsavel responsavelEntity = responsavelRepository.getById(idUsuario);
+    public List<ResponsavelDTO> listarAtivos() {
+        List<Responsavel> responsavels = responsavelRepository.findAllByAtivo("N");
 
-        return objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);
+        return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
+    }
+
+    public ResponsavelComAlunosDTO buscarResponsavelPorIdComAlunos(Integer id) throws ObjetoNaoEncontradoException {
+        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Responsavel responsavel = objetoOptional.get();
+         //   List<Aluno> listaAlunos = alunoService.buscarAlunosPorIdResponsavel(responsavel.getIdUsuario());
+    //        responsavel.setAlunos(listaAlunos);
+            return objectMapper.convertValue(responsavel, ResponsavelComAlunosDTO.class);
+
+        } else {
+            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+
+    public Responsavel buscarResponsavelPorId(Integer id) throws ObjetoNaoEncontradoException {
+        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            return objetoOptional.get();
+        } else {
+            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+        }
     }
 
     public ResponsavelDTO atualizar(Integer id, ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
@@ -71,8 +95,12 @@ public class ResponsavelService {
             return responsavelDTO;
 
         } else {
-            throw new ObjetoNaoEncontradoException("Objeto com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
         }
+    }
+
+    public Responsavel salvar(Responsavel responsavel) {
+       return responsavelRepository.save(responsavel);
     }
 
     public void remover(int id) throws Exception {
@@ -88,9 +116,22 @@ public class ResponsavelService {
 
             emailService.sendEmailResponsavel(responsavelDTO, "Cadastro excluido, ","delete");
         } else {
-            throw new ObjetoNaoEncontradoException("Objeto com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
+    public void removerFisicamente(int id) throws Exception {
+        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Responsavel responsavel = objetoOptional.get();
 
+            responsavelRepository.delete(responsavel);
+
+            ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
+
+            emailService.sendEmailResponsavel(responsavelDTO, "Cadastro excluido, ","delete");
+        } else {
+            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
 }
