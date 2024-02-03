@@ -30,7 +30,7 @@ public class Usuario {
     private String email;
     @Column(name = "data_nascimento")
     private LocalDate dataDeNascimento;
-    @Column(name = "ativo")
+    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
     private String ativo;
     @Column(name = "sexo")
     private String sexo;

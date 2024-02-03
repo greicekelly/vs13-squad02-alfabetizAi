@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
@@ -29,6 +30,12 @@ public class Aluno  {
     private LocalDate dataNascimentoAluno;
     @Column(name = "sexo_aluno")
     private String sexoAluno;
+    @Column(name = "pontuacao")
     private int pontuacao;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    private Responsavel responsavel;
 
 }

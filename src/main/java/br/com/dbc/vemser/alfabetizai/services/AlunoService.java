@@ -18,17 +18,17 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class AlunoService {
-//    private final IAlunoRepository alunoRepository;
-//
-//    private final ObjectMapper objectMapper;
-//
-//    private final DesafioService desafioService;
-//
-//    private final ModuloService moduloService;
-//
-//    private final EmailService emailService;
-//
-//    public AlunoDTO criar(AlunoCreateDTO alunoCreateDTO) throws Exception {
+    private final IAlunoRepository alunoRepository;
+
+    private final ObjectMapper objectMapper;
+
+    private final DesafioService desafioService;
+
+    private final ModuloService moduloService;
+
+    private final EmailService emailService;
+
+ //   public AlunoDTO criar(AlunoCreateDTO alunoCreateDTO) throws Exception {
 //        try {
 //            Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 //
@@ -36,13 +36,13 @@ public class AlunoService {
 //
 //            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
 //
-//            emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
+//      //      emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
 //
 //            return alunoDTO;
 //        } catch (BancoDeDadosException e) {
 //            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
 //        }
-//    }
+ //   }
 //
 //    public AlunoDTO adicionarAluno(Integer id, AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) {
 //        Aluno alunoEntity = objectMapper.convertValue(alunoAdicionarCreateDTO, Aluno.class);
