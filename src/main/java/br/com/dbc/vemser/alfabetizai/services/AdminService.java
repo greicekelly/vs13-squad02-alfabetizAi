@@ -7,6 +7,7 @@ import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
 
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
@@ -34,109 +35,91 @@ public class AdminService {
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
 
+        adminEntity.setAtivo("S");
         adminEntity = adminRepository.save(adminEntity);
 
-        AdminlDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
+        AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
 
         emailService.sendEmailAdmin(adminDTO, "Cadastro efetuado, ", "create");
 
         return adminDTO;
     }
 
-    public List<ResponsavelDTO> listar() throws RegraDeNegocioException {
-        List<Responsavel> responsavels = responsavelRepository.findAll();
+    public List<AdminDTO> listar() throws RegraDeNegocioException {
+        List<Admin> admins = adminRepository.findAll();
 
-        return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
+        return admins.stream().map(admin -> objectMapper.convertValue(admin, AdminDTO.class)).toList();
     }
 
-    public List<ResponsavelDTO> listarAtivos() {
-        List<Responsavel> responsavels = responsavelRepository.findAllByAtivo("N");
+    public List<AdminDTO> listarAtivos() {
+        List<Admin> admins = adminRepository.findAllByAtivo("S");
 
-        return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
+        return admins.stream().map(admin -> objectMapper.convertValue(admin, AdminDTO.class)).toList();
     }
 
-    public ResponsavelComAlunosDTO buscarResponsavelPorIdComAlunos(Integer id) throws ObjetoNaoEncontradoException {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+
+    public AdminDTO buscarAdminPorId(Integer id) throws ObjetoNaoEncontradoException {
+        Optional<Admin> objetoOptional = adminRepository.findById(id);
         if (objetoOptional.isPresent()) {
-            Responsavel responsavel = objetoOptional.get();
-            //   List<Aluno> listaAlunos = alunoService.buscarAlunosPorIdResponsavel(responsavel.getIdUsuario());
-            //        responsavel.setAlunos(listaAlunos);
-            return objectMapper.convertValue(responsavel, ResponsavelComAlunosDTO.class);
-
+            return objectMapper.convertValue(objetoOptional.get(), AdminDTO.class);
         } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Admin com o ID " + id + " não encontrado informe um id válido");
         }
     }
 
-    public Responsavel buscarResponsavelPorId(Integer id) throws ObjetoNaoEncontradoException {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+    public AdminDTO atualizar(Integer id, AdminCreateDTO adminCreateDTO) throws Exception {
+        Optional<Admin> objetoOptional = adminRepository.findById(id);
         if (objetoOptional.isPresent()) {
-            return objetoOptional.get();
+            Admin admin = objetoOptional.get();
+            Admin adminAtualizacao = objectMapper.convertValue(adminCreateDTO, Admin.class);
+            adminAtualizacao.setIdUsuario(admin.getIdUsuario());
+
+            adminAtualizacao = adminRepository.save(admin);
+
+            AdminDTO adminDTO = objectMapper.convertValue(adminAtualizacao,AdminDTO.class);
+
+            emailService.sendEmailAdmin(adminDTO, "Cadastro atualizado, ", "update");
+
+            return adminDTO;
+
         } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Admin com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
-    public ResponsavelDTO atualizar(Integer id, ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Responsavel responsavel = objetoOptional.get();
-            Responsavel responsavelAtualizacoes = objectMapper.convertValue(responsavelCreateDTO, Responsavel.class);
-            responsavel.setNome(responsavelAtualizacoes.getNome());
-            responsavel.setSobrenome(responsavelAtualizacoes.getSobrenome());
-            responsavel.setEmail(responsavelAtualizacoes.getEmail());
-            responsavel.setSexo(responsavelAtualizacoes.getSexo());
-            responsavel.setSenha(responsavelAtualizacoes.getSenha());
-            responsavel.setCpf(responsavelAtualizacoes.getCpf());
-            responsavel.setTelefone(responsavelAtualizacoes.getTelefone());
-            responsavel.setDataDeNascimento(responsavelAtualizacoes.getDataDeNascimento());
-
-            responsavel = responsavelRepository.save(responsavel);
-
-            ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
-
-            emailService.sendEmailResponsavel(responsavelDTO, "Cadastro atualizado, ", "update");
-
-            return responsavelDTO;
-
-        } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
-
-    public Responsavel salvar(Responsavel responsavel) {
-        return responsavelRepository.save(responsavel);
+    public Admin salvar(Admin admin) {
+        return adminRepository.save(admin);
     }
 
     public void remover(int id) throws Exception {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+        Optional<Admin> objetoOptional = adminRepository.findById(id);
         if (objetoOptional.isPresent()) {
-            Responsavel responsavel = objetoOptional.get();
+            Admin admin = objetoOptional.get();
 
-            responsavel.setAtivo("N");
+            admin.setAtivo("N");
 
-            responsavel = responsavelRepository.save(responsavel);
+            admin = adminRepository.save(admin);
 
-            ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
+            AdminDTO adminDTO = objectMapper.convertValue(admin, AdminDTO.class);
 
-            emailService.sendEmailResponsavel(responsavelDTO, "Cadastro excluido, ","delete");
+            emailService.sendEmailAdmin(adminDTO, "Cadastro excluido, ","delete");
         } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Admin com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
     public void removerFisicamente(int id) throws Exception {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
+        Optional<Admin> objetoOptional = adminRepository.findById(id);
         if (objetoOptional.isPresent()) {
-            Responsavel responsavel = objetoOptional.get();
+            Admin admin = objetoOptional.get();
 
-            responsavelRepository.delete(responsavel);
+            adminRepository.delete(admin);
 
-            ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
+            AdminDTO adminDTO = objectMapper.convertValue(admin, AdminDTO.class);
 
-            emailService.sendEmailResponsavel(responsavelDTO, "Cadastro excluido, ","delete");
+            emailService.sendEmailAdmin(adminDTO, "Cadastro excluido, ","delete");
         } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Admin com o ID " + id + " não encontrado informe um id valido");
         }
     }
 }
