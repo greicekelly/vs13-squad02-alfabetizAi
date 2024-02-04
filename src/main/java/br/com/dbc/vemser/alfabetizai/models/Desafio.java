@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class Desafio {
     @Column(name = "id_desafio")
     private int id;
 
-    @Column(name = "id_modulo")
+    @Column(name = "id_modulo", updatable = false, insertable = false)
     private int idModulo;
 
     @Column(name = "titulo")
@@ -43,8 +44,8 @@ public class Desafio {
 
     @OneToOne(mappedBy = "desafio", cascade = CascadeType.ALL, orphanRemoval = true)
     private DesafioAlternativas desafioAlternativas;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "id_modulo")
+    private Modulo modulo;
 }
-//MUDANÇAS NO CODIGO:
-//    private List<String> alternativas; // criei nova entity
-//
-//    private String alternativaCorreta; // criei nova entity

@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +36,9 @@ public class Aluno  {
     @Column(name = "ativo")
     private String ativo;
 
+    @ManyToMany(mappedBy = "alunos")
+    @JsonIgnore
+    private Set<Modulo> modulo;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
