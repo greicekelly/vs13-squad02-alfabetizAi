@@ -84,18 +84,17 @@ public class DesafioService {
                 throw new ObjetoNaoEncontradoException("Desafio com o ID " + idModuloEscolhido + " não encontrado informe um id valido");
         }
     }
-// Verificar se iremos utilizar essa service.
-//    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
-//        try {
-//            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
-//            return desafios.stream()
-//                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            log.error("Erro ao listar desafios concluidos", e);
-//            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
-//        }
-//    }
+    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
+        try {
+            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
+            return desafios.stream()
+                    .map(this::retornarDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Erro ao listar desafios concluidos", e);
+            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
+        }
+    }
 
     public Desafio converterDTO(DesafioCreateDTO dto) {
         return objectMapper.convertValue(dto, Desafio.class);

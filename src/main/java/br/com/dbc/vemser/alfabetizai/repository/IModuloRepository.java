@@ -31,10 +31,9 @@ public interface IModuloRepository extends JpaRepository< Modulo, Integer> {
                             """, nativeQuery = true)
                     List<Modulo> listarModulosConcluidos(@Param("idAluno") Integer idAluno);
 
-                    @Modifying
-                    @Query(value = """ 
-                            UPDATE VS_13_EQUIPE_2.MODULO m SET m.adminAprova.idUsuario = :idAdmin, m.foiAprovado = :aprovacaoModulo WHERE m.id = :idModulo
-                            """, nativeQuery = true)
-                    boolean editarAprovacaoPorAdmin(@Param("idAdmin") Integer idAdmin, @Param("idModulo") Integer idModulo, @Param("aprovacaoModulo") String aprovacaoModulo);
-
+            @Modifying
+            @Query(value = """ 
+                  UPDATE VS_13_EQUIPE_2.MODULO m SET m.adminAprova.idUsuario = :idAdmin, m.foiAprovado = :aprovacaoModulo WHERE m.id = :idModulo
+                  """, nativeQuery = true)
+                  boolean editarAprovacaoPorAdmin(@Param("idAdmin") Integer idAdmin, @Param("idModulo") Integer idModulo, @Param("aprovacaoModulo") String aprovacaoModulo);
 }

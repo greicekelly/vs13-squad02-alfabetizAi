@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IModuloController;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/modulo")
 @RequiredArgsConstructor
 @Slf4j
-public class ModuloController  {
+public class ModuloController implements IModuloController {
 
     private final ModuloService moduloService;
     @PostMapping
@@ -33,6 +34,14 @@ public class ModuloController  {
         log.info("Modulos Listados!");
         return new ResponseEntity<>(modulosListados, HttpStatus.OK);
     }
+    @GetMapping("/{idModulo}")
+    public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+        log.info("Listando Modulos por Id Modulo!");
+        List<ModuloDTO> modulosListadosporId = moduloService.listarPorIdModulo(idModulo);
+        log.info("Modulos Listados por Id!");
+        return new ResponseEntity<>(modulosListadosporId, HttpStatus.OK);
+    }
+
     @GetMapping("professor/{idProfessor}")
     public ResponseEntity<List<ModuloDTO>>listarPorIdProfessor(
                         @PathVariable("idProfessor") Integer idProfessor)throws Exception{

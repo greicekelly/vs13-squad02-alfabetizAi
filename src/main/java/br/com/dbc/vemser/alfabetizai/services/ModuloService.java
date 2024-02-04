@@ -43,6 +43,13 @@ public class ModuloService {
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<ModuloDTO>listarPorIdModulo(Integer idModulo) throws Exception {
+        Optional<Modulo> modulo = moduloRepository.findById(idModulo);
+        return modulo.stream()
+                .map(this::retornarDTO)
+                .collect(Collectors.toList());
+    }
     public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
         Optional<Modulo> listaPorId = moduloRepository.findById(idProfessor);
         return listaPorId.stream()
@@ -84,10 +91,7 @@ public class ModuloService {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
-    public ModuloDTO buscarModuloPorId(Integer idUsuario) throws Exception {
-       Optional<Modulo> modulo = moduloRepository.findById(idUsuario);
-        return objectMapper.convertValue(modulo, ModuloDTO.class);
-    }
+
     public List<Modulo> listarSemAprovacao() throws Exception {
         try {
             return moduloRepository.listarSemAprovacao();
