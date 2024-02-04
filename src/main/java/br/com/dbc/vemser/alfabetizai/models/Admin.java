@@ -16,5 +16,7 @@ import javax.persistence.*;
 @DiscriminatorValue("ADMIN")
 public class Admin extends Usuario {
 
+    @Column(name = "descricao")
+    private String descricao;
 
 }
