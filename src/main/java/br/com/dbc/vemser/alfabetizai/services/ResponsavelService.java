@@ -44,8 +44,8 @@ public class ResponsavelService {
         return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
     }
 
-    public List<ResponsavelDTO> listarAtivos() {
-        List<Responsavel> responsavels = responsavelRepository.findAllByAtivo("N");
+    public List<ResponsavelDTO> listarAtivos(char ativo) {
+        List<Responsavel> responsavels = responsavelRepository.findAllByAtivo(ativo);
 
         return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
     }
@@ -54,8 +54,6 @@ public class ResponsavelService {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Responsavel responsavel = objetoOptional.get();
-         //   List<Aluno> listaAlunos = alunoService.buscarAlunosPorIdResponsavel(responsavel.getIdUsuario());
-    //        responsavel.setAlunos(listaAlunos);
             return objectMapper.convertValue(responsavel, ResponsavelComAlunosDTO.class);
 
         } else {
