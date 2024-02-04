@@ -28,9 +28,9 @@ public class ResponsavelController {
         return new ResponseEntity<>(responsavelService.listar(), HttpStatus.OK);
     }
 
-    @GetMapping("/ativo")
-    public ResponseEntity<List<ResponsavelDTO>> listarResponsaveisAtivos() {
-        return new ResponseEntity<>(responsavelService.listarAtivos(), HttpStatus.OK);
+    @GetMapping("/ativo/{ativo}")
+    public ResponseEntity<List<ResponsavelDTO>> listarResponsaveisAtivos(@PathVariable("idResponsavel") char ativo) {
+        return new ResponseEntity<>(responsavelService.listarAtivos(ativo), HttpStatus.OK);
     }
 
     @GetMapping("/{idResponsavel}")

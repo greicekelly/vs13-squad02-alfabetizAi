@@ -32,8 +32,6 @@ public class AlunoService {
 
         Responsavel responsavel = responsavelService.buscarResponsavelPorId(idResponsavel);
         alunoEntity.setResponsavel(responsavel);
-//        responsavel.getAlunos().add(alunoEntity);
-//        responsavelService.salvar(responsavel);
 
         alunoRepository.save(alunoEntity);
 

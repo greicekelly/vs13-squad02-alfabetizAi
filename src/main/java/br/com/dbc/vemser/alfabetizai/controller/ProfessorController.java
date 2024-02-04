@@ -25,40 +25,42 @@ import java.util.Optional;
 @Slf4j
 public class ProfessorController  {
 
-//    private final ProfessorService professorService;
-//
-//    @GetMapping()
-//    public ResponseEntity<List<ProfessorDTO>> list() throws Exception {
-//        List<ProfessorDTO> professores = professorService.visualizarTodos();
-//        return ResponseEntity.ok(professores);
-//    }
-//
-//    @GetMapping("/{idUsuario}")
-//    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
-//        ProfessorDTO professor = professorService.buscarProfessorPorIdUsuario(idUsuario);
-//        return ResponseEntity.ok(professor);
-//    }
-//    @GetMapping("/id/{idProfessor}")
-//    public ResponseEntity<ProfessorDTO> getByIdProfessor(@PathVariable("idProfessor") Integer idProfessor) throws Exception {
-//        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
-//        return ResponseEntity.ok(professor);
-//    }
-//    @PostMapping()
-//    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
-//        ProfessorDTO professorAdicionado = professorService.adicionar(professorCreateDTO);
-//        return ResponseEntity.ok(professorAdicionado);
-//    }
-//
-//    @PutMapping("/{idProfessor}")
-//    public ResponseEntity<ProfessorDTO> update(@Valid @PathVariable("idProfessor") Integer id,
-//                                               @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
-//        ProfessorDTO professorAtualizado = professorService.editar(id, professorCreateDTO);
-//        return ResponseEntity.ok(professorAtualizado);
-//    }
-//
-//    @DeleteMapping("/{idProfessor}")
-//    public ResponseEntity<Void> delete(@PathVariable("idProfessor") Integer id) throws Exception {
-//        professorService.remover(id);
-//        return ResponseEntity.ok().build();
-//    }
+    private final ProfessorService professorService;
+
+    @GetMapping()
+    public ResponseEntity<List<ProfessorDTO>> list() {
+        List<ProfessorDTO> professores = professorService.listar();
+        return ResponseEntity.ok(professores);
+    }
+
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<ProfessorDTO> getById(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
+        ProfessorDTO professor = professorService.buscarProfessorPorId(idUsuario);
+        return ResponseEntity.ok(professor);
+    }
+
+    @PostMapping()
+    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
+        ProfessorDTO professorAdicionado = professorService.criar(professorCreateDTO);
+        return ResponseEntity.ok(professorAdicionado);
+    }
+
+    @PutMapping("/{idProfessor}")
+    public ResponseEntity<ProfessorDTO> update(@Valid @PathVariable("idProfessor") Integer id,
+                                               @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
+        ProfessorDTO professorAtualizado = professorService.atualizar(id, professorCreateDTO);
+        return ResponseEntity.ok(professorAtualizado);
+    }
+
+    @DeleteMapping("/{idProfessor}")
+    public ResponseEntity<Void> delete(@PathVariable("idProfessor") Integer id) throws Exception {
+        professorService.remover(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-fisico/{idProfessor}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idProfessor") Integer id) throws Exception {
+        professorService.removerFisicamente(id);
+        return ResponseEntity.ok().build();
+    }
 }
