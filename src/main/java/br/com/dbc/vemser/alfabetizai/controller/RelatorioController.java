@@ -26,7 +26,7 @@ public class RelatorioController {
         return usuarioService.buscarUsuariosPorNome(paginaSolicitada, tamanhoPagina, nome);
     }
 
-    @GetMapping("/")
+    @GetMapping("/ativo")
     public Page<UsuarioDTO> buscarUsuariosAtivoPaginado(@RequestParam(defaultValue = "S") char ativo , @RequestParam Integer paginaSolicitada, @RequestParam Integer tamanhoPagina) {
         return usuarioService.buscarUsuariosAtivo(paginaSolicitada, tamanhoPagina, ativo);
     }
