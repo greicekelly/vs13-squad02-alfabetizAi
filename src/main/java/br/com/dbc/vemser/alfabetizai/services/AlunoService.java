@@ -33,6 +33,7 @@ public class AlunoService {
         Responsavel responsavel = responsavelService.buscarResponsavelPorId(idResponsavel);
         alunoEntity.setResponsavel(responsavel);
 
+        alunoEntity.setAtivo("S");
         alunoRepository.save(alunoEntity);
 
         return objectMapper.convertValue(alunoEntity, AlunoDTO.class);

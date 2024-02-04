@@ -35,6 +35,8 @@ public class AdminService {
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
 
+        adminPorCpfEmail(adminCreateDTO.getCpf(), adminCreateDTO.getEmail());
+
         adminEntity.setAtivo("S");
         adminEntity = adminRepository.save(adminEntity);
 
@@ -43,6 +45,15 @@ public class AdminService {
         emailService.sendEmailAdmin(adminDTO, "Cadastro efetuado, ", "create");
 
         return adminDTO;
+    }
+
+    private Admin adminPorCpfEmail(String cpf, String email) throws Exception {
+        Admin admin = adminRepository.findAllByCpfOrEmail(cpf, email);
+        if (admin != null) {
+            throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
+        } else {
+           return admin;
+        }
     }
 
     public List<AdminDTO> listar() throws RegraDeNegocioException {
