@@ -1,13 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,29 +34,26 @@ public class DesafioController implements IDesafioController {
         log.info("Desafio criado");
         return new ResponseEntity<>(desafioDTO, HttpStatus.OK);
     }
-
-
-//    @PutMapping("/{idDesafio}")
-//    public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,
-//                                                @Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception {
-//        log.info("Atualizando desafio");
-//        DesafioDTO desafioAtualizado = desafioService.editar(id, desafioCreateDTO);
-//        log.info("Desafio atualizado");
-//        return new ResponseEntity<>(desafioAtualizado, HttpStatus.OK);
-//    }
-//    @DeleteMapping("/{idDesafio}")
-//    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
-//        log.info("Deletando desafio");
-//        desafioService.remover(id);
-//        log.info("Desafio deletado");
-//        return ResponseEntity.ok().build();
-//    }
-    //    @GetMapping("/{idModulo}")
-//    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(
-//            @PathVariable("idModulo") Integer idModulo) throws RegraDeNegocioException {
-//        log.info("Listando Módulo por Id.");
-//        List<DesafioDTO> moduloListado = desafioService.listarModuloPorId(idModulo);
-//        log.info("Módulo Listado por Id");
-//        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
-//    }
+    @PutMapping("/{idDesafio}")
+    public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,
+                                                @Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception {
+        log.info("Atualizando desafio");
+        DesafioDTO desafioAtualizado = desafioService.atualizar(id, desafioCreateDTO);
+        log.info("Desafio atualizado");
+        return new ResponseEntity<>(desafioAtualizado, HttpStatus.OK);
+    }
+    @DeleteMapping("/{idDesafio}")
+    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
+        log.info("Deletando desafio");
+        desafioService.remover(id);
+        log.info("Desafio deletado");
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/{idModulo}")
+    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+        log.info("Listando Módulo por Id.");
+        List<DesafioDTO> moduloListado = desafioService.listarPorIdModulo(idModulo);
+        log.info("Módulo Listado por Id");
+        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
+    }
 }

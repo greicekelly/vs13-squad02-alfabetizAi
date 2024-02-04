@@ -1,17 +1,17 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.*;
+import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
-import br.com.dbc.vemser.alfabetizai.repository.IDesafioAlternativasRepository;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
+import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
-    private final IDesafioAlternativasRepository desafioAlternativasRepository;
+    private final IModuloRepository moduloRepository;
     private final ObjectMapper objectMapper;
 
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
@@ -28,7 +28,7 @@ public class DesafioService {
                 .collect(Collectors.toList());
     }
 
-    public DesafioDTO create(DesafioCreateDTO desafio)throws RegraDeNegocioException {
+    public DesafioDTO create(DesafioCreateDTO desafio)throws Exception  {
         log.error("camada service criação desafio ");
         Desafio desafioEntity = converterDTO(desafio);
         log.error("criando desafio");
@@ -40,43 +40,51 @@ public class DesafioService {
         return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
     }
 
+    public DesafioDTO atualizar(
+            Integer id, DesafioCreateDTO desafioCreateDTO) throws Exception {
+        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Desafio desafio = objetoOptional.get();
+            Desafio desafioAtualizacao = converterDTO(desafioCreateDTO);
+            desafio.setIdModulo(desafioAtualizacao.getIdModulo());
+            desafio.setTitulo(desafioAtualizacao.getTitulo());
+            desafio.setConteudo(desafioAtualizacao.getConteudo());
+            desafio.setTipoDesafio(desafioAtualizacao.getTipoDesafio());
+            desafio.setInstrucao(desafioAtualizacao.getInstrucao());
+            desafio.setPontos(desafioAtualizacao.getPontos());
 
-//    public DesafioDTO editar(Integer id, DesafioCreateDTO atualizarDesafio) throws RegraDeNegocioException {
-//        try {
-//            Desafio desafioEntity = objectMapper.convertValue(atualizarDesafio, Desafio.class);
-//            desafioEntity = desafioRepository.editar(id, desafioEntity);
-//            return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao editar desafio", e);
-//            throw new RegraDeNegocioException("Erro ao editar desafio no banco de dados: " + e.getMessage());
-//        }
-//    }
-//    public void remover(Integer id) throws RegraDeNegocioException {
-//        try {
-//            desafioRepository.remover(id);
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao remover desafio", e);
-//            throw new RegraDeNegocioException("Erro ao remover desafio no banco de dados: " + e);
-//        }
-//    }
-//
-//    public DesafioDTO buscarDesafioPorId(int idDesafio) throws Exception {
-//        Desafio desafio = desafioRepository.buscarDesafioPorId(idDesafio);
-//
-//        return objectMapper.convertValue(desafio, DesafioDTO.class);
-//    }
-//    public List<DesafioDTO> listarModuloPorId(int idModuloEscolhido) throws RegraDeNegocioException {
-//        try {
-//            List<Desafio> desafios = desafioRepository.listarModuloporId(idModuloEscolhido);
-//            return desafios.stream()
-//                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
-//                    .collect(Collectors.toList());
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao listar desafios por módulo", e);
-//            throw new RegraDeNegocioException("Erro ao listar desafios por módulo: " + e.getMessage());
-//        }
-//    }
-//
+            desafio = desafioRepository.save(desafio);
+
+            DesafioDTO desafioDTO = retornarDTO(desafio);
+
+            return desafioDTO;
+        }else {
+            throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+    public void remover(int id) throws Exception {
+        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Desafio desafio = objetoOptional.get();
+            desafioRepository.delete(desafio);
+
+            DesafioDTO desafioDTO = retornarDTO(desafio);
+        } else {
+            throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+    public List<DesafioDTO> listarPorIdModulo(int idModuloEscolhido) throws Exception {
+        Optional<Desafio> desafios = desafioRepository.findById(idModuloEscolhido);
+            if (desafios.isPresent()){
+                return desafios.stream()
+                    .map(this::retornarDTO)
+                    .collect(Collectors.toList());
+        } else {
+            log.error("Erro ao listar desafios por módulo");
+                throw new ObjetoNaoEncontradoException("Desafio com o ID " + idModuloEscolhido + " não encontrado informe um id valido");
+        }
+    }
+// Verificar se iremos utilizar essa service.
 //    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
 //        try {
 //            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
@@ -95,22 +103,4 @@ public class DesafioService {
     public DesafioDTO retornarDTO(Desafio entity) {
         return objectMapper.convertValue(entity, DesafioDTO.class);
     }
-
-
-
-
 }
-
-// CODIGOS ANTERIORES JA EDITADOS PARA JPA
-
-//    public List<DesafioDTO> listarDesafios() throws RegraDeNegocioException {
-//        try {
-//            List<Desafio> desafios = desafioRepository.list();
-//            return desafios.stream()
-//                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
-//                    .collect(Collectors.toList());
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao listar desafios", e);
-//            throw new RegraDeNegocioException("Algum problema ocorreu ao listar desafios, revise os dados");
-//        }
-//    }
