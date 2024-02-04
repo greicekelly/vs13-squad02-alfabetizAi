@@ -17,29 +17,18 @@ public class UsuarioService {
 
     private final IUsuarioRepository usuarioRepository;
 
-//    public List<Usuario> buscarUsuarios() {
-//
-////        public Page<PessoaDTO> findAll(Pageable pageable){
-////            Page<PessoaDTO> pessoaDTOList = pessoaRepository.findAllPessoa(pageable)
-////                    .map(this::convertToDTO);
-////
-////            return pessoaDTOList;
-//   //     return usuarioRepository.findAllUsersWithPagination();
-//        return null;
-//    }
-
-//    public Page<Usuario> getPorQualquerNomeJPQL(Integer paginaSolicitada, Integer tamanhoPagina, String nome) {
-//       Pageable pageable = PageRequest.of(paginaSolicitada, tamanhoPagina);
-//        return usuarioRepository.getPorQualquerNomeJPQL("%"+ nome + "%",pageable);
-//     //  return usuarioRepository.findAll(pageable);
-//    }
-
-    public List<Usuario> listar(){
-      return usuarioRepository.findAll();
+    public Page<UsuarioDTO> buscarUsuariosPorNome(Integer paginaSolicitada, Integer tamanhoPagina, String nome) {
+        Pageable pageable = PageRequest.of(paginaSolicitada, tamanhoPagina);
+        return usuarioRepository.buscarUsuariosPorNomeDTO(pageable, nome);
     }
 
-    public Page<UsuarioDTO> listar(Integer paginaSolicitada, Integer tamanhoPagina){
+    public Page<UsuarioDTO> buscarUsuarios(Integer paginaSolicitada, Integer tamanhoPagina) {
         Pageable pageable = PageRequest.of(paginaSolicitada, tamanhoPagina);
-        return usuarioRepository.procurarUsuariosDTO(pageable);
+        return usuarioRepository.buscarUsuarios(pageable);
+    }
+
+    public Page<UsuarioDTO> buscarUsuariosAtivo(Integer paginaSolicitada, Integer tamanhoPagina, char ativo) {
+        Pageable pageable = PageRequest.of(paginaSolicitada, tamanhoPagina);
+        return usuarioRepository.buscarUsuariosAtivosDTO(pageable, String.valueOf(ativo));
     }
 }
