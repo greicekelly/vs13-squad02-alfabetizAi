@@ -1,11 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.*;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.*;
-
+import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IAlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
