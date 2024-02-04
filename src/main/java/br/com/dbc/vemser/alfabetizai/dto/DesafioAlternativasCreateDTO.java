@@ -1,8 +1,17 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class DesafioAlternativasCreateDTO {
 
     @NotNull
@@ -27,6 +36,6 @@ public class DesafioAlternativasCreateDTO {
     private String e;
 
     @NotBlank
-    private String correta;
+    private String alternativaCorreta;
 }
 

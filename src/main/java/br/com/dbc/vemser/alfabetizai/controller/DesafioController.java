@@ -1,9 +1,13 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +31,15 @@ public class DesafioController implements IDesafioController {
         log.info("Desafios Listados");
         return new ResponseEntity<>(desafiosListados, HttpStatus.OK);
     }
-//    @GetMapping("/{idModulo}")
-//    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(
-//            @PathVariable("idModulo") Integer idModulo) throws RegraDeNegocioException {
-//        log.info("Listando Módulo por Id.");
-//        List<DesafioDTO> moduloListado = desafioService.listarModuloPorId(idModulo);
-//        log.info("Módulo Listado por Id");
-//        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
-//    }
-//    @PostMapping
-//    public ResponseEntity<DesafioDTO> criar(@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception {
-//        log.info("Criando desafio");
-//        DesafioDTO desafioDTO = desafioService.adicionar(desafioCreateDTO);
-//        log.info("Desafio criado");
-//        return new ResponseEntity<>(desafioDTO, HttpStatus.OK);
-//    }
+    @PostMapping
+    public ResponseEntity<DesafioDTO> criar(@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception {
+        log.info("Criando desafio");
+        DesafioDTO desafioDTO = desafioService.create(desafioCreateDTO);
+        log.info("Desafio criado");
+        return new ResponseEntity<>(desafioDTO, HttpStatus.OK);
+    }
+
+
 //    @PutMapping("/{idDesafio}")
 //    public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,
 //                                                @Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception {
@@ -56,5 +54,13 @@ public class DesafioController implements IDesafioController {
 //        desafioService.remover(id);
 //        log.info("Desafio deletado");
 //        return ResponseEntity.ok().build();
+//    }
+    //    @GetMapping("/{idModulo}")
+//    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(
+//            @PathVariable("idModulo") Integer idModulo) throws RegraDeNegocioException {
+//        log.info("Listando Módulo por Id.");
+//        List<DesafioDTO> moduloListado = desafioService.listarModuloPorId(idModulo);
+//        log.info("Módulo Listado por Id");
+//        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
 //    }
 }

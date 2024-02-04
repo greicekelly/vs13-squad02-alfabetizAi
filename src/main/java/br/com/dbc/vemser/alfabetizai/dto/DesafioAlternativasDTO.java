@@ -1,5 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class DesafioAlternativasDTO {
 
     private int idAlternativas;
@@ -16,5 +25,5 @@ public class DesafioAlternativasDTO {
 
     private String e;
 
-    private String correta;
+    private String alternativaCorreta;
 }

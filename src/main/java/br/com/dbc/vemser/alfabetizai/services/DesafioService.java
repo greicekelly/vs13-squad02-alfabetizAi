@@ -1,10 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
+import br.com.dbc.vemser.alfabetizai.repository.IDesafioAlternativasRepository;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,41 +19,28 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
+    private final IDesafioAlternativasRepository desafioAlternativasRepository;
     private final ObjectMapper objectMapper;
-
-//    public List<PessoaDTO> list() {
-//        return pessoaRepository.findAll().stream()
-//                .map(this::retornarDTO)
-//                .collect(Collectors.toList());
-//    }
 
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
         return desafioRepository.findAll().stream()
                 .map(this :: retornarDTO)
                 .collect(Collectors.toList());
     }
-//
-//    public List<DesafioDTO> listarModuloPorId(int idModuloEscolhido) throws RegraDeNegocioException {
-//        try {
-//            List<Desafio> desafios = desafioRepository.listarModuloporId(idModuloEscolhido);
-//            return desafios.stream()
-//                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
-//                    .collect(Collectors.toList());
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao listar desafios por módulo", e);
-//            throw new RegraDeNegocioException("Erro ao listar desafios por módulo: " + e.getMessage());
-//        }
-//    }
-//    public DesafioDTO adicionar(DesafioCreateDTO desafioCreateDTO) throws RegraDeNegocioException {
-//        try {
-//            Desafio desafioEntity = objectMapper.convertValue(desafioCreateDTO, Desafio.class);
-//            desafioEntity = desafioRepository.adicionar(desafioEntity);
-//            return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
-//        } catch (BancoDeDadosException e) {
-//            log.error("Erro ao adicionar desafio", e);
-//            throw new RegraDeNegocioException("Erro ao adicionar desafio no banco de dados: " + e.getMessage());
-//        }
-//    }
+
+    public DesafioDTO create(DesafioCreateDTO desafio)throws RegraDeNegocioException {
+        log.error("camada service criação desafio ");
+        Desafio desafioEntity = converterDTO(desafio);
+        log.error("criando desafio");
+        return retornarDTO(desafioRepository.save(desafioEntity));
+    }
+    public DesafioDTO buscarDesafioPorId(Integer idDesafio) {
+        Desafio desafioEntity = desafioRepository.getById(idDesafio);
+
+        return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
+    }
+
+
 //    public DesafioDTO editar(Integer id, DesafioCreateDTO atualizarDesafio) throws RegraDeNegocioException {
 //        try {
 //            Desafio desafioEntity = objectMapper.convertValue(atualizarDesafio, Desafio.class);
@@ -77,6 +65,17 @@ public class DesafioService {
 //
 //        return objectMapper.convertValue(desafio, DesafioDTO.class);
 //    }
+//    public List<DesafioDTO> listarModuloPorId(int idModuloEscolhido) throws RegraDeNegocioException {
+//        try {
+//            List<Desafio> desafios = desafioRepository.listarModuloporId(idModuloEscolhido);
+//            return desafios.stream()
+//                    .map(desafio -> objectMapper.convertValue(desafio, DesafioDTO.class))
+//                    .collect(Collectors.toList());
+//        } catch (BancoDeDadosException e) {
+//            log.error("Erro ao listar desafios por módulo", e);
+//            throw new RegraDeNegocioException("Erro ao listar desafios por módulo: " + e.getMessage());
+//        }
+//    }
 //
 //    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
 //        try {
@@ -96,6 +95,10 @@ public class DesafioService {
     public DesafioDTO retornarDTO(Desafio entity) {
         return objectMapper.convertValue(entity, DesafioDTO.class);
     }
+
+
+
+
 }
 
 // CODIGOS ANTERIORES JA EDITADOS PARA JPA

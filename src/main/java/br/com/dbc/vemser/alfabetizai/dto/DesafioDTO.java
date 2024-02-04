@@ -21,7 +21,3 @@ public class DesafioDTO {
     private DesafioAlternativas desafioAlternativas;
     private int pontos;
 }
-
-//CODIGOS ALTERADOS
-//    private List<String> alternativas;
-//    private String alternativaCorreta;

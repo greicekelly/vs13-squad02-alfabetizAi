@@ -14,8 +14,8 @@ import javax.persistence.*;
 @Entity(name = "DESAFIO_ALTERNATIVAS")
 public class DesafioAlternativas {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DESAFIO_SEQ")
-    @SequenceGenerator(name = "DESAFIO_SEQ", sequenceName = "seq_desafio", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ALTERNATIVAS_SEQ")
+    @SequenceGenerator(name = "ALTERNATIVAS_SEQ", sequenceName = "seq_alternativas", allocationSize = 1)
     @Column(name = "id_desafio_alternativas")
     private int idAlternativas;
 
@@ -38,10 +38,9 @@ public class DesafioAlternativas {
     private String e;
 
     @Column(name = "correta")
-    private String correta;
-
+    private String alternativaCorreta;
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "id_desafio", referencedColumnName = "id_desafio")
     private Desafio desafio;
 

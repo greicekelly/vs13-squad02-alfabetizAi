@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,14 +36,6 @@ public class DesafioCreateDTO {
     @NotNull(message = "A instrução do desafio não pode estar em branco ou ser Nulo!")
     @Schema(description = "Instrução do desafio", required = true, example = "Qual é a Letra correta?")
     private String instrucao;
-
-    @NotNull(message = "A alternativa do desafio não pode estar em branco ou ser Nulo!")
-    @Schema(description = "Alternativas do desafio", required = true, example = "[A, B, C]")
-    private List<String> alternativas;
-
-    @NotNull(message = "A alternativa do desafio não pode estar em branco ou ser Nulo!")
-    @Schema(description = "Alternativas do desafio", required = true, example = "[A, B, C]")
-    private String alternativaCorreta;
 
     @NotNull(message = "A pontuação do desafio não pode estar em branco ou ser Nulo!")
     @Schema(description = "Pontuação do desafio", required = true, example = "10")
