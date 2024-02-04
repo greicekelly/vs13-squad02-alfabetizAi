@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @AllArgsConstructor
 @Slf4j
-public class AdminController  {
+public class AdminController implements IAdminController {
 
     private final AdminService adminService;
 
