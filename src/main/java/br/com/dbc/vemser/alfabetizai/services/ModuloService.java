@@ -4,8 +4,6 @@ package br.com.dbc.vemser.alfabetizai.services;
 import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
-import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
@@ -45,7 +43,7 @@ public class ModuloService {
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
     }
-    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor)throws Exception{
+    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
         Optional<Modulo> listaPorId = moduloRepository.findById(idProfessor);
         return listaPorId.stream()
                 .map(this::retornarDTO)
@@ -86,56 +84,53 @@ public class ModuloService {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
+    public ModuloDTO buscarModuloPorId(Integer idUsuario) throws Exception {
+       Optional<Modulo> modulo = moduloRepository.findById(idUsuario);
+        return objectMapper.convertValue(modulo, ModuloDTO.class);
+    }
+    public List<Modulo> listarSemAprovacao() throws Exception {
+        try {
+            return moduloRepository.listarSemAprovacao();
+        } catch (Exception e) {
+            throw new Exception("Erro ao listar módulos sem aprovação", e);
+        }
+    }
+    public List<Modulo> listarAprovados() throws Exception {
+        try {
+            return moduloRepository.listarAprovados();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erro ao listar módulos aprovados", e);
+        }
+    }
+    public List<Modulo> listarReprovados() throws Exception{
+        try {
+            return moduloRepository.listarReprovados();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erro ao listar módulos Reprovados", e);
+        }}
 
-
-//    public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) {
-//        try {
-//            boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
-//            log.info("editado? " + conseguiuEditar + "| com id=" + idModulo);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public void listarSemAprovacao() {
-//        try {
-//            moduloRepository.listarSemAprovacao().forEach(System.out::println);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public void listarAprovados() {
-//        try {
-//            moduloRepository.listarAprovados().forEach(System.out::println);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public void listarReprovados() {
-//        try {
-//            moduloRepository.listarReprovados().forEach(System.out::println);
-//        } catch (BancoDeDadosException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public ModuloDTO buscarModuloPorId(Integer idUsuario) throws Exception {
-//       Modulo modulo = moduloRepository.buscarModuloPorId(idUsuario);
-//
-//        return objectMapper.convertValue(modulo, ModuloDTO.class);
-//    }
-//
-//    public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws RegraDeNegocioException {
-//        try {
-//            List<Modulo> modulos = moduloRepository.listarModulosConcluidos(idAluno);
-//            return modulos.stream()
-//                    .map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class))
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            log.error("Erro ao listar modulos concluidos", e);
-//            throw new RegraDeNegocioException("Erro ao listar modulos concluidos: " + e.getMessage());
-//        }
-//    }
-
+    public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) throws Exception {
+        try {
+            boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
+            log.info("editado? " + conseguiuEditar + "| com id=" + idModulo);
+        } catch (Exception e) {
+            log.error("Erro ao editar a aprovação do módulo", e);
+            throw new Exception("Erro ao editar a aprovação do módulo", e);
+        }
+    }
+    public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
+        try {
+            List<Modulo> modulos = moduloRepository.listarModulosConcluidos(idAluno);
+            return modulos.stream()
+                    .map(this::retornarDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Erro ao listar modulos concluidos", e);
+            throw new Exception("Erro ao listar modulos concluidos: " + e.getMessage());
+        }
+    }
     public Modulo converterDTO(ModuloCreateDTO dto) {
         return objectMapper.convertValue(dto, Modulo.class);
     }

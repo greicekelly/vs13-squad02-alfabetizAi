@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "modulo")
+@Entity(name = "MODULO")
 public class Modulo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MODULO_SEQ")
