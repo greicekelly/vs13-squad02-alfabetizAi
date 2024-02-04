@@ -15,8 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service
 @Slf4j
+@Service
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
     private final IModuloRepository moduloRepository;
