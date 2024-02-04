@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,6 @@ public class DesafioDTO {
     private String conteudo;
     private TipoDesafio tipoDesafio;
     private String instrucao;
-    private List<String> alternativas;
-    private String alternativaCorreta;
+    private DesafioAlternativas desafioAlternativas;
     private int pontos;
 }

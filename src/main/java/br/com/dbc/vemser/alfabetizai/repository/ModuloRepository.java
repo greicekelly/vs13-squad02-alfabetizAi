@@ -1,19 +1,19 @@
-package br.com.dbc.vemser.alfabetizai.repository;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
-import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
-import lombok.extern.slf4j.Slf4j;
-import br.com.dbc.vemser.alfabetizai.models.Modulo;
-import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-//@Slf4j
+//package br.com.dbc.vemser.alfabetizai.repository;
+//import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+//import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
+//import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+//import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+//import br.com.dbc.vemser.alfabetizai.models.Admin;
+//import lombok.extern.slf4j.Slf4j;
+//import br.com.dbc.vemser.alfabetizai.models.Modulo;
+//import br.com.dbc.vemser.alfabetizai.models.Professor;
+//import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
+//import lombok.AllArgsConstructor;
+//import org.springframework.stereotype.Repository;
+//import java.sql.*;
+//import java.util.ArrayList;
+//import java.util.List;
+////@Slf4j
 //@AllArgsConstructor
 //@Repository
 //public class ModuloRepository implements Repositorio<Integer, Modulo>{

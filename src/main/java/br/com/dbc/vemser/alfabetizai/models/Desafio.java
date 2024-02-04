@@ -6,29 +6,45 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@Entity(name = "DESAFIO")
 public class Desafio {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DESAFIO_SEQ")
+    @SequenceGenerator(name = "DESAFIO_SEQ", sequenceName = "seq_desafio", allocationSize = 1)
+    @Column(name = "id_desafio")
     private int id;
 
+    @Column(name = "id_modulo")
     private int idModulo;
 
+    @Column(name = "titulo")
     private String titulo;
 
+    @Column(name = "conteudo")
     private String conteudo;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "tipo")
     private TipoDesafio tipoDesafio;
 
+    @Column(name = "instrucao")
     private String instrucao;
 
-    private List<String> alternativas;
-
-    private String alternativaCorreta;
-
+    @Column(name = "pontos")
     private int pontos;
+
+    @OneToOne(mappedBy = "desafio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DesafioAlternativas desafioAlternativas;
 }
+//MUDANÇAS NO CODIGO:
+//    private List<String> alternativas; // criei nova entity
+//
+//    private String alternativaCorreta; // criei nova entity
