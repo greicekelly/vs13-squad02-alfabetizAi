@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Data
 public class AdminDTO {
     private Integer idUsuario;
-    private Integer idAdmin;
     private String nome;
     private String sobrenome;
     private String telefone;

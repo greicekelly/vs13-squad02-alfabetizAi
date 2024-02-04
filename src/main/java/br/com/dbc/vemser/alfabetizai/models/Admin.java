@@ -1,32 +1,33 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
-import br.com.dbc.vemser.alfabetizai.implement.AdminImplementa;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @DiscriminatorValue("ADMIN")
-public class Admin extends Usuario implements AdminImplementa {
+public class Admin {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADMIN_SEQ")
+    @SequenceGenerator(name = "ADMIN_SEQ", sequenceName = "SEQ_ADMIN", allocationSize = 1)
+    @Column(name = "id_admin")
+    private Integer idAluno;
+
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
+
+    @Column(name = "descricao")
     private String descricao;
 
-    public Admin() {}
 
-    @Override
-    public boolean aprovarModulo(Modulo conteudo) {
-        return false;
-    }
-
-    @Override
-    public boolean deletarModulo(Modulo conteudo) {
-        return false;
-    }
 }
