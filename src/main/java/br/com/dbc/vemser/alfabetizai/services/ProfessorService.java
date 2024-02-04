@@ -25,6 +25,7 @@ public class ProfessorService {
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
 
+        professorEntity.setAtivo("S");
         professorEntity = professorRepository.save(professorEntity);
 
         ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);

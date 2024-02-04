@@ -29,6 +29,7 @@ public class ResponsavelService {
     public ResponsavelDTO criar(ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         Responsavel responsavelEntity = objectMapper.convertValue(responsavelCreateDTO, Responsavel.class);
 
+        responsavelEntity.setAtivo("S");
         responsavelEntity = responsavelRepository.save(responsavelEntity);
 
         ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);

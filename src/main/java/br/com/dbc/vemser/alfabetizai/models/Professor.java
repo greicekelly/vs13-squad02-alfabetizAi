@@ -10,12 +10,11 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity()
 @DiscriminatorValue("PROFESSOR")
 public class Professor extends Usuario implements ProfessorImplementa {
 
+    @Column(name = "descricao")
     private String descricao;
 
     @JsonIgnore
