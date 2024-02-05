@@ -2,7 +2,6 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 
 import br.com.dbc.vemser.alfabetizai.dto.*;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
@@ -22,11 +21,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class ModuloService {
-      private final IModuloRepository moduloRepository;
+    private final IModuloRepository moduloRepository;
     private final ProfessorService professorService;
     private final ObjectMapper objectMapper;
-
-
 
     public ModuloDTO criar(ModuloCreateDTO moduloCreateDTO) throws Exception {
         ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloCreateDTO.getIdProfessor());
@@ -71,9 +68,7 @@ public class ModuloService {
 
             modulo = moduloRepository.save(modulo);
 
-            ModuloDTO moduloDTO = retornarDTO(modulo);
-
-            return moduloDTO;
+            return retornarDTO(modulo);
         } else {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado. Informe um ID válido");
         }
@@ -88,7 +83,6 @@ public class ModuloService {
             }
             moduloRepository.delete(modulo);
 
-            ModuloDTO moduloDTO = retornarDTO(modulo);
         } else {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
