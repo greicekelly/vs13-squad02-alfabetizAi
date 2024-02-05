@@ -44,7 +44,7 @@ public class Modulo {
     private Professor professor;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL)
     private Set<Desafio> desafios;
 
     @JsonIgnore
