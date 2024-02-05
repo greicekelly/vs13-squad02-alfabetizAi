@@ -5,6 +5,7 @@ import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,6 +32,17 @@ public interface IResponsavelController {
     )
     @GetMapping
     public ResponseEntity<List<ResponsavelDTO>> listarResponsaveis() throws Exception;
+
+    @Operation(summary = "Listar Responsaveis paginado", description = "Lista todos os usuários responsaveis do banco paginado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna a lista de usuários respinsaveis paginado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<ResponsavelDTO>> listarResponsaveisPaginado(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws RegraDeNegocioException;
 
     @Operation(summary = "Listar Responsaveis ativos", description = "Lista todos os usuários responsaveis ativos do banco")
     @ApiResponses(

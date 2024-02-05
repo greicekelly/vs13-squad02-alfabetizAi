@@ -37,12 +37,12 @@ public class AlunoController implements IAlunoController {
 
     @GetMapping("/{idAluno}/desafios")
     public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
-       return null;//new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+       return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
     }
 
     @GetMapping("/{idAluno}/modulos")
     public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
-        return null;// new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
+        return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
     }
 
     @PostMapping("/{idResponsavel}")

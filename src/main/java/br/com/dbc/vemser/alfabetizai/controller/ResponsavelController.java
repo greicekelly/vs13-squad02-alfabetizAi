@@ -1,13 +1,18 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IResponsavelController;
+import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,12 @@ import java.util.List;
 public class ResponsavelController implements IResponsavelController {
 
     private final ResponsavelService responsavelService;
+
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<ResponsavelDTO>> listarResponsaveisPaginado(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws RegraDeNegocioException {
+        Page<ResponsavelDTO> listaResponsavel = responsavelService.listar(pageable);
+        return new ResponseEntity<>(listaResponsavel, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<ResponsavelDTO>> listarResponsaveis() throws Exception {
