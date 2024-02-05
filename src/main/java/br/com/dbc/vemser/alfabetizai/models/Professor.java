@@ -1,25 +1,25 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.implement.ProfessorImplementa;
-import jakarta.persistence.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.util.Set;
+
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
+@Entity()
+@DiscriminatorValue("PROFESSOR")
 public class Professor extends Usuario implements ProfessorImplementa {
 
-    private Integer idProfessor;
-
+    @Column(name = "descricao")
     private String descricao;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Modulo> modulos;
 
     @Override
     public Modulo criarModulo(){

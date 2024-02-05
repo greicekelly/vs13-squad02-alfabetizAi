@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -10,7 +11,6 @@ import java.time.LocalDate;
 @Data
 public class AdminDTO {
     private Integer idUsuario;
-    private Integer idAdmin;
     private String nome;
     private String sobrenome;
     private String telefone;

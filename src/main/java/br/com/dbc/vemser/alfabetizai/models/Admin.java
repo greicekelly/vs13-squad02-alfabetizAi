@@ -1,31 +1,26 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
-import br.com.dbc.vemser.alfabetizai.implement.AdminImplementa;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDate;
+import java.util.Set;
+import javax.persistence.*;
 
-@AllArgsConstructor
+
+@ToString
 @Getter
 @Setter
-public class Admin extends Usuario implements AdminImplementa {
+@Entity
+@DiscriminatorValue("ADMIN")
+public class Admin extends Usuario {
 
-    private Integer idAdmin;
-
+    @Column(name = "descricao")
     private String descricao;
 
-    public Admin() {}
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Modulo> modulos;
 
-    @Override
-    public boolean aprovarModulo(Modulo conteudo) {
-        return false;
-    }
-
-    @Override
-    public boolean deletarModulo(Modulo conteudo) {
-        return false;
-    }
 }
