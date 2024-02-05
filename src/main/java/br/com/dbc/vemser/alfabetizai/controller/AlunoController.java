@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAlunoController;
 import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/aluno")
 @Slf4j
-public class AlunoController {
+public class AlunoController implements IAlunoController {
 
     private final AlunoService alunoService;
 
@@ -34,15 +35,15 @@ public class AlunoController {
         return new ResponseEntity<>(alunoService.buscarAlunosPorIdResponsavel(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/{idAluno}/desafios")
-//    public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
-//        return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/{idAluno}/modulos")
-//    public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
-//        return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
-//    }
+    @GetMapping("/{idAluno}/desafios")
+    public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+       return null;//new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/{idAluno}/modulos")
+    public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
+        return null;// new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
+    }
 
     @PostMapping("/{idResponsavel}")
     public ResponseEntity<AlunoDTO> criar(@PathVariable("idResponsavel") Integer id,@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception {

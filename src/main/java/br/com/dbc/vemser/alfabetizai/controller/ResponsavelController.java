@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IResponsavelController;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
@@ -18,8 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/responsavel")
 @Slf4j
-
-public class ResponsavelController {
+public class ResponsavelController implements IResponsavelController {
 
     private final ResponsavelService responsavelService;
 

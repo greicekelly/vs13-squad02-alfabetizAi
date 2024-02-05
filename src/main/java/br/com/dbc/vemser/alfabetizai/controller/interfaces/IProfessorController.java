@@ -34,16 +34,6 @@ public interface IProfessorController {
     )
     @GetMapping("/{idUsuario}")
     public ResponseEntity<ProfessorDTO> getById(@PathVariable("idUsuario") Integer idUsuario) throws Exception;
-//    @Operation(summary = "Buscar professor por id.", description = "Retorna o professor correspondente ao id do professor informado")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna o professor correspondente ao id do professor informado"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @GetMapping("/id/{idProfessor}")
-//    public ResponseEntity<ProfessorDTO> getByIdProfessor(@PathVariable("idProfessor") Integer idProfessor) throws Exception;
 
     @Operation(summary = "Criar professor", description = "Cria um professor com os dados repassados no body")
     @ApiResponses(
@@ -76,6 +66,17 @@ public interface IProfessorController {
     )
     @DeleteMapping("/{idProfessor}")
     public ResponseEntity<Void> delete(@PathVariable("idProfessor") Integer id) throws Exception;
+
+    @Operation(summary = "Deletar professor fisicamente", description = "Apaga o professor com o id informado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Professor apagado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping("/delete-fisico/{idProfessor}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idProfessor") Integer id) throws Exception;
 }
 
 

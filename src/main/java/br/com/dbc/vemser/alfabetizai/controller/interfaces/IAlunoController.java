@@ -2,10 +2,13 @@ package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +37,7 @@ public interface IAlunoController {
                 }
         )
         @GetMapping("/{idAluno}")
-        public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception;
+        public ResponseEntity<AlunoDTO> BuscarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception;
 
         @Operation(summary = "Criar aluno", description = "Cria um aluno com os dados repassados no body")
         @ApiResponses(
@@ -44,8 +47,8 @@ public interface IAlunoController {
                         @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
                 }
         )
-        @PostMapping
-        public ResponseEntity<AlunoDTO> criar(@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception;
+        @PostMapping("/{idResponsavel}")
+        public ResponseEntity<AlunoDTO> criar(@PathVariable("idResponsavel") Integer id,@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception;
         @Operation(summary = "Editar aluno", description = "Edita os dados de um aluno com os novos dados repassados no body")
         @ApiResponses(
                 value = {
@@ -67,4 +70,50 @@ public interface IAlunoController {
         )
         @DeleteMapping("/{idAluno}")
         public ResponseEntity<Void> deletar(@PathVariable("idAluno") Integer id) throws Exception;
-    }
+
+        @Operation(summary = "Deletar aluno fisicamente", description = "Apaga o aluno com o id informado")
+        @ApiResponses(
+                value = {
+                        @ApiResponse(responseCode = "200", description = "Aluno apagado com sucesso"),
+                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                }
+        )
+        @DeleteMapping("/delete-fisico/{idAluno}")
+        public ResponseEntity<Void> deleteFisico(@PathVariable("idAluno") Integer id) throws Exception;
+
+
+        @Operation(summary = "Buscar alunos por id responsavel.", description = "Retorna o resultado correspondente ao id do responsavel informado")
+        @ApiResponses(
+                value = {
+                        @ApiResponse(responseCode = "200", description = "Retorna o resultado correspondente ao id do responsavel informado"),
+                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                }
+        )
+        @GetMapping("/responsavel/{idResponsavel}")
+        public ResponseEntity<List<AlunoDTO>> BuscarAlunosPorIdReponsavel(@PathVariable("idResponsavel") Integer id) throws Exception;
+
+        @Operation(summary = "Buscar desafios concluidos por id aluno.", description = "Retorna o resultado correspondente ao id do aluno informado")
+        @ApiResponses(
+                value = {
+                        @ApiResponse(responseCode = "200", description = "Retorna o resultado correspondente ao id do aluno informado"),
+                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                }
+        )
+        @GetMapping("/{idAluno}/desafios")
+        public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception;
+
+        @Operation(summary = "Buscar modulos concluidos por id aluno.", description = "Retorna o resultado correspondente ao id do aluno informado")
+        @ApiResponses(
+                value = {
+                        @ApiResponse(responseCode = "200", description = "Retorna o resultado correspondente ao id do aluno informado"),
+                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                }
+        )
+        @GetMapping("/{idAluno}/modulos")
+        public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception;
+
+}
