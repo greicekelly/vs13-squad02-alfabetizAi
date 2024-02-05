@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.controller;
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAdminController;
 import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,12 +68,12 @@ public class AdminController  implements IAdminController{
     }
 
     @PutMapping("/analisarmodulo/{idModulo}")
-    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
-                                                  @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception {
+    public ResponseEntity<ModuloDTO> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
+                                                     @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception {
         log.info("Atualizando modulo");
-        adminService.modudoAnalisado(idModulo, aprovacao, idAdmin );
+        ModuloDTO moduloDTO = adminService.modudoAnalisado(idModulo, aprovacao, idAdmin );
         log.info("Modulo atualizado");
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
     }
 
 }

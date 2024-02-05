@@ -17,10 +17,10 @@ public class DesafioAlternativas {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ALTERNATIVAS_SEQ")
     @SequenceGenerator(name = "ALTERNATIVAS_SEQ", sequenceName = "seq_alternativas", allocationSize = 1)
     @Column(name = "id_desafio_alternativas")
-    private int idAlternativas;
+    private Integer idAlternativas;
 
-    @Column(name = "id_desafio", updatable = false, insertable = false)
-    private int idDesafio;
+//    @Column(name = "id_desafio", updatable = false, insertable = false)
+//    private Integer idDesafio;
 
     @Column(name = "A" )
     private String a;
@@ -39,8 +39,9 @@ public class DesafioAlternativas {
 
     @Column(name = "correta")
     private String alternativaCorreta;
+
     @JsonIgnore
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "id_desafio", referencedColumnName = "id_desafio")
     private Desafio desafio;
 
