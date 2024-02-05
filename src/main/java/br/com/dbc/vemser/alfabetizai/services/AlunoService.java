@@ -2,6 +2,8 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
@@ -110,12 +112,12 @@ public class AlunoService {
         }
     }
 
-//    public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
-//        return desafioService.listardesafiosConcluidos(idAluno);
-//    }
-//
-//    public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
-//        return moduloService.listarModulosConcluidos(idAluno);
-//    }
+    public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
+        return desafioService.listardesafiosConcluidos(idAluno);
+    }
+
+    public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
+        return moduloService.listarModulosConcluidos(idAluno);
+    }
 
 }

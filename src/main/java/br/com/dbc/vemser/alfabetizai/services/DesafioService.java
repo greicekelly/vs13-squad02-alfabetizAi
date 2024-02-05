@@ -5,7 +5,6 @@ import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
-import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
-    private final IModuloRepository moduloRepository;
+
     private final ObjectMapper objectMapper;
 
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
@@ -55,9 +54,7 @@ public class DesafioService {
 
             desafio = desafioRepository.save(desafio);
 
-            DesafioDTO desafioDTO = retornarDTO(desafio);
-
-            return desafioDTO;
+            return retornarDTO(desafio);
         }else {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
@@ -68,7 +65,6 @@ public class DesafioService {
             Desafio desafio = objetoOptional.get();
             desafioRepository.delete(desafio);
 
-            DesafioDTO desafioDTO = retornarDTO(desafio);
         } else {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
