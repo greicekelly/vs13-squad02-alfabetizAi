@@ -47,4 +47,8 @@ public class Desafio {
     @JsonIgnore
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

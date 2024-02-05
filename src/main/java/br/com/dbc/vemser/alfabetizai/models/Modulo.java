@@ -54,4 +54,8 @@ public class Modulo {
             inverseJoinColumns = @JoinColumn(name = "aluno_id")
     )
     private Set<Aluno> alunos;
+
+    public boolean isEmpty() {
+        return false;
+    }
 }
