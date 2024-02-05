@@ -136,13 +136,13 @@ public class AdminService {
         }
     }
 
-    public ModuloDTO modudoAnalisado (Integer idModulo, String analise, Integer idAdmin) throws Exception {
-        AdminDTO adminDTO = buscarAdminPorId(idAdmin);
-        ModuloDTO moduloDTO = moduloService.moduloPorId(idModulo);
-        moduloDTO.setFoiAprovado(analise);
-        moduloDTO.setAdmin(adminDTO);
+    public List<ModuloDTO> modudoAnalisado (Integer idModulo, String analise, Integer idAdmin) throws Exception {
 
-        moduloDTO = moduloService.save(objectMapper.convertValue(moduloDTO, Modulo.class));
+        moduloService.editarAprovacaoPorAdmin(idAdmin, idModulo, analise);
+
+
+
+        List<ModuloDTO> moduloDTO = moduloService.listarPorIdModulo(idModulo);
 
 
         return moduloDTO;

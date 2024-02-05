@@ -17,10 +17,10 @@ public class Modulo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MODULO_SEQ")
     @SequenceGenerator(name = "MODULO_SEQ", sequenceName = "SEQ_MODULO", allocationSize = 1)
     @Column(name = "id_modulo" )
-    private int id;
+    private Integer id;
 
     @Column(name = "id_professor" )
-    private int idProfessor;
+    private Integer idProfessor;
 
     @Column(name = "titulo")
     private String titulo;
@@ -31,15 +31,16 @@ public class Modulo {
     @Column(name = "modulo_aprovado")
     private String foiAprovado;
     @ManyToOne
-    @JsonIgnore
+    //@JsonIgnore
     @JoinColumn(name = "admin_id")
-    private Admin adminAprova;
+    private Admin admin;
 
     @Column(name = "classificacao")
     @Enumerated(EnumType.ORDINAL)
     private ClassificacaoModulo classificacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Professor professor;
 
@@ -47,11 +48,12 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Desafio> desafios;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "aluno_modulo",
-            joinColumns = @JoinColumn(name = "modulo_id"),
-            inverseJoinColumns = @JoinColumn(name = "aluno_id")
+            joinColumns = @JoinColumn(name = "id_modulo"),
+            inverseJoinColumns = @JoinColumn(name = "id_aluno")
     )
     private Set<Aluno> alunos;
 }

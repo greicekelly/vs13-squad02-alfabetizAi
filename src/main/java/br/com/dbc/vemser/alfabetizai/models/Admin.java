@@ -19,7 +19,7 @@ public class Admin extends Usuario {
     @Column(name = "descricao")
     private String descricao;
 
-    @OneToMany(mappedBy = "adminAprova", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Modulo> modulos;
 
