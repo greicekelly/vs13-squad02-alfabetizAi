@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,7 +40,7 @@ public class Modulo {
     @Enumerated(EnumType.ORDINAL)
     private ClassificacaoModulo classificacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Professor professor;
 
