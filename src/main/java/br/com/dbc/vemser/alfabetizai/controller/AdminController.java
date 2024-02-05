@@ -26,7 +26,7 @@ public class AdminController  implements IAdminController{
 
 
     @GetMapping
-    public ResponseEntity<Page<AdminDTO>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) throws Exception {
+    public ResponseEntity<Page<AdminDTO>> listar(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws Exception {
         log.info("Buscando lista Admin");
         Page<AdminDTO> listaAdmin = adminService.listar(pageable);
         log.info("Lista Admin Retornada");
@@ -66,13 +66,13 @@ public class AdminController  implements IAdminController{
         return ResponseEntity.ok().build();
     }
 
-//    @PutMapping("/analisarmodulo/{idModulo}")
-//    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer id,
-//                                                  @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception {
-//        log.info("Atualizando modulo");
-//        adminService.aprovacaoModulo(id, idAdmin, aprovacao);
-//        log.info("Modulo atualizado");
-//        return ResponseEntity.ok().build();
-//    }
+    @PutMapping("/analisarmodulo/{idModulo}")
+    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
+                                                  @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception {
+        log.info("Atualizando modulo");
+        adminService.modudoAnalisado(idModulo, aprovacao, idAdmin );
+        log.info("Modulo atualizado");
+        return ResponseEntity.ok().build();
+    }
 
 }

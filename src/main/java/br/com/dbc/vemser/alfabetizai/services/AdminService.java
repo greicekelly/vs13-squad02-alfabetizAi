@@ -1,15 +1,12 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelComAlunosDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
 
+import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
@@ -33,6 +30,7 @@ public class AdminService {
     private final ObjectMapper objectMapper;
 
     private final EmailService emailService;
+    private final ModuloService moduloService;
 
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
@@ -81,13 +79,15 @@ public class AdminService {
     }
 
     public AdminDTO atualizar(Integer id, AdminCreateDTO adminCreateDTO) throws Exception {
-        Optional<Admin> objetoOptional = adminRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Admin admin = objetoOptional.get();
-            Admin adminAtualizacao = objectMapper.convertValue(adminCreateDTO, Admin.class);
-            adminAtualizacao.setIdUsuario(admin.getIdUsuario());
+        Optional<Admin> admin = adminRepository.findById(id);
 
-            adminAtualizacao = adminRepository.save(admin);
+        if (admin.isPresent()) {
+
+            Admin adminAtualizacao = objectMapper.convertValue(adminCreateDTO, Admin.class);
+            adminAtualizacao.setIdUsuario(admin.get().getIdUsuario());
+            adminAtualizacao.setAtivo("S");
+
+            adminAtualizacao = adminRepository.save(adminAtualizacao);
 
             AdminDTO adminDTO = objectMapper.convertValue(adminAtualizacao,AdminDTO.class);
 
@@ -134,5 +134,17 @@ public class AdminService {
         } else {
             throw new ObjetoNaoEncontradoException("Admin com o ID " + id + " não encontrado informe um id valido");
         }
+    }
+
+    public ModuloDTO modudoAnalisado (Integer idModulo, String analise, Integer idAdmin) throws Exception {
+        AdminDTO adminDTO = buscarAdminPorId(idAdmin);
+        ModuloDTO moduloDTO = moduloService.moduloPorId(idModulo);
+        moduloDTO.setFoiAprovado(analise);
+        moduloDTO.setAdmin(adminDTO);
+
+        moduloDTO = moduloService.save(objectMapper.convertValue(moduloDTO, Modulo.class));
+
+
+        return moduloDTO;
     }
 }

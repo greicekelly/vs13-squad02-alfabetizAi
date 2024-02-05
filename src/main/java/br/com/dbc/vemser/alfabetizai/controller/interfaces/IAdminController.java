@@ -78,4 +78,17 @@ public interface IAdminController {
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<Void> deletar(@PathVariable("idUsuario") Integer id) throws Exception;
 
+
+    @Operation(summary = "Analisar Aprovação/Reprovação de Módulo", description = "Edita o módulo para aparecer o status de aprovado ou reprovado.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os dados do módulo atualizado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/analisarmodulo/{idModulo}")
+    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
+                                                @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception;
+
 }
