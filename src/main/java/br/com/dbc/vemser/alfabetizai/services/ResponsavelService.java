@@ -7,6 +7,7 @@ import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
@@ -29,6 +30,8 @@ public class ResponsavelService {
     public ResponsavelDTO criar(ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         Responsavel responsavelEntity = objectMapper.convertValue(responsavelCreateDTO, Responsavel.class);
 
+        responsavelPorCpfEmail(responsavelCreateDTO.getCpf(), responsavelCreateDTO.getEmail());
+
         responsavelEntity.setAtivo("S");
         responsavelEntity = responsavelRepository.save(responsavelEntity);
 
@@ -37,6 +40,15 @@ public class ResponsavelService {
         emailService.sendEmailResponsavel(responsavelDTO, "Cadastro efetuado, ", "create");
 
         return responsavelDTO;
+    }
+
+    private Responsavel responsavelPorCpfEmail(String cpf, String email) throws Exception {
+        Responsavel responsavel = responsavelRepository.findAllByCpfOrEmail(cpf, email);
+        if (responsavel != null) {
+            throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
+        } else {
+            return responsavel;
+        }
     }
 
     public List<ResponsavelDTO> listar() throws RegraDeNegocioException {
