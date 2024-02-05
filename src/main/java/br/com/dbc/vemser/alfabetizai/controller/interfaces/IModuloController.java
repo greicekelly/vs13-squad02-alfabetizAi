@@ -35,7 +35,7 @@ public interface IModuloController {
             }
     )
     @GetMapping("/{idModulo}")
-    public ResponseEntity<ModuloDTO> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception;
+    public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception;
 
     @Operation(summary = "Buscar modulos por id do Professor", description = "Retorna os modulos correspondente ao id do professor informado")
     @ApiResponses(

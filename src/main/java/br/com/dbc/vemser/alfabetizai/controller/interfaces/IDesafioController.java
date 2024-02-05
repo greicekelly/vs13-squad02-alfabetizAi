@@ -25,51 +25,51 @@ public interface IDesafioController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<DesafioDTO>> listar() throws RegraDeNegocioException;}
-//
-//    @Operation(summary = "Buscar desafio por id do Módulo", description = "Retorna o desafio correspondente ao id do módulo informado")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna o desafio correspondente ao id do módulo informado"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @GetMapping("/{idModulo}")
-//    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws RegraDeNegocioException ;
-//
-//    @Operation(summary = "Criar desafio", description = "Cria um desafio com os dados repassados no body")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna os dados do desafio cadastrado"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @PostMapping
-//    public ResponseEntity<DesafioDTO> criar(@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception;
-//
-//
-//    @Operation(summary = "Editar desafio", description = "Edita os dados de um desafio com os novos dados repassados no body")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Retorna os dados do desafio atualizado"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @PutMapping("/{idDesafio}")
-//    public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception ;
-//
-//
-//    @Operation(summary = "Deletar desafio", description = "Apaga o desafio com o id informado")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Desafio apagado com sucesso"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @DeleteMapping("/{idDesafio}")
-//    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception;
-//}
+    public ResponseEntity<List<DesafioDTO>> listar() throws RegraDeNegocioException;
+
+    @Operation(summary = "Buscar desafio por id do Módulo", description = "Retorna o desafio correspondente ao id do módulo informado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna o desafio correspondente ao id do módulo informado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/{idModulo}")
+    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception ;
+
+    @Operation(summary = "Criar desafio", description = "Cria um desafio com os dados repassados no body")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os dados do desafio cadastrado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping
+    public ResponseEntity<DesafioDTO> criar(@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception;
+
+
+    @Operation(summary = "Editar desafio", description = "Edita os dados de um desafio com os novos dados repassados no body")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os dados do desafio atualizado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/{idDesafio}")
+    public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception ;
+
+
+    @Operation(summary = "Deletar desafio", description = "Apaga o desafio com o id informado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Desafio apagado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping("/{idDesafio}")
+    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception;
+}
