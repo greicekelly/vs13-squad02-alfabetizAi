@@ -16,6 +16,7 @@ public class Modulo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MODULO_SEQ")
     @SequenceGenerator(name = "MODULO_SEQ", sequenceName = "SEQ_MODULO", allocationSize = 1)
+    @Column(name = "id_modulo" )
     private int id;
 
     @Column(name = "id_professor" )
