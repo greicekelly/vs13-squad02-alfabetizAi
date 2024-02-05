@@ -23,8 +23,8 @@ public class Desafio {
     @Column(name = "id_desafio")
     private int id;
 
-    @Column(name = "id_modulo", updatable = false, insertable = false)
-    private int idModulo;
+//    @Column(name = "id_modulo", updatable = false, insertable = false)
+//    private int idModulo;
 
     @Column(name = "titulo")
     private String titulo;
@@ -32,7 +32,6 @@ public class Desafio {
     @Column(name = "conteudo")
     private String conteudo;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo")
     private TipoDesafio tipoDesafio;
 
@@ -44,8 +43,12 @@ public class Desafio {
 
     @OneToOne(mappedBy = "desafio", cascade = CascadeType.ALL, orphanRemoval = true)
     private DesafioAlternativas desafioAlternativas;
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

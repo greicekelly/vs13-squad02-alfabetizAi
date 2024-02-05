@@ -6,7 +6,6 @@ import lombok.*;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -40,7 +39,7 @@ public class Aluno  {
     @JsonIgnore
     private Set<Modulo> modulo;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Responsavel responsavel;
 

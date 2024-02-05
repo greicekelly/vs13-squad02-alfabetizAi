@@ -5,7 +5,6 @@ import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
-import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
-    private final IModuloRepository moduloRepository;
+
     private final ObjectMapper objectMapper;
+
+    private final ModuloService moduloService;
 
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
         return desafioRepository.findAll().stream()
@@ -30,7 +31,9 @@ public class DesafioService {
 
     public DesafioDTO create(DesafioCreateDTO desafio)throws Exception  {
         log.error("camada service criação desafio ");
+        ModuloDTO moduloDTO = moduloService.moduloPorId(desafio.getIdModulo());
         Desafio desafioEntity = converterDTO(desafio);
+        //desafioEntity.setIdModulo(desafioEntity.getIdModulo());
         log.error("criando desafio");
         return retornarDTO(desafioRepository.save(desafioEntity));
     }
@@ -46,7 +49,7 @@ public class DesafioService {
         if (objetoOptional.isPresent()) {
             Desafio desafio = objetoOptional.get();
             Desafio desafioAtualizacao = converterDTO(desafioCreateDTO);
-            desafio.setIdModulo(desafioAtualizacao.getIdModulo());
+            //desafio.setIdModulo(desafioAtualizacao.getIdModulo());
             desafio.setTitulo(desafioAtualizacao.getTitulo());
             desafio.setConteudo(desafioAtualizacao.getConteudo());
             desafio.setTipoDesafio(desafioAtualizacao.getTipoDesafio());
@@ -55,9 +58,7 @@ public class DesafioService {
 
             desafio = desafioRepository.save(desafio);
 
-            DesafioDTO desafioDTO = retornarDTO(desafio);
-
-            return desafioDTO;
+            return retornarDTO(desafio);
         }else {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
@@ -66,9 +67,13 @@ public class DesafioService {
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Desafio desafio = objetoOptional.get();
+
+            if (!desafio.getDesafioAlternativas().isEmpty()|| !desafio.getModulo().isEmpty()) {
+                throw new Exception("Não é possível excluir o desafio pois ele está associado a outras classes.");
+            }
+
             desafioRepository.delete(desafio);
 
-            DesafioDTO desafioDTO = retornarDTO(desafio);
         } else {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
