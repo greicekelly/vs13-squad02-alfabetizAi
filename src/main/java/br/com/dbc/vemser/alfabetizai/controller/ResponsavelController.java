@@ -29,7 +29,7 @@ public class ResponsavelController {
     }
 
     @GetMapping("/ativo/{ativo}")
-    public ResponseEntity<List<ResponsavelDTO>> listarResponsaveisAtivos(@PathVariable("idResponsavel") char ativo) {
+    public ResponseEntity<List<ResponsavelDTO>> listarResponsaveisAtivos(@PathVariable("ativo") char ativo) {
         return new ResponseEntity<>(responsavelService.listarAtivos(ativo), HttpStatus.OK);
     }
 
