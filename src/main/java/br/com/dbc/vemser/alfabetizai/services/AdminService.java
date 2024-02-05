@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,10 +58,10 @@ public class AdminService {
         }
     }
 
-    public List<AdminDTO> listar() throws RegraDeNegocioException {
-        List<Admin> admins = adminRepository.findAll();
+    public Page<AdminDTO> listar(Pageable pageable) throws RegraDeNegocioException {
+        Page<Admin> admins = adminRepository.findAll(pageable);
 
-        return admins.stream().map(admin -> objectMapper.convertValue(admin, AdminDTO.class)).toList();
+        return admins.map(admin -> objectMapper.convertValue(admin, AdminDTO.class));
     }
 
     public List<AdminDTO> listarAtivos() {

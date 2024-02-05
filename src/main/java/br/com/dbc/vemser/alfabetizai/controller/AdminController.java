@@ -6,6 +6,9 @@ import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +20,15 @@ import java.util.List;
 @RequestMapping("/admin")
 @AllArgsConstructor
 @Slf4j
-public class AdminController implements IAdminController {
+public class AdminController  implements IAdminController{
 
     private final AdminService adminService;
 
 
     @GetMapping
-    public ResponseEntity<List<AdminDTO>> listar() throws Exception {
+    public ResponseEntity<Page<AdminDTO>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) throws Exception {
         log.info("Buscando lista Admin");
-        List<AdminDTO> listaAdmin = adminService.listar();
+        Page<AdminDTO> listaAdmin = adminService.listar(pageable);
         log.info("Lista Admin Retornada");
         return new ResponseEntity<>(listaAdmin, HttpStatus.OK);
     }

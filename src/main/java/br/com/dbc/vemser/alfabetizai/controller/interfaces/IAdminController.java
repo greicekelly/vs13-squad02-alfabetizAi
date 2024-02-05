@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +27,7 @@ public interface IAdminController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<AdminDTO>> listar() throws Exception;
+    public ResponseEntity<Page<AdminDTO>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) throws Exception;
 
 
     @Operation(summary = "Buscar admin por id", description = "Retorna o usuário admin correspondente ao id informado")
