@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelComAlunosDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
 
@@ -13,6 +14,8 @@ import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,6 +58,12 @@ public class ResponsavelService {
         List<Responsavel> responsavels = responsavelRepository.findAll();
 
         return responsavels.stream().map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class)).toList();
+    }
+
+    public Page<ResponsavelDTO> listar(Pageable pageable) throws RegraDeNegocioException {
+        Page<Responsavel> responsaveis = responsavelRepository.findAll(pageable);
+
+        return responsaveis.map(responsavel -> objectMapper.convertValue(responsavel, ResponsavelDTO.class));
     }
 
     public List<ResponsavelDTO> listarAtivos(char ativo) {
