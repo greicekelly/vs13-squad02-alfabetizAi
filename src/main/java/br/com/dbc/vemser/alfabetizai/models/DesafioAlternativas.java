@@ -44,4 +44,7 @@ public class DesafioAlternativas {
     @JoinColumn(name = "id_desafio", referencedColumnName = "id_desafio")
     private Desafio desafio;
 
+    public boolean isEmpty() {
+        return false;
+    }
 }

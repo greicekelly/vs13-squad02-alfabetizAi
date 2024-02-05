@@ -40,9 +40,9 @@ public class DesafioAlternativasService {
             desafioAlternativas.setA(desafioAtualizacao.getA());
             desafioAlternativas.setB(desafioAtualizacao.getB());
             desafioAlternativas.setC(desafioAtualizacao.getC());
-            desafioAlternativas.setD(desafioAlternativas.getD());
-            desafioAlternativas.setE(desafioAlternativas.getE());
-            desafioAlternativas.setAlternativaCorreta(desafioAlternativas.getAlternativaCorreta());
+            desafioAlternativas.setD(desafioAtualizacao.getD());
+            desafioAlternativas.setE(desafioAtualizacao.getE());
+            desafioAlternativas.setAlternativaCorreta(desafioAtualizacao.getAlternativaCorreta());
 
             desafioAlternativas = desafioAlternativasRepository.save(desafioAlternativas);
 
@@ -57,6 +57,10 @@ public class DesafioAlternativasService {
         Optional<DesafioAlternativas> objetoOptional = desafioAlternativasRepository.findById(id);
         if (objetoOptional.isPresent()) {
             DesafioAlternativas desafioAlternativas = objetoOptional.get();
+
+            if (!desafioAlternativas.getDesafio().isEmpty()) {
+                throw new Exception("Não é possível excluir o desafio pois ele está associado a outras classes.");
+            }
             desafioAlternativasRepository.delete(desafioAlternativas);
 
             DesafioAlternativasDTO desafioAlternativasDTO = retornarAlternativasDTO(desafioAlternativas);

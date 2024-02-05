@@ -66,6 +66,11 @@ public class DesafioService {
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Desafio desafio = objetoOptional.get();
+
+            if (!desafio.getDesafioAlternativas().isEmpty()|| !desafio.getModulo().isEmpty()) {
+                throw new Exception("Não é possível excluir o desafio pois ele está associado a outras classes.");
+            }
+
             desafioRepository.delete(desafio);
 
             DesafioDTO desafioDTO = retornarDTO(desafio);
