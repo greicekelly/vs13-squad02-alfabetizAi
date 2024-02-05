@@ -22,6 +22,8 @@ public class DesafioService {
     private final IModuloRepository moduloRepository;
     private final ObjectMapper objectMapper;
 
+    private final ModuloService moduloService;
+
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
         return desafioRepository.findAll().stream()
                 .map(this :: retornarDTO)
@@ -30,7 +32,9 @@ public class DesafioService {
 
     public DesafioDTO create(DesafioCreateDTO desafio)throws Exception  {
         log.error("camada service criação desafio ");
+        ModuloDTO moduloDTO = moduloService.moduloPorId(desafio.getIdModulo());
         Desafio desafioEntity = converterDTO(desafio);
+        //desafioEntity.setIdModulo(desafioEntity.getIdModulo());
         log.error("criando desafio");
         return retornarDTO(desafioRepository.save(desafioEntity));
     }
@@ -46,7 +50,7 @@ public class DesafioService {
         if (objetoOptional.isPresent()) {
             Desafio desafio = objetoOptional.get();
             Desafio desafioAtualizacao = converterDTO(desafioCreateDTO);
-            desafio.setIdModulo(desafioAtualizacao.getIdModulo());
+            //desafio.setIdModulo(desafioAtualizacao.getIdModulo());
             desafio.setTitulo(desafioAtualizacao.getTitulo());
             desafio.setConteudo(desafioAtualizacao.getConteudo());
             desafio.setTipoDesafio(desafioAtualizacao.getTipoDesafio());
@@ -66,6 +70,11 @@ public class DesafioService {
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Desafio desafio = objetoOptional.get();
+
+            if (!desafio.getDesafioAlternativas().isEmpty()|| !desafio.getModulo().isEmpty()) {
+                throw new Exception("Não é possível excluir o desafio pois ele está associado a outras classes.");
+            }
+
             desafioRepository.delete(desafio);
 
             DesafioDTO desafioDTO = retornarDTO(desafio);

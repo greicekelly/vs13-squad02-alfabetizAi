@@ -39,8 +39,7 @@ public class Modulo {
     @Enumerated(EnumType.ORDINAL)
     private ClassificacaoModulo classificacao;
 
-    //@JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Professor professor;
 
@@ -56,4 +55,8 @@ public class Modulo {
             inverseJoinColumns = @JoinColumn(name = "id_aluno")
     )
     private Set<Aluno> alunos;
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

@@ -20,7 +20,6 @@ public class DesafioAlternativasCreateDTO {
     private int idAlternativas;
 
     @Schema(description = "Id do Desafio", required = true, example = "1")
-    @NotNull
     private int idDesafio;
 
     @Schema(description = "Alternativa A", required = true, example = "Inicia Letra B")

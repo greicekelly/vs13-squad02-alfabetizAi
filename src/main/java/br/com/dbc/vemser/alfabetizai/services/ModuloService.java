@@ -7,6 +7,7 @@ import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class ModuloService {
                 .collect(Collectors.toList());
     }
     public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
-        Optional<Modulo> listaPorId = moduloRepository.findById(idProfessor);
+        List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
         return listaPorId.stream()
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
@@ -62,10 +63,11 @@ public class ModuloService {
             Modulo modulo = objetoOptional.get();
             Modulo moduloAtualizacao = converterDTO(moduloCreateDTO);
 
-            moduloAtualizacao.setTitulo(moduloCreateDTO.getTitulo());
-            moduloAtualizacao.setConteudo(moduloCreateDTO.getConteudo());
-            moduloAtualizacao.setClassificacao(moduloCreateDTO.getClassificacao());
-            moduloAtualizacao.setIdProfessor(moduloCreateDTO.getIdProfessor());
+            modulo.setTitulo(moduloAtualizacao.getTitulo());
+            modulo.setConteudo(moduloAtualizacao.getConteudo());
+            modulo.setClassificacao(moduloAtualizacao.getClassificacao());
+            modulo.setFoiAprovado(moduloAtualizacao.getFoiAprovado());
+            modulo.setIdProfessor(moduloAtualizacao.getIdProfessor());
 
             modulo = moduloRepository.save(modulo);
 
@@ -81,7 +83,7 @@ public class ModuloService {
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
 
-            if (!modulo.getDesafios().isEmpty()) {
+            if (!modulo.getDesafios().isEmpty()|| !modulo.getAlunos().isEmpty()) {
                 throw new Exception("Não é possível excluir o módulo pois ele está associado a outras classes.");
             }
             moduloRepository.delete(modulo);
@@ -91,7 +93,6 @@ public class ModuloService {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
-
     public List<Modulo> listarSemAprovacao() throws Exception {
         try {
             return moduloRepository.listarSemAprovacao();
