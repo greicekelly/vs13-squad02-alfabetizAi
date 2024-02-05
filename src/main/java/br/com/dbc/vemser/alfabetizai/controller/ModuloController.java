@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -18,31 +17,39 @@ import java.util.List;
 @RequestMapping("/modulo")
 @RequiredArgsConstructor
 @Slf4j
-
 public class ModuloController implements IModuloController {
 
     private final ModuloService moduloService;
-
-    @GetMapping
-    public ResponseEntity<List<ModuloDTO>> listar() throws Exception {
-        return new ResponseEntity<>(moduloService.listar(), HttpStatus.OK);
-    }
-    @GetMapping("/{idModulo}")
-    public ResponseEntity<ModuloDTO> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
-        return new ResponseEntity<>(moduloService.buscarModuloPorId(idModulo), HttpStatus.OK);
-    }
-    @GetMapping("professor/{idProfessor}")
-    public ResponseEntity<List<ModuloDTO>>listarPorIdProfessor(
-                        @PathVariable("idProfessor") Integer idProfessor)throws Exception{
-        log.info("Listando modulo por idProfessor");
-        return new ResponseEntity<>(moduloService.listarPorIdProfessor(idProfessor), HttpStatus.OK);
-    }
     @PostMapping
     public ResponseEntity<ModuloDTO> criar(@Valid @RequestBody ModuloCreateDTO moduloCreateDTO) throws Exception {
         log.info("Criando modulo");
         ModuloDTO moduloDTO = moduloService.criar(moduloCreateDTO);
         log.info("Modulo criado");
         return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity<List<ModuloDTO>> listar() throws Exception {
+        log.info("Listando Modulos!");
+        List<ModuloDTO> modulosListados = moduloService.listar();
+        log.info("Modulos Listados!");
+        return new ResponseEntity<>(modulosListados, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idModulo}")
+    public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+        log.info("Listando Modulos por Id Modulo!");
+        List<ModuloDTO> modulosListadosporId = moduloService.listarPorIdModulo(idModulo);
+        log.info("Modulos Listados por Id!");
+        return new ResponseEntity<>(modulosListadosporId, HttpStatus.OK);
+    }
+
+    @GetMapping("professor/{idProfessor}")
+    public ResponseEntity<List<ModuloDTO>>listarPorIdProfessor(
+                        @PathVariable("idProfessor") Integer idProfessor)throws Exception{
+        log.info("Listando modulo por idProfessor");
+        List<ModuloDTO> modulosPorId = moduloService.listarPorIdProfessor(idProfessor);
+        log.info("Modulos Listados!");
+        return new ResponseEntity<>(modulosPorId, HttpStatus.OK);
     }
     @PutMapping("/{idModulo}")
     public ResponseEntity<ModuloDTO> atualizar(@PathVariable("idModulo") Integer id,
@@ -59,4 +66,5 @@ public class ModuloController implements IModuloController {
         log.info("Modulo deletado");
         return ResponseEntity.ok().build();
     }
+
 }

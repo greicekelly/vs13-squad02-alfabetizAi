@@ -17,12 +17,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProfessorCreateDTO {
 
-
     @NotBlank(message = "O Nome não pode estar em branco ou ser Nulo!")
     @Size(min=2, max=255, message = "O nome deve conter entre 2 e 255 caracteres.")
     @Schema(description = "Nome do professor", required = true, example = "Rafael")
     private String nome;
-
 
     @NotBlank(message = "O Sobrenome não pode estar em branco ou ser Nulo!")
     @Size(min=2, max=255, message = "O Sobrenome deve conter entre 2 e 255 caracteres.")
@@ -44,9 +42,6 @@ public class ProfessorCreateDTO {
     @Past(message = "A data de Nascimento deve ser no passado!")
     @Schema(description = "Data de nascimento do professor", required = true, example = "1990-01-26")
     private LocalDate dataDeNascimento;
-
-    @Schema(description = "Informa se o cadastro esta ativo", example = "Sim")
-    private String ativo;
 
     @NotBlank(message = "O Sexo não pode estar em branco ou ser Nulo!")
     @Schema(description = "Sexo do professor - M=Masculino | F=Feminino | O=Outros", required = true, example = "M")

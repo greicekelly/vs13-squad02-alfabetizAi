@@ -36,7 +36,7 @@ public interface IDesafioController {
             }
     )
     @GetMapping("/{idModulo}")
-    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws RegraDeNegocioException ;
+    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception ;
 
     @Operation(summary = "Criar desafio", description = "Cria um desafio com os dados repassados no body")
     @ApiResponses(

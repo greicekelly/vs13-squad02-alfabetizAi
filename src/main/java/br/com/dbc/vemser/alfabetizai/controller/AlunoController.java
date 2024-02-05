@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/aluno")
 @Slf4j
-
 public class AlunoController implements IAlunoController {
 
     private final AlunoService alunoService;
@@ -27,13 +26,18 @@ public class AlunoController implements IAlunoController {
     }
 
     @GetMapping("/{idAluno}")
-    public ResponseEntity<AlunoDTO> listarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception {
+    public ResponseEntity<AlunoDTO> BuscarPorIdAluno(@PathVariable("idAluno") Integer idAluno) throws Exception {
         return new ResponseEntity<>(alunoService.buscarAlunoPorId(idAluno), HttpStatus.OK);
+    }
+
+    @GetMapping("/responsavel/{idResponsavel}")
+    public ResponseEntity<List<AlunoDTO>> BuscarAlunosPorIdReponsavel(@PathVariable("idResponsavel") Integer id) throws Exception {
+        return new ResponseEntity<>(alunoService.buscarAlunosPorIdResponsavel(id), HttpStatus.OK);
     }
 
     @GetMapping("/{idAluno}/desafios")
     public ResponseEntity<List<DesafioDTO>> listarDesafiosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception {
-        return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
+       return new ResponseEntity<>(alunoService.listarDesafiosConcluidos(idAluno), HttpStatus.OK);
     }
 
     @GetMapping("/{idAluno}/modulos")
@@ -41,10 +45,10 @@ public class AlunoController implements IAlunoController {
         return new ResponseEntity<>(alunoService.listarModulosConcluidos(idAluno), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<AlunoDTO> criar(@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception {
+    @PostMapping("/{idResponsavel}")
+    public ResponseEntity<AlunoDTO> criar(@PathVariable("idResponsavel") Integer id,@Valid @RequestBody AlunoCreateDTO alunoCreateDTO) throws Exception {
         log.info("Criando aluno");
-        AlunoDTO alunoDTO = alunoService.criar(alunoCreateDTO);
+        AlunoDTO alunoDTO = alunoService.criar(id, alunoCreateDTO);
         log.info("Aluno criado");
         return new ResponseEntity<>(alunoDTO, HttpStatus.OK);
     }
@@ -66,15 +70,11 @@ public class AlunoController implements IAlunoController {
         return ResponseEntity.ok().build();
     }
 
-
-    @PostMapping("/adicionar/{idUsuario}")
-    public ResponseEntity<AlunoDTO> adicionarAluno(@PathVariable("idUsuario")Integer id, @Valid @RequestBody AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) throws Exception {
-        log.info("Criando aluno");
-        AlunoDTO alunoDTO = alunoService.adicionarAluno(id, alunoAdicionarCreateDTO);
-        log.info("Aluno criado");
-        return new ResponseEntity<>(alunoDTO, HttpStatus.OK);
+    @DeleteMapping("/delete-fisico/{idAluno}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idAluno") Integer id) throws Exception {
+        log.info("Deletando aluno");
+        alunoService.removerFisicamente(id);
+        log.info("Aluno deletado");
+        return ResponseEntity.ok().build();
     }
-
-
-
 }

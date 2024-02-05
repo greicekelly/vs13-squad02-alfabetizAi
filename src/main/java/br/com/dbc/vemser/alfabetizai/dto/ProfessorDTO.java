@@ -8,8 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 public class ProfessorDTO {
 
-    private Integer idProfessor;
-
     private Integer idUsuario;
 
     private String nome;
@@ -21,4 +19,6 @@ public class ProfessorDTO {
     private String email;
 
     private String descricao;
+
+    private String ativo;
 }

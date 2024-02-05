@@ -1,23 +1,25 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.*;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.Modulo;
-import br.com.dbc.vemser.alfabetizai.repository.AlunoRepository;
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
+import br.com.dbc.vemser.alfabetizai.repository.IAlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class AlunoService {
-    private final AlunoRepository alunoRepository;
+    private final IAlunoRepository alunoRepository;
 
     private final ObjectMapper objectMapper;
 
@@ -25,83 +27,88 @@ public class AlunoService {
 
     private final ModuloService moduloService;
 
-    private final EmailService emailService;
+    private final ResponsavelService responsavelService;
 
-    public AlunoDTO criar(AlunoCreateDTO alunoCreateDTO) throws Exception {
-        try {
-            Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+    public AlunoDTO criar(Integer idResponsavel, AlunoCreateDTO alunoCreateDTO) throws Exception {
+        Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 
-            alunoEntity = alunoRepository.adicionar(alunoEntity);
+        Responsavel responsavel = responsavelService.buscarResponsavelPorId(idResponsavel);
+        alunoEntity.setResponsavel(responsavel);
 
-            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
+        alunoEntity.setAtivo("S");
+        alunoRepository.save(alunoEntity);
 
-            emailService.sendEmailAluno(alunoDTO, "Cadastro efetuado, ", "create");
-
-            return alunoDTO;
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
-        }
-    }
-
-    public AlunoDTO adicionarAluno(Integer id, AlunoAdicionarCreateDTO alunoAdicionarCreateDTO) throws Exception {
-        try {
-            Aluno alunoEntity = objectMapper.convertValue(alunoAdicionarCreateDTO, Aluno.class);
-
-            alunoEntity = alunoRepository.adicionarAluno(id, alunoEntity);
-
-            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
-
-            return alunoDTO;
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao adicionar aluno, revise os dados" + e.getMessage());
-        }
+        return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
     }
 
     public List<AlunoDTO> listar() throws RegraDeNegocioException {
-        try {
-            List<Aluno> alunos = alunoRepository.listar();
+        List<Aluno> alunos = alunoRepository.findAll();
 
-            return alunos.stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao listar alunos" + e.getMessage());
+        return alunos.stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
+    }
+
+    public AlunoDTO buscarAlunoPorId(Integer id) throws ObjetoNaoEncontradoException {
+        Optional<Aluno> objetoOptional = alunoRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            return objectMapper.convertValue(objetoOptional.get(), AlunoDTO.class);
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
-    public AlunoDTO buscarAlunoPorId(Integer idUsuario) throws Exception {
-        try {
-            Aluno alunoEntity = alunoRepository.buscarAlunoPorId(idUsuario);
-
-            return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao buscar aluno" + e.getMessage());
+    public List<AlunoDTO> buscarAlunosPorIdResponsavel(Integer id) throws ObjetoNaoEncontradoException {
+        Responsavel responsavel = responsavelService.buscarResponsavelPorId(id);
+        Optional<List<Aluno>> objetoOptional = alunoRepository.findAllByResponsavel(responsavel);
+        if (objetoOptional.isPresent()) {
+            return objetoOptional.get().stream().map(aluno -> objectMapper.convertValue(aluno, AlunoDTO.class)).toList();
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o IDResponsavel " + id + " não encontrado informe um id valido");
         }
     }
 
     public AlunoDTO atualizar(Integer id, AlunoCreateDTO alunoCreateDTO) throws Exception {
-        try {
-            Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+        Optional<Aluno> objetoOptional = alunoRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+            Aluno alunoAtualizacoes = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
+            aluno.setNomeAluno(alunoAtualizacoes.getNomeAluno());
+            aluno.setSobrenomeAluno(alunoAtualizacoes.getSobrenomeAluno());
+            aluno.setSexoAluno(alunoAtualizacoes.getSexoAluno());
+            aluno.setDataNascimentoAluno(alunoAtualizacoes.getDataNascimentoAluno());
 
-            alunoEntity = alunoRepository.editar(id, alunoEntity);
+            aluno = alunoRepository.save(aluno);
 
-            AlunoDTO alunoDTO = objectMapper.convertValue(alunoEntity, AlunoDTO.class);
-
-           emailService.sendEmailAluno(alunoDTO, "Cadastro atualizado, ", "update");
+            AlunoDTO alunoDTO = objectMapper.convertValue(aluno, AlunoDTO.class);
 
             return alunoDTO;
 
-        } catch (BancoDeDadosException e) {
-            e.printStackTrace();
-            throw new RegraDeNegocioException("Algum problema ocorreu ao atualizar aluno" + e.getMessage());
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
     public void remover(int id) throws Exception {
-        try {
-            alunoRepository.remover(id);
-            AlunoDTO alunoDTO = buscarAlunoPorId(id);
-            emailService.sendEmailAluno(alunoDTO, "Cadastro excluido, ","delete");
-        } catch (BancoDeDadosException e) {
-            throw new RegraDeNegocioException("Algum problema ocorreu ao deletar aluno" + e.getMessage());
+        Optional<Aluno> objetoOptional = alunoRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+
+            aluno.setAtivo("N");
+
+            alunoRepository.save(aluno);
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+
+    public void removerFisicamente(int id) throws Exception {
+        Optional<Aluno> objetoOptional = alunoRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Aluno responsavel = objetoOptional.get();
+
+            alunoRepository.delete(responsavel);
+
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
         }
     }
 

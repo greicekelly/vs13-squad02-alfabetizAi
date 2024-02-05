@@ -4,6 +4,7 @@ import br.com.dbc.vemser.alfabetizai.config.PropertieReader;
 import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -78,16 +79,16 @@ public class EmailService {
         return html;
     }
 
-    public void sendEmailAluno(AlunoDTO alunoDTO, String subject, String opcaoEmail) throws Exception {
+    public void sendEmailResponsavel(ResponsavelDTO responsavelDTO, String subject, String opcaoEmail) throws Exception {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
 
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(alunoDTO.getEmail());
+            mimeMessageHelper.setTo(responsavelDTO.getEmail());
             mimeMessageHelper.setSubject(subject + propertieReader.getApp());
-            mimeMessageHelper.setText(getContentFromTemplateAluno(alunoDTO, opcaoEmail), true);
+            mimeMessageHelper.setText(getContentFromTemplateResponsavel(responsavelDTO, opcaoEmail), true);
 
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
@@ -96,11 +97,13 @@ public class EmailService {
         }
     }
 
-    public String getContentFromTemplateAluno(AlunoDTO alunoDTO, String opcaoEmail) throws IOException, TemplateException {
+
+
+    public String getContentFromTemplateResponsavel(ResponsavelDTO responsavelDTO, String opcaoEmail) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
 
-        dados.put("nome", alunoDTO.getNome());
-        dados.put("id", alunoDTO.getIdUsuario());
+        dados.put("nome", responsavelDTO.getNome());
+        dados.put("id", responsavelDTO.getIdUsuario());
         dados.put("emailSuporte", propertieReader.getFrom());
         dados.put("app", propertieReader.getApp());
 
