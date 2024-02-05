@@ -32,7 +32,6 @@ public class Desafio {
     @Column(name = "conteudo")
     private String conteudo;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo")
     private TipoDesafio tipoDesafio;
 
@@ -48,4 +47,8 @@ public class Desafio {
     @JsonIgnore
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

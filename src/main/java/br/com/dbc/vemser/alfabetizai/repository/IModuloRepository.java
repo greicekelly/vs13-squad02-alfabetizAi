@@ -36,4 +36,6 @@ public interface IModuloRepository extends JpaRepository< Modulo, Integer> {
                   UPDATE VS_13_EQUIPE_2.MODULO m SET m.adminAprova.idUsuario = :idAdmin, m.foiAprovado = :aprovacaoModulo WHERE m.id = :idModulo
                   """, nativeQuery = true)
                   boolean editarAprovacaoPorAdmin(@Param("idAdmin") Integer idAdmin, @Param("idModulo") Integer idModulo, @Param("aprovacaoModulo") String aprovacaoModulo);
+
+            List<Modulo> findAllByIdProfessor(int idProfessor);
 }

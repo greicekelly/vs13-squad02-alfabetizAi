@@ -27,6 +27,10 @@ public class ModuloCreateDTO {
     @NotNull
     private Integer idProfessor;
 
+    @Schema(description = "Demonstra o conteudo do Modulo foi aprovado.", required = true, example = "S")
+    @NotBlank
+    private String foiAprovado;
+
     @Schema(description = "Classificação em INICIANTE, INTERMEDIARIO e AVANÇADO", required = true, example = "INICIANTE")
     @NotNull
     private ClassificacaoModulo classificacao;
