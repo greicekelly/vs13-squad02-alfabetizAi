@@ -47,9 +47,6 @@ public class ModuloService {
 
     public ModuloDTO listarPorIdModulo(Integer idModulo) throws Exception {
         Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
-//        return modulo.stream()
-//                .map(this::retornarDTO)
-//                .collect(Collectors.toList());
 
         if (moduloOptional.isPresent()) {
             Modulo modulo = moduloOptional.get();

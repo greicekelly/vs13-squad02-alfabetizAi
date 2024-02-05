@@ -4,6 +4,7 @@ import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,14 @@ public class DesafioService {
 
     public DesafioDTO create(DesafioCreateDTO desafio)throws Exception  {
         log.error("camada service criação desafio ");
-        ModuloDTO moduloDTO = moduloService.moduloPorId(desafio.getIdModulo());
+        Modulo modulo = objectMapper.convertValue(moduloService.listarPorIdModulo(desafio.getIdModulo()), Modulo.class);
+
         Desafio desafioEntity = converterDTO(desafio);
-        //desafioEntity.setIdModulo(desafioEntity.getIdModulo());
+        desafioEntity.setModulo(modulo);
+
         log.error("criando desafio");
-        return retornarDTO(desafioRepository.save(desafioEntity));
+        desafioEntity = desafioRepository.save(desafioEntity);
+        return retornarDTO(desafioEntity);
     }
     public DesafioDTO buscarDesafioPorId(Integer idDesafio) {
         Desafio desafioEntity = desafioRepository.getById(idDesafio);
@@ -52,7 +56,7 @@ public class DesafioService {
             //desafio.setIdModulo(desafioAtualizacao.getIdModulo());
             desafio.setTitulo(desafioAtualizacao.getTitulo());
             desafio.setConteudo(desafioAtualizacao.getConteudo());
-            desafio.setTipoDesafio(desafioAtualizacao.getTipoDesafio());
+            desafio.setTipo(desafioAtualizacao.getTipo());
             desafio.setInstrucao(desafioAtualizacao.getInstrucao());
             desafio.setPontos(desafioAtualizacao.getPontos());
 

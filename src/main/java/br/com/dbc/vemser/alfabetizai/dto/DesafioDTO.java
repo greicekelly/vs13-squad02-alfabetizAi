@@ -12,12 +12,12 @@ import java.util.List;
 @Getter
 @Setter
 public class DesafioDTO {
-    private int id;
-    private int idModulo;
+    private Integer id;
+    private ModuloDTO modulo;
     private String titulo;
     private String conteudo;
-    private TipoDesafio tipoDesafio;
+    private TipoDesafio tipo;
     private String instrucao;
     private DesafioAlternativas desafioAlternativas;
-    private int pontos;
+    private Integer pontos;
 }

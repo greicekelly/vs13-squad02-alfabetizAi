@@ -15,9 +15,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class DesafioAlternativasCreateDTO {
 
-    @Schema(description = "Id da Alternativa", required = true, example = "1")
-    @NotNull
-    private int idAlternativas;
 
     @Schema(description = "Id do Desafio", required = true, example = "1")
     private int idDesafio;
