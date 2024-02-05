@@ -32,7 +32,6 @@ public class Desafio {
     @Column(name = "conteudo")
     private String conteudo;
 
-//    @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo")
     private TipoDesafio tipoDesafio;
 
