@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.dto;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
-import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

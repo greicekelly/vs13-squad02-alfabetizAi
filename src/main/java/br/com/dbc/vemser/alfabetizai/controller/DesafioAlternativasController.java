@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioAlternativasController;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/alternativas")
 @Slf4j
-public class DesafioAlternativasController {
+public class DesafioAlternativasController implements IDesafioAlternativasController {
 
     private DesafioAlternativasService desafioAlternativasService;
     @GetMapping
