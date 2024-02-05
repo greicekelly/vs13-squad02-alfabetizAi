@@ -6,6 +6,9 @@ import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,17 +31,17 @@ public class ModuloController implements IModuloController {
         return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<ModuloDTO>> listar() throws Exception {
+    public ResponseEntity<Page<ModuloDTO>> listar(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws Exception {
         log.info("Listando Modulos!");
-        List<ModuloDTO> modulosListados = moduloService.listar();
+        Page<ModuloDTO> modulosListados = moduloService.listar(pageable);
         log.info("Modulos Listados!");
         return new ResponseEntity<>(modulosListados, HttpStatus.OK);
     }
 
     @GetMapping("/{idModulo}")
-    public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+    public ResponseEntity<ModuloDTO>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
         log.info("Listando Modulos por Id Modulo!");
-        List<ModuloDTO> modulosListadosporId = moduloService.listarPorIdModulo(idModulo);
+        ModuloDTO modulosListadosporId = moduloService.listarPorIdModulo(idModulo);
         log.info("Modulos Listados por Id!");
         return new ResponseEntity<>(modulosListadosporId, HttpStatus.OK);
     }

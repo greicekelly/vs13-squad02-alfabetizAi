@@ -32,8 +32,8 @@ public class Desafio {
     @Column(name = "conteudo")
     private String conteudo;
 
-    @Column(name = "tipo")
-    private TipoDesafio tipoDesafio;
+    @Column(name = "tipo_desafio")
+    private TipoDesafio tipo;
 
     @Column(name = "instrucao")
     private String instrucao;
@@ -41,10 +41,13 @@ public class Desafio {
     @Column(name = "pontos")
     private int pontos;
 
-    @OneToOne(mappedBy = "desafio", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_desafio_alternativas", referencedColumnName = "id_desafio_alternativas")
     private DesafioAlternativas desafioAlternativas;
-    @ManyToOne(fetch = FetchType.LAZY)
-    //@JsonIgnore
+
+
+    @ManyToOne()
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
 

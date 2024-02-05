@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +27,7 @@ public interface IModuloController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<ModuloDTO>> listar() throws Exception;
+    public ResponseEntity<Page<ModuloDTO>> listar(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws Exception;
 
     @Operation(summary = "Buscar modulo por id do Módulo", description = "Retorna o modulo correspondente ao id do módulo informado")
     @ApiResponses(
@@ -35,7 +38,7 @@ public interface IModuloController {
             }
     )
     @GetMapping("/{idModulo}")
-    public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception;
+    public ResponseEntity<ModuloDTO>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception;
 
     @Operation(summary = "Buscar modulos por id do Professor", description = "Retorna os modulos correspondente ao id do professor informado")
     @ApiResponses(

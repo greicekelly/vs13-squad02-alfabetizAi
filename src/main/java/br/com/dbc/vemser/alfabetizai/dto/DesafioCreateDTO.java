@@ -29,7 +29,7 @@ public class DesafioCreateDTO {
 
     @NotNull(message = "O Tipo de desafio não pode ser Nulo!")
     @Schema(description = "Tipo de Desafio", required = true, example = "QUIZ")
-    private TipoDesafio tipoDesafio;
+    private TipoDesafio tipo;
 
     @NotNull(message = "A instrução do desafio não pode estar em branco ou ser Nulo!")
     @Schema(description = "Instrução do desafio", required = true, example = "Qual é a Letra correta?")

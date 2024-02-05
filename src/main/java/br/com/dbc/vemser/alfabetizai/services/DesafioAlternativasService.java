@@ -2,8 +2,10 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
+import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioAlternativasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,8 @@ public class DesafioAlternativasService {
     private final IDesafioAlternativasRepository desafioAlternativasRepository;
     private final ObjectMapper objectMapper;
 
+    private final DesafioService desafioService;
+
     public List<DesafioAlternativasDTO> listarAlternativas() throws RegraDeNegocioException {
         return desafioAlternativasRepository.findAll().stream()
                 .map(this::retornarAlternativasDTO)
@@ -27,7 +31,13 @@ public class DesafioAlternativasService {
     }
     public DesafioAlternativasDTO create(DesafioAlternativasCreateDTO desafioAlternativas) throws RegraDeNegocioException {
         DesafioAlternativas desafioAlt = converterAlternativasDTO(desafioAlternativas);
-        return retornarAlternativasDTO(desafioAlternativasRepository.save(desafioAlt));
+        Desafio desafio = objectMapper.convertValue(desafioService.buscarDesafioPorId(desafioAlternativas.getIdDesafio()), Desafio.class);
+
+        desafioAlt.setDesafio(desafio);
+
+        desafioAlt = desafioAlternativasRepository.save(desafioAlt);
+
+        return retornarAlternativasDTO(desafioAlt);
     }
 
     public DesafioAlternativasDTO atualizar(
@@ -36,7 +46,7 @@ public class DesafioAlternativasService {
         if (objetoOptional.isPresent()) {
             DesafioAlternativas desafioAlternativas = objetoOptional.get();
             DesafioAlternativas desafioAtualizacao = converterAlternativasDTO(desafioAlternativasCreateDTO);
-            desafioAlternativas.setIdDesafio(desafioAtualizacao.getIdDesafio());
+            //desafioAlternativas.setIdDesafio(desafioAtualizacao.getIdDesafio());
             desafioAlternativas.setA(desafioAtualizacao.getA());
             desafioAlternativas.setB(desafioAtualizacao.getB());
             desafioAlternativas.setC(desafioAtualizacao.getC());
