@@ -34,6 +34,7 @@ public class ModuloController implements IModuloController {
         log.info("Modulos Listados!");
         return new ResponseEntity<>(modulosListados, HttpStatus.OK);
     }
+
     @GetMapping("/{idModulo}")
     public ResponseEntity<List<ModuloDTO>>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
         log.info("Listando Modulos por Id Modulo!");
@@ -65,4 +66,5 @@ public class ModuloController implements IModuloController {
         log.info("Modulo deletado");
         return ResponseEntity.ok().build();
     }
+
 }

@@ -39,7 +39,7 @@ public class Aluno  {
     @JsonIgnore
     private Set<Modulo> modulo;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Responsavel responsavel;
 
