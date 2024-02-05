@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +27,7 @@ public interface IAdminController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<AdminDTO>> listar() throws Exception;
+    public ResponseEntity<Page<AdminDTO>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable pageable) throws Exception;
 
 
     @Operation(summary = "Buscar admin por id", description = "Retorna o usuário admin correspondente ao id informado")
@@ -74,5 +77,18 @@ public interface IAdminController {
     )
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<Void> deletar(@PathVariable("idUsuario") Integer id) throws Exception;
+
+
+    @Operation(summary = "Analisar Aprovação/Reprovação de Módulo", description = "Edita o módulo para aparecer o status de aprovado ou reprovado.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os dados do módulo atualizado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/analisarmodulo/{idModulo}")
+    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
+                                                @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception;
 
 }

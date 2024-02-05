@@ -3,7 +3,9 @@ package br.com.dbc.vemser.alfabetizai.services;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,8 @@ public class ProfessorService {
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
 
+        professorPorCpfEmail(professorCreateDTO.getCpf(), professorCreateDTO.getEmail());
+
         professorEntity.setAtivo("S");
         professorEntity = professorRepository.save(professorEntity);
 
@@ -33,6 +37,15 @@ public class ProfessorService {
         emailService.sendEmailProfessor(professorDTO, "Cadastro efetuado, ", "create");
 
         return professorDTO;
+    }
+
+    private Professor professorPorCpfEmail(String cpf, String email) throws Exception {
+        Professor professor = professorRepository.findAllByCpfOrEmail(cpf, email);
+        if (professor != null) {
+            throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
+        } else {
+            return professor;
+        }
     }
 
     public List<ProfessorDTO> listar() {

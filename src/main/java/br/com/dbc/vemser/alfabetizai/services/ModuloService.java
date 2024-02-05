@@ -142,4 +142,12 @@ public class ModuloService {
     public ModuloDTO retornarDTO(Modulo entity) {
         return objectMapper.convertValue(entity, ModuloDTO.class);
     }
+
+    public ModuloDTO moduloPorId (Integer id){
+        return retornarDTO(moduloRepository.getById(id));
+    }
+
+    public ModuloDTO save(Modulo modulo){
+        return retornarDTO(moduloRepository.save(modulo));
+    }
 }

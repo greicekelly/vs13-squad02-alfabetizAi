@@ -3,21 +3,15 @@ package br.com.dbc.vemser.alfabetizai.controller;
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IProfessorController;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/professor")
