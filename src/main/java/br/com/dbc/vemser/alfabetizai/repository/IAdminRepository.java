@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IAdminRepository extends JpaRepository<Admin, Integer> {
@@ -16,4 +17,6 @@ public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 
 
     Admin findAllByCpfOrEmail(String cpf, String email);
+
+//    Optional<Admin> findByEmailAndSenha(String email, String senha);
 }

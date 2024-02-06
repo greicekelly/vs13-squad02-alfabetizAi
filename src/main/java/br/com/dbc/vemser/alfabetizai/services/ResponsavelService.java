@@ -10,6 +10,7 @@ import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -154,4 +155,8 @@ public class ResponsavelService {
             throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
         }
     }
+
+//    public Optional<Responsavel> loginresponsavel(String email, String senha) {
+//        return responsavelRepository.findByEmailAndSenha(email, senha);
+//    }
 }
