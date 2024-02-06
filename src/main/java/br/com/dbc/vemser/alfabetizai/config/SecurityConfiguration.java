@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/auth", "/").permitAll()
+                        .antMatchers("/admin", "/aluno", "/alternativas", "/desafio", "/modulo", "/professor", "/relatorio", "/responsavel").permitAll()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
