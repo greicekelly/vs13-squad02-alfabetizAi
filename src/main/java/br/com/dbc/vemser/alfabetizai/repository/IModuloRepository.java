@@ -1,6 +1,8 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,5 +33,10 @@ public interface IModuloRepository extends JpaRepository< Modulo, Integer> {
                             """, nativeQuery = true)
             List<Modulo> listarModulosConcluidos(@Param("idAluno") Integer idAluno);
 
-            List<Modulo> findAllByIdProfessor(int idProfessor);
+//            List<Modulo> findAllByIdProfessor(Integer idProfessor);
+
+            Page<Modulo> findAllByIdProfessor(Integer idProfessor, Pageable pageable);
+
+            @Query(value = "SELECT * FROM MODULO m INNER JOIN USUARIO u ON u.ID_USUARIO = m.ADMIN_ID WHERE u.ID_USUARIO = :idAdmin", nativeQuery = true)
+            Page<Modulo> findAllByAdmin(Integer idAdmin, Pageable pageable);
 }
