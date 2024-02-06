@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.alfabetizai.services;
+package br.com.dbc.vemser.alfabetizai.security;
 
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import lombok.RequiredArgsConstructor;

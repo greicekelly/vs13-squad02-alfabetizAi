@@ -2,8 +2,11 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 
 import br.com.dbc.vemser.alfabetizai.dto.*;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
@@ -56,11 +59,28 @@ public class ModuloService {
         }
     }
 
-    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
-        List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
-        return listaPorId.stream()
-                .map(this::retornarDTO)
-                .collect(Collectors.toList());
+//    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
+//        List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
+//        return listaPorId.stream()
+//                .map(this::retornarDTO)
+//                .collect(Collectors.toList());
+//    }
+
+    public Page<ModuloProfessorDTO> pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
+
+            Page<Modulo> modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);
+
+            return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloProfessorDTO.class));
+
+    }
+
+    public Page<ModuloAdminDTO> pagePorIdAdmin(Integer idAdmin, Pageable pageable) {
+
+        Page<Modulo> modulos = moduloRepository.findAllByAdmin(idAdmin, pageable);
+        System.out.println(modulos);
+
+        return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloAdminDTO.class));
+
     }
 
     public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {

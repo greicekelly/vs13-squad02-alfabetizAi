@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.controller;
 import br.com.dbc.vemser.alfabetizai.dto.login.LoginDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
+import br.com.dbc.vemser.alfabetizai.security.TokenService;
 import br.com.dbc.vemser.alfabetizai.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

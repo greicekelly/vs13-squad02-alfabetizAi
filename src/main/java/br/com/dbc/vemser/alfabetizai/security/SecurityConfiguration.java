@@ -1,7 +1,7 @@
-package br.com.dbc.vemser.alfabetizai.config;
+package br.com.dbc.vemser.alfabetizai.security;
 
-import br.com.dbc.vemser.alfabetizai.services.TokenAuthenticationFilter;
-import br.com.dbc.vemser.alfabetizai.services.TokenService;
+import br.com.dbc.vemser.alfabetizai.security.TokenAuthenticationFilter;
+import br.com.dbc.vemser.alfabetizai.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/auth", "/").permitAll()
+                        .antMatchers("/admin", "/aluno", "/alternativas", "/desafio", "/modulo", "/professor", "/relatorio", "/responsavel").permitAll()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
