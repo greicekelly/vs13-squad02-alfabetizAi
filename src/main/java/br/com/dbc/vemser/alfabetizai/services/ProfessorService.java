@@ -4,6 +4,7 @@ import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
@@ -129,4 +130,8 @@ public class ProfessorService {
             throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
         }
     }
+
+//    public Optional<Professor> loginProfessor(String email, String senha) {
+//        return professorRepository.findByEmailAndSenha(email, senha);
+//    }
 }

@@ -143,4 +143,8 @@ public class AdminService {
 
         return moduloDTO;
     }
+
+//    public Optional<Admin> loginAdmin(String email, String senha) {
+//        return adminRepository.findByEmailAndSenha(email, senha);
+//    }
 }
