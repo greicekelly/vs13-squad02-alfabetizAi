@@ -1,14 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
-import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
+
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

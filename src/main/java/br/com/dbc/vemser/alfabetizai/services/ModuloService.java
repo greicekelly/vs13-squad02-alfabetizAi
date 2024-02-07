@@ -1,16 +1,16 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 
-import br.com.dbc.vemser.alfabetizai.dto.*;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

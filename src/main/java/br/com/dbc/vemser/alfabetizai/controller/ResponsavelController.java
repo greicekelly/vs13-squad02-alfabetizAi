@@ -1,12 +1,10 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IResponsavelController;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

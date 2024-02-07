@@ -1,7 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +32,7 @@ public class UsuarioService {
         return usuarioRepository.buscarUsuariosAtivosDTO(pageable, String.valueOf(ativo));
     }
 
-    public Optional<Usuario> login(String email, String senha) {
-        return usuarioRepository.findByEmailAndSenha(email, senha);
+    public Optional<Usuario> login(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 }

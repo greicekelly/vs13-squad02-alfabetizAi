@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasDTO;
 
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;

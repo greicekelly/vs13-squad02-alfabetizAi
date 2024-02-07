@@ -1,8 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioAlternativasDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
