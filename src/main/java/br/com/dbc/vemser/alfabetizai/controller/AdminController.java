@@ -1,9 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAdminController;
-import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin")

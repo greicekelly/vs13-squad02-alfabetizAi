@@ -1,7 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAlunoController;
-import br.com.dbc.vemser.alfabetizai.dto.*;
+
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

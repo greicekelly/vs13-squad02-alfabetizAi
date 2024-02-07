@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IProfessorController;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
