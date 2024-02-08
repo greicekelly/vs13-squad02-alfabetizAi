@@ -90,4 +90,18 @@ public interface IAdminController {
     public ResponseEntity<ModuloDTO> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
                                                      @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception;
 
+
+
+
+    @Operation(summary = "Delatar admin fisicamente", description = "deleta o usuário admin com o id informado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Admin deletado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping("/delete-fisico/{idAdmin}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idAdmin") Integer id) throws Exception;
+
 }

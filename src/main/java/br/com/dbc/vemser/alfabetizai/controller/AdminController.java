@@ -75,4 +75,12 @@ public class AdminController  implements IAdminController{
         return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete-fisico/{idAdmin}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idAdmin") Integer id) throws Exception {
+        log.info("Deletando admin");
+        adminService.removerFisicamente(id);
+        log.info("Admin deletado");
+        return ResponseEntity.ok().build();
+    }
+
 }
