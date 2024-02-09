@@ -21,4 +21,5 @@ public class ModuloDTO {
     private AdminModuloDTO admin;
     private ProfessorDTO professor;
     private ClassificacaoModulo classificacao;
+    private String ativo;
 }

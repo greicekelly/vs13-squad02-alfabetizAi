@@ -30,6 +30,10 @@ public class Modulo {
 
     @Column(name = "modulo_aprovado")
     private String foiAprovado;
+
+    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
+    private String ativo;
+
     @ManyToOne
     //@JsonIgnore
     @JoinColumn(name = "admin_id")

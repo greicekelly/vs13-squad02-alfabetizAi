@@ -114,4 +114,15 @@ public interface IModuloController {
     )
     @DeleteMapping("/{idModulo}")
     public ResponseEntity<Void> deletar(@PathVariable("idModulo") Integer id) throws Exception;
+
+    @Operation(summary = "Deletar modulo de forma Logica", description = "Apaga o modulo com o id informado de forma lógica.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Modulo removido de forma lógica com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping("/delete-logico/{idModulo}")
+    public ResponseEntity<Void> removerLogico(@PathVariable("idModulo") Integer id) throws Exception;
 }
