@@ -146,6 +146,28 @@ public class AdminService {
         return moduloDTO;
     }
 
+    public String alterarSenha(String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
+        Integer admin = 61;
+        //Admin adminLogado = adminService.getLoggerUser();
+        Admin adminLogado = objectMapper.convertValue(adminRepository.findById(admin), Admin.class);
+        String senha1 = adminLogado.getSenha();
+        String senha2 = passwordEncoder.encode(senhaAtual);
+        System.out.println(senha1);
+        System.out.println(senha2);
+        senha1.equals(senha2);
+        System.out.println(senha1.equals(senha2));
+        if(adminLogado.equals(passwordEncoder.encode(senhaAtual))){
+            if(novaSenha.equals(confirmacaoSenha)){
+                String novaSenhaCripto = passwordEncoder.encode(novaSenha);
+                return "Senha Alterada com sucesso!";
+            }else{
+                throw new RegraDeNegocioException("A confirmação de senha não é igual a senha.");
+            }
+        } else {
+            throw new RegraDeNegocioException("Senha atual não confere.");
+        }
+    }
+
 //    public Optional<Admin> loginAdmin(String email, String senha) {
 //        return adminRepository.findByEmailAndSenha(email, senha);
 //    }
