@@ -81,5 +81,6 @@ public interface IDesafioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
+    @DeleteMapping("/delete-logico/{idDesafio}")
     public ResponseEntity<Void> removerLogico(@PathVariable("idDesafio") Integer id) throws Exception;
 }
