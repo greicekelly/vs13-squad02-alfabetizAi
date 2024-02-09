@@ -1,12 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,4 +37,15 @@ public class UsuarioService {
     public Optional<Usuario> login(String email) {
         return usuarioRepository.findByEmail(email);
     }
+    public Optional<Usuario> findById(Integer idUsuario) {
+        return usuarioRepository.findById(idUsuario);
+    }
+    public Optional<Usuario> getLoggedUser() throws RegraDeNegocioException {
+        return findById(getIdLoggedUser());
+    }
+    public Integer getIdLoggedUser() {
+        Integer findUserId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return findUserId;
+    }
+
 }

@@ -75,13 +75,21 @@ public class AdminController  implements IAdminController{
         return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete-fisico/{idAdmin}")
+    public ResponseEntity<Void> deleteFisico(@PathVariable("idAdmin") Integer id) throws Exception {
+        log.info("Deletando admin");
+        adminService.removerFisicamente(id);
+        log.info("Admin deletado");
+        return ResponseEntity.ok().build();
+
+    }
+
     @PutMapping("/alterar_senha")
     public String alterarSenha( @Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
         log.info("Atualizando senha");
 
         String response = adminService.alterarSenha(senhaAtual, novaSenha, confirmacaoSenha);
         log.info("Senha atualizado");
-        return  response;
+        return response;
     }
-
 }

@@ -46,5 +46,6 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
     )
     Page<UsuarioDTO> buscarUsuariosAtivosDTO(Pageable pageable, String ativo);
 
-
+    Optional<Usuario> findById(Integer idUsuario);
 }
+
