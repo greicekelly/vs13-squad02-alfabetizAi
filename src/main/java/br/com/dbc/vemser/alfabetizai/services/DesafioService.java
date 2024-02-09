@@ -48,6 +48,15 @@ public class DesafioService {
         return objectMapper.convertValue(desafioEntity, DesafioDTO.class);
     }
 
+    public Desafio desafioPorId(Integer idDesafio) throws ObjetoNaoEncontradoException {
+        Optional<Desafio> objetoOptional = desafioRepository.findById(idDesafio);
+        if (objetoOptional.isPresent()) {
+            return objetoOptional.get();
+        } else {
+            throw new ObjetoNaoEncontradoException("Desafio com o ID " + idDesafio + " não encontrado informe um id valido");
+        }
+    }
+
     public DesafioDTO atualizar(
             Integer id, DesafioCreateDTO desafioCreateDTO) throws Exception {
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);

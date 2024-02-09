@@ -7,6 +7,8 @@ import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
+import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IAlunoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,9 +105,9 @@ public class AlunoService {
     public void removerFisicamente(int id) throws Exception {
         Optional<Aluno> objetoOptional = alunoRepository.findById(id);
         if (objetoOptional.isPresent()) {
-            Aluno responsavel = objetoOptional.get();
+            Aluno aluno = objetoOptional.get();
 
-            alunoRepository.delete(responsavel);
+            alunoRepository.delete(aluno);
 
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
@@ -118,6 +120,30 @@ public class AlunoService {
 
     public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
         return moduloService.listarModulosConcluidos(idAluno);
+    }
+
+    public Aluno fazerModulo(Integer idALuno, Integer idModulo) throws Exception {
+       Modulo modulo = moduloService.buscarModuloPorId(idModulo);
+        Optional<Aluno> objetoOptional = alunoRepository.findById(idALuno);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+            aluno.getModulos().add(modulo);
+            return alunoRepository.save(aluno);
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
+        }
+    }
+
+    public Aluno fazerDesafio(Integer idALuno, Integer idDesafio) throws Exception {
+        Desafio desafio = desafioService.desafioPorId(idDesafio);
+        Optional<Aluno> objetoOptional = alunoRepository.findById(idALuno);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+            aluno.getDesafios().add(desafio);
+            return alunoRepository.save(aluno);
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
+        }
     }
 
 }

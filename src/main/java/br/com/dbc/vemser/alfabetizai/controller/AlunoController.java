@@ -6,6 +6,7 @@ import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.services.AlunoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,5 +81,14 @@ public class AlunoController implements IAlunoController {
         alunoService.removerFisicamente(id);
         log.info("Aluno deletado");
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{idAluno}/{idModulo}")
+    public ResponseEntity<Aluno> atualizar(@PathVariable("idAluno") Integer idAluno,
+                                              @PathVariable("idModulo") Integer idModulo) throws Exception {
+        log.info("Atualizando aluno");
+        Aluno alunoAtualizado = alunoService.fazerModulo(idAluno, idModulo);
+        log.info("Aluno atualizado");
+        return new ResponseEntity<>(alunoAtualizado, HttpStatus.OK);
     }
 }

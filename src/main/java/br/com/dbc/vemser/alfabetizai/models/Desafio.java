@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,6 +51,10 @@ public class Desafio {
     @ManyToOne()
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "desafios")
+    private Set<Aluno> alunos;
 
     public boolean isEmpty() {
         return false;

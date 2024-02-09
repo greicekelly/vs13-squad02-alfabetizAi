@@ -59,6 +59,16 @@ public class ModuloService {
         }
     }
 
+    public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
+        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
+
+        if (moduloOptional.isPresent()) {
+            return moduloOptional.get();
+        } else {
+            throw new ObjetoNaoEncontradoException("Módulo de " + idModulo +" não encontrado.");
+        }
+    }
+
 //    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
 //        List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
 //        return listaPorId.stream()
