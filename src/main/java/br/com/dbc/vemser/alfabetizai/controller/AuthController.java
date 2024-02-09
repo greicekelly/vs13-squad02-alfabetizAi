@@ -8,11 +8,13 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.security.TokenService;
 import br.com.dbc.vemser.alfabetizai.services.AdminService;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
+import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,6 +38,7 @@ public class AuthController implements IAuthController {
     private final ProfessorService professorService;
     private final AdminService adminService;
     private final ResponsavelService responsavelService;
+    private final UsuarioService usuarioService;
 
     @PostMapping
     public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
@@ -73,5 +74,10 @@ public class AuthController implements IAuthController {
     public ResponseEntity<ResponsavelDTO> cadastrarResponsavel(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         ResponsavelDTO responsavelAdicionado = responsavelService.criar(responsavelCreateDTO);
         return ResponseEntity.ok(responsavelAdicionado);
+    }
+
+    @GetMapping("/usuario-logado")
+    public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException {
+        return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
     }
 }
