@@ -7,6 +7,7 @@ import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class AdminService {
     private final EmailService emailService;
     private final ModuloService moduloService;
     private final PasswordEncoder passwordEncoder;
+
 
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
@@ -144,28 +146,6 @@ public class AdminService {
         moduloDTO = moduloService.save(moduloDTO);
 
         return moduloDTO;
-    }
-
-    public String alterarSenha(String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
-        Integer admin = 61;
-        //Admin adminLogado = adminService.getLoggerUser();
-        Admin adminLogado = objectMapper.convertValue(adminRepository.findById(admin), Admin.class);
-        String senha1 = adminLogado.getSenha();
-        String senha2 = passwordEncoder.encode(senhaAtual);
-        System.out.println(senha1);
-        System.out.println(senha2);
-        senha1.equals(senha2);
-        System.out.println(senha1.equals(senha2));
-        if(adminLogado.equals(passwordEncoder.encode(senhaAtual))){
-            if(novaSenha.equals(confirmacaoSenha)){
-                String novaSenhaCripto = passwordEncoder.encode(novaSenha);
-                return "Senha Alterada com sucesso!";
-            }else{
-                throw new RegraDeNegocioException("A confirmação de senha não é igual a senha.");
-            }
-        } else {
-            throw new RegraDeNegocioException("Senha atual não confere.");
-        }
     }
 
 //    public Optional<Admin> loginAdmin(String email, String senha) {

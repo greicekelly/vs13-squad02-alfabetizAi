@@ -16,6 +16,7 @@ import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
 import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,7 @@ import java.util.Optional;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController implements IAuthController {
 
     public final AuthenticationManager authenticationManager;
@@ -79,5 +81,14 @@ public class AuthController implements IAuthController {
     @GetMapping("/usuario-logado")
     public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
+    }
+
+    @PutMapping("/alterar_senha")
+    public String alterarSenha( @Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
+        log.info("Atualizando senha");
+
+        String response = usuarioService.alterarSenha(senhaAtual, novaSenha, confirmacaoSenha);
+        log.info("Senha atualizado");
+        return response;
     }
 }

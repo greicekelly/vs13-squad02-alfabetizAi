@@ -84,12 +84,5 @@ public class AdminController  implements IAdminController{
 
     }
 
-    @PutMapping("/alterar_senha")
-    public String alterarSenha( @Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
-        log.info("Atualizando senha");
 
-        String response = adminService.alterarSenha(senhaAtual, novaSenha, confirmacaoSenha);
-        log.info("Senha atualizado");
-        return response;
-    }
 }
