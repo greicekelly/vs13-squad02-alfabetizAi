@@ -41,7 +41,7 @@ public class Desafio {
     @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
     private String ativo;
 
-    @OneToOne(/*fetch = FetchType.LAZY*/)
+    @OneToOne()
     @JoinColumn(name = "id_desafio_alternativas", referencedColumnName = "id_desafio_alternativas")
     private DesafioAlternativas desafioAlternativas;
 

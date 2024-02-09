@@ -103,18 +103,18 @@ public class ModuloService {
         }
     }
 
-    public void remover(int id) throws Exception {
+    public void remover(int id) throws RegraDeNegocioException {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
 
             if (!modulo.getDesafios().isEmpty() || !modulo.getAlunos().isEmpty()) {
-                throw new Exception("Não é possível excluir o módulo pois ele está associado a outras classes.");
+                throw new RegraDeNegocioException("Não é possível excluir o módulo pois ele está associado a outras classes.");
             }
             moduloRepository.delete(modulo);
 
         } else {
-            throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
+            throw new RegraDeNegocioException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
