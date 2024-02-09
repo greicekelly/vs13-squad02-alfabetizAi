@@ -2,7 +2,6 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 
 import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

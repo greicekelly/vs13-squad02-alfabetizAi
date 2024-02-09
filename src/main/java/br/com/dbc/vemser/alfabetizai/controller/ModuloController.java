@@ -28,6 +28,7 @@ import javax.validation.Valid;
 public class ModuloController implements IModuloController {
 
     private final ModuloService moduloService;
+
     @PostMapping
     public ResponseEntity<ModuloDTO> criar(@Valid @RequestBody ModuloCreateDTO moduloCreateDTO) throws Exception {
         log.info("Criando modulo");
@@ -35,12 +36,13 @@ public class ModuloController implements IModuloController {
         log.info("Modulo criado");
         return new ResponseEntity<>(moduloDTO, HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity<Page<ModuloDTO>> listar(
-        @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "admin.idUsuario", "admin.nome", "professor.idUsuario", "professor.nome", "foiAprovado", "classificacao"}))
-        @RequestParam(required = false) String sort,
-        @RequestParam(required = false, defaultValue = "0") Integer page,
-        @RequestParam(required = false, defaultValue = "10") Integer size) throws Exception {
+            @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "admin.idUsuario", "admin.nome", "professor.idUsuario", "professor.nome", "foiAprovado", "classificacao"}))
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size) throws Exception {
 
         Sort.Direction direction = Sort.DEFAULT_DIRECTION;
 
@@ -53,7 +55,7 @@ public class ModuloController implements IModuloController {
     }
 
     @GetMapping("/{idModulo}")
-    public ResponseEntity<ModuloDTO>listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+    public ResponseEntity<ModuloDTO> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
         log.info("Listando Modulos por Id Modulo!");
         ModuloDTO modulosListadosporId = moduloService.listarPorIdModulo(idModulo);
         log.info("Modulos Listados por Id!");
@@ -104,6 +106,15 @@ public class ModuloController implements IModuloController {
         log.info("Modulo atualizado");
         return new ResponseEntity<>(moduloAtualizado, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete-logico/{idModulo}")
+    public ResponseEntity<Void> removerLogico(@PathVariable("idModulo") Integer id) throws Exception {
+        log.info("Deletando Modulo de Forma Logica");
+        moduloService.removerLogico(id);
+        log.info("Modulo deletado logicamente!");
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{idModulo}")
     public ResponseEntity<Void> deletar(@PathVariable("idModulo") Integer id) throws Exception {
         log.info("Deletando modulo");

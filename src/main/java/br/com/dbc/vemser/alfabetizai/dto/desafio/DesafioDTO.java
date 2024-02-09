@@ -1,3 +1,4 @@
+
 package br.com.dbc.vemser.alfabetizai.dto.desafio;
 
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
@@ -19,4 +20,5 @@ public class DesafioDTO {
     private String instrucao;
     private DesafioAlternativas desafioAlternativas;
     private Integer pontos;
+    private String ativo;
 }
