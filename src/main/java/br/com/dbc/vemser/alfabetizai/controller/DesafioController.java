@@ -42,13 +42,6 @@ public class DesafioController implements IDesafioController {
         log.info("Desafio atualizado");
         return new ResponseEntity<>(desafioAtualizado, HttpStatus.OK);
     }
-    @DeleteMapping("/{idDesafio}")
-    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
-        log.info("Deletando desafio");
-        desafioService.remover(id);
-        log.info("Desafio deletado");
-        return ResponseEntity.ok().build();
-    }
     @GetMapping("/{idModulo}")
     public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
         log.info("Listando Módulo por Id.");
@@ -56,5 +49,19 @@ public class DesafioController implements IDesafioController {
         log.info("Módulo Listado por Id");
         return new ResponseEntity<>(moduloListado, HttpStatus.OK);
     }
+    @DeleteMapping("/{idDesafio}") // delete fisico
+    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
+        log.info("Deletando desafio");
+        desafioService.remover(id);
+        log.info("Desafio deletado");
+        return ResponseEntity.ok().build();
+    }
 
+    @DeleteMapping("/delete-logico/{idDesafio}") //delete logico
+    public ResponseEntity<Void> removerLogico(@PathVariable("idDesafio") Integer id) throws Exception {
+        log.info("Deletando Desafio de Forma Logica");
+        desafioService.removerLogico(id);
+        log.info("Desafio deletado logicamente!");
+        return ResponseEntity.ok().build();
+    }
 }
