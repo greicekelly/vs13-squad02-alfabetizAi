@@ -24,6 +24,7 @@ public class ProfessorService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    //private final UsuarioService usuarioService;
 
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
@@ -35,6 +36,7 @@ public class ProfessorService {
 
         professorEntity.setAtivo("S");
         professorEntity = professorRepository.save(professorEntity);
+        //usuarioService.salvarCargos(3, professorEntity.getIdUsuario());
 
         ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
 

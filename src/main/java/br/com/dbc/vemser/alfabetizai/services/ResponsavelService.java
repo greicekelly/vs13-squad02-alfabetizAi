@@ -34,6 +34,7 @@ public class ResponsavelService {
         responsavelEntity.setAtivo("S");
         String senha = passwordEncoder.encode(responsavelEntity.getPassword());
         responsavelEntity.setSenha(senha);
+
         responsavelEntity = responsavelRepository.save(responsavelEntity);
 
         ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);

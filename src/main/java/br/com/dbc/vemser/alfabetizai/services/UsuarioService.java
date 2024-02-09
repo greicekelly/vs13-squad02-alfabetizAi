@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,5 +69,20 @@ public class UsuarioService {
             throw new RegraDeNegocioException("Senha atual não confere.");
         }
     }
+
+    public String alterarSenha2() throws Exception {
+
+        List<Usuario> usuarioList = usuarioRepository.findAll();
+
+        for (Usuario usuario : usuarioList) {
+            usuario.setSenha(passwordEncoder.encode("123"));
+            usuarioRepository.save(usuario);
+        }
+  return "senha alterada";
+    }
+
+//    public void salvarCargos(Integer idCargo, Integer idUsuario){
+//        usuarioRepository.salvarCargos(idCargo, idUsuario);
+//    }
 
 }
