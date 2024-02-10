@@ -33,7 +33,7 @@ public interface IAuthController {
             }
     )
     @PostMapping
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO);
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws Exception;
 
     @Operation(summary = "Criar professor", description = "Cria um usuario professor com os dados repassados no body")
     @ApiResponses(

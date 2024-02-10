@@ -4,6 +4,7 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,8 +36,13 @@ public class ProfessorService {
         professorEntity.setSenha(senha);
 
         professorEntity.setAtivo("S");
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(2);
+        cargo.setNome("ROLE_PROFESSOR");
+
+        professorEntity.setCargos(List.of(cargo));
         professorEntity = professorRepository.save(professorEntity);
-        //usuarioService.salvarCargos(3, professorEntity.getIdUsuario());
 
         ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
 

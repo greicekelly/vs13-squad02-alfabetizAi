@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,21 +44,26 @@ public class AuthController implements IAuthController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        loginDTO.getEmail(),
-                        loginDTO.getSenha()
-                );
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
+        try {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            loginDTO.getEmail(),
+                            loginDTO.getSenha()
+                    );
 
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        usernamePasswordAuthenticationToken);
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            usernamePasswordAuthenticationToken);
 
-        Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
+            Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
 
+            log.info("Token Gerado.");
 
-        return new ResponseEntity<>(tokenService.generateToken(usuarioValidado), HttpStatus.OK);
+            return new ResponseEntity<>(tokenService.generateToken(usuarioValidado), HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            throw new RegraDeNegocioException("Usuário ou senha incorretos");
+        }
     }
 
     @PostMapping("/cadastrar/professor")
