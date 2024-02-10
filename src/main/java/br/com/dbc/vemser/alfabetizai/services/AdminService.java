@@ -1,26 +1,21 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.*;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.AdminModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
-
-import br.com.dbc.vemser.alfabetizai.models.Modulo;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
-import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -136,14 +131,15 @@ public class AdminService {
         }
     }
 
-    public List<ModuloDTO> modudoAnalisado (Integer idModulo, String analise, Integer idAdmin) throws Exception {
+    public ModuloDTO modudoAnalisado (Integer idModulo, String analise, Integer idAdmin) throws Exception {
 
-        moduloService.editarAprovacaoPorAdmin(idAdmin, idModulo, analise);
+        ModuloDTO moduloDTO = moduloService.listarPorIdModulo(idModulo);
+        AdminModuloDTO adminModuloDTO = objectMapper.convertValue(buscarAdminPorId(idAdmin), AdminModuloDTO.class);
 
+        moduloDTO.setAdmin(adminModuloDTO);
+        moduloDTO.setFoiAprovado(analise);
 
-
-        List<ModuloDTO> moduloDTO = moduloService.listarPorIdModulo(idModulo);
-
+        moduloDTO = moduloService.save(moduloDTO);
 
         return moduloDTO;
     }

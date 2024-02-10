@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.*;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
@@ -11,6 +12,8 @@ import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,26 +37,32 @@ public class ModuloService {
         modulo.setProfessor(professor);
 
         Modulo moduloAdicionado = converterDTO(moduloCreateDTO);
-        return  retornarDTO(moduloRepository.save(modulo));
-    }
-        public List<ModuloDTO> listar() throws Exception {
-        return moduloRepository.findAll().stream()
-                .map(this::retornarDTO)
-                .collect(Collectors.toList());
+        return retornarDTO(moduloRepository.save(modulo));
     }
 
-    public List<ModuloDTO>listarPorIdModulo(Integer idModulo) throws Exception {
-        Optional<Modulo> modulo = moduloRepository.findById(idModulo);
-        return modulo.stream()
-                .map(this::retornarDTO)
-                .collect(Collectors.toList());
+    public Page<ModuloDTO> listar(Pageable pageable) throws Exception {
+        return moduloRepository.findAll(pageable)
+                .map(this::retornarDTO);
     }
+
+    public ModuloDTO listarPorIdModulo(Integer idModulo) throws Exception {
+        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
+
+        if (moduloOptional.isPresent()) {
+            Modulo modulo = moduloOptional.get();
+            return objectMapper.convertValue(retornarDTO(modulo), ModuloDTO.class);
+        } else {
+            throw new RegraDeNegocioException("Módulo não encontrado.");
+        }
+    }
+
     public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
         List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
         return listaPorId.stream()
                 .map(this::retornarDTO)
                 .collect(Collectors.toList());
     }
+
     public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
@@ -73,12 +82,13 @@ public class ModuloService {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado. Informe um ID válido");
         }
     }
-      public void remover(int id) throws Exception {
+
+    public void remover(int id) throws Exception {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
 
-            if (!modulo.getDesafios().isEmpty()|| !modulo.getAlunos().isEmpty()) {
+            if (!modulo.getDesafios().isEmpty() || !modulo.getAlunos().isEmpty()) {
                 throw new Exception("Não é possível excluir o módulo pois ele está associado a outras classes.");
             }
             moduloRepository.delete(modulo);
@@ -87,6 +97,7 @@ public class ModuloService {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
+
     public List<Modulo> listarSemAprovacao() throws Exception {
         try {
             return moduloRepository.listarSemAprovacao();
@@ -94,6 +105,7 @@ public class ModuloService {
             throw new Exception("Erro ao listar módulos sem aprovação", e);
         }
     }
+
     public List<Modulo> listarAprovados() throws Exception {
         try {
             return moduloRepository.listarAprovados();
@@ -102,23 +114,16 @@ public class ModuloService {
             throw new Exception("Erro ao listar módulos aprovados", e);
         }
     }
-    public List<Modulo> listarReprovados() throws Exception{
+
+    public List<Modulo> listarReprovados() throws Exception {
         try {
             return moduloRepository.listarReprovados();
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Erro ao listar módulos Reprovados", e);
-        }}
-
-    public void editarAprovacaoPorAdmin(Integer idAdmin, Integer idModulo, String aprovacaoModulo) throws Exception {
-        try {
-            boolean conseguiuEditar = moduloRepository.editarAprovacaoPorAdmin(idAdmin, idModulo, aprovacaoModulo);
-            log.info("editado? " + conseguiuEditar + "| com id=" + idModulo);
-        } catch (Exception e) {
-            log.error("Erro ao editar a aprovação do módulo", e);
-            throw new Exception("Erro ao editar a aprovação do módulo", e);
         }
     }
+
     public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
         try {
             List<Modulo> modulos = moduloRepository.listarModulosConcluidos(idAluno);
@@ -141,7 +146,9 @@ public class ModuloService {
         return retornarDTO(moduloRepository.getById(id));
     }
 
-    public ModuloDTO save(Modulo modulo){
+    public ModuloDTO save(ModuloDTO moduloDTO){
+        Modulo modulo = objectMapper.convertValue(moduloDTO, Modulo.class);
+
         return retornarDTO(moduloRepository.save(modulo));
     }
 }

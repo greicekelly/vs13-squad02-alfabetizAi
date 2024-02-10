@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
 import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -88,7 +89,7 @@ public interface IAdminController {
             }
     )
     @PutMapping("/analisarmodulo/{idModulo}")
-    public ResponseEntity<Void> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
-                                                @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception;
+    public ResponseEntity<ModuloDTO> aprovacaoModulo(@PathVariable("idModulo") Integer idModulo,
+                                                     @Valid @RequestParam Integer idAdmin, String aprovacao) throws Exception;
 
 }
