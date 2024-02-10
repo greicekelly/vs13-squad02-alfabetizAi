@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -115,35 +116,86 @@ public class AlunoService {
     }
 
     public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
-        return desafioService.listardesafiosConcluidos(idAluno);
+        Optional<Aluno> objetoOptional = alunoRepository.findById(idAluno);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+
+            if(aluno.getDesafios().isEmpty()) {
+                throw new RegraDeNegocioException("Aluno não possui desafio concluido");
+            }
+
+            return aluno.getDesafios().stream()
+                    .map(this::retornarDesafioDTO)
+                    .collect(Collectors.toList());
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + idAluno + " não encontrado informe um id valido");
+        }
     }
 
     public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {
-        return moduloService.listarModulosConcluidos(idAluno);
+        Optional<Aluno> objetoOptional = alunoRepository.findById(idAluno);
+        if (objetoOptional.isPresent()) {
+            Aluno aluno = objetoOptional.get();
+
+            if(aluno.getModulos().isEmpty()) {
+                throw new RegraDeNegocioException("Aluno não possui modulo concluido");
+            }
+
+            return aluno.getModulos().stream()
+                    .map(this::retornarModuloDTO)
+                    .collect(Collectors.toList());
+        } else {
+            throw new ObjetoNaoEncontradoException("Aluno com o ID " + idAluno + " não encontrado informe um id valido");
+        }
     }
 
-    public Aluno fazerModulo(Integer idALuno, Integer idModulo) throws Exception {
+    public void fazerModulo(Integer idALuno, Integer idModulo) throws Exception {
        Modulo modulo = moduloService.buscarModuloPorId(idModulo);
         Optional<Aluno> objetoOptional = alunoRepository.findById(idALuno);
         if (objetoOptional.isPresent()) {
             Aluno aluno = objetoOptional.get();
             aluno.getModulos().add(modulo);
-            return alunoRepository.save(aluno);
+            alunoRepository.save(aluno);
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
         }
     }
 
-    public Aluno fazerDesafio(Integer idALuno, Integer idDesafio) throws Exception {
+    public void fazerDesafio(Integer idALuno, Integer idDesafio) throws Exception {
         Desafio desafio = desafioService.desafioPorId(idDesafio);
         Optional<Aluno> objetoOptional = alunoRepository.findById(idALuno);
         if (objetoOptional.isPresent()) {
             Aluno aluno = objetoOptional.get();
+
+            if(jaFezDesafio(aluno, desafio)) {
+                throw new RegraDeNegocioException("Aluno ja concluiu este desafio anteriormente");
+            }
+            
             aluno.getDesafios().add(desafio);
-            return alunoRepository.save(aluno);
+            aluno.adicionarPontuacao(desafio.getPontos());
+            concluirModulo(aluno,desafio);
+
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
         }
     }
 
+    public void concluirModulo(Aluno aluno, Desafio desafio) throws Exception {
+       Modulo modulo = moduloService.buscarModuloPorId(desafio.getModulo().getId());
+       if (aluno.getDesafios().containsAll(modulo.getDesafios())) {
+           fazerModulo(aluno.getIdAluno(), desafio.getModulo().getId());
+       }
+    }
+
+    public boolean jaFezDesafio(Aluno aluno, Desafio desafio) {
+        return aluno.getDesafios().contains(desafio);
+    }
+
+    private DesafioDTO retornarDesafioDTO(Desafio entity) {
+        return objectMapper.convertValue(entity, DesafioDTO.class);
+    }
+
+    private ModuloDTO retornarModuloDTO(Modulo entity) {
+        return objectMapper.convertValue(entity, ModuloDTO.class);
+    }
 }

@@ -83,12 +83,12 @@ public class AlunoController implements IAlunoController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{idAluno}/{idModulo}")
-    public ResponseEntity<Aluno> atualizar(@PathVariable("idAluno") Integer idAluno,
-                                              @PathVariable("idModulo") Integer idModulo) throws Exception {
-        log.info("Atualizando aluno");
-        Aluno alunoAtualizado = alunoService.fazerModulo(idAluno, idModulo);
-        log.info("Aluno atualizado");
-        return new ResponseEntity<>(alunoAtualizado, HttpStatus.OK);
+    @PutMapping("/{idAluno}/{idDesafio}")
+    public ResponseEntity<Void> fazerDesafio(@PathVariable("idAluno") Integer idAluno,
+                                              @PathVariable("idDesafio") Integer idDesafio) throws Exception {
+        log.info("Aluno iniciando desafio");
+        alunoService.fazerDesafio(idAluno, idDesafio);
+        log.info("Desafio concluido");
+        return ResponseEntity.ok().build();
     }
 }

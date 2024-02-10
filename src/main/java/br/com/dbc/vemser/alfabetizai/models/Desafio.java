@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +43,7 @@ public class Desafio {
     @Column(name = "pontos")
     private int pontos;
 
-
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_desafio_alternativas", referencedColumnName = "id_desafio_alternativas")
     private DesafioAlternativas desafioAlternativas;

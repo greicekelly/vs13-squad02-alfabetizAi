@@ -35,10 +35,6 @@ public class Aluno  {
     @Column(name = "ativo")
     private String ativo;
 
-//    @ManyToMany(mappedBy = "alunos")
-//    @JsonIgnore
-//    private Set<Modulo> modulo;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "ALUNO_MODULO",
             joinColumns = @JoinColumn(name = "id_aluno"),
@@ -58,4 +54,7 @@ public class Aluno  {
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Responsavel responsavel;
 
+    public void adicionarPontuacao(int pontuacao){
+        this.setPontuacao(this.pontuacao + pontuacao);
+    }
 }
