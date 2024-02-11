@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
+
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
