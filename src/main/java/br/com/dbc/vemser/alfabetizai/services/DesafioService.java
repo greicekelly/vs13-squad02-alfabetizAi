@@ -3,19 +3,18 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
+import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,27 +22,28 @@ import java.util.stream.Collectors;
 @Service
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
+    private final IModuloRepository moduloRepository;
     private final ObjectMapper objectMapper;
-    private final ModuloService moduloService;
 
-    public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
+    public List<DesafioDTO>listarDesafios(){
         return desafioRepository.findAll().stream()
                 .map(this :: retornarDTO)
                 .collect(Collectors.toList());
     }
 
-    public DesafioDTO create(DesafioCreateDTO desafio)throws Exception  {
+    public DesafioDTO create(DesafioCreateDTO desafio) throws Exception {
         log.info("camada service criação desafio ");
-        Modulo modulo = objectMapper.convertValue(moduloService.listarPorIdModulo(desafio.getIdModulo()), Modulo.class);
+
+        Modulo modulo = moduloRepository.findById(desafio.getIdModulo())
+                .orElseThrow(() -> new RegraDeNegocioException("Módulo não encontrado com o ID: " + desafio.getIdModulo()));
 
         Desafio desafioEntity = converterDTO(desafio);
         desafioEntity.setModulo(modulo);
-
         desafioEntity = desafioRepository.save(desafioEntity);
-        log.info("desafio Criado na camada Service!");
-        return retornarDTO(desafioEntity);
-    }
 
+        log.info("Desafio criado na camada Service!");
+        return retornarDTO(desafioEntity);
+}
     public DesafioDTO buscarDesafioPorId(Integer idDesafio) throws RegraDeNegocioException {
         Desafio desafioEntity = desafioRepository.getById(idDesafio);
 
@@ -54,7 +54,6 @@ public class DesafioService {
             throw new RegraDeNegocioException("Nenhum desafio encontrado para o ID " + idDesafio);
         }
     }
-
     public Desafio desafioPorId(Integer idDesafio) throws ObjetoNaoEncontradoException {
         Optional<Desafio> objetoOptional = desafioRepository.findById(idDesafio);
         if (objetoOptional.isPresent()) {
@@ -63,7 +62,6 @@ public class DesafioService {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + idDesafio + " não encontrado informe um id valido");
         }
     }
-
     public DesafioDTO atualizar(
             Integer id, DesafioCreateDTO desafioCreateDTO) throws  RegraDeNegocioException {
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
@@ -92,6 +90,7 @@ public class DesafioService {
 
     public List<DesafioDTO> listarPorIdModulo(int idModuloEscolhido) throws RegraDeNegocioException {
         List<Desafio> desafios = desafioRepository.findByModuloId(idModuloEscolhido);
+
         if (!desafios.isEmpty()) {
             return desafios.stream()
                     .map(this::retornarDTO)
@@ -101,7 +100,6 @@ public class DesafioService {
             throw new RegraDeNegocioException("Não foram encontrados desafios para o módulo com o ID " + idModuloEscolhido);
         }
     }
-
 
     public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
         try {

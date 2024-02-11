@@ -35,7 +35,7 @@ public class Desafio {
     @Column(name = "instrucao")
     private String instrucao;
 
-    @Column(name = "A" )
+    @Column(name = "A")
     private String a;
 
     @Column(name = "B")
@@ -56,7 +56,7 @@ public class Desafio {
     @Column(name = "pontos")
     private int pontos;
 
-    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
+    @Column(name = "ativo", columnDefinition = "CHAR(1) DEFAULT 'S'")
     private String ativo;
 
     @ManyToOne()
@@ -66,8 +66,4 @@ public class Desafio {
     @JsonIgnore
     @ManyToMany(mappedBy = "desafios")
     private Set<Aluno> alunos;
-
-    public boolean isEmpty() {
-        return false;
-    }
 }

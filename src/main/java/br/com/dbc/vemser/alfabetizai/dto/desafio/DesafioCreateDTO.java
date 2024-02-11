@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class DesafioCreateDTO {
 
     @NotNull(message = "Id do Modulo não pode ser nulo.")
-    @Schema(description = "Numero do id do Modulo", required = true, example = "3")
+    @Schema(description = "Numero do id do Modulo", required = true, example = "82")
     private int idModulo;
 
     @NotBlank(message = "O titulo não pode estar em branco ou ser Nulo!")
@@ -62,4 +62,8 @@ public class DesafioCreateDTO {
     @NotNull(message = "A pontuação do desafio não pode estar em branco ou ser Nulo!")
     @Schema(description = "Pontuação do desafio", required = true, example = "10")
     private int pontos;
+
+    @NotNull(message = "Deve ser informado se o desafio esta ativo ou inativo!")
+    @Schema(description = "Ativo S ou N", required = true, example = "S")
+    private String ativo;
 }
