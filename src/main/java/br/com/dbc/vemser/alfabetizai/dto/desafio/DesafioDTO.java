@@ -12,7 +12,6 @@ import lombok.Setter;
 @Setter
 public class DesafioDTO {
     private Integer id;
-    private ModuloDTO modulo;
     private String titulo;
     private String conteudo;
     private TipoDesafio tipo;
@@ -24,5 +23,6 @@ public class DesafioDTO {
     private String e;
     private String alternativaCorreta;
     private Integer pontos;
+    private ModuloDTO modulo;
     private String ativo;
 }

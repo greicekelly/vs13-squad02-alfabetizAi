@@ -3,6 +3,7 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -87,17 +89,20 @@ public class DesafioService {
             throw new  RegraDeNegocioException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
     }
-    public List<DesafioDTO> listarPorIdModulo(int idModuloEscolhido) throws  RegraDeNegocioException {
-        Optional<Desafio> desafios = desafioRepository.findById(idModuloEscolhido);
-        if (desafios.isPresent()){
+
+    public List<DesafioDTO> listarPorIdModulo(int idModuloEscolhido) throws RegraDeNegocioException {
+        List<Desafio> desafios = desafioRepository.findByModuloId(idModuloEscolhido);
+        if (!desafios.isEmpty()) {
             return desafios.stream()
                     .map(this::retornarDTO)
                     .collect(Collectors.toList());
         } else {
             log.error("Erro ao listar desafios por módulo");
-            throw new  RegraDeNegocioException("Desafio com o ID " + idModuloEscolhido + " não encontrado informe um id valido");
+            throw new RegraDeNegocioException("Não foram encontrados desafios para o módulo com o ID " + idModuloEscolhido);
         }
     }
+
+
     public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
         try {
             List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
