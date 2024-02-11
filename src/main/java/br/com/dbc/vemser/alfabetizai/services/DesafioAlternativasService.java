@@ -1,18 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioAlternativasDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.DesafioAlternativas;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioAlternativasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service

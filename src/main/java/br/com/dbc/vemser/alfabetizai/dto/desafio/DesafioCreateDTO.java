@@ -35,6 +35,30 @@ public class DesafioCreateDTO {
     @Schema(description = "Instrução do desafio", required = true, example = "Qual é a Letra correta?")
     private String instrucao;
 
+    @Schema(description = "Alternativa A", required = true, example = "Inicia Letra B")
+    @NotBlank
+    private String a;
+
+    @Schema(description = "Alternativa B", required = true, example = "Inicia Letra B")
+    @NotBlank
+    private String b;
+
+    @Schema(description = "Alternativa C", required = true, example = "Inicia Letra C")
+    @NotBlank
+    private String c;
+
+    @Schema(description = "Alternativa D", required = true, example = "Inicia Letra D")
+    @NotBlank
+    private String d;
+
+    @Schema(description = "Alternativa E", required = true, example = "Inicia Letra E")
+    @NotBlank
+    private String e;
+
+    @Schema(description = "Mostra a  Alternativa Correta", required = true, example = "A")
+    @NotBlank
+    private String alternativaCorreta;
+
     @NotNull(message = "A pontuação do desafio não pode estar em branco ou ser Nulo!")
     @Schema(description = "Pontuação do desafio", required = true, example = "10")
     private int pontos;
