@@ -1,11 +1,15 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,13 +45,19 @@ public class Desafio {
     @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
     private String ativo;
 
-    @OneToOne()
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_desafio_alternativas", referencedColumnName = "id_desafio_alternativas")
     private DesafioAlternativas desafioAlternativas;
+
 
     @ManyToOne()
     @JoinColumn(name = "id_modulo")
     private Modulo modulo;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "desafios")
+    private Set<Aluno> alunos;
 
     public boolean isEmpty() {
         return false;

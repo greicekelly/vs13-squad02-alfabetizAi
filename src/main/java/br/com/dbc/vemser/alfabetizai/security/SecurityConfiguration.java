@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/auth", "/auth/cadastrar/professor", "/cadastrar/responsavel", "/cadastrar/admin").permitAll()
-                        .antMatchers("/admin", "/aluno", "/alternativas", "/desafio", "/modulo", "/professor", "/relatorio", "/responsavel").permitAll()
+                        .antMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
