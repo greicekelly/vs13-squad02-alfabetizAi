@@ -7,15 +7,19 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Tag(name = "Auth", description = "Endpoint de Auth")
 public interface IAuthController {
@@ -63,4 +67,15 @@ public interface IAuthController {
     )
     @PostMapping
     public ResponseEntity<ResponsavelDTO> cadastrarResponsavel(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception;
+
+    @Operation(summary = "Recuperar Dados por Token de usuario logado", description = "Recupera os dados de um usuario logado com o token.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os dados do usuário logado por token"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/usuario-logado")
+    public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException;
 }

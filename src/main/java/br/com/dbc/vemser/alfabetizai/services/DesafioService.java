@@ -1,9 +1,12 @@
+
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
@@ -20,9 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class DesafioService {
     private final IDesafioRepository desafioRepository;
-
     private final ObjectMapper objectMapper;
-
     private final ModuloService moduloService;
 
     public List<DesafioDTO>listarDesafios() throws RegraDeNegocioException{
@@ -77,30 +78,15 @@ public class DesafioService {
             throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
     }
-    public void remover(int id) throws Exception {
-        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Desafio desafio = objetoOptional.get();
-
-            if (!desafio.getDesafioAlternativas().isEmpty()|| !desafio.getModulo().isEmpty()) {
-                throw new Exception("Não é possível excluir o desafio pois ele está associado a outras classes.");
-            }
-
-            desafioRepository.delete(desafio);
-
-        } else {
-            throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
     public List<DesafioDTO> listarPorIdModulo(int idModuloEscolhido) throws Exception {
         Optional<Desafio> desafios = desafioRepository.findById(idModuloEscolhido);
-            if (desafios.isPresent()){
-                return desafios.stream()
+        if (desafios.isPresent()){
+            return desafios.stream()
                     .map(this::retornarDTO)
                     .collect(Collectors.toList());
         } else {
             log.error("Erro ao listar desafios por módulo");
-                throw new ObjetoNaoEncontradoException("Desafio com o ID " + idModuloEscolhido + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Desafio com o ID " + idModuloEscolhido + " não encontrado informe um id valido");
         }
     }
     public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
@@ -112,6 +98,37 @@ public class DesafioService {
         } catch (Exception e) {
             log.error("Erro ao listar desafios concluidos", e);
             throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
+        }
+    }
+    public void remover(int id) throws RegraDeNegocioException{
+        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Desafio desafio = objetoOptional.get();
+
+            if (!desafio.getDesafioAlternativas().isEmpty()|| !desafio.getModulo().isEmpty()) {
+                throw new RegraDeNegocioException("Não é possível excluir o desafio pois ele está associado a outras classes.");
+            }
+
+            desafioRepository.delete(desafio);
+
+        } else {
+            throw new RegraDeNegocioException("Desafio com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+
+    public void removerLogico(int id) throws Exception {
+        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Desafio desafio = objetoOptional.get();
+
+            desafio.setAtivo("N");
+
+            desafio = desafioRepository.save(desafio);
+
+            DesafioDTO desafioDTO = retornarDTO(desafio);
+
+        } else {
+            throw new ObjetoNaoEncontradoException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
     }
 

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
@@ -8,6 +9,7 @@ import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
@@ -113,15 +115,30 @@ public class ModuloService {
         }
     }
 
-    public void remover(int id) throws Exception {
+    public void remover(int id) throws RegraDeNegocioException {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
 
             if (!modulo.getDesafios().isEmpty() || !modulo.getAlunos().isEmpty()) {
-                throw new Exception("Não é possível excluir o módulo pois ele está associado a outras classes.");
+                throw new RegraDeNegocioException("Não é possível excluir o módulo pois ele está associado a outras classes.");
             }
             moduloRepository.delete(modulo);
+
+        } else {
+            throw new RegraDeNegocioException("Modulo com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+    public void removerLogico(int id) throws Exception {
+        Optional<Modulo> objetoOptional = moduloRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Modulo modulo = objetoOptional.get();
+
+            modulo.setAtivo("N");
+
+            modulo = moduloRepository.save(modulo);
+
+            ModuloDTO moduloDTO = retornarDTO(modulo);
 
         } else {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");

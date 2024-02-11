@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +41,9 @@ public class Desafio {
 
     @Column(name = "pontos")
     private int pontos;
+
+    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
+    private String ativo;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
