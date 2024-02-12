@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/modulo")
@@ -52,6 +53,16 @@ public class ModuloController implements IModuloController {
         Page<ModuloDTO> modulosListados = moduloService.listar(pageable);
         log.info("Modulos Listados!");
         return new ResponseEntity<>(modulosListados, HttpStatus.OK);
+    }
+
+    @GetMapping("/aprovacao")
+    public ResponseEntity<List<ModuloDTO>> listarPorAprovacao(
+            @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"Sem Analise", "Aprovado", "reprovado"}))
+            @RequestParam String aprovacao) throws Exception {
+        log.info("Listando Modulos por aprovação!");
+        List<ModuloDTO> modulosListadosporId = moduloService.listarPorAprovacao(aprovacao);
+        log.info("Modulos Listados por aprovação!");
+        return new ResponseEntity<>(modulosListadosporId, HttpStatus.OK);
     }
 
     @GetMapping("/{idModulo}")

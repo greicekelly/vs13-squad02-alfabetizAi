@@ -13,30 +13,17 @@ import java.util.List;
 @Repository
 public interface IModuloRepository extends JpaRepository< Modulo, Integer> {
 
+    //@Query(value = "SELECT * FROM MODULO m WHERE UPPER(m.modulo_aprovado) = :1", nativeQuery = true)
+//    List<Modulo> listarPorAprovacao(String aprovacao);
+
+    List<Modulo> findAllByFoiAprovado(String aprovacao);
     @Query(value = """
-            SELECT * FROM VS_13_EQUIPE_2.MODULO m WHERE UPPER(m.foiAprovado) = 'n'
-            """, nativeQuery = true)
-            List<Modulo> listarSemAprovacao();
+        SELECT * FROM MODULO m JOIN m.alunos a WHERE a.id = :idAluno AND m.foiAprovado = 'S'
+        """, nativeQuery = true)
+    List<Modulo> listarModulosConcluidos(@Param("idAluno") Integer idAluno);
 
-    @Query(value = """
-                    SELECT * FROM VS_13_EQUIPE_2.MODULO m WHERE UPPER(m.foiAprovado) = 's'
-                    """, nativeQuery = true)
-            List<Modulo> listarAprovados();
+    Page<Modulo> findAllByIdProfessor(Integer idProfessor, Pageable pageable);
 
-            @Query(value = """
-                    SELECT * FROM VS_13_EQUIPE_2.MODULO m WHERE UPPER(m.foiAprovado) = = 'r'
-                    """, nativeQuery = true)
-            List<Modulo> listarReprovados();
-
-            @Query(value = """
-                    SELECT * FROM VS_13_EQUIPE_2.MODULO m JOIN m.alunos a WHERE a.id = :idAluno AND m.foiAprovado = 'S'
-                            """, nativeQuery = true)
-            List<Modulo> listarModulosConcluidos(@Param("idAluno") Integer idAluno);
-
-//            List<Modulo> findAllByIdProfessor(Integer idProfessor);
-
-            Page<Modulo> findAllByIdProfessor(Integer idProfessor, Pageable pageable);
-
-            @Query(value = "SELECT * FROM MODULO m INNER JOIN USUARIO u ON u.ID_USUARIO = m.ADMIN_ID WHERE u.ID_USUARIO = :idAdmin", nativeQuery = true)
-            Page<Modulo> findAllByAdmin(Integer idAdmin, Pageable pageable);
+    @Query(value = "SELECT * FROM MODULO m INNER JOIN USUARIO u ON u.ID_USUARIO = m.ADMIN_ID WHERE u.ID_USUARIO = :idAdmin", nativeQuery = true)
+    Page<Modulo> findAllByAdmin(Integer idAdmin, Pageable pageable);
 }
