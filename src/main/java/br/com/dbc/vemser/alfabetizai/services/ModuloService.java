@@ -70,6 +70,7 @@ public class ModuloService {
         } else {
             throw new ObjetoNaoEncontradoException("Módulo de " + idModulo +" não encontrado.");
         }
+
     }
 
 
