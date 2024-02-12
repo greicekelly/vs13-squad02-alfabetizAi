@@ -6,6 +6,7 @@ import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.services.ModuloService;
+import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,6 +30,7 @@ import java.util.List;
 public class ModuloController implements IModuloController {
 
     private final ModuloService moduloService;
+    private final UsuarioService usuarioService;
 
     @PostMapping
     public ResponseEntity<ModuloDTO> criar(@Valid @RequestBody ModuloCreateDTO moduloCreateDTO) throws Exception {
@@ -57,7 +59,7 @@ public class ModuloController implements IModuloController {
 
     @GetMapping("/aprovacao")
     public ResponseEntity<List<ModuloDTO>> listarPorAprovacao(
-            @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"Sem Analise", "Aprovado", "reprovado"}))
+            @Parameter(in = ParameterIn.QUERY, description = "Filtrar por: ", schema = @Schema(allowableValues = {"Sem Analise", "Aprovado", "Reprovado"}))
             @RequestParam String aprovacao) throws Exception {
         log.info("Listando Modulos por aprovação!");
         List<ModuloDTO> modulosListadosporId = moduloService.listarPorAprovacao(aprovacao);
@@ -74,7 +76,7 @@ public class ModuloController implements IModuloController {
     }
 
     @GetMapping("/professor/{idProfessor}")
-    public ResponseEntity<Page<ModuloProfessorDTO>> listarPorIdProfessor(
+    public ResponseEntity<Page<ModuloDTO>> listarPorIdProfessor(
             @PathVariable("idProfessor") Integer idProfessor,
             @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "foiAprovado", "classificacao"}))
             @RequestParam(required = false) String sort,
@@ -86,7 +88,28 @@ public class ModuloController implements IModuloController {
         Pageable pageable = sort != null ? PageRequest.of(page, size, direction, sort) : PageRequest.of(page, size);
 
         log.info("Listando modulo por idProfessor");
-        Page<ModuloProfessorDTO> modulosPorIdProfessor = moduloService.pagePorIdProfessor(idProfessor, pageable);
+        Page<ModuloDTO> modulosPorIdProfessor = moduloService.pagePorIdProfessor(idProfessor, pageable);
+        log.info("Modulos Listados!");
+        return new ResponseEntity<>(modulosPorIdProfessor, HttpStatus.OK);
+    }
+
+    @GetMapping("/professor/professor_id")
+    public ResponseEntity<Page<ModuloProfessorDTO>> listarPorProfessor(
+            @Parameter(in = ParameterIn.QUERY, description = "Filtrar por: ", schema = @Schema(allowableValues = {"Aprovado", "Sem Analise", "Reprovado"}))
+            @RequestParam(required = false) String aprovacao,
+            @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "foiAprovado", "classificacao"}))
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size) throws Exception {
+
+        Sort.Direction direction = Sort.DEFAULT_DIRECTION;
+
+        Pageable pageable = sort != null ? PageRequest.of(page, size, direction, sort) : PageRequest.of(page, size);
+
+        Integer idProfessor = usuarioService.getLoggedUser().get().getIdUsuario();
+
+        log.info("Listando modulo por idProfessor");
+        Page<ModuloProfessorDTO> modulosPorIdProfessor = moduloService.pagePorProfessor(idProfessor, aprovacao, pageable);
         log.info("Modulos Listados!");
         return new ResponseEntity<>(modulosPorIdProfessor, HttpStatus.OK);
     }

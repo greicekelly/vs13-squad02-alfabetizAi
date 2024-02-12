@@ -73,11 +73,32 @@ public class ModuloService {
     }
 
 
-    public Page<ModuloProfessorDTO> pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
+    public Page<ModuloDTO> pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
 
             Page<Modulo> modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);
 
-            return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloProfessorDTO.class));
+            return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class));
+
+    }
+
+    public Page<ModuloProfessorDTO> pagePorProfessor(Integer idProfessor, String aprovacao, Pageable pageable) {
+        Page<Modulo> modulos;
+        String filtro;
+
+        if(aprovacao != null){
+            if(aprovacao.equals("Sem Analise")){
+                filtro = "N";
+            } else if(aprovacao.equals("Aprovado")){
+                filtro = "S";
+            } else {
+                filtro = "R";
+            }
+            modulos = moduloRepository.findAllProfessorComFiltro(idProfessor, filtro, pageable);
+        }
+
+        modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);
+
+        return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloProfessorDTO.class));
 
     }
 
@@ -141,12 +162,16 @@ public class ModuloService {
     }
 
     public List<ModuloDTO> listarPorAprovacao(String aprovacao) throws Exception {
-        List<Modulo> modulo = new ArrayList<>();
-        try {
-            modulo = moduloRepository.findAllByFoiAprovado(aprovacao);
-        } catch (Exception e) {
-            throw new Exception("Erro ao listar módulos por aprovação", e);
+        String filtro;
+        if(aprovacao.equals("Sem Analise")){
+            filtro = "N";
+        } else if(aprovacao.equals("Aprovado")){
+            filtro = "S";
+        } else {
+            filtro = "R";
         }
+
+        List<Modulo> modulo = moduloRepository.findAllByFoiAprovado(filtro);
 
         return modulo.stream().map(this::retornarDTO).collect(Collectors.toList());
     }

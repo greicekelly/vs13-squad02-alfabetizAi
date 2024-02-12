@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "Modulo", description = "Endpoint de Modulo")
 public interface IModuloController {
@@ -55,12 +56,44 @@ public interface IModuloController {
             }
     )
     @GetMapping("/professor/{idProfessor}")
-    public ResponseEntity<Page<ModuloProfessorDTO>> listarPorIdProfessor(
+    public ResponseEntity<Page<ModuloDTO>> listarPorIdProfessor(
             @PathVariable("idProfessor") Integer idProfessor,
             @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "foiAprovado", "classificacao"}))
             @RequestParam(required = false) String sort,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size) throws Exception;
+
+
+    @Operation(summary = "Buscar modulos por Professor Logado", description = "Retorna os modulos correspondente ao professor logado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os módulos correspondente ao professor logado"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/professor/professor_id")
+    public ResponseEntity<Page<ModuloProfessorDTO>> listarPorProfessor(
+            @Parameter(in = ParameterIn.QUERY, description = "Filtrar por: ", schema = @Schema(allowableValues = {"Aprovado", "Sem Analise", "Reprovado"}))
+            @RequestParam(required = false) String aprovacao,
+            @Parameter(in = ParameterIn.QUERY, description = "Ordenar por: ", schema = @Schema(allowableValues = {"id", "titulo", "conteudo", "foiAprovado", "classificacao"}))
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size) throws Exception ;
+
+
+    @Operation(summary = "Buscar modulos por aprovação", description = "Retorna os modulos correspondente a aprovação")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna os módulos correspondente a aprovação"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/aprovacao")
+    public ResponseEntity<List<ModuloDTO>> listarPorAprovacao(
+            @Parameter(in = ParameterIn.QUERY, description = "Filtrar por: ", schema = @Schema(allowableValues = {"Sem Analise", "Aprovado", "Reprovado"}))
+            @RequestParam String aprovacao) throws Exception;
 
     @Operation(summary = "Buscar modulos por id do Admin", description = "Retorna os módulos correspondente ao id do padmin informado")
     @ApiResponses(

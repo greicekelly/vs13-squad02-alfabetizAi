@@ -72,12 +72,13 @@ public class UsuarioService {
 
     public String alterarSenha2() throws Exception {
 
-        List<Usuario> usuarioList = usuarioRepository.findAll();
+        Optional<Usuario> usuario = findById(4);
 
-        for (Usuario usuario : usuarioList) {
-            usuario.setSenha(passwordEncoder.encode("123"));
-            usuarioRepository.save(usuario);
-        }
+        Usuario usuario1 = usuario.get();
+        usuario1.setSenha(passwordEncoder.encode("123"));
+        usuarioRepository.save(usuario1);
+
+
   return "senha alterada";
     }
 
