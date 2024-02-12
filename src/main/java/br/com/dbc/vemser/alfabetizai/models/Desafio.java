@@ -1,14 +1,13 @@
 package br.com.dbc.vemser.alfabetizai.models;
 
+
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -24,9 +23,6 @@ public class Desafio {
     @Column(name = "id_desafio")
     private int id;
 
-//    @Column(name = "id_modulo", updatable = false, insertable = false)
-//    private int idModulo;
-
     @Column(name = "titulo")
     private String titulo;
 
@@ -39,17 +35,29 @@ public class Desafio {
     @Column(name = "instrucao")
     private String instrucao;
 
+    @Column(name = "A")
+    private String a;
+
+    @Column(name = "B")
+    private String b;
+
+    @Column(name = "C")
+    private String c;
+
+    @Column(name = "D")
+    private String d;
+
+    @Column(name = "E")
+    private String e;
+
+    @Column(name = "alternativa_correta")
+    private String alternativaCorreta;
+
     @Column(name = "pontos")
     private int pontos;
 
-    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
+    @Column(name = "ativo", columnDefinition = "CHAR(1) DEFAULT 'S'")
     private String ativo;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_desafio_alternativas", referencedColumnName = "id_desafio_alternativas")
-    private DesafioAlternativas desafioAlternativas;
-
 
     @ManyToOne()
     @JoinColumn(name = "id_modulo")
@@ -58,8 +66,4 @@ public class Desafio {
     @JsonIgnore
     @ManyToMany(mappedBy = "desafios")
     private Set<Aluno> alunos;
-
-    public boolean isEmpty() {
-        return false;
-    }
 }

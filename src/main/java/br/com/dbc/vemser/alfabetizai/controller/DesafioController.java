@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
@@ -49,7 +50,7 @@ public class DesafioController implements IDesafioController {
         log.info("Módulo Listado por Id");
         return new ResponseEntity<>(moduloListado, HttpStatus.OK);
     }
-    @DeleteMapping("/{idDesafio}") // delete fisico
+    @DeleteMapping("/{idDesafio}")
     public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
         log.info("Deletando desafio");
         desafioService.remover(id);
@@ -57,7 +58,7 @@ public class DesafioController implements IDesafioController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-logico/{idDesafio}") //delete logico
+    @DeleteMapping("/delete-logico/{idDesafio}")
     public ResponseEntity<Void> removerLogico(@PathVariable("idDesafio") Integer id) throws Exception {
         log.info("Deletando Desafio de Forma Logica");
         desafioService.removerLogico(id);
