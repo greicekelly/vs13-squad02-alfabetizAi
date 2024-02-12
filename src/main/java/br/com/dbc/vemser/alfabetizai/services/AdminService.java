@@ -7,6 +7,8 @@ import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
+import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -27,14 +29,23 @@ public class AdminService {
     private final ModuloService moduloService;
     private final PasswordEncoder passwordEncoder;
 
+
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
 
         adminPorCpfEmail(adminCreateDTO.getCpf(), adminCreateDTO.getEmail());
 
         adminEntity.setAtivo("S");
+
         String senha = passwordEncoder.encode(adminEntity.getPassword());
         adminEntity.setSenha(senha);
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(1);
+        cargo.setNome("ROLE_ADMIN");
+
+        adminEntity.setCargos(List.of(cargo));
+
         adminEntity = adminRepository.save(adminEntity);
 
         AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);

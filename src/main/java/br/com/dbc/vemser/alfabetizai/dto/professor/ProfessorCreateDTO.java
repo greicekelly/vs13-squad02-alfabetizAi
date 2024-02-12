@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.dto.professor;
 
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -59,4 +61,5 @@ public class ProfessorCreateDTO {
     @NotBlank(message = "O campo Descrição não pode estar em branco ou ser Nulo!")
     @Schema(description = "Formação do professor", required = true, example = "Licenciatura em Letras")
     private String descricao;
+
 }

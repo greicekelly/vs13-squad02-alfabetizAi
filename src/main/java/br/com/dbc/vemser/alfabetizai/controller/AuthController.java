@@ -16,11 +16,13 @@ import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
 import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,7 @@ import java.util.Optional;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController implements IAuthController {
 
     public final AuthenticationManager authenticationManager;
@@ -41,21 +44,26 @@ public class AuthController implements IAuthController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        loginDTO.getEmail(),
-                        loginDTO.getSenha()
-                );
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
+        try {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            loginDTO.getEmail(),
+                            loginDTO.getSenha()
+                    );
 
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        usernamePasswordAuthenticationToken);
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            usernamePasswordAuthenticationToken);
 
-        Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
+            Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
 
+            log.info("Token Gerado.");
 
-        return new ResponseEntity<>(tokenService.generateToken(usuarioValidado), HttpStatus.OK);
+            return new ResponseEntity<>(tokenService.generateToken(usuarioValidado), HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            throw new RegraDeNegocioException("Usuário ou senha incorretos");
+        }
     }
 
     @PostMapping("/cadastrar/professor")
@@ -79,5 +87,23 @@ public class AuthController implements IAuthController {
     @GetMapping("/usuario-logado")
     public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
+    }
+
+    @PutMapping("/alterar_senha")
+    public String alterarSenha( @Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
+        log.info("Atualizando senha");
+
+        String response = usuarioService.alterarSenha(senhaAtual, novaSenha, confirmacaoSenha);
+        log.info("Senha atualizado");
+        return response;
+    }
+
+    @PutMapping("/senha/alterar_senha")
+    public String alterarSenha2() throws Exception {
+        log.info("Atualizando senha");
+
+        String response = usuarioService.alterarSenha2();
+        log.info("Senha atualizado");
+        return response;
     }
 }

@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.repository;
 
 
 import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
+import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,5 +47,8 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
     Page<UsuarioDTO> buscarUsuariosAtivosDTO(Pageable pageable, String ativo);
 
     Optional<Usuario> findById(Integer idUsuario);
+
+//    @Query(value = "INSERT INTO USUARIO_CARGO (ID_CARGO, ID_USUARIO) VALUES(:1, :2)", nativeQuery = true)
+//    Usuario salvarCargos (Integer idCargo, Integer idUsuario);
 }
 

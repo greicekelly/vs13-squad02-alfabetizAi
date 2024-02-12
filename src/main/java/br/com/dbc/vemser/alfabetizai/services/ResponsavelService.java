@@ -6,6 +6,7 @@ import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +33,16 @@ public class ResponsavelService {
         responsavelPorCpfEmail(responsavelCreateDTO.getCpf(), responsavelCreateDTO.getEmail());
 
         responsavelEntity.setAtivo("S");
+
         String senha = passwordEncoder.encode(responsavelEntity.getPassword());
         responsavelEntity.setSenha(senha);
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(3);
+        cargo.setNome("ROLE_RESPONSAVEL");
+
+        responsavelEntity.setCargos(List.of(cargo));
+
         responsavelEntity = responsavelRepository.save(responsavelEntity);
 
         ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);
