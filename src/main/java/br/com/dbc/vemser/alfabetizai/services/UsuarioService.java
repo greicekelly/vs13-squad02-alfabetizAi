@@ -70,16 +70,4 @@ public class UsuarioService {
         }
     }
 
-    public String alterarTodasSenha() throws Exception {
-
-        List<Usuario> usuarioList = usuarioRepository.findAll();
-
-        for(Usuario usuario : usuarioList){
-            usuario.setSenha(passwordEncoder.encode("1234"));
-            usuarioRepository.save(usuario);
-        }
-
-        return "senha alterada";
-    }
-
 }

@@ -97,14 +97,4 @@ public class AuthController implements IAuthController {
         log.info("Senha atualizado");
         return response;
     }
-
-
-    @PutMapping("/senha")
-    public String alterarTodasSenha( ) throws Exception {
-        log.info("Atualizando senha");
-
-        String response = usuarioService.alterarTodasSenha();
-        log.info("Senha atualizado");
-        return response;
-    }
 }
