@@ -41,18 +41,6 @@ public interface IAdminController {
     public ResponseEntity<AdminDTO> BuscarAdminPorId(@PathVariable("idUsuario") Integer idUsuario) throws Exception;
 
 
-    @Operation(summary = "Criar admin", description = "Cria um usuário admin com dados repassados no body")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Retorna os dados do usuário admin criado"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @PostMapping
-    public ResponseEntity<AdminDTO> criar(@Valid @RequestBody AdminCreateDTO adminCreateDTO) throws Exception;
-
-
     @Operation(summary = "Editar admin", description = "Edita os dados de um usuário admin com os novos dados repassados no body")
     @ApiResponses(
             value = {

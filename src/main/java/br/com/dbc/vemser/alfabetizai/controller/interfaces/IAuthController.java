@@ -14,9 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -78,4 +76,15 @@ public interface IAuthController {
     )
     @GetMapping("/usuario-logado")
     public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException;
+
+    @Operation(summary = "Alteração de Senha", description = "Alteração de senha do usuário logado.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping("/alterar_senha")
+    public String alterarSenha(@Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception;
 }

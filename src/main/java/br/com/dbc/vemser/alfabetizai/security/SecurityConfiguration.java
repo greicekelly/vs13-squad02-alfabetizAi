@@ -5,6 +5,7 @@ import br.com.dbc.vemser.alfabetizai.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,11 +32,32 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                                .antMatchers("/**").permitAll()
-//                        .antMatchers("/auth", "/auth/cadastrar/professor", "/cadastrar/responsavel", "/cadastrar/admin").permitAll()
-//                        .antMatchers("/admin", "/aluno", "/alternativas", "/desafio", "/modulo", "/professor", "/relatorio", "/responsavel").permitAll()
-
-                        .anyRequest().authenticated()
+                                .antMatchers("/", "/auth/**").permitAll()
+                                .antMatchers(HttpMethod.PUT,"/modulo/**").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.POST, "/modulo/**").hasRole("PROFESSOR")
+                                .antMatchers(HttpMethod.GET, "/modulo", "/modulo/{idModulo}").hasAnyRole("ADMIN", "RESPONSAVEL", "PROFESSOR")
+                                .antMatchers(HttpMethod.GET, "/modulo/professor").hasRole( "PROFESSOR")
+                                .antMatchers("/modulo/**").hasRole("ADMIN")
+                                .antMatchers("/admin/**").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.DELETE,"/responsavel/delete-fisico").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET,"/responsavel/logado").hasAnyRole("ADMIN", "RESPONSAVEL")
+                                .antMatchers(HttpMethod.PUT,"/responsavel").hasAnyRole("ADMIN", "RESPONSAVEL")
+                                .antMatchers("/responsavel/**").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.PUT,"/desafio").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.POST,"/desafio").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.GET,"/desafio").hasAnyRole("ADMIN", "PROFESSOR", "RESPONSAVEL")
+                                .antMatchers("/desafio/**").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.DELETE,"/professor/delete-fisico").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.DELETE,"/professor").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.PUT,"/professor/**").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.POST,"/professor/**").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.GET,"/professor/logado").hasAnyRole("ADMIN", "PROFESSOR")
+                                .antMatchers(HttpMethod.GET,"/professor/**").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.DELETE,"/aluno/delete-fisico").hasRole("ADMIN")
+                                .antMatchers(HttpMethod.GET,"/aluno").hasRole("ADMIN")
+                                .antMatchers("/aluno/**").hasAnyRole("ADMIN", "RESPONSAVEL")
+                                .antMatchers("/relatrorio/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 

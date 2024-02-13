@@ -90,7 +90,8 @@ public class ResponsavelService {
         }
     }
 
-    public Responsavel buscarResponsavelPorId(Integer id) throws ObjetoNaoEncontradoException {
+
+    public Responsavel buscarResponsavelPorId(Integer id) throws Exception {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
             return objetoOptional.get();

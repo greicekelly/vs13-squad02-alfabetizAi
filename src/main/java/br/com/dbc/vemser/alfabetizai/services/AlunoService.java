@@ -59,7 +59,7 @@ public class AlunoService {
         }
     }
 
-    public List<AlunoDTO> buscarAlunosPorIdResponsavel(Integer id) throws ObjetoNaoEncontradoException {
+    public List<AlunoDTO> buscarAlunosPorIdResponsavel(Integer id) throws Exception {
         Responsavel responsavel = responsavelService.buscarResponsavelPorId(id);
         Optional<List<Aluno>> objetoOptional = alunoRepository.findAllByResponsavel(responsavel);
         if (objetoOptional.isPresent()) {

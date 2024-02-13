@@ -44,13 +44,6 @@ public class AdminController  implements IAdminController{
         return new ResponseEntity<>(adminDTO, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<AdminDTO> criar(@Valid @RequestBody AdminCreateDTO adminCreateDTO) throws Exception {
-        log.info("Criando admin");
-        AdminDTO adminDTO = adminService.criar(adminCreateDTO);
-        log.info("Admin criado");
-        return new ResponseEntity<>(adminDTO, HttpStatus.OK);
-    }
 
     @PutMapping("/{idUsuario}")
     public ResponseEntity<AdminDTO> atualizar(@PathVariable("idUsuario") Integer id,

@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.IRelatorioController;
 import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
 import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/relatorio")
 @Slf4j
-public class RelatorioController {
+public class RelatorioController implements IRelatorioController {
 
     private final UsuarioService usuarioService;
 

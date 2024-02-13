@@ -98,11 +98,12 @@ public class AuthController implements IAuthController {
         return response;
     }
 
-    @PutMapping("/senha/alterar_senha")
-    public String alterarSenha2() throws Exception {
+
+    @PutMapping("/senha")
+    public String alterarTodasSenha( ) throws Exception {
         log.info("Atualizando senha");
 
-        String response = usuarioService.alterarSenha2();
+        String response = usuarioService.alterarTodasSenha();
         log.info("Senha atualizado");
         return response;
     }

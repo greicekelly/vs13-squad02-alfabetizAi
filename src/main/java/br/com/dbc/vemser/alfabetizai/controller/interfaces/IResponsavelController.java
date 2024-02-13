@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,19 +64,18 @@ public interface IResponsavelController {
             }
     )
     @GetMapping("/{idResponsavel}")
-    public ResponseEntity<ResponsavelDTO> buscarResponsavelPorId(@PathVariable("idResponsavel") Integer idResponsavel) throws ObjetoNaoEncontradoException;
+    public ResponseEntity<ResponsavelDTO> buscarResponsavelPorId(@PathVariable("idResponsavel") Integer idResponsavel) throws Exception;
 
-
-    @Operation(summary = "Criar responsavel", description = "Cria um usuário responsavel com dados repassados no body")
+    @Operation(summary = "Buscar responsavel logado", description = "Retorna o usuário responsavel logado")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Retorna os dados do usuário responsavel criado"),
+                    @ApiResponse(responseCode = "200", description = "Retorna o usuário responsavel logado"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping
-    public ResponseEntity<ResponsavelDTO> criar(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception;
+    @GetMapping("/logado")
+    public ResponseEntity<ResponsavelDTO> buscarResponsavelLogado() throws Exception;
 
 
     @Operation(summary = "Editar responsavel", description = "Edita os dados de um usuário responsavel com os novos dados repassados no body")

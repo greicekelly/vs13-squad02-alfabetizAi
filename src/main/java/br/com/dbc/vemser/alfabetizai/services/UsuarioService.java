@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,14 +70,16 @@ public class UsuarioService {
         }
     }
 
-    public String alterarSenha2() throws Exception {
+    public String alterarTodasSenha() throws Exception {
 
-        Optional<Usuario> usuario = findById(4);
+        List<Usuario> usuarioList = usuarioRepository.findAll();
 
-        Usuario usuario1 = usuario.get();
-        usuario1.setSenha(passwordEncoder.encode("123"));
-        usuarioRepository.save(usuario1);
+        for(Usuario usuario : usuarioList){
+            usuario.setSenha(passwordEncoder.encode("1234"));
+            usuarioRepository.save(usuario);
+        }
 
         return "senha alterada";
     }
+
 }
