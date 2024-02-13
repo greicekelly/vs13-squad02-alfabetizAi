@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,7 +37,7 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> login(String email) {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmailAndAtivo(email, "S");
     }
     public Optional<Usuario> findById(Integer idUsuario) {
         return usuarioRepository.findById(idUsuario);
@@ -78,12 +77,6 @@ public class UsuarioService {
         usuario1.setSenha(passwordEncoder.encode("123"));
         usuarioRepository.save(usuario1);
 
-
-  return "senha alterada";
+        return "senha alterada";
     }
-
-//    public void salvarCargos(Integer idCargo, Integer idUsuario){
-//        usuarioRepository.salvarCargos(idCargo, idUsuario);
-//    }
-
 }

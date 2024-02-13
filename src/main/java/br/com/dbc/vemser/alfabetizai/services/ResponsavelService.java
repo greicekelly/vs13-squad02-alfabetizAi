@@ -126,10 +126,6 @@ public class ResponsavelService {
         }
     }
 
-    public Responsavel salvar(Responsavel responsavel) {
-       return responsavelRepository.save(responsavel);
-    }
-
     public void remover(int id) throws Exception {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
@@ -152,6 +148,8 @@ public class ResponsavelService {
         if (objetoOptional.isPresent()) {
             Responsavel responsavel = objetoOptional.get();
 
+            responsavel.setCargos(null);
+
             responsavelRepository.delete(responsavel);
 
             ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
@@ -161,8 +159,4 @@ public class ResponsavelService {
             throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
         }
     }
-
-//    public Optional<Responsavel> loginresponsavel(String email, String senha) {
-//        return responsavelRepository.findByEmailAndSenha(email, senha);
-//    }
 }

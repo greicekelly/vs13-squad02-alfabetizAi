@@ -17,6 +17,8 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByEmail(String email);
 
+    Optional<Usuario> findByEmailAndAtivo(String email, String ativo);
+
     @Query(
             """
                     SELECT new br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO(

@@ -65,7 +65,7 @@ public class AdminController  implements IAdminController{
     public ResponseEntity<Void> deletar(@PathVariable("idUsuario") Integer id) throws Exception {
         log.info("Deletando admin");
         adminService.remover(id);
-        log.info("Aluno admin");
+        log.info("Admin deletado");
         return ResponseEntity.ok().build();
     }
 

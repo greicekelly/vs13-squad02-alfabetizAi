@@ -43,7 +43,7 @@ public class Usuario implements UserDetails {
     @Column(name = "cpf")
     private String cpf;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "USUARIO_CARGO",
             joinColumns = @JoinColumn(name = "ID_USUARIO"),

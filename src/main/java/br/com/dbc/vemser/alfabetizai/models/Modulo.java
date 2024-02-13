@@ -50,15 +50,6 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL)
     private Set<Desafio> desafios;
 
-//    @JsonIgnore
-//    @ManyToMany
-//    @JoinTable(
-//            name = "modulo_aluno_desafio",
-//            joinColumns = @JoinColumn(name = "id_modulo"),
-//            inverseJoinColumns = @JoinColumn(name = "id_aluno")
-//    )
-//    private Set<Aluno> alunos;
-
     @JsonIgnore
     @ManyToMany(mappedBy = "modulos")
     private Set<Aluno> alunos;
