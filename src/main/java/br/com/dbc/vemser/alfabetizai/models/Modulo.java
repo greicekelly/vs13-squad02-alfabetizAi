@@ -35,8 +35,7 @@ public class Modulo {
     private String ativo;
 
     @ManyToOne
-    //@JsonIgnore
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "id_usuario")
     private Admin admin;
 
     @Column(name = "classificacao")
