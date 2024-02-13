@@ -20,8 +20,8 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/admin")
-//@AllArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
 public class AdminController  implements IAdminController{
 
