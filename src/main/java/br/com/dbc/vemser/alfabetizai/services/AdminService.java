@@ -133,6 +133,8 @@ public class AdminService {
         if (objetoOptional.isPresent()) {
             Admin admin = objetoOptional.get();
 
+            admin.setCargos(null);
+
             adminRepository.delete(admin);
 
             AdminDTO adminDTO = objectMapper.convertValue(admin, AdminDTO.class);
@@ -155,8 +157,4 @@ public class AdminService {
 
         return moduloDTO;
     }
-
-//    public Optional<Admin> loginAdmin(String email, String senha) {
-//        return adminRepository.findByEmailAndSenha(email, senha);
-//    }
 }

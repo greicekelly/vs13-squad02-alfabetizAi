@@ -21,7 +21,7 @@ public class Cargo implements GrantedAuthority {
     private String nome;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany//( cascade = CascadeType.ALL)
     @JoinTable(
             name = "USUARIO_CARGO",
             joinColumns = @JoinColumn(name = "ID_CARGO"),

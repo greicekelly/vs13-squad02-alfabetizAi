@@ -25,7 +25,6 @@ public class ProfessorService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
-    //private final UsuarioService usuarioService;
 
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
@@ -132,6 +131,8 @@ public class ProfessorService {
         if (objetoOptional.isPresent()) {
             Professor professor = objetoOptional.get();
 
+            professor.setCargos(null);
+
             professorRepository.delete(professor);
 
             ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
@@ -141,8 +142,4 @@ public class ProfessorService {
             throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
         }
     }
-
-//    public Optional<Professor> loginProfessor(String email, String senha) {
-//        return professorRepository.findByEmailAndSenha(email, senha);
-//    }
 }
