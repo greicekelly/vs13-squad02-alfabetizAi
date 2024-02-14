@@ -1,8 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
+
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IDesafioController;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.services.DesafioService;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,13 @@ public class DesafioController implements IDesafioController {
         log.info("Desafio atualizado");
         return new ResponseEntity<>(desafioAtualizado, HttpStatus.OK);
     }
+    @GetMapping("/{idModulo}")
+    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
+        log.info("Listando Módulo por Id.");
+        List<DesafioDTO> moduloListado = desafioService.listarPorIdModulo(idModulo);
+        log.info("Módulo Listado por Id");
+        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
+    }
     @DeleteMapping("/{idDesafio}")
     public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
         log.info("Deletando desafio");
@@ -49,11 +57,12 @@ public class DesafioController implements IDesafioController {
         log.info("Desafio deletado");
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/{idModulo}")
-    public ResponseEntity<List<DesafioDTO>> listarPorIdModulo(@PathVariable("idModulo") Integer idModulo) throws Exception {
-        log.info("Listando Módulo por Id.");
-        List<DesafioDTO> moduloListado = desafioService.listarPorIdModulo(idModulo);
-        log.info("Módulo Listado por Id");
-        return new ResponseEntity<>(moduloListado, HttpStatus.OK);
+
+    @DeleteMapping("/delete-logico/{idDesafio}")
+    public ResponseEntity<Void> removerLogico(@PathVariable("idDesafio") Integer id) throws Exception {
+        log.info("Deletando Desafio de Forma Logica");
+        desafioService.removerLogico(id);
+        log.info("Desafio deletado logicamente!");
+        return ResponseEntity.ok().build();
     }
 }

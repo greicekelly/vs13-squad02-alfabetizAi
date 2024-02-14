@@ -1,9 +1,10 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IProfessorController;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
+import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ProfessorController implements IProfessorController {
 
     private final ProfessorService professorService;
+    private final UsuarioService usuarioService;
 
     @GetMapping()
     public ResponseEntity<List<ProfessorDTO>> list() {
@@ -34,11 +36,13 @@ public class ProfessorController implements IProfessorController {
         return ResponseEntity.ok(professor);
     }
 
-    @PostMapping()
-    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception {
-        ProfessorDTO professorAdicionado = professorService.criar(professorCreateDTO);
-        return ResponseEntity.ok(professorAdicionado);
+    @GetMapping("/logado")
+    public ResponseEntity<ProfessorDTO> professorlogado() throws Exception {
+        Integer idProfessor = usuarioService.getLoggedUser().get().getIdUsuario();
+        ProfessorDTO professor = professorService.buscarProfessorPorId(idProfessor);
+        return ResponseEntity.ok(professor);
     }
+
 
     @PutMapping("/{idProfessor}")
     public ResponseEntity<ProfessorDTO> update(@Valid @PathVariable("idProfessor") Integer id,

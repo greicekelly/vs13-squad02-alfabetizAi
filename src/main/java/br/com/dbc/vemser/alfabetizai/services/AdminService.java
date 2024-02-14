@@ -1,17 +1,19 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.AdminCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AdminModuloDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +23,11 @@ import java.util.Optional;
 @Service
 public class AdminService {
     private final IAdminRepository adminRepository;
-
     private final ObjectMapper objectMapper;
-
     private final EmailService emailService;
     private final ModuloService moduloService;
+    private final PasswordEncoder passwordEncoder;
+
 
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
         Admin adminEntity = objectMapper.convertValue(adminCreateDTO, Admin.class);
@@ -33,6 +35,16 @@ public class AdminService {
         adminPorCpfEmail(adminCreateDTO.getCpf(), adminCreateDTO.getEmail());
 
         adminEntity.setAtivo("S");
+
+        String senha = passwordEncoder.encode(adminEntity.getPassword());
+        adminEntity.setSenha(senha);
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(1);
+        cargo.setNome("ROLE_ADMIN");
+
+        adminEntity.setCargos(List.of(cargo));
+
         adminEntity = adminRepository.save(adminEntity);
 
         AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
@@ -120,6 +132,8 @@ public class AdminService {
         Optional<Admin> objetoOptional = adminRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Admin admin = objetoOptional.get();
+
+            admin.setCargos(null);
 
             adminRepository.delete(admin);
 

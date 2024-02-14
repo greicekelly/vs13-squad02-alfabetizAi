@@ -35,12 +35,26 @@ public class Aluno  {
     @Column(name = "ativo")
     private String ativo;
 
-    @ManyToMany(mappedBy = "alunos")
-    @JsonIgnore
-    private Set<Modulo> modulo;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "ALUNO_MODULO",
+            joinColumns = @JoinColumn(name = "id_aluno"),
+            inverseJoinColumns = @JoinColumn(name = "id_modulo")
+    )
+    private Set<Modulo> modulos;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "ALUNO_DESAFIO",
+            joinColumns = @JoinColumn(name = "id_aluno"),
+            inverseJoinColumns = @JoinColumn(name = "id_desafio")
+    )
+    private Set<Desafio> desafios;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private Responsavel responsavel;
 
+    public void adicionarPontuacao(int pontuacao){
+        this.setPontuacao(this.pontuacao + pontuacao);
+    }
 }

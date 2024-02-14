@@ -1,21 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
-import br.com.dbc.vemser.alfabetizai.models.*;
-import br.com.dbc.vemser.alfabetizai.services.DesafioService;
-import br.com.dbc.vemser.alfabetizai.services.ModuloService;
-import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 //@Repository
 //@AllArgsConstructor
 //@Slf4j

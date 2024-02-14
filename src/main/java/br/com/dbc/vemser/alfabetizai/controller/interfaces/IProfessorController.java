@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,16 +35,7 @@ public interface IProfessorController {
     @GetMapping("/{idUsuario}")
     public ResponseEntity<ProfessorDTO> getById(@PathVariable("idUsuario") Integer idUsuario) throws Exception;
 
-    @Operation(summary = "Criar professor", description = "Cria um professor com os dados repassados no body")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Retorna os dados do professor cadastrado"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @PostMapping()
-    public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorCreateDTO professorCreateDTO) throws Exception;
+
     @Operation(summary = "Editar professor", description = "Edita os dados de um professor com os novos dados repassados no body")
     @ApiResponses(
             value = {

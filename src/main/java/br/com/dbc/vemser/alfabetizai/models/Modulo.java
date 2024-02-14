@@ -30,9 +30,12 @@ public class Modulo {
 
     @Column(name = "modulo_aprovado")
     private String foiAprovado;
+
+    @Column(name = "ativo",columnDefinition = "CHAR(1) DEFAULT 'S'")
+    private String ativo;
+
     @ManyToOne
-    //@JsonIgnore
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "id_usuario")
     private Admin admin;
 
     @Column(name = "classificacao")
@@ -48,12 +51,7 @@ public class Modulo {
     private Set<Desafio> desafios;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "aluno_modulo",
-            joinColumns = @JoinColumn(name = "id_modulo"),
-            inverseJoinColumns = @JoinColumn(name = "id_aluno")
-    )
+    @ManyToMany(mappedBy = "modulos")
     private Set<Aluno> alunos;
 
     public boolean isEmpty() {

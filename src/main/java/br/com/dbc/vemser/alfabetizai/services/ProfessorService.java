@@ -1,15 +1,16 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,13 +24,23 @@ public class ProfessorService {
     private final IProfessorRepository professorRepository;
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
 
         professorPorCpfEmail(professorCreateDTO.getCpf(), professorCreateDTO.getEmail());
 
+        String senha = passwordEncoder.encode(professorEntity.getPassword());
+        professorEntity.setSenha(senha);
+
         professorEntity.setAtivo("S");
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(2);
+        cargo.setNome("ROLE_PROFESSOR");
+
+        professorEntity.setCargos(List.of(cargo));
         professorEntity = professorRepository.save(professorEntity);
 
         ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
@@ -119,6 +130,8 @@ public class ProfessorService {
         Optional<Professor> objetoOptional = professorRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Professor professor = objetoOptional.get();
+
+            professor.setCargos(null);
 
             professorRepository.delete(professor);
 

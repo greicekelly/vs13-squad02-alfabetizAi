@@ -1,14 +1,15 @@
 package br.com.dbc.vemser.alfabetizai.controller.interfaces;
 
-import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AlunoCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.DesafioDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
+
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,5 +116,17 @@ public interface IAlunoController {
         )
         @GetMapping("/{idAluno}/modulos")
         public ResponseEntity<List<ModuloDTO>> listarModulosConcluidos(@PathVariable("idAluno") Integer idAluno) throws Exception;
+
+        @Operation(summary = "Fazer desafio", description = "Edita os dados de um aluno e adiciona o desafio concluido")
+        @ApiResponses(
+                value = {
+                        @ApiResponse(responseCode = "200", description = "Retorna os dados do aluno atualizado"),
+                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                }
+        )
+        @PutMapping("/{idAluno}/{idDesafio}")
+        public ResponseEntity<Void> fazerDesafio(@PathVariable("idAluno") Integer idAluno,
+                                                  @PathVariable("idDesafio") Integer idDesafio) throws Exception;
 
 }

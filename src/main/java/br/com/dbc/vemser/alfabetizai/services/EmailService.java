@@ -1,10 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.config.PropertieReader;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ProfessorDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
