@@ -14,4 +14,6 @@ public interface IDesafioRepository extends JpaRepository<Desafio, Integer> {
                 SELECT * FROM VS_13_EQUIPE_2.MODULO d WHERE d.aluno.id = :idAluno AND d.desafioConcluido = 'S'
                 """, nativeQuery = true)
     List<Desafio> listardesafiosConcluidos(@Param("idAluno") Integer idAluno);
+
+    List<Desafio> findByModuloId(int idModuloEscolhido);
 }

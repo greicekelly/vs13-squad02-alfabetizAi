@@ -1,21 +1,19 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelComAlunosDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelComAlunosDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
-import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
-import br.com.dbc.vemser.alfabetizai.models.Aluno;
+import br.com.dbc.vemser.alfabetizai.models.Cargo;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +23,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ResponsavelService {
     private final IResponsavelRepository responsavelRepository;
-
     private final ObjectMapper objectMapper;
-
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponsavelDTO criar(ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         Responsavel responsavelEntity = objectMapper.convertValue(responsavelCreateDTO, Responsavel.class);
@@ -36,6 +33,16 @@ public class ResponsavelService {
         responsavelPorCpfEmail(responsavelCreateDTO.getCpf(), responsavelCreateDTO.getEmail());
 
         responsavelEntity.setAtivo("S");
+
+        String senha = passwordEncoder.encode(responsavelEntity.getPassword());
+        responsavelEntity.setSenha(senha);
+
+        Cargo cargo = new Cargo();
+        cargo.setIdCargo(3);
+        cargo.setNome("ROLE_RESPONSAVEL");
+
+        responsavelEntity.setCargos(List.of(cargo));
+
         responsavelEntity = responsavelRepository.save(responsavelEntity);
 
         ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);
@@ -83,7 +90,8 @@ public class ResponsavelService {
         }
     }
 
-    public Responsavel buscarResponsavelPorId(Integer id) throws ObjetoNaoEncontradoException {
+
+    public Responsavel buscarResponsavelPorId(Integer id) throws Exception {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
             return objetoOptional.get();
@@ -119,10 +127,6 @@ public class ResponsavelService {
         }
     }
 
-    public Responsavel salvar(Responsavel responsavel) {
-       return responsavelRepository.save(responsavel);
-    }
-
     public void remover(int id) throws Exception {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
@@ -144,6 +148,8 @@ public class ResponsavelService {
         Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Responsavel responsavel = objetoOptional.get();
+
+            responsavel.setCargos(null);
 
             responsavelRepository.delete(responsavel);
 

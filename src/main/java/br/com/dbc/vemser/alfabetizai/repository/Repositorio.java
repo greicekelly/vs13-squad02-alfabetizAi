@@ -1,6 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.repository;
 
-import br.com.dbc.vemser.alfabetizai.dto.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.BancoDeDadosException;
 
 import java.sql.Connection;

@@ -1,13 +1,16 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 
-import br.com.dbc.vemser.alfabetizai.dto.*;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +39,8 @@ public class ModuloService {
         Professor professor = objectMapper.convertValue(professorDTO, Professor.class);
 
         modulo.setProfessor(professor);
+        modulo.setAtivo("S");
+        modulo.setFoiAprovado("N");
 
         Modulo moduloAdicionado = converterDTO(moduloCreateDTO);
         return retornarDTO(moduloRepository.save(modulo));
@@ -56,11 +62,54 @@ public class ModuloService {
         }
     }
 
-    public List<ModuloDTO> listarPorIdProfessor(Integer idProfessor) {
-        List<Modulo> listaPorId = moduloRepository.findAllByIdProfessor(idProfessor);
-        return listaPorId.stream()
-                .map(this::retornarDTO)
-                .collect(Collectors.toList());
+    public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
+        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
+
+        if (moduloOptional.isPresent()) {
+            return moduloOptional.get();
+        } else {
+            throw new ObjetoNaoEncontradoException("Módulo de " + idModulo +" não encontrado.");
+        }
+
+    }
+
+
+    public Page<ModuloDTO> pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
+
+            Page<Modulo> modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);
+
+            return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloDTO.class));
+
+    }
+
+    public Page<ModuloProfessorDTO> pagePorProfessor(Integer idProfessor, String aprovacao, Pageable pageable) {
+        Page<Modulo> modulos;
+        String filtro;
+
+        if(aprovacao != null){
+            if(aprovacao.equals("Sem Analise")){
+                filtro = "N";
+            } else if(aprovacao.equals("Aprovado")){
+                filtro = "S";
+            } else {
+                filtro = "R";
+            }
+            modulos = moduloRepository.findAllProfessorComFiltro(idProfessor, filtro, pageable);
+        }
+
+        modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);
+
+        return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloProfessorDTO.class));
+
+    }
+
+    public Page<ModuloAdminDTO> pagePorIdAdmin(Integer idAdmin, Pageable pageable) {
+
+        Page<Modulo> modulos = moduloRepository.findAllByAdmin(idAdmin, pageable);
+        System.out.println(modulos);
+
+        return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloAdminDTO.class));
+
     }
 
     public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {
@@ -83,45 +132,49 @@ public class ModuloService {
         }
     }
 
-    public void remover(int id) throws Exception {
+    public void remover(int id) throws RegraDeNegocioException {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
 
             if (!modulo.getDesafios().isEmpty() || !modulo.getAlunos().isEmpty()) {
-                throw new Exception("Não é possível excluir o módulo pois ele está associado a outras classes.");
+                throw new RegraDeNegocioException("Não é possível excluir o módulo pois ele está associado a outras classes.");
             }
             moduloRepository.delete(modulo);
+
+        } else {
+            throw new RegraDeNegocioException("Modulo com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+    public void removerLogico(int id) throws Exception {
+        Optional<Modulo> objetoOptional = moduloRepository.findById(id);
+        if (objetoOptional.isPresent()) {
+            Modulo modulo = objetoOptional.get();
+
+            modulo.setAtivo("N");
+
+            modulo = moduloRepository.save(modulo);
+
+            ModuloDTO moduloDTO = retornarDTO(modulo);
 
         } else {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
 
-    public List<Modulo> listarSemAprovacao() throws Exception {
-        try {
-            return moduloRepository.listarSemAprovacao();
-        } catch (Exception e) {
-            throw new Exception("Erro ao listar módulos sem aprovação", e);
+    public List<ModuloDTO> listarPorAprovacao(String aprovacao) throws Exception {
+        String filtro;
+        if(aprovacao.equals("Sem Analise")){
+            filtro = "N";
+        } else if(aprovacao.equals("Aprovado")){
+            filtro = "S";
+        } else {
+            filtro = "R";
         }
-    }
 
-    public List<Modulo> listarAprovados() throws Exception {
-        try {
-            return moduloRepository.listarAprovados();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Erro ao listar módulos aprovados", e);
-        }
-    }
+        List<Modulo> modulo = moduloRepository.findAllByFoiAprovado(filtro);
 
-    public List<Modulo> listarReprovados() throws Exception {
-        try {
-            return moduloRepository.listarReprovados();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Erro ao listar módulos Reprovados", e);
-        }
+        return modulo.stream().map(this::retornarDTO).collect(Collectors.toList());
     }
 
     public List<ModuloDTO> listarModulosConcluidos(Integer idAluno) throws Exception {

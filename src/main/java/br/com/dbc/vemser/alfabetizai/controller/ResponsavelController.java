@@ -1,14 +1,14 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IResponsavelController;
-import br.com.dbc.vemser.alfabetizai.dto.AdminDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
 import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
+import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +27,7 @@ import java.util.List;
 public class ResponsavelController implements IResponsavelController {
 
     private final ResponsavelService responsavelService;
+    private final UsuarioService usuarioService;
 
     @GetMapping("/paginado")
     public ResponseEntity<Page<ResponsavelDTO>> listarResponsaveisPaginado(@PageableDefault(page = 0, size = 9, sort = "nome") Pageable pageable) throws RegraDeNegocioException {
@@ -45,17 +46,16 @@ public class ResponsavelController implements IResponsavelController {
     }
 
     @GetMapping("/{idResponsavel}")
-    public ResponseEntity<ResponsavelDTO> buscarResponsavelPorId(@PathVariable("idResponsavel") Integer idResponsavel) throws ObjetoNaoEncontradoException {
+    public ResponseEntity<ResponsavelDTO> buscarResponsavelPorId(@PathVariable("idResponsavel") Integer idResponsavel) throws Exception {
         return new ResponseEntity<>(responsavelService.buscarResponsavelPorIdComAlunos(idResponsavel), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ResponsavelDTO> criar(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
-        log.info("Criando responsavel");
-        ResponsavelDTO responsavelDTO = responsavelService.criar(responsavelCreateDTO);
-        log.info("Responsavel criado");
-        return new ResponseEntity<>(responsavelDTO, HttpStatus.OK);
+    @GetMapping("/logado")
+    public ResponseEntity<ResponsavelDTO> buscarResponsavelLogado() throws Exception {
+        Integer idResponsavel = usuarioService.getLoggedUser().get().getIdUsuario();
+        return new ResponseEntity<>(responsavelService.buscarResponsavelPorIdComAlunos(idResponsavel), HttpStatus.OK);
     }
+
 
     @PutMapping("/{idResponsavel}")
     public ResponseEntity<ResponsavelDTO> atualizar(@PathVariable("idResponsavel") Integer id,
