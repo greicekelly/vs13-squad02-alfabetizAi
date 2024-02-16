@@ -27,7 +27,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DesafioService - Teste")
@@ -94,7 +94,14 @@ class DesafioServiceTest {
 
         assertThrows(ObjetoNaoEncontradoException.class, () -> desafioService.desafioPorId(idNaoExistente));
     }
+    @Test
+    @DisplayName("Deveria retornar Exception para id não encontrado em Atualizar")
+    public void deveriaRetornarExceptionAoReceberIdAlterarNaoExistente() throws RegraDeNegocioException{
+        DesafioCreateDTO desafioMock = new DesafioCreateDTO();
+        Integer idNaoExistente = 1 ;
 
+        assertThrows(RegraDeNegocioException.class, () -> desafioService.atualizar(idNaoExistente, desafioMock));
+    }
     @Test
     @DisplayName("Deveria atualizar desafio com sucesso")
     public void deveriaAtualizaDesafioPorId() throws RegraDeNegocioException {
@@ -132,14 +139,6 @@ class DesafioServiceTest {
     }
 
     @Test
-    @DisplayName("Deveria retornar Exception para id Modulo não encontrado")
-    public void deveriaRetornarExceptionAoReceberIdModuloNaoExistente() {
-        Integer idNaoExistente = new Random().nextInt();
-
-        assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idNaoExistente));
-    }
-
-    @Test
     @DisplayName("Deveria retornar lista de desafios por ID do módulo com sucesso")
     public void deveriaRetornarListaDesafioPorIdModulo() throws RegraDeNegocioException {
         List<Desafio> desafiosMock = Arrays.asList(retornarDesafio(), retornarDesafio());
@@ -156,14 +155,38 @@ class DesafioServiceTest {
         assertEquals(desafiosDTORetornados.size(), desafiosMock.size());
         assertEquals(desafiosDTORetornados.get(0), desafioDTOMock);
     }
-
     @Test
     @DisplayName("Deveria retornar erro quando não encontrar desafio pelo ID do módulo")
-    public void deveriaLancarErroQuandoNaoEncontrarDesafio() throws RegraDeNegocioException {
+    public void deveriaLancarErroQuandoNaoEncontrarDesafio() {
         int idModulo = 1;
-
         assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idModulo));
     }
+
+    @Test
+    @DisplayName("Deveria lançar exceção ao remover desafio associado a outras classes")
+    public void deveriaLancarExcecaoAoRemoverAssociado() throws RegraDeNegocioException {
+        Integer idAssociado= 1;
+
+        Optional<Desafio> desafioEntityMock = Optional.of(retornarDesafio());
+
+        when(desafioRepository.findById(idAssociado)).thenReturn(desafioEntityMock);
+
+        assertThrows(RegraDeNegocioException.class, () -> desafioService.remover(idAssociado));
+
+        verify(desafioRepository, times(0)).delete(desafioEntityMock.get());
+    }
+        @Test
+        @DisplayName("Deveria lançar exceção com mensagem correta ao remover desafio não encontrado")
+        public void deveriaLancarExcecaoComMensagemAoRemoverNaoEncontrado() throws RegraDeNegocioException {
+            Integer idNaoEncontrado = 1;
+
+            RegraDeNegocioException regraDeNegocioException = assertThrows(
+                    RegraDeNegocioException.class, () -> desafioService.remover(idNaoEncontrado));
+
+            assertEquals("Desafio com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
+                            regraDeNegocioException.getMessage());
+        }
+
     private static DesafioCreateDTO retornarDesafioCreateDTO(){
         DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
         desafioCreateDTO.setIdModulo(1);
@@ -229,4 +252,5 @@ class DesafioServiceTest {
 
         return desafioDTO;
     }
+
 }
