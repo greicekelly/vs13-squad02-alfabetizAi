@@ -30,7 +30,14 @@ public class DesafioService {
                 .map(this :: retornarDTO)
                 .collect(Collectors.toList());
     }
+//
+    public List<PessoaDTO> list() {
+        return pessoaRepository.findAll().stream()
+                .map(pessoa -> objectMapper.convertValue(pessoa, PessoaDTO.class))
+                .collect(Collectors.toList());
+    }
 
+//
     public DesafioDTO create(DesafioCreateDTO desafio) throws Exception {
         log.info("camada service criação desafio ");
 
