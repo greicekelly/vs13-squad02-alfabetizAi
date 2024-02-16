@@ -91,6 +91,13 @@ class DesafioServiceTest {
         assertEquals(desafioRetornado, desafioEntityMock.get());
     }
 
+    @Test
+    public void deveriaRetornarExceptionAoReceberIdNaoExistente() {
+        Integer idNaoExistente = new Random().nextInt();
+
+        assertThrows(ObjetoNaoEncontradoException.class, () -> desafioService.desafioPorId(idNaoExistente));
+    }
+
     private static DesafioCreateDTO retornarDesafioCreateDTO(){
             DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
             desafioCreateDTO.setIdModulo(1);
