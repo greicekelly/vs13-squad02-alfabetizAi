@@ -88,21 +88,6 @@ class DesafioServiceTest {
     }
 
     @Test
-    @DisplayName("Deveria retornar Exception para id não encontrado")
-    public void deveriaRetornarExceptionAoReceberIdNaoExistente() {
-        Integer idNaoExistente = new Random().nextInt();
-
-        assertThrows(ObjetoNaoEncontradoException.class, () -> desafioService.desafioPorId(idNaoExistente));
-    }
-    @Test
-    @DisplayName("Deveria retornar Exception para id não encontrado em Atualizar")
-    public void deveriaRetornarExceptionAoReceberIdAlterarNaoExistente() throws RegraDeNegocioException{
-        DesafioCreateDTO desafioMock = new DesafioCreateDTO();
-        Integer idNaoExistente = 1 ;
-
-        assertThrows(RegraDeNegocioException.class, () -> desafioService.atualizar(idNaoExistente, desafioMock));
-    }
-    @Test
     @DisplayName("Deveria atualizar desafio com sucesso")
     public void deveriaAtualizaDesafioPorId() throws RegraDeNegocioException {
         Desafio desafioMock = new Desafio();
@@ -156,25 +141,31 @@ class DesafioServiceTest {
         assertEquals(desafiosDTORetornados.get(0), desafioDTOMock);
     }
     @Test
-    @DisplayName("Deveria retornar erro quando não encontrar desafio pelo ID do módulo")
-    public void deveriaLancarErroQuandoNaoEncontrarDesafio() {
-        int idModulo = 1;
-        assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idModulo));
+    @DisplayName("Deveria remover desafio logicamente")
+    public void deveriaRemoverLogico() throws RegraDeNegocioException {
+        int id = 1;
+        Optional<Desafio> desafioOptional = Optional.of(new Desafio());
+        Desafio desafio = desafioOptional.get();
+        desafio.setId(id);
+        when(desafioRepository.findById(id)).thenReturn(desafioOptional);
+
+        desafioService.removerLogico(id);
+
+        verify(desafioRepository).findById(id);
+        verify(desafioRepository).save(desafio);
+        assertEquals("N", desafio.getAtivo());
     }
+        @Test
+        @DisplayName("Deveria lançar exceção ao remover desafio associado a outras classes")
+        public void deveriaLancarExcecaoAoRemoverAssociado() throws RegraDeNegocioException {
+            Integer idAssociado= 1;
 
-    @Test
-    @DisplayName("Deveria lançar exceção ao remover desafio associado a outras classes")
-    public void deveriaLancarExcecaoAoRemoverAssociado() throws RegraDeNegocioException {
-        Integer idAssociado= 1;
+            Optional<Desafio> desafioEntityMock = Optional.of(retornarDesafio());
 
-        Optional<Desafio> desafioEntityMock = Optional.of(retornarDesafio());
-
-        when(desafioRepository.findById(idAssociado)).thenReturn(desafioEntityMock);
-
-        assertThrows(RegraDeNegocioException.class, () -> desafioService.remover(idAssociado));
-
-        verify(desafioRepository, times(0)).delete(desafioEntityMock.get());
-    }
+            when(desafioRepository.findById(idAssociado)).thenReturn(desafioEntityMock);
+            assertThrows(RegraDeNegocioException.class, () -> desafioService.remover(idAssociado));
+            verify(desafioRepository, times(0)).delete(desafioEntityMock.get());
+        }
         @Test
         @DisplayName("Deveria lançar exceção com mensagem correta ao remover desafio não encontrado")
         public void deveriaLancarExcecaoComMensagemAoRemoverNaoEncontrado() throws RegraDeNegocioException {
@@ -185,6 +176,36 @@ class DesafioServiceTest {
 
             assertEquals("Desafio com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
                             regraDeNegocioException.getMessage());
+        }
+        @Test
+        @DisplayName("Deveria retornar erro quando não encontrar desafio para remover Logicamente pelo ID do desafio")
+        public void deveriaLancarErroQuandoNaoEncontrarIdDesafioParaRemover() {
+            int idRemover = 1;
+            assertThrows(RegraDeNegocioException.class, () -> desafioService.removerLogico(idRemover));
+        }
+
+        @Test
+        @DisplayName("Deveria retornar Exception para id não encontrado")
+        public void deveriaRetornarExceptionAoReceberIdNaoExistente() {
+            Integer idNaoExistente = new Random().nextInt();
+
+            assertThrows(ObjetoNaoEncontradoException.class, () -> desafioService.desafioPorId(idNaoExistente));
+        }
+
+        @Test
+        @DisplayName("Deveria retornar Exception para id não encontrado em Atualizar")
+        public void deveriaRetornarExceptionAoReceberIdAlterarNaoExistente() throws RegraDeNegocioException{
+            DesafioCreateDTO desafioMock = new DesafioCreateDTO();
+            Integer idNaoExistente = 1 ;
+
+            assertThrows(RegraDeNegocioException.class, () -> desafioService.atualizar(idNaoExistente, desafioMock));
+        }
+
+        @Test
+        @DisplayName("Deveria retornar erro quando não encontrar desafio pelo ID do módulo")
+        public void deveriaLancarErroQuandoNaoEncontrarDesafio() {
+            int idModulo = 1;
+            assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idModulo));
         }
 
     private static DesafioCreateDTO retornarDesafioCreateDTO(){
