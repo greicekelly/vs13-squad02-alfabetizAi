@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -40,11 +41,6 @@ class DesafioServiceTest {
 
     @InjectMocks
     private DesafioService desafioService;
-
-    DesafioCreateDTO desafioCreateDTO;
-    DesafioDTO desafioDTO;
-    Desafio desafio;
-
 
     @Test
     @DisplayName("Deveria listar todos desafios com sucesso")
@@ -102,7 +98,7 @@ class DesafioServiceTest {
     @Test
     @DisplayName("Deveria atualizar desafio com sucesso")
     public void deveriaAtualizaDesafioPorId() throws RegraDeNegocioException {
-       Desafio desafioMock = new Desafio();
+        Desafio desafioMock = new Desafio();
         desafioMock.setTitulo("Escolha a letra final");
         desafioMock.setConteudo("Aprenda as consoantes");
         desafioMock.setTipo(TipoDesafio.valueOf("QUIZ"));
@@ -142,47 +138,73 @@ class DesafioServiceTest {
 
         assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idNaoExistente));
     }
-    private static DesafioCreateDTO retornarDesafioCreateDTO(){
-            DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
-            desafioCreateDTO.setIdModulo(1);
-            desafioCreateDTO.setTitulo("Escolha a letra inicial");
-            desafioCreateDTO.setConteudo("Aprenda as consoantes");
-            desafioCreateDTO.setTipo(TipoDesafio.valueOf("QUIZ"));
-            desafioCreateDTO.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
-            desafioCreateDTO.setA("D");
-            desafioCreateDTO.setB("T");
-            desafioCreateDTO.setC("B");
-            desafioCreateDTO.setD("S");
-            desafioCreateDTO.setE("R");
-            desafioCreateDTO.setAlternativaCorreta("C");
-            desafioCreateDTO.setPontos(10);
-            desafioCreateDTO.setAtivo("S");
 
-            return desafioCreateDTO;
+    @Test
+    @DisplayName("Deveria retornar lista de desafios por ID do módulo com sucesso")
+    public void deveriaRetornarListaDesafioPorIdModulo() throws RegraDeNegocioException {
+        List<Desafio> desafiosMock = Arrays.asList(retornarDesafio(), retornarDesafio());
+        DesafioDTO desafioDTOMock = retornarDesafioDTO();
+        int idModulo = 1;
+
+        when(desafioRepository.findByModuloId(idModulo)).thenReturn(desafiosMock);
+        when(objectMapper.convertValue(any(Desafio.class), any(Class.class))).thenReturn(desafioDTOMock);
+
+        List<DesafioDTO> desafiosDTORetornados = desafioService.listarPorIdModulo(idModulo);
+
+        assertNotNull(desafiosDTORetornados);
+        assertFalse(desafiosDTORetornados.isEmpty());
+        assertEquals(desafiosDTORetornados.size(), desafiosMock.size());
+        assertEquals(desafiosDTORetornados.get(0), desafioDTOMock);
+    }
+
+    @Test
+    @DisplayName("Deveria retornar erro quando não encontrar desafio pelo ID do módulo")
+    public void deveriaLancarErroQuandoNaoEncontrarDesafio() throws RegraDeNegocioException {
+        int idModulo = 1;
+
+        assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idModulo));
+    }
+    private static DesafioCreateDTO retornarDesafioCreateDTO(){
+        DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
+        desafioCreateDTO.setIdModulo(1);
+        desafioCreateDTO.setTitulo("Escolha a letra inicial");
+        desafioCreateDTO.setConteudo("Aprenda as consoantes");
+        desafioCreateDTO.setTipo(TipoDesafio.valueOf("QUIZ"));
+        desafioCreateDTO.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
+        desafioCreateDTO.setA("D");
+        desafioCreateDTO.setB("T");
+        desafioCreateDTO.setC("B");
+        desafioCreateDTO.setD("S");
+        desafioCreateDTO.setE("R");
+        desafioCreateDTO.setAlternativaCorreta("C");
+        desafioCreateDTO.setPontos(10);
+        desafioCreateDTO.setAtivo("S");
+
+        return desafioCreateDTO;
     }
 
     private static Desafio retornarDesafio(){
-            Desafio desafio = new Desafio();
-            desafio.setId(72);
-            desafio.setTitulo("Escolha a letra inicial");
-            desafio.setConteudo("Aprenda as consoantes");
-            desafio.setTipo(TipoDesafio.valueOf("QUIZ"));
-            desafio.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
-            desafio.setA("D");
-            desafio.setB("T");
-            desafio.setC("B");
-            desafio.setD("S");
-            desafio.setE("R");
-            desafio.setAlternativaCorreta("C");
-            desafio.setPontos(10);
+        Desafio desafio = new Desafio();
+        desafio.setId(72);
+        desafio.setTitulo("Escolha a letra inicial");
+        desafio.setConteudo("Aprenda as consoantes");
+        desafio.setTipo(TipoDesafio.valueOf("QUIZ"));
+        desafio.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
+        desafio.setA("D");
+        desafio.setB("T");
+        desafio.setC("B");
+        desafio.setD("S");
+        desafio.setE("R");
+        desafio.setAlternativaCorreta("C");
+        desafio.setPontos(10);
 
-            Modulo modulo = new Modulo();
-            modulo.setId(1);
-            desafio.setModulo(modulo);
+        Modulo modulo = new Modulo();
+        modulo.setId(1);
+        desafio.setModulo(modulo);
 
-            desafio.setAtivo("S");
+        desafio.setAtivo("S");
 
-            return desafio;
+        return desafio;
     }
 
     private static DesafioDTO retornarDesafioDTO(){

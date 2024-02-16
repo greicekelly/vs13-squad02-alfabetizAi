@@ -123,27 +123,6 @@ public class DesafioService {
             throw new  RegraDeNegocioException("Desafio com o ID " + id + " não encontrado informe um id valido");
         }
     }
-    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
-        try {
-            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
-            return desafios.stream()
-                    .map(this::retornarDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error("Erro ao listar desafios concluidos", e);
-            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
-        }
-    }
-    public DesafioDTO buscarDesafioPorId(Integer idDesafio) throws RegraDeNegocioException {
-        Desafio desafioEntity = desafioRepository.getById(idDesafio);
-
-        if (desafioEntity != null) {
-            return retornarDTO(desafioEntity);
-        } else {
-            log.error("Erro ao buscar desafio por ID");
-            throw new RegraDeNegocioException("Nenhum desafio encontrado para o ID " + idDesafio);
-        }
-    }
 
     public Desafio converterDTO(DesafioCreateDTO dto) {
         return objectMapper.convertValue(dto, Desafio.class);
