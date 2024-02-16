@@ -5,6 +5,7 @@ import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
@@ -17,14 +18,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,7 +77,6 @@ class DesafioServiceTest {
         assertEquals(desafioDtoCriado, desafioDTOMock);
     }
 
-
     @Test
     @DisplayName("Deveria listar desafio por Id com sucesso")
     public void deveriaRetornarDesafioPorId() throws ObjetoNaoEncontradoException {
@@ -92,12 +92,56 @@ class DesafioServiceTest {
     }
 
     @Test
+    @DisplayName("Deveria retornar Exception para id não encontrado")
     public void deveriaRetornarExceptionAoReceberIdNaoExistente() {
         Integer idNaoExistente = new Random().nextInt();
 
         assertThrows(ObjetoNaoEncontradoException.class, () -> desafioService.desafioPorId(idNaoExistente));
     }
 
+    @Test
+    @DisplayName("Deveria atualizar desafio com sucesso")
+    public void deveriaAtualizaDesafioPorId() throws RegraDeNegocioException {
+       Desafio desafioMock = new Desafio();
+        desafioMock.setTitulo("Escolha a letra final");
+        desafioMock.setConteudo("Aprenda as consoantes");
+        desafioMock.setTipo(TipoDesafio.valueOf("QUIZ"));
+        desafioMock.setInstrucao("Marque a letra, que corresponde a ultima letra da palavra Banana.");
+        desafioMock.setA("A");
+        desafioMock.setB("T");
+        desafioMock.setC("B");
+        desafioMock.setD("S");
+        desafioMock.setE("R");
+        desafioMock.setAlternativaCorreta("A");
+        desafioMock.setPontos(10);
+        desafioMock.setAtivo("S");
+
+        Desafio desafioEntityAntigo = new Desafio();
+        BeanUtils.copyProperties(desafioMock, desafioEntityAntigo);
+
+        DesafioCreateDTO desafioCreateDTOMock = retornarDesafioCreateDTO();
+        Desafio desafioEntityAlterado = retornarDesafio();
+        DesafioDTO desafioDTOMock = retornarDesafioDTO();
+
+        when(desafioRepository.findById(anyInt())).thenReturn(Optional.of(desafioMock));
+        when(desafioRepository.save(anyObject())).thenReturn(desafioEntityAlterado);
+        when(objectMapper.convertValue(desafioEntityAlterado, DesafioDTO.class)).thenReturn(desafioDTOMock);
+        when(objectMapper.convertValue(desafioCreateDTOMock, Desafio.class)).thenReturn(desafioEntityAlterado);
+
+        DesafioDTO desafioDTORetornado = desafioService.atualizar(desafioMock.getId(), desafioCreateDTOMock);
+
+        assertNotNull(desafioDTORetornado);
+        assertNotEquals(desafioEntityAntigo, desafioMock);
+        assertNotEquals(desafioEntityAntigo.getTitulo(), desafioDTORetornado.getTitulo());
+    }
+
+    @Test
+    @DisplayName("Deveria retornar Exception para id Modulo não encontrado")
+    public void deveriaRetornarExceptionAoReceberIdModuloNaoExistente() {
+        Integer idNaoExistente = new Random().nextInt();
+
+        assertThrows(RegraDeNegocioException.class, () -> desafioService.listarPorIdModulo(idNaoExistente));
+    }
     private static DesafioCreateDTO retornarDesafioCreateDTO(){
             DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
             desafioCreateDTO.setIdModulo(1);
