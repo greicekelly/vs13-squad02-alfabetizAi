@@ -9,14 +9,24 @@ import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
 import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
+
+@ExtendWith(MockitoExtension.class)
+@DisplayName("DesafioService - Teste")
 class DesafioServiceTest {
-
     @Mock
     private IDesafioRepository desafioRepository;
 
@@ -33,10 +43,25 @@ class DesafioServiceTest {
     DesafioDTO desafioDTO;
     Desafio desafio;
 
+    @BeforeEach
+    public void setUp() {
+        DesafioCreateDTO desafioCreateDTO = retornarDesafioCreateDTO();
+        Desafio desafio = retornarDesafio();
+        DesafioDTO desafioDTO = retornarDesafioDTO();
+
+        Mockito.when(desafioRepository.findAll()).thenReturn(List.of(desafio));
+    }
     @Test
     public void deveriaListarTodosDesafios(){
+        List<Desafio>listaMock = List.of(retornarDesafio(), retornarDesafio(), retornarDesafio());
+        when(desafioRepository.findAll()).thenReturn(listaMock);
+        List<DesafioDTO> listaRetornoDesafioDTO = desafioService.listarDesafios();
 
+        assertNotNull(listaRetornoDesafioDTO);
+        assertEquals(listaMock.size(), listaRetornoDesafioDTO.size());
     }
+
+
 
     private static DesafioCreateDTO retornarDesafioCreateDTO(){
             DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
