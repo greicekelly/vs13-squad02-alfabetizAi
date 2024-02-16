@@ -4,6 +4,7 @@ import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
+import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.repository.IDesafioRepository;
@@ -19,9 +20,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,6 +74,21 @@ class DesafioServiceTest {
 
         assertNotNull(desafioDtoCriado);
         assertEquals(desafioDtoCriado, desafioDTOMock);
+    }
+
+
+    @Test
+    @DisplayName("Deveria listar desafio por Id com sucesso")
+    public void deveriaRetornarDesafioPorId() throws ObjetoNaoEncontradoException {
+        Integer idAleatorio = new Random().nextInt();
+
+        Optional<Desafio> desafioEntityMock = Optional.of(retornarDesafio());
+
+        when(desafioRepository.findById(anyInt())).thenReturn(desafioEntityMock);
+
+        Desafio desafioRetornado = desafioService.desafioPorId(idAleatorio);
+        assertNotNull(desafioRetornado);
+        assertEquals(desafioRetornado, desafioEntityMock.get());
     }
 
     private static DesafioCreateDTO retornarDesafioCreateDTO(){

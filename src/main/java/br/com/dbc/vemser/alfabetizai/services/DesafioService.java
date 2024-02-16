@@ -30,12 +30,6 @@ public class DesafioService {
                 .map(this :: retornarDTO)
                 .collect(Collectors.toList());
     }
-// @BeforeEach
-//    void setUp() {
-//        desafioRepository = Mockito.mock(DesafioRepository.class);
-//
-//        desafioService = new DesafioService(desafioRepository);
-//    }
 
     public DesafioDTO create(DesafioCreateDTO desafio) throws Exception {
         log.info("camada service criação desafio ");
@@ -50,16 +44,7 @@ public class DesafioService {
         log.info("Desafio criado na camada Service!");
         return retornarDTO(desafioEntity);
 }
-    public DesafioDTO buscarDesafioPorId(Integer idDesafio) throws RegraDeNegocioException {
-        Desafio desafioEntity = desafioRepository.getById(idDesafio);
 
-        if (desafioEntity != null) {
-            return retornarDTO(desafioEntity);
-        } else {
-            log.error("Erro ao buscar desafio por ID");
-            throw new RegraDeNegocioException("Nenhum desafio encontrado para o ID " + idDesafio);
-        }
-    }
     public Desafio desafioPorId(Integer idDesafio) throws ObjetoNaoEncontradoException {
         Optional<Desafio> objetoOptional = desafioRepository.findById(idDesafio);
         if (objetoOptional.isPresent()) {
@@ -107,17 +92,6 @@ public class DesafioService {
         }
     }
 
-    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
-        try {
-            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
-            return desafios.stream()
-                    .map(this::retornarDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error("Erro ao listar desafios concluidos", e);
-            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
-        }
-    }
     public void remover(int id) throws RegraDeNegocioException{
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
         if (objetoOptional.isPresent()) {
@@ -147,6 +121,27 @@ public class DesafioService {
 
         } else {
             throw new  RegraDeNegocioException("Desafio com o ID " + id + " não encontrado informe um id valido");
+        }
+    }
+    public List<DesafioDTO> listardesafiosConcluidos(Integer idAluno) throws RegraDeNegocioException {
+        try {
+            List<Desafio> desafios = desafioRepository.listardesafiosConcluidos(idAluno);
+            return desafios.stream()
+                    .map(this::retornarDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Erro ao listar desafios concluidos", e);
+            throw new RegraDeNegocioException("Erro ao listar desafios concluidos: " + e.getMessage());
+        }
+    }
+    public DesafioDTO buscarDesafioPorId(Integer idDesafio) throws RegraDeNegocioException {
+        Desafio desafioEntity = desafioRepository.getById(idDesafio);
+
+        if (desafioEntity != null) {
+            return retornarDTO(desafioEntity);
+        } else {
+            log.error("Erro ao buscar desafio por ID");
+            throw new RegraDeNegocioException("Nenhum desafio encontrado para o ID " + idDesafio);
         }
     }
 
