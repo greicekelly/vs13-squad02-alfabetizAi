@@ -321,9 +321,78 @@ db.alfabetizai.desafio.deleteOne({"_id": ObjectId('65d105174ce4df5e8f9cdecb')})
   acknowledged: true,
   deletedCount: 1
 }
---- metodo 10 - DeletarVariosPorId ----
+--- metodo 10 - DeletarVariosPorFiltroPalavra ----
 db.alfabetizai.desafio.deleteMany({"titulo": /Encontre/})
 {
   acknowledged: true,
   deletedCount: 2
+}
+
+---Metodo 11-----
+Buscar toda a lista apos todas atualizações e deleções.
+
+db.alfabetizai.desafio.find({})
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec6'),
+  id_modulo: 1,
+  titulo: 'Escolha a letra inicial',
+  conteudo: 'Aprenda as consoantes',
+  tipo_desafio: 1,
+  instrucao: 'Marque a letra, que corresponde a primeira letra da palavra Banana.',
+  pontos: 15,
+  ativo: 's',
+  a: 'c',
+  b: 't',
+  c: 'b',
+  d: 'q',
+  e: 'p',
+  alternativa_correta: 'c'
+}
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec7'),
+  id_modulo: 2,
+  titulo: 'Complete a palavra',
+  conteudo: 'Complete a palavra com as letras fornecidas',
+  tipo_desafio: 1,
+  instrucao: 'Complete a palavra: M _ SA',
+  a: 'c',
+  b: 't',
+  c: 'e',
+  d: 'q',
+  e: 'p',
+  alternativa_correta: 'c',
+  pontos: 15,
+  ativo: 's'
+}
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec8'),
+  id_modulo: 1,
+  titulo: 'Ordene as letras',
+  conteudo: 'Exercício de ordenação de letras',
+  tipo_desafio: 3,
+  instrucao: 'Ordene as letras para formar uma palavra: A _ C _ O',
+  a: 'cao',
+  b: 'tatu',
+  c: 'bala',
+  d: 'quero',
+  e: 'pato',
+  alternativa_correta: 'a',
+  pontos: 15,
+  ativo: 's'
+}
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec9'),
+  id_modulo: 2,
+  titulo: 'Complete a sequência',
+  conteudo: 'Complete a sequência alfabética',
+  tipo_desafio: 1,
+  instrucao: 'Complete a sequência: A, B, C, _, E',
+  a: 'c',
+  b: 't',
+  c: 'd',
+  d: 'q',
+  e: 'p',
+  alternativa_correta: 'c',
+  pontos: 15,
+  ativo: 's'
 }
