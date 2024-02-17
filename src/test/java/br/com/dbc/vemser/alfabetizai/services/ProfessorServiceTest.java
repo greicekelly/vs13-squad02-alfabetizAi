@@ -1,10 +1,10 @@
 package br.com.dbc.vemser.alfabetizai.services;
-
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
+import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -73,12 +74,62 @@ class ProfessorServiceTest {
     }
 
     @Test
+    @DisplayName("Deveria atualizar professor com sucesso")
+    public void deveriaAtualizaProfessorPorId() throws Exception {
+
+        Professor professorMock = new Professor();
+        professorMock.setNome("James");
+        professorMock.setSobrenome("de Oliveira");
+        professorMock.setEmail("james@email.com");
+        professorMock.setSexo("M");
+        professorMock.setSenha("123");
+        professorMock.setCpf("50293697086");
+        professorMock.setTelefone("998768902");
+        professorMock.setDataDeNascimento(LocalDate.parse("2022-02-01"));
+        professorMock.setDescricao("Letras");
+
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setIdUsuario(1);
+        professorMock.setIdUsuario(1);
+
+        Professor professorEntityAntigo = new Professor();
+        BeanUtils.copyProperties(professorMock, professorEntityAntigo);
+
+        ProfessorCreateDTO professorCreateDTOMock = retornarProfessorCreateDTO();
+        Professor professorEntityAlterado = retornarProfessor();
+        ProfessorDTO professorDTOMock = retornarProfessorDTO();
+
+        when(professorRepository.findById(anyInt())).thenReturn(Optional.of(professorMock));
+        when(professorRepository.save(anyObject())).thenReturn(professorEntityAlterado);
+        when(objectMapper.convertValue(professorEntityAlterado, ProfessorDTO.class)).thenReturn(professorDTOMock);
+        when(objectMapper.convertValue(professorCreateDTOMock, Professor.class)).thenReturn(professorEntityAlterado);
+
+        ProfessorDTO professorDTORetornado = professorService.atualizar(professorMock.getIdUsuario(), professorCreateDTOMock);
+
+        assertNotNull(professorDTORetornado);
+        assertNotEquals(professorEntityAntigo, professorMock);
+        assertNotEquals(professorEntityAntigo.getNome(), professorDTORetornado.getNome());
+    }
+
+    @Test
     @DisplayName("Deveria lançar exceção com mensagem correta ao remover professor não encontrado")
     public void deveriaLancarExcecaoComMensagemAoRemoverNaoEncontrado() throws Exception {
         int idNaoEncontrado = 1;
 
         ObjetoNaoEncontradoException objetoNaoEncontradoException = assertThrows(
                 ObjetoNaoEncontradoException.class, () -> professorService.remover(idNaoEncontrado));
+
+        assertEquals("Professor com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
+                objetoNaoEncontradoException.getMessage());
+    }
+    @Test
+    @DisplayName("Deveria lançar exceção ao atualizar professor com Id não encontrado")
+    public void deveriaLancarExcecaoComMensagemAoAtualizarComIdNaoEncontrado() throws Exception {
+        ProfessorCreateDTO professorMock = new ProfessorCreateDTO();
+        int idNaoEncontrado = 1;
+
+        ObjetoNaoEncontradoException objetoNaoEncontradoException = assertThrows(
+                ObjetoNaoEncontradoException.class, () -> professorService.atualizar(idNaoEncontrado, professorMock));
 
         assertEquals("Professor com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
                 objetoNaoEncontradoException.getMessage());
@@ -111,6 +162,14 @@ class ProfessorServiceTest {
         int idNaoExistente = new Random().nextInt();
 
         assertThrows(ObjetoNaoEncontradoException.class, () -> professorService.remover(idNaoExistente));
+    }
+
+    @Test
+    @DisplayName("Deveria retornar Exception para id não encontrado")
+    public void deveriaRetornarExceptionAoReceberIdNaoExistenteEmRemoverFisicamente() {
+        int idNaoExistente = new Random().nextInt();
+
+        assertThrows(ObjetoNaoEncontradoException.class, () -> professorService.removerFisicamente(idNaoExistente));
     }
 
     private static Professor retornarProfessor() {
