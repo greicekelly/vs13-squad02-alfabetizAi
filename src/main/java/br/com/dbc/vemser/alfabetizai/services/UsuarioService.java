@@ -43,6 +43,7 @@ public class UsuarioService {
     public Optional<Usuario> findById(Integer idUsuario) {
         return usuarioRepository.findById(idUsuario);
     }
+
     public Optional<Usuario> getLoggedUser() throws RegraDeNegocioException {
         return findById(getIdLoggedUser());
     }
