@@ -50,7 +50,7 @@ public class ProfessorService {
         return professorDTO;
     }
 
-    private Professor professorPorCpfEmail(String cpf, String email) throws Exception {
+    public Professor professorPorCpfEmail(String cpf, String email) throws Exception {
         Professor professor = professorRepository.findAllByCpfOrEmail(cpf, email);
         if (professor != null) {
             throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
@@ -61,12 +61,6 @@ public class ProfessorService {
 
     public List<ProfessorDTO> listar() {
         List<Professor> professors = professorRepository.findAll();
-
-        return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
-    }
-
-    public List<ProfessorDTO> listarAtivos(char ativo) {
-        List<Professor> professors = professorRepository.findAllByAtivo(ativo);
 
         return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
     }

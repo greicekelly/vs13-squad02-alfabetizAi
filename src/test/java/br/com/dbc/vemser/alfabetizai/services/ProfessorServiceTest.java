@@ -2,6 +2,8 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +17,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProfessorService - Teste")
@@ -65,6 +70,47 @@ class ProfessorServiceTest {
         }
         assertNotNull(professorDtoCriado);
         assertEquals(professorDtoCriado, professorDTOMock);
+    }
+
+    @Test
+    @DisplayName("Deveria lançar exceção com mensagem correta ao remover professor não encontrado")
+    public void deveriaLancarExcecaoComMensagemAoRemoverNaoEncontrado() throws Exception {
+        int idNaoEncontrado = 1;
+
+        ObjetoNaoEncontradoException objetoNaoEncontradoException = assertThrows(
+                ObjetoNaoEncontradoException.class, () -> professorService.remover(idNaoEncontrado));
+
+        assertEquals("Professor com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
+                objetoNaoEncontradoException.getMessage());
+    }
+    @Test
+    @DisplayName("Deveria lançar exceção com mensagem correta ao listar professor por id não encontrado")
+    public void deveriaLancarExcecaoComMensagemIdNaoEncontrado() throws Exception {
+        int idNaoEncontrado = 1;
+
+        ObjetoNaoEncontradoException objetoNaoEncontradoException = assertThrows(
+                ObjetoNaoEncontradoException.class, () -> professorService.buscarProfessorPorId(idNaoEncontrado));
+
+        assertEquals("Professor com o ID " + idNaoEncontrado + " não encontrado informe um id valido",
+                objetoNaoEncontradoException.getMessage());
+    }
+    @Test
+    @DisplayName("Deveria lançar exceção quando CPF ou Email já estão em uso")
+    public void deveriaLancarExcecaoQuandoCpfOuEmailJaEmUso() throws Exception {
+        String cpfAleatorio = "12345678900";
+        String emailAleatorio = "jaexistente@email.com";
+
+        when(professorRepository.findAllByCpfOrEmail(anyString(), anyString())).thenReturn(new Professor());
+
+        assertThrows(RegraDeNegocioException.class, () -> professorService.professorPorCpfEmail(cpfAleatorio, emailAleatorio));
+    }
+
+    @Test
+    @DisplayName("Deveria retornar Exception para id não encontrado")
+    public void deveriaRetornarExceptionAoReceberIdNaoExistente() {
+        int idNaoExistente = new Random().nextInt();
+
+        assertThrows(ObjetoNaoEncontradoException.class, () -> professorService.remover(idNaoExistente));
     }
 
     private static Professor retornarProfessor() {
