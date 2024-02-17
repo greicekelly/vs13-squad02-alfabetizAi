@@ -120,20 +120,4 @@ public class ProfessorService {
         }
     }
 
-    public void removerFisicamente(int id) throws Exception {
-        Optional<Professor> objetoOptional = professorRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Professor professor = objetoOptional.get();
-
-            professor.setCargos(null);
-
-            professorRepository.delete(professor);
-
-            ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
-
-            emailService.sendEmailProfessor(professorDTO, "Cadastro excluido, ","delete");
-        } else {
-            throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
 }

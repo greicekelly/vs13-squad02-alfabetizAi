@@ -4,7 +4,6 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static br.com.dbc.vemser.alfabetizai.services.Mock.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -191,58 +191,4 @@ class ProfessorServiceTest {
         assertThrows(ObjetoNaoEncontradoException.class, () -> professorService.remover(idNaoExistente));
     }
 
-    @Test
-    @DisplayName("Deveria retornar Exception para id não encontrado")
-    public void deveriaRetornarExceptionAoReceberIdNaoExistenteEmRemoverFisicamente() {
-        int idNaoExistente = new Random().nextInt();
-
-        assertThrows(ObjetoNaoEncontradoException.class, () -> professorService.removerFisicamente(idNaoExistente));
-    }
-
-    private static Professor retornarProfessor() {
-        Professor professor = new Professor();
-        professor.setIdUsuario(1);
-        professor.setNome("Jake");
-        professor.setSobrenome("Oliveira");
-        professor.setTelefone("997239878");
-        professor.setEmail("jake@email.com");
-        professor.setDataDeNascimento(LocalDate.parse("2022-02-01"));
-        professor.setAtivo("S");
-        professor.setSexo("M");
-        professor.setSenha("123");
-        professor.setCpf("57665284000");
-        professor.setDescricao("Licenciatura em Letras");
-
-        return professor;
-
-    }
-
-    private static ProfessorDTO retornarProfessorDTO() {
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setIdUsuario(1);
-        professorDTO.setNome("Jake");
-        professorDTO.setSobrenome("Oliveira");
-        professorDTO.setTelefone("997239878");
-        professorDTO.setEmail("jake@email.com");
-        professorDTO.setAtivo("S");
-        professorDTO.setDescricao("Licenciatura em Letras");
-
-        return professorDTO;
-
-    }
-
-    private static ProfessorCreateDTO retornarProfessorCreateDTO(){
-    ProfessorCreateDTO professorCreateDTO = new ProfessorCreateDTO();
-        professorCreateDTO.setNome("Jake");
-        professorCreateDTO.setSobrenome("Oliveira");
-        professorCreateDTO.setTelefone("997239878");
-        professorCreateDTO.setEmail("jake@email.com");
-        professorCreateDTO.setDataDeNascimento(LocalDate.parse("2022-02-01"));
-        professorCreateDTO.setSexo("M");
-        professorCreateDTO.setSenha("123");
-        professorCreateDTO.setCpf("57665284000");
-        professorCreateDTO.setDescricao("Licenciatura em Letras");
-
-        return professorCreateDTO;
-    }
 }
