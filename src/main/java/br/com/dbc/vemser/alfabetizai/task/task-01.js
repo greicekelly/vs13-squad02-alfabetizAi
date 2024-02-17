@@ -314,4 +314,11 @@ db.alfabetizai.desafio.updateMany({"pontos": 10}, {$set:{"pontos": 15}})
   upsertedCount: 0
 }
 
+-- Deletar
+--- metodo 09 - DeletarPorId ----
+db.alfabetizai.desafio.deleteOne({"_id": ObjectId('65d105174ce4df5e8f9cdecb')})
+{
+  acknowledged: true,
+  deletedCount: 1
+}
 
