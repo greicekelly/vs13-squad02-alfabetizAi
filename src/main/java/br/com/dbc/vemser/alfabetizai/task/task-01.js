@@ -321,4 +321,9 @@ db.alfabetizai.desafio.deleteOne({"_id": ObjectId('65d105174ce4df5e8f9cdecb')})
   acknowledged: true,
   deletedCount: 1
 }
-
+--- metodo 10 - DeletarVariosPorId ----
+db.alfabetizai.desafio.deleteMany({"titulo": /Encontre/})
+{
+  acknowledged: true,
+  deletedCount: 2
+}
