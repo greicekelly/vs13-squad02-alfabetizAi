@@ -3,9 +3,8 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
-import br.com.dbc.vemser.alfabetizai.models.Usuario;
+import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -37,10 +35,10 @@ class ProfessorServiceTest {
     @Mock
     private ObjectMapper objectMapper;
     @Mock
-    private PasswordEncoder passwordEncoder;
-    @Mock
     private  EmailService emailService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @InjectMocks
     private ProfessorService professorService;
 
@@ -123,7 +121,21 @@ class ProfessorServiceTest {
         ProfessorDTO professorEntityDTO = objectMapper.convertValue(professorEntityMock.get(), ProfessorDTO.class);
         assertEquals(professorRetornado, professorEntityDTO);
     }
+    @Test
+    @DisplayName("Deveria remover professor logicamente")
+    public void deveriaRemoverProfessorLogicamente() throws Exception {
+        int id = 1;
+        Optional<Professor> professorOptional = Optional.of(new Professor());
+        Professor professor = professorOptional.get();
+        professor.setIdUsuario(id);
+        when(professorRepository.findById(id)).thenReturn(professorOptional);
 
+        professorService.remover(id);
+
+        verify(professorRepository).findById(id);
+        verify(professorRepository).save(professor);
+        assertEquals("N", professor.getAtivo());
+    }
 
 
     @Test
