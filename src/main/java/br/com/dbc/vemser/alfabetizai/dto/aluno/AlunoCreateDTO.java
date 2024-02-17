@@ -3,12 +3,14 @@ package br.com.dbc.vemser.alfabetizai.dto.aluno;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class AlunoCreateDTO {
