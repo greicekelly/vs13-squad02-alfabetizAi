@@ -12,7 +12,28 @@ db.createCollection("alfabetizai.desafio")
 
 -- Inserir--
 ---CriarDesafios---
-db.alfabetizai.desafio.insertMany([
+---Criar 1 Desafio---
+   db.alfabetizai.desafio.insertOne({
+         "id_modulo": 2,
+         "titulo": "Encontre a consoante",
+         "conteudo": "Identificação de consoante",
+         "tipo_desafio": 1,
+         "instrucao": "Identifique a consoante na palavra: MAU",
+ 	     "a": "m",
+         "b": "t",
+         "c": "b",
+         "d": "a",
+         "e": "p",
+         "alternativa_correta": "m",
+         "pontos": 10,
+         "ativo": "s"
+     })
+     {
+       acknowledged: true,
+       insertedId: ObjectId('65d105174ce4df5e8f9cdecb')
+     }
+     ---Criar 5 Desafios---
+    db.alfabetizai.desafio.insertMany([
     {
         "id_modulo": 1,
         "titulo": "Escolha a letra inicial",
@@ -185,6 +206,21 @@ db.alfabetizai.desafio.find({})
   pontos: 10,
   ativo: 's'
 }
+{
+         "id_modulo": 2,
+         "titulo": "Encontre a consoante",
+         "conteudo": "Identificação de consoante",
+         "tipo_desafio": 1,
+         "instrucao": "Identifique a consoante na palavra: MAU",
+ 	     "a": "m",
+         "b": "t",
+         "c": "b",
+         "d": "a",
+         "e": "p",
+         "alternativa_correta": "m",
+         "pontos": 10,
+         "ativo": "s"
+     }
 
 --- metodo 2 - listarPorIdModulo ----
 
@@ -219,5 +255,40 @@ db.alfabetizai.desafio.find({"id_modulo": 1}).pretty()
   e: 'pato',
   alternativa_correta: 'a',
   pontos: 20,
+  ativo: 's'
+}
+--- metodo 3 - listarPorPalavraEmQualquerParteDoTitulo ----
+
+db.alfabetizai.desafio.find({"titulo": /Encontre/})
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdeca'),
+  id_modulo: 2,
+  titulo: 'Encontre a vogal',
+  conteudo: 'Identificação de vogais',
+  tipo_desafio: 1,
+  instrucao: 'Identifique a vogal na palavra: LAR',
+  a: 'c',
+  b: 'e',
+  c: 'b',
+  d: 'a',
+  e: 'p',
+  alternativa_correta: 'd',
+  pontos: 10,
+  ativo: 's'
+}
+{
+  _id: ObjectId('65d105174ce4df5e8f9cdecb'),
+  id_modulo: 2,
+  titulo: 'Encontre a consoante',
+  conteudo: 'Identificação de consoante',
+  tipo_desafio: 1,
+  instrucao: 'Identifique a consoante na palavra: MAU',
+  a: 'm',
+  b: 't',
+  c: 'b',
+  d: 'a',
+  e: 'p',
+  alternativa_correta: 'm',
+  pontos: 10,
   ativo: 's'
 }
