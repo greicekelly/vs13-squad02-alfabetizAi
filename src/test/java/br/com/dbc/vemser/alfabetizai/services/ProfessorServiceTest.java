@@ -3,6 +3,7 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+import br.com.dbc.vemser.alfabetizai.models.Desafio;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
@@ -17,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -88,8 +90,6 @@ class ProfessorServiceTest {
         professorMock.setDataDeNascimento(LocalDate.parse("2022-02-01"));
         professorMock.setDescricao("Letras");
 
-        Usuario usuarioMock = new Usuario();
-        usuarioMock.setIdUsuario(1);
         professorMock.setIdUsuario(1);
 
         Professor professorEntityAntigo = new Professor();
@@ -110,6 +110,21 @@ class ProfessorServiceTest {
         assertNotEquals(professorEntityAntigo, professorMock);
         assertNotEquals(professorEntityAntigo.getNome(), professorDTORetornado.getNome());
     }
+    @Test
+    @DisplayName("Deveria listar professor por Id com sucesso")
+    public void deveriaRetornarProfessorPorId() throws ObjetoNaoEncontradoException {
+        int id = 1;
+        Optional<Professor> professorEntityMock = Optional.of(retornarProfessor());
+
+        when(professorRepository.findById(1)).thenReturn(professorEntityMock);
+
+        ProfessorDTO professorRetornado = professorService.buscarProfessorPorId(id);
+
+        ProfessorDTO professorEntityDTO = objectMapper.convertValue(professorEntityMock.get(), ProfessorDTO.class);
+        assertEquals(professorRetornado, professorEntityDTO);
+    }
+
+
 
     @Test
     @DisplayName("Deveria lançar exceção com mensagem correta ao remover professor não encontrado")
