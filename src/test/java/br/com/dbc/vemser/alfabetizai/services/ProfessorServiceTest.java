@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +30,8 @@ class ProfessorServiceTest {
     private ObjectMapper objectMapper;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private  EmailService emailService;
 
     @InjectMocks
     private ProfessorService professorService;
@@ -42,6 +46,26 @@ class ProfessorServiceTest {
         assertNotNull(listaRetornoProfessorDTO);
         assertEquals(listaMock.size(), listaRetornoProfessorDTO.size());
     }
+    @Test
+    @DisplayName("Deveria criar professor com sucesso")
+    public void deveriaCriarProfessorComSucesso()throws Exception{
+
+        ProfessorCreateDTO professorCreateDTOMock = retornarProfessorCreateDTO();
+        Professor professorMock = retornarProfessor();
+        ProfessorDTO professorDTOMock = retornarProfessorDTO();
+
+        when(objectMapper.convertValue(professorCreateDTOMock, Professor.class)).thenReturn(professorMock);
+        when(professorRepository.save(any())).thenReturn(professorMock);
+        when(objectMapper.convertValue(professorMock, ProfessorDTO.class)).thenReturn(professorDTOMock);
+
+        ProfessorDTO professorDtoCriado = professorService.criar(professorCreateDTOMock);
+        
+        if (!Boolean.parseBoolean(System.getProperty("test.ignore.emails"))) {
+            emailService.sendEmailProfessor(professorDTOMock, "Cadastro efetuado, ", "create");
+        }
+        assertNotNull(professorDtoCriado);
+        assertEquals(professorDtoCriado, professorDTOMock);
+    }
 
     private static Professor retornarProfessor() {
         Professor professor = new Professor();
@@ -55,6 +79,7 @@ class ProfessorServiceTest {
         professor.setSexo("M");
         professor.setSenha("123");
         professor.setCpf("57665284000");
+        professor.setDescricao("Licenciatura em Letras");
 
         return professor;
 
@@ -68,9 +93,24 @@ class ProfessorServiceTest {
         professorDTO.setTelefone("997239878");
         professorDTO.setEmail("jake@email.com");
         professorDTO.setAtivo("S");
-        professorDTO.setDescricao("teste");
+        professorDTO.setDescricao("Licenciatura em Letras");
 
         return professorDTO;
 
+    }
+
+    private static ProfessorCreateDTO retornarProfessorCreateDTO(){
+    ProfessorCreateDTO professorCreateDTO = new ProfessorCreateDTO();
+        professorCreateDTO.setNome("Jake");
+        professorCreateDTO.setSobrenome("Oliveira");
+        professorCreateDTO.setTelefone("997239878");
+        professorCreateDTO.setEmail("jake@email.com");
+        professorCreateDTO.setDataDeNascimento(LocalDate.parse("2022-02-01"));
+        professorCreateDTO.setSexo("M");
+        professorCreateDTO.setSenha("123");
+        professorCreateDTO.setCpf("57665284000");
+        professorCreateDTO.setDescricao("Licenciatura em Letras");
+
+        return professorCreateDTO;
     }
 }

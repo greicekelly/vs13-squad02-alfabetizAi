@@ -55,7 +55,7 @@ class DesafioServiceTest {
 
     @Test
     @DisplayName("Deveria criar desafios com sucesso")
-    public void deveriaCriarPessoaComSucesso()throws Exception{
+    public void deveriaCriarDesafioComSucesso()throws Exception{
         Modulo moduloMock = new Modulo();
         Mockito.when(moduloRepository.findById(1)).thenReturn(Optional.of(moduloMock));
 
