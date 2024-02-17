@@ -11,7 +11,7 @@ already on db vemserdbc
 db.createCollection("alfabetizai.desafio")
 
 -- Inserir--
----CriarDesafios---
+---Metodo 01---
 ---Criar 1 Desafio---
    db.alfabetizai.desafio.insertOne({
          "id_modulo": 2,
@@ -32,6 +32,7 @@ db.createCollection("alfabetizai.desafio")
        acknowledged: true,
        insertedId: ObjectId('65d105174ce4df5e8f9cdecb')
      }
+     ---Metodo 02---
      ---Criar 5 Desafios---
     db.alfabetizai.desafio.insertMany([
     {
@@ -123,7 +124,7 @@ db.createCollection("alfabetizai.desafio")
 }
 
 -- Buscar
---- metodo 1 - listarTodos ----
+--- metodo 03 - listarTodos ----
 
 db.alfabetizai.desafio.find({})
 {
@@ -222,7 +223,7 @@ db.alfabetizai.desafio.find({})
          "ativo": "s"
      }
 
---- metodo 2 - listarPorIdModulo ----
+--- metodo 04 - listarPorIdModulo ----
 
 db.alfabetizai.desafio.find({"id_modulo": 1}).pretty()
 {
@@ -257,7 +258,7 @@ db.alfabetizai.desafio.find({"id_modulo": 1}).pretty()
   pontos: 20,
   ativo: 's'
 }
---- metodo 3 - listarPorPalavraEmQualquerParteDoTitulo ----
+--- metodo 05 - listarPorPalavraEmQualquerParteDoTitulo ----
 
 db.alfabetizai.desafio.find({"titulo": /Encontre/})
 {
@@ -292,3 +293,25 @@ db.alfabetizai.desafio.find({"titulo": /Encontre/})
   pontos: 10,
   ativo: 's'
 }
+-- Atualizar
+--- metodo 07 - AtualizarPontos de apenas um registro ----
+db.alfabetizai.desafio.updateOne({"pontos": 20}, {$set:{"pontos": 15}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+--- metodo 08 - AtualizarPontos de varios registros ----
+db.alfabetizai.desafio.updateMany({"pontos": 10}, {$set:{"pontos": 15}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+
+
