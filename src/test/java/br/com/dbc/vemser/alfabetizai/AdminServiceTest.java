@@ -24,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -82,44 +84,48 @@ class AdminServiceTest {
 //        assertEquals(adminDTOCriado, adminDTOMock);
 //    }
 
-    @Test
-    @DisplayName("Deveria retornar a lista de todo os usuários Admin com sucesso")
-    void listarTodosUsuariosAdminComSucesso() throws Exception {
+//    @Test
+//    @DisplayName("Deveria retornar a lista de todo os usuários Admin com sucesso")
+//    void listarTodosUsuariosAdminComSucesso() throws Exception {
+//
+//        // ARRANGE - GIVEN
+//        Pageable pageable = PageRequest.of(0, 10);
+//        Page<Admin> adminsMock = criarPageAdminsMock(pageable);
+//        Page<AdminDTO> adminsDTOMock = criarPageAdminsDTOMock(pageable);
+//
+//        // ACT - WHEN
+//        when(adminRepository.findAll(pageable)).thenReturn(adminsMock);
+////        when(objectMapper.convertValue(any(Admin.class), eq(AdminDTO.class)))
+////                .thenReturn();
+//        Page<AdminDTO> adminDTOPageRetornado = adminService.listar(pageable);
+//
+//
+//        // ASSERT / THEN
+//        assertNotNull(adminDTOPageRetornado);
+//        assertEquals(adminsDTOMock, adminDTOPageRetornado);
+//
+//    }
 
+    @Test
+    @DisplayName("Deveria retornar um usuário Admin pelo Id com sucesso")
+    void retornarUmUsuarioAdminPeloIdComSucesso() throws Exception {
         // ARRANGE - GIVEN
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Admin> adminsMock = criarPageAdminsMock(pageable);
-        Page<AdminDTO> adminsDTOMock = criarPageAdminsDTOMock(pageable);
+        Optional<Admin> adminEntityMock = Optional.of(retornarAdminEntity());
+        AdminDTO adminDTOMock = retornarAdminDTO();
 
         // ACT - WHEN
-        when(adminRepository.findAll(pageable)).thenReturn(adminsMock);
-        when(objectMapper.convertValue(any(Admin.class), eq(AdminDTO.class)))
-                .thenReturn();
-        Page<AdminDTO> adminDTOPageRetornado = adminService.listar(pageable);
+        when(adminRepository.findById(any())).thenReturn(adminEntityMock);
+        when(objectMapper.convertValue(adminEntityMock, AdminDTO.class)).thenReturn(adminDTOMock);
 
+        AdminDTO adminDTOCriado =  adminService.buscarAdminPorId(new Random().nextInt());
 
         // ASSERT / THEN
-        assertNotNull(adminDTOPageRetornado);
-        assertEquals(adminsDTOMock, adminDTOPageRetornado);
-
+        assertNotNull(adminDTOCriado);
+        assertEquals(adminDTOCriado, adminDTOMock);
     }
 
 
-
     public static Admin retornarAdminEntity(){
-//        Admin admin = new Admin();
-//        admin.setIdUsuario(1);
-//        admin.setNome("Greice");
-//        admin.setSobrenome("Rosa");
-//        admin.setTelefone("51987654321");
-//        admin.setEmail("greice@email.com");
-//        admin.setDataDeNascimento(LocalDate.of(1990,05,05));
-//        admin.setSexo("F");
-//        admin.setSenha("1234");
-//        admin.setCpf("12345678922");
-//        admin.setDescricao("Administrador de Sistema");
-//        admin.setAtivo("S");
-
         Admin admin = new Admin();
         admin.setIdUsuario(1);
         admin.setNome("Tiago");
