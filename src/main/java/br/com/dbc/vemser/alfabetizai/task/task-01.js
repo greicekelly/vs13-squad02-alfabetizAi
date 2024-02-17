@@ -185,3 +185,39 @@ db.alfabetizai.desafio.find({})
   pontos: 10,
   ativo: 's'
 }
+
+--- metodo 2 - listarPorIdModulo ----
+
+db.alfabetizai.desafio.find({"id_modulo": 1}).pretty()
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec6'),
+  id_modulo: 1,
+  titulo: 'Escolha a letra inicial',
+  conteudo: 'Aprenda as consoantes',
+  tipo_desafio: 1,
+  instrucao: 'Marque a letra, que corresponde a primeira letra da palavra Banana.',
+  pontos: 10,
+  ativo: 's',
+  a: 'c',
+  b: 't',
+  c: 'b',
+  d: 'q',
+  e: 'p',
+  alternativa_correta: 'c'
+}
+{
+  _id: ObjectId('65d0fcc74ce4df5e8f9cdec8'),
+  id_modulo: 1,
+  titulo: 'Ordene as letras',
+  conteudo: 'Exercício de ordenação de letras',
+  tipo_desafio: 3,
+  instrucao: 'Ordene as letras para formar uma palavra: A _ C _ O',
+  a: 'cao',
+  b: 'tatu',
+  c: 'bala',
+  d: 'quero',
+  e: 'pato',
+  alternativa_correta: 'a',
+  pontos: 20,
+  ativo: 's'
+}
