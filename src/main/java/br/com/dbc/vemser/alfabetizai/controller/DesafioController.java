@@ -50,14 +50,6 @@ public class DesafioController implements IDesafioController {
         log.info("Módulo Listado por Id");
         return new ResponseEntity<>(moduloListado, HttpStatus.OK);
     }
-    @DeleteMapping("/{idDesafio}")
-    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception {
-        log.info("Deletando desafio");
-        desafioService.remover(id);
-        log.info("Desafio deletado");
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("/delete-logico/{idDesafio}")
     public ResponseEntity<Void> removerLogico(@PathVariable("idDesafio") Integer id) throws Exception {
         log.info("Deletando Desafio de Forma Logica");

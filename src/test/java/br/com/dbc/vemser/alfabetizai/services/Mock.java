@@ -2,6 +2,7 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
@@ -16,7 +17,26 @@ import java.util.Random;
 
 public class Mock {
 
-    public static Desafio retornarDesafio(){
+    static DesafioCreateDTO retornarDesafioCreateDTO(){
+        DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
+        desafioCreateDTO.setIdModulo(1);
+        desafioCreateDTO.setTitulo("Escolha a letra inicial");
+        desafioCreateDTO.setConteudo("Aprenda as consoantes");
+        desafioCreateDTO.setTipo(TipoDesafio.valueOf("QUIZ"));
+        desafioCreateDTO.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
+        desafioCreateDTO.setA("D");
+        desafioCreateDTO.setB("T");
+        desafioCreateDTO.setC("B");
+        desafioCreateDTO.setD("S");
+        desafioCreateDTO.setE("R");
+        desafioCreateDTO.setAlternativaCorreta("C");
+        desafioCreateDTO.setPontos(10);
+        desafioCreateDTO.setAtivo("S");
+
+        return desafioCreateDTO;
+    }
+
+    static Desafio retornarDesafio(){
         Desafio desafio = new Desafio();
         desafio.setId(72);
         desafio.setTitulo("Escolha a letra inicial");
@@ -40,7 +60,7 @@ public class Mock {
         return desafio;
     }
 
-    public static DesafioDTO retornarDesafioDTO(){
+    static DesafioDTO retornarDesafioDTO(){
         DesafioDTO desafioDTO = new DesafioDTO();
         desafioDTO.setId(72);
         desafioDTO.setTitulo("Escolha a letra inicial");
@@ -62,6 +82,7 @@ public class Mock {
 
         return desafioDTO;
     }
+
 
     public static AlunoCreateDTO retornarAlunoCreateDTO(){
         AlunoCreateDTO alunoCreateDTO = new AlunoCreateDTO();
