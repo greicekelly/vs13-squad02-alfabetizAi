@@ -84,11 +84,6 @@ public class AuthController implements IAuthController {
         return ResponseEntity.ok(responsavelAdicionado);
     }
 
-    @GetMapping("/usuario-logado")
-    public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
-    }
-
     @PutMapping("/alterar_senha")
     public String alterarSenha( @Valid @RequestParam String senhaAtual, String novaSenha, String confirmacaoSenha) throws Exception {
         log.info("Atualizando senha");

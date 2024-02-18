@@ -66,17 +66,6 @@ public interface IAuthController {
     @PostMapping
     public ResponseEntity<ResponsavelDTO> cadastrarResponsavel(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception;
 
-    @Operation(summary = "Recuperar Dados por Token de usuario logado", description = "Recupera os dados de um usuario logado com o token.")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Retorna os dados do usuário logado por token"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/usuario-logado")
-    public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException;
-
     @Operation(summary = "Alteração de Senha", description = "Alteração de senha do usuário logado.")
     @ApiResponses(
             value = {

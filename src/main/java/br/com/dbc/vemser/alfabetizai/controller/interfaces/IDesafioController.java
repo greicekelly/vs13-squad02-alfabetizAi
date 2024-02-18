@@ -61,18 +61,6 @@ public interface IDesafioController {
     @PutMapping("/{idDesafio}")
     public ResponseEntity<DesafioDTO> editar(@PathVariable("idDesafio") Integer id,@Valid @RequestBody DesafioCreateDTO desafioCreateDTO) throws Exception ;
 
-
-    @Operation(summary = "Deletar desafio", description = "Apaga o desafio com o id informado")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Desafio apagado com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @DeleteMapping("/{idDesafio}")
-    public ResponseEntity<Void> remover(@PathVariable("idDesafio") Integer id) throws Exception;
-
     @Operation(summary = "Deletar desafio Lógicamente", description = "Apaga o desafio com o id informado de forma Lógica")
     @ApiResponses(
             value = {
