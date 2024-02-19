@@ -1,7 +1,5 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
@@ -9,7 +7,6 @@ import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Admin;
 import br.com.dbc.vemser.alfabetizai.models.Modulo;
 import br.com.dbc.vemser.alfabetizai.models.Professor;
 import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
@@ -27,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static br.com.dbc.vemser.alfabetizai.services.Mock.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -174,7 +170,7 @@ class ModuloServiceTest {
         when(moduloRepository.findById(idModulo)).thenReturn(Optional.empty());
 
         // ASSERT / THEN
-        assertThrows(ObjetoNaoEncontradoException.class, () -> moduloService.removerLogico(idModulo));
+        assertThrows(ObjetoNaoEncontradoException.class, () -> moduloService.buscarModuloPorId(idModulo));
     }
 
     @Test
@@ -202,18 +198,20 @@ class ModuloServiceTest {
         // ARRANGE - GIVEN
         Pageable pageable = PageRequest.of(0, 10);
         Page<Modulo> modulosMock = criarPageModulosMock(pageable);
-        Page<ModuloProfessorDTO> moduloProfessorDTOMock = criarPageModulosProfessorDTOMock(pageable);
         Integer idProfessor = 1;
-        String aprovacao = "S";
 
         // ACT - WHEN
         when(moduloRepository.findAllByIdProfessor(idProfessor, pageable)).thenReturn(modulosMock);
 
-        Page<ModuloProfessorDTO> moduloDTOPageRetornado = moduloService.pagePorProfessor(idProfessor, aprovacao, pageable);
+        Page<ModuloProfessorDTO> moduloDTOPageRetornadoSemAnalise = moduloService.pagePorProfessor(idProfessor, "Sem Analise", pageable);
+        Page<ModuloProfessorDTO> moduloDTOPageRetornadoAprovado = moduloService.pagePorProfessor(idProfessor, "Aprovado", pageable);
+        Page<ModuloProfessorDTO> moduloDTOPageRetornadoReprovado = moduloService.pagePorProfessor(idProfessor, "Reprovado", pageable);
 
         // ASSERT / THEN
-        assertNotNull(moduloDTOPageRetornado);
-        assertEquals(2, moduloDTOPageRetornado.getContent().size());
+        assertNotNull(moduloDTOPageRetornadoSemAnalise);
+        assertNotNull(moduloDTOPageRetornadoAprovado);
+        assertNotNull(moduloDTOPageRetornadoReprovado);
+        assertEquals(2, moduloDTOPageRetornadoSemAnalise.getContent().size());
     }
 
     @Test
@@ -222,9 +220,7 @@ class ModuloServiceTest {
         // ARRANGE - GIVEN
         Pageable pageable = PageRequest.of(0, 10);
         Page<Modulo> modulosMock = criarPageModulosMock(pageable);
-        Page<ModuloAdminDTO> moduloAdminDTOMock = criarPageModulosAdminDTOMock(pageable);
         Integer idAdmin = 1;
-        String aprovacao = "S";
 
         // ACT - WHEN
         when(moduloRepository.findAllByAdmin(idAdmin, pageable)).thenReturn(modulosMock);
@@ -241,8 +237,6 @@ class ModuloServiceTest {
     void atualizarModuloComSucesso() throws Exception {
         // ARRANGE - GIVEN
         Integer idModulo = 1;
-        ProfessorDTO professorDTO = retornarProfessorDTO();
-        Professor professor = retornarProfessor();
         ModuloCreateDTO moduloCreateDTO = retornarModuloCreateDTO();
         ModuloDTO moduloDTO = retornarModuloDTO();
         Optional<Modulo> moduloOptional = Optional.of(retornarModulo());
@@ -261,12 +255,24 @@ class ModuloServiceTest {
 
         ModuloDTO moduloDTOCriado = moduloService.atualizar(idModulo,moduloCreateDTO);
 
-
         // ASSERT / THEN
         assertNotNull(moduloDTOCriado);
         assertEquals(moduloDTOCriado, moduloDTO);
     }
 
+    @Test
+    @DisplayName("Deveria retornar Excepition ao tentar atualizar o módulo com id incorreto.")
+    void atualizarModuloComIdIncorreto() throws Exception {
+        // ARRANGE - GIVEN
+        Integer idModulo = 1;
+        ModuloCreateDTO moduloCreateDTO = retornarModuloCreateDTO();
+
+        // ACT - WHEN
+        when(moduloRepository.findById(idModulo)).thenReturn(Optional.empty());
+
+        // ASSERT / THEN
+        assertThrows(ObjetoNaoEncontradoException.class, () -> moduloService.atualizar(idModulo,moduloCreateDTO));
+    }
 
     @Test
     @DisplayName("Deveria remover fisicamente o Módulo com sucesso.")
@@ -345,20 +351,26 @@ class ModuloServiceTest {
     @Test
     @DisplayName("Deveria retornar lista com os Módulos por aprovação.")
     void retornarListaModulosPorAprovacao() throws Exception {
-
         // ARRANGE - GIVEN
         List<Modulo> modulos = new ArrayList<>();
         modulos.add(retornarModulo());
         List<ModuloDTO> modulosDTO = new ArrayList<>();
         modulosDTO.add(retornarModuloDTO());
+        String aprovacao = "Sem Analise";
+        String filtro = aprovacao.equals("Sem Analise") ? "N" : "S";
 
         // ACT - WHEN
-        when(moduloRepository.findAllByFoiAprovado(anyString())).thenReturn(modulos);
+        when(moduloRepository.findAllByFoiAprovado(filtro)).thenReturn(modulos);
 
-        List<ModuloDTO> moduloDTORetornado = moduloService.listarPorAprovacao(anyString());
+        List<ModuloDTO> moduloDTORetornadoSemAnalise = moduloService.listarPorAprovacao("Sem Analise");
+        List<ModuloDTO> moduloDTORetornadoAprovado = moduloService.listarPorAprovacao("Aprovado");
+        List<ModuloDTO> moduloDTORetornado = moduloService.listarPorAprovacao("N");
 
         // ASSERT / THEN
+        assertNotNull(moduloDTORetornadoSemAnalise);
+        assertNotNull(moduloDTORetornadoAprovado);
         assertNotNull(moduloDTORetornado);
+
     }
 
     @Test
@@ -377,6 +389,19 @@ class ModuloServiceTest {
 
         // ASSERT / THEN
         assertNotNull(moduloDTORetornado);
+    }
+
+    @Test
+    @DisplayName("Deveria retornar Excepition com listar Módulos conluidos pelo id aluno incorreto.")
+    void retornarExcepitionAoListarModulosConcluidosPorIdAlunoIncorreto() throws Exception {
+        // ARRANGE - GIVEN
+        List<Modulo> modulos = new ArrayList<>();
+
+        // ACT - WHEN
+        lenient().when(moduloRepository.listarModulosConcluidos(anyInt())).thenReturn(null);
+
+        // ASSERT / THEN
+        assertThrows(Exception.class, () -> moduloService.listarModulosConcluidos(anyInt()));
     }
 
     @Test

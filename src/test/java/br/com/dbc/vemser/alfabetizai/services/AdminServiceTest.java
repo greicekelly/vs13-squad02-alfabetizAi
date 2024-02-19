@@ -201,9 +201,7 @@ class AdminServiceTest {
     void retornarExceptionAtualizarAdminComIdInexistente() throws Exception {
         // ARRANGE - GIVEN
         AdminCreateDTO adminCreateDTOMock = retornarAdminCreateDTO();
-        Admin adminAntigo = retornarAdminSegundo();
         Admin adminNovo = retornarAdmin();
-        AdminDTO adminDTOMock = retornarAdminDTO();
 
         // ACT - WHEN
         when(adminRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -298,7 +296,6 @@ class AdminServiceTest {
         ModuloDTO moduloDTO = retornarModuloDTO();
         Optional<Admin> adminOptional = Optional.of(retornarAdmin());
         AdminDTO adminDTO = retornarAdminDTO();
-        Admin admin = retornarAdmin();
         AdminModuloDTO adminModuloDTO = retornarAdminModuloDTO();
 
         // ACT - WHEN
