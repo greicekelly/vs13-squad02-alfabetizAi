@@ -2,19 +2,38 @@ package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
+import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
-import br.com.dbc.vemser.alfabetizai.models.Aluno;
-import br.com.dbc.vemser.alfabetizai.models.Desafio;
-import br.com.dbc.vemser.alfabetizai.models.Modulo;
-import br.com.dbc.vemser.alfabetizai.models.Responsavel;
+import br.com.dbc.vemser.alfabetizai.models.*;
 
 import java.time.LocalDate;
 import java.util.Random;
 
 public class Mock {
+
+    public static DesafioCreateDTO retornarDesafioCreateDTO(){
+        DesafioCreateDTO desafioCreateDTO = new DesafioCreateDTO();
+        desafioCreateDTO.setIdModulo(1);
+        desafioCreateDTO.setTitulo("Escolha a letra inicial");
+        desafioCreateDTO.setConteudo("Aprenda as consoantes");
+        desafioCreateDTO.setTipo(TipoDesafio.valueOf("QUIZ"));
+        desafioCreateDTO.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
+        desafioCreateDTO.setA("D");
+        desafioCreateDTO.setB("T");
+        desafioCreateDTO.setC("B");
+        desafioCreateDTO.setD("S");
+        desafioCreateDTO.setE("R");
+        desafioCreateDTO.setAlternativaCorreta("C");
+        desafioCreateDTO.setPontos(10);
+        desafioCreateDTO.setAtivo("S");
+
+        return desafioCreateDTO;
+    }
 
     public static Desafio retornarDesafio(){
         Desafio desafio = new Desafio();
@@ -62,6 +81,7 @@ public class Mock {
 
         return desafioDTO;
     }
+
 
     public static AlunoCreateDTO retornarAlunoCreateDTO(){
         AlunoCreateDTO alunoCreateDTO = new AlunoCreateDTO();
@@ -121,5 +141,50 @@ public class Mock {
         return modulo;
     }
 
+    public static Professor retornarProfessor() {
+        Professor professor = new Professor();
+        professor.setIdUsuario(1);
+        professor.setNome("Jake");
+        professor.setSobrenome("Oliveira");
+        professor.setTelefone("997239878");
+        professor.setEmail("jake@email.com");
+        professor.setDataDeNascimento(LocalDate.parse("2022-02-01"));
+        professor.setAtivo("S");
+        professor.setSexo("M");
+        professor.setSenha("123");
+        professor.setCpf("57665284000");
+        professor.setDescricao("Licenciatura em Letras");
 
+        return professor;
+
+    }
+
+    public static ProfessorDTO retornarProfessorDTO() {
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setIdUsuario(1);
+        professorDTO.setNome("Jake");
+        professorDTO.setSobrenome("Oliveira");
+        professorDTO.setTelefone("997239878");
+        professorDTO.setEmail("jake@email.com");
+        professorDTO.setAtivo("S");
+        professorDTO.setDescricao("Licenciatura em Letras");
+
+        return professorDTO;
+
+    }
+
+    public static ProfessorCreateDTO retornarProfessorCreateDTO(){
+        ProfessorCreateDTO professorCreateDTO = new ProfessorCreateDTO();
+        professorCreateDTO.setNome("Jake");
+        professorCreateDTO.setSobrenome("Oliveira");
+        professorCreateDTO.setTelefone("997239878");
+        professorCreateDTO.setEmail("jake@email.com");
+        professorCreateDTO.setDataDeNascimento(LocalDate.parse("2022-02-01"));
+        professorCreateDTO.setSexo("M");
+        professorCreateDTO.setSenha("123");
+        professorCreateDTO.setCpf("57665284000");
+        professorCreateDTO.setDescricao("Licenciatura em Letras");
+
+        return professorCreateDTO;
+    }
 }

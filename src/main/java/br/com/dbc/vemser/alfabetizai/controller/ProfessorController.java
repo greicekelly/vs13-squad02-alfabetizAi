@@ -57,9 +57,4 @@ public class ProfessorController implements IProfessorController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-fisico/{idProfessor}")
-    public ResponseEntity<Void> deleteFisico(@PathVariable("idProfessor") Integer id) throws Exception {
-        professorService.removerFisicamente(id);
-        return ResponseEntity.ok().build();
-    }
 }

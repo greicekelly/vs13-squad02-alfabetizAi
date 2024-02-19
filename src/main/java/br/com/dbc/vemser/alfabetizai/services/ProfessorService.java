@@ -50,7 +50,7 @@ public class ProfessorService {
         return professorDTO;
     }
 
-    private Professor professorPorCpfEmail(String cpf, String email) throws Exception {
+    public Professor professorPorCpfEmail(String cpf, String email) throws Exception {
         Professor professor = professorRepository.findAllByCpfOrEmail(cpf, email);
         if (professor != null) {
             throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
@@ -61,12 +61,6 @@ public class ProfessorService {
 
     public List<ProfessorDTO> listar() {
         List<Professor> professors = professorRepository.findAll();
-
-        return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
-    }
-
-    public List<ProfessorDTO> listarAtivos(char ativo) {
-        List<Professor> professors = professorRepository.findAllByAtivo(ativo);
 
         return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
     }
@@ -126,20 +120,4 @@ public class ProfessorService {
         }
     }
 
-    public void removerFisicamente(int id) throws Exception {
-        Optional<Professor> objetoOptional = professorRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Professor professor = objetoOptional.get();
-
-            professor.setCargos(null);
-
-            professorRepository.delete(professor);
-
-            ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
-
-            emailService.sendEmailProfessor(professorDTO, "Cadastro excluido, ","delete");
-        } else {
-            throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
 }

@@ -92,19 +92,6 @@ public class DesafioService {
         }
     }
 
-    public void remover(int id) throws RegraDeNegocioException{
-        Optional<Desafio> objetoOptional = desafioRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Desafio desafio = objetoOptional.get();
-
-            if (!desafio.getModulo().isEmpty()) {
-                throw new RegraDeNegocioException("Não é possível excluir o desafio pois ele está associado a outras classes.");
-            }
-            desafioRepository.delete(desafio);
-         }else {
-            throw new RegraDeNegocioException("Desafio com o ID " + id + " não encontrado informe um id valido");}
-    }
-
     public void removerLogico(int id) throws RegraDeNegocioException{
         Optional<Desafio> objetoOptional = desafioRepository.findById(id);
         if (objetoOptional.isPresent()) {
