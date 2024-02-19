@@ -74,12 +74,4 @@ public class ResponsavelController implements IResponsavelController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-fisico/{idResponsavel}")
-    public ResponseEntity<Void> deleteFisico(@PathVariable("idResponsavel") Integer id) throws Exception {
-        log.info("Deletando responsavel");
-        responsavelService.removerFisicamente(id);
-        log.info("Responsavel deletado");
-        return ResponseEntity.ok().build();
-    }
-
 }

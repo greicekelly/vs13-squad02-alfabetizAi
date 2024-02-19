@@ -3,43 +3,32 @@ package br.com.dbc.vemser.alfabetizai.services;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
-import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
-import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
-import br.com.dbc.vemser.alfabetizai.dto.cargos.CargosDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
-import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.repository.IAdminRepository;
-import br.com.dbc.vemser.alfabetizai.services.AdminService;
-import br.com.dbc.vemser.alfabetizai.services.EmailService;
-import br.com.dbc.vemser.alfabetizai.services.ModuloService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.meta.When;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static br.com.dbc.vemser.alfabetizai.services.Mock.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -71,7 +60,6 @@ class AdminServiceTest {
 
         // ACT - WHEN
         when(objectMapper.convertValue(adminCreateDTO, Admin.class)).thenReturn(admin);
-//        when(adminRepository.findAllByCpfOrEmail(adminCreateDTO.getCpf(), adminCreateDTO.getEmail())).thenReturn(admin);
         when(adminRepository.findAllByCpfOrEmail(anyString(), anyString())).thenReturn(null);
         when(adminRepository.save(any())).thenReturn(admin);
         when(objectMapper.convertValue(admin, AdminDTO.class)).thenReturn(adminDTO);
@@ -226,7 +214,7 @@ class AdminServiceTest {
 
     @Test
     @DisplayName("Deveria salvar Usuário Admin com sucesso.")
-    void salvarUsuárioAdminComSucesso() {
+    void salvarUsuarioAdminComSucesso() {
         // ARRANGE - GIVEN
         Admin admin = retornarAdmin();
 

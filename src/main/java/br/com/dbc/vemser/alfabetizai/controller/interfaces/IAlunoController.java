@@ -72,18 +72,6 @@ public interface IAlunoController {
         @DeleteMapping("/{idAluno}")
         public ResponseEntity<Void> deletar(@PathVariable("idAluno") Integer id) throws Exception;
 
-        @Operation(summary = "Deletar aluno fisicamente", description = "Apaga o aluno com o id informado")
-        @ApiResponses(
-                value = {
-                        @ApiResponse(responseCode = "200", description = "Aluno apagado com sucesso"),
-                        @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                        @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-                }
-        )
-        @DeleteMapping("/delete-fisico/{idAluno}")
-        public ResponseEntity<Void> deleteFisico(@PathVariable("idAluno") Integer id) throws Exception;
-
-
         @Operation(summary = "Buscar alunos por id responsavel.", description = "Retorna o resultado correspondente ao id do responsavel informado")
         @ApiResponses(
                 value = {
