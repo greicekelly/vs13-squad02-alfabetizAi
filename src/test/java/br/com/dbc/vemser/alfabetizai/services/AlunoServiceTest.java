@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.parameters.P;
 
 import java.util.*;
 
@@ -41,7 +42,7 @@ class AlunoServiceTest {
     private ObjectMapper objectMapper;
     @Mock
     private IAlunoRepository alunoRepository;
-
+    @Spy
     @InjectMocks
     private AlunoService alunoService;
 
@@ -306,55 +307,78 @@ class AlunoServiceTest {
         assertThrows(ObjetoNaoEncontradoException.class, () -> alunoService.fazerModulo(idAleatorio, idAleatorio));
     }
 
-//    @Test
-//    @DisplayName("Deveria concluir modulo corretamente")
-//    public void deveriaConcluirModuloCorretamente() throws Exception {
-//        Integer idAleatorio = new Random().nextInt();
-//        Desafio desafio = retornarDesafio();
-//        desafio.setPontos(10);
-//        desafio.setId(idAleatorio);
-//        Aluno aluno = retornarAluno();
-//        Set<Desafio> listaUm =  Set.of(desafio);
-//        Set<Desafio> listaDois =  Set.of(desafio);
-//        aluno.setDesafios(listaUm);
-//        Optional<Aluno> alunoOptional = Optional.of(aluno);
-//        Modulo modulo = retornarModulo();
-//        modulo.setDesafios(listaDois);
-//        desafio.setModulo(modulo);
-//        aluno.setModulos(Set.of(modulo));
-//
-//        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
-//        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
-//        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
-//
-//        alunoService.concluirModulo(aluno, desafio);
-//
-//        verify(moduloService).buscarModuloPorId(idAleatorio);
-//    }
-//
-//    @Test
-//    @DisplayName("Deveria fazer desafios com sucesso")
-//    public void deveriaFazerDesafioComSUcesso() throws Exception {
-//        Integer idAleatorio = new Random().nextInt();
-//        Desafio desafio = retornarDesafio();
-//        desafio.setPontos(10);
-//        desafio.setId(idAleatorio);
-//        Aluno aluno = new Aluno();
-//        Set<Desafio> listaUm =  Set.of(retornarDesafio());
-//        Set<Desafio> listaDois =  Set.of(retornarDesafio(), retornarDesafio());
-//        aluno.setDesafios(listaUm) ;
-//        Optional<Aluno> alunoOptional = Optional.of(aluno);
-//        Modulo modulo = retornarModulo();
-//        modulo.setDesafios(listaDois);
-//
-//        when(desafioService.desafioPorId(anyInt())).thenReturn(desafio);
-//        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
-//        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
-//
-//        alunoService.fazerDesafio(idAleatorio,idAleatorio);
-//
-//        verify(desafioService,times(1)).desafioPorId(idAleatorio);
-//        verify(alunoRepository,times(1)).findById(idAleatorio);
-//    }
+    @Test
+    @DisplayName("Deveria concluir modulo corretamente")
+    public void deveriaConcluirModuloCorretamente() throws Exception {
+        Integer idAleatorio = new Random().nextInt();
+        Desafio desafio = retornarDesafio();
+        desafio.setPontos(10);
+        desafio.setId(idAleatorio);
+        Aluno aluno = retornarAluno();
+        Set<Desafio> listaUm =  Set.of(desafio);
+        Set<Desafio> listaDois =  Set.of(desafio);
+        aluno.setDesafios(listaUm);
+        Optional<Aluno> alunoOptional = Optional.of(aluno);
+        Modulo modulo = retornarModulo();
+        modulo.setDesafios(listaDois);
+        desafio.setModulo(modulo);
+        aluno.setModulos(Set.of(modulo));
+        modulo.setDesafios(new HashSet<>());
+        modulo.setAlunos(new HashSet<>());
+        aluno.setModulos(new HashSet<>());
+        aluno.setDesafios(new HashSet<>());
+
+        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
+        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
+        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
+
+        alunoService.concluirModulo(aluno, desafio);
+
+        verify(alunoRepository).save(aluno);
+    }
+
+    @Test
+    @DisplayName("Deveria fazer desafios com sucesso")
+    public void deveriaFazerDesafioComSUcesso() throws Exception {
+        Integer idAleatorio = new Random().nextInt();
+        Desafio desafio = retornarDesafio();
+        desafio.setPontos(10);
+        desafio.setId(idAleatorio);
+        Aluno aluno = retornarAluno();
+        Set<Desafio> listaUm =  Set.of(retornarDesafio());
+        Set<Desafio> listaDois =  Set.of(retornarDesafio(), retornarDesafio());
+        aluno.setDesafios(listaUm) ;
+        Optional<Aluno> alunoOptional = Optional.of(aluno);
+        Modulo modulo = retornarModulo();
+        modulo.setDesafios(listaDois);
+        modulo.setDesafios(new HashSet<>());
+        modulo.setAlunos(new HashSet<>());
+        aluno.setModulos(new HashSet<>());
+        aluno.setDesafios(new HashSet<>());
+
+        when(desafioService.desafioPorId(anyInt())).thenReturn(desafio);
+        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
+        when(moduloService.buscarModuloPorId(anyInt())).thenReturn(modulo);
+        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
+
+        alunoService.fazerDesafio(idAleatorio,idAleatorio);
+
+        verify(desafioService,times(1)).desafioPorId(idAleatorio);
+        verify(alunoRepository,times(1)).findById(idAleatorio);
+    }
+
+    @Test
+    @DisplayName("Deveria retornar exception quando aluno nao tiver desafios concluidos")
+    public void deveriaRetornarExceptionQuandoAlunoNaoTiverDesafiosConcluidos() {
+        Integer idAleatorio = new Random().nextInt();
+        Aluno aluno = retornarAluno();
+        aluno.setModulos(new HashSet<>());
+        aluno.setDesafios(new HashSet<>());
+        Optional<Aluno> alunoOptional = Optional.of(aluno);
+
+        when(alunoRepository.findById(anyInt())).thenReturn(alunoOptional);
+
+        assertThrows(RegraDeNegocioException.class, () -> alunoService.listarDesafiosConcluidos(idAleatorio));
+    }
 
 }
