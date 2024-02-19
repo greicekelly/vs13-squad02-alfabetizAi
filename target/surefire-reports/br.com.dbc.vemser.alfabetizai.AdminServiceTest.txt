@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: br.com.dbc.vemser.alfabetizai.AdminServiceTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.130 s -- in br.com.dbc.vemser.alfabetizai.AdminServiceTest
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in br.com.dbc.vemser.alfabetizai.AdminServiceTest
+>>>>>>> 7afebea2e151fb2dda61607fb69f172cbf585843

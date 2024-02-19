@@ -1,5 +1,8 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
@@ -302,4 +305,57 @@ public class Mock {
 
         return professorCreateDTO;
     }
+
+    public static Admin retornarAdmin(){
+        Admin admin = new Admin();
+        admin.setIdUsuario(1);
+        admin.setNome("Admin");
+        admin.setSobrenome("Um");
+        admin.setTelefone("48912345678");
+        admin.setEmail("adminUm@email.com");
+        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
+        admin.setSexo("M");
+        admin.setSenha("1234");
+        admin.setCpf("12345678911");
+        admin.setDescricao("Administrador de Sistema");
+        admin.setAtivo("S");
+
+        return admin;
+    }
+
+    public static Admin retornarAdminSegundo(){
+        Admin admin = new Admin();
+        admin.setIdUsuario(2);
+        admin.setNome("Admin");
+        admin.setSobrenome("Dois");
+        admin.setTelefone("51987654321");
+        admin.setEmail("AdminDois@email.com");
+        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
+        admin.setSexo("F");
+        admin.setSenha("1234");
+        admin.setCpf("12345678922");
+        admin.setDescricao("Administrador de Sistema");
+        admin.setAtivo("S");
+
+        return admin;
+    }
+
+    public static AdminCreateDTO retornarAdminCreateDTO(){
+        AdminCreateDTO adminCreateDTO = new AdminCreateDTO("Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "M","1234", "12345678911", "Admistrador de Sistema");
+
+        return adminCreateDTO;
+    }
+
+    public static AdminDTO retornarAdminDTO(){
+        AdminDTO adminDTO = new AdminDTO(1, "Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "S", "M", "12345678911", "Admintrador de Sistema");
+
+        return adminDTO;
+    }
+
+    public static AdminModuloDTO retornarAdminModuloDTO(){
+        AdminModuloDTO adminModuloDTO = new AdminModuloDTO(1,"teste", "admin", "48911223344", "teste@email.com", "S", "Admin");
+
+        return adminModuloDTO;
+    }
+
 }

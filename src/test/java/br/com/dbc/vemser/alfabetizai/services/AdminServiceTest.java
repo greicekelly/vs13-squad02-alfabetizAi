@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static br.com.dbc.vemser.alfabetizai.services.Mock.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -311,65 +312,12 @@ class AdminServiceTest {
         assertNotNull(moduloDTORetornado);
     }
 
-    public static Admin retornarAdmin(){
-        Admin admin = new Admin();
-        admin.setIdUsuario(1);
-        admin.setNome("Tiago");
-        admin.setSobrenome("Raupp");
-        admin.setTelefone("48912345678");
-        admin.setEmail("tiago@email.com");
-        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
-        admin.setSexo("M");
-        admin.setSenha("1234");
-        admin.setCpf("12345678911");
-        admin.setDescricao("Administrador de Sistema");
-        admin.setAtivo("S");
-
-        return admin;
-    }
-
-    public static Admin retornarAdminSegundo(){
-        Admin admin = new Admin();
-        admin.setIdUsuario(2);
-        admin.setNome("Greice");
-        admin.setSobrenome("Rosa");
-        admin.setTelefone("51987654321");
-        admin.setEmail("greice@email.com");
-        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
-        admin.setSexo("F");
-        admin.setSenha("1234");
-        admin.setCpf("12345678922");
-        admin.setDescricao("Administrador de Sistema");
-        admin.setAtivo("S");
-
-        return admin;
-    }
-
-    public static AdminCreateDTO retornarAdminCreateDTO(){
-        AdminCreateDTO adminCreateDTO = new AdminCreateDTO("Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "M","1234", "12345678911", "Admistrador de Sistema");
-
-        return adminCreateDTO;
-    }
-
-    public static AdminDTO retornarAdminDTO(){
-//        AdminDTO adminDTO = new AdminDTO(2, "Shaienne", "Oliveira", "11932165487", "shaienne@email.com", LocalDate.of(1990, 01,01), "S", "F", "12345678933", "Admintrador de Dados");
-
-        AdminDTO adminDTO = new AdminDTO(1, "Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "S", "M", "12345678911", "Admintrador de Sistema");
-
-        return adminDTO;
-    }
-
-    public static AdminDTO retornarAdminDTOSegundo(){
-        AdminDTO adminDTO = new AdminDTO(2, "Greice", "Rosa", "51987654321", "greice@email.com", LocalDate.parse("1990-10-10"), "S", "F", "12345678922", "Admintrador de Sistema");
-
-        return adminDTO;
-    }
 
     public static Page<Admin> criarPageAdminsMock(Pageable pageable) {
 
         List<Admin> admins = new ArrayList<>();
         admins.add(retornarAdmin());
-        admins.add(retornarAdminSegundo());
+        admins.add(retornarAdmin());
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), admins.size());
@@ -380,30 +328,12 @@ class AdminServiceTest {
 
         List<AdminDTO> admins = new ArrayList<>();
         admins.add(retornarAdminDTO());
-        admins.add(retornarAdminDTOSegundo());
+        admins.add(retornarAdminDTO());
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), admins.size());
         return new PageImpl<>(admins.subList(start, end), pageable, admins.size());
     }
 
-    public static AdminModuloDTO retornarAdminModuloDTO(){
-        AdminModuloDTO adminModuloDTO = new AdminModuloDTO(1,"teste", "admin", "48911223344", "teste@email.com", "S", "Admin");
 
-        return adminModuloDTO;
-    }
-
-    public static ProfessorDTO retornarProfessorDTO(){
-        ProfessorDTO professorDTO = new ProfessorDTO(1, "Professor", "teste", "48999887766", "professor@email.com", "professor", "S");
-
-        return professorDTO;
-    }
-
-
-    public static ModuloDTO retornarModuloDTO(){
-        ModuloDTO moduloDTO = new ModuloDTO(1,1,"Modulo teste","Conteudo teste", "N", retornarAdminModuloDTO(), retornarProfessorDTO(), ClassificacaoModulo.INICIANTE, "S");
-
-
-        return moduloDTO;
-    }
 }
