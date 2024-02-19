@@ -103,18 +103,6 @@ public class AlunoService {
         }
     }
 
-    public void removerFisicamente(int id) throws Exception {
-        Optional<Aluno> objetoOptional = alunoRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Aluno aluno = objetoOptional.get();
-
-            alunoRepository.delete(aluno);
-
-        } else {
-            throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
-
     public List<DesafioDTO> listarDesafiosConcluidos(Integer idAluno) throws Exception {
         Optional<Aluno> objetoOptional = alunoRepository.findById(idAluno);
         if (objetoOptional.isPresent()) {

@@ -52,7 +52,7 @@ public class ResponsavelService {
         return responsavelDTO;
     }
 
-    private Responsavel responsavelPorCpfEmail(String cpf, String email) throws Exception {
+    public Responsavel responsavelPorCpfEmail(String cpf, String email) throws Exception {
         Responsavel responsavel = responsavelRepository.findAllByCpfOrEmail(cpf, email);
         if (responsavel != null) {
             throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
@@ -135,23 +135,6 @@ public class ResponsavelService {
             responsavel.setAtivo("N");
 
             responsavel = responsavelRepository.save(responsavel);
-
-            ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
-
-            emailService.sendEmailResponsavel(responsavelDTO, "Cadastro excluido, ","delete");
-        } else {
-            throw new ObjetoNaoEncontradoException("Responsavel com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
-
-    public void removerFisicamente(int id) throws Exception {
-        Optional<Responsavel> objetoOptional = responsavelRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Responsavel responsavel = objetoOptional.get();
-
-            responsavel.setCargos(null);
-
-            responsavelRepository.delete(responsavel);
 
             ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
 
