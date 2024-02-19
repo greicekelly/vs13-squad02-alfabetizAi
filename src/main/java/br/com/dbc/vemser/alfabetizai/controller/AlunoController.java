@@ -75,14 +75,6 @@ public class AlunoController implements IAlunoController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-fisico/{idAluno}")
-    public ResponseEntity<Void> deleteFisico(@PathVariable("idAluno") Integer id) throws Exception {
-        log.info("Deletando aluno");
-        alunoService.removerFisicamente(id);
-        log.info("Aluno deletado");
-        return ResponseEntity.ok().build();
-    }
-
     @PutMapping("/{idAluno}/{idDesafio}")
     public ResponseEntity<Void> fazerDesafio(@PathVariable("idAluno") Integer idAluno,
                                               @PathVariable("idDesafio") Integer idDesafio) throws Exception {

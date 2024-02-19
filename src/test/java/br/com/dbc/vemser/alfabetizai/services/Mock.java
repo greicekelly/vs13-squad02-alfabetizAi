@@ -7,12 +7,16 @@ import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelComAlunosDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.models.*;
 
 import java.time.LocalDate;
 import java.util.Random;
+import java.util.Set;
 
 public class Mock {
 
@@ -37,7 +41,7 @@ public class Mock {
 
     public static Desafio retornarDesafio(){
         Desafio desafio = new Desafio();
-        desafio.setId(72);
+        desafio.setId(new Random().nextInt());
         desafio.setTitulo("Escolha a letra inicial");
         desafio.setConteudo("Aprenda as consoantes");
         desafio.setTipo(TipoDesafio.valueOf("QUIZ"));
@@ -115,6 +119,54 @@ public class Mock {
     public static Responsavel retornarResponsavel() {
         Responsavel responsavel = new Responsavel();
         responsavel.setSenha("2344");
+        responsavel.setCpf("11111111111");
+        responsavel.setSexo("F");
+        responsavel.setTelefone("8776655753");
+        responsavel.setNome("Teste");
+        responsavel.setDataDeNascimento(LocalDate.now());
+        responsavel.setSobrenome("da silva");
+        responsavel.setEmail("teste@email.com");
+        return responsavel;
+    }
+
+    public static Usuario retornarUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setSenha("2344");
+        usuario.setCpf("11111111111");
+        usuario.setSexo("F");
+        usuario.setTelefone("8776655753");
+        usuario.setNome("Teste");
+        usuario.setDataDeNascimento(LocalDate.now());
+        usuario.setSobrenome("da silva");
+        usuario.setEmail("teste@email.com");
+        return usuario;
+    }
+
+    public static ResponsavelComAlunosDTO retornarResponsavelComALunosDTO(AlunoDTO aluno) {
+        ResponsavelComAlunosDTO responsavel = new ResponsavelComAlunosDTO();
+        responsavel.setCpf("11111111111");
+        responsavel.setSexo("F");
+        responsavel.setTelefone("8776655753");
+        responsavel.setNome("Teste");
+        responsavel.setDataDeNascimento(LocalDate.now());
+        responsavel.setSobrenome("da silva");
+        responsavel.setEmail("teste@email.com");
+        responsavel.setAlunos(Set.of(aluno));
+        return responsavel;
+    }
+
+    public static ResponsavelDTO retornarResponsavelDTO() {
+        ResponsavelDTO responsavel = new ResponsavelDTO();
+        responsavel.setCpf("11111111111");
+        responsavel.setSexo("F");
+        responsavel.setTelefone("8776655753");
+        responsavel.setNome("Teste");
+        responsavel.setDataDeNascimento(LocalDate.now());
+        return responsavel;
+    }
+
+    public static ResponsavelCreateDTO retornarResponsavelCreateDTO() {
+        ResponsavelCreateDTO responsavel = new ResponsavelCreateDTO();
         responsavel.setCpf("11111111111");
         responsavel.setSexo("F");
         responsavel.setTelefone("8776655753");
