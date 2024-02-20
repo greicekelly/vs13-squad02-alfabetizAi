@@ -54,6 +54,7 @@ public class Modulo {
     @ManyToMany(mappedBy = "modulos")
     private Set<Aluno> alunos;
 
+
     public boolean isEmpty() {
         return false;
     }

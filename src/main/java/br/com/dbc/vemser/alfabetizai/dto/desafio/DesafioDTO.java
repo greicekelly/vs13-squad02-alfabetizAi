@@ -5,9 +5,11 @@ import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class DesafioDTO {
@@ -25,4 +27,6 @@ public class DesafioDTO {
     private Integer pontos;
     private ModuloDTO modulo;
     private String ativo;
+
+
 }

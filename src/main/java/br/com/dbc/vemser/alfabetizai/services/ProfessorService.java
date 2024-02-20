@@ -1,7 +1,9 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Cargo;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,7 @@ public class ProfessorService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final LogService logService;
 
     public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
         Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);
@@ -43,6 +47,8 @@ public class ProfessorService {
         professorEntity.setCargos(List.of(cargo));
         professorEntity = professorRepository.save(professorEntity);
 
+        logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, "USUARIO PROFESSOR CADASTRADO", LocalDate.now().toString()));
+
         ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);
 
         emailService.sendEmailProfessor(professorDTO, "Cadastro efetuado, ", "create");
@@ -50,7 +56,7 @@ public class ProfessorService {
         return professorDTO;
     }
 
-    private Professor professorPorCpfEmail(String cpf, String email) throws Exception {
+    public Professor professorPorCpfEmail(String cpf, String email) throws Exception {
         Professor professor = professorRepository.findAllByCpfOrEmail(cpf, email);
         if (professor != null) {
             throw new RegraDeNegocioException("Cpf ou Email já estão em uso.");
@@ -61,12 +67,6 @@ public class ProfessorService {
 
     public List<ProfessorDTO> listar() {
         List<Professor> professors = professorRepository.findAll();
-
-        return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
-    }
-
-    public List<ProfessorDTO> listarAtivos(char ativo) {
-        List<Professor> professors = professorRepository.findAllByAtivo(ativo);
 
         return professors.stream().map(professor -> objectMapper.convertValue(professor, ProfessorDTO.class)).toList();
     }
@@ -98,6 +98,8 @@ public class ProfessorService {
 
             professor = professorRepository.save(professor);
 
+            logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, "USUARIO PROFESSOR ATUALIZADO", LocalDate.now().toString()));
+
             ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
 
             emailService.sendEmailProfessor(professorDTO, "Cadastro atualizado, ", "update");
@@ -118,22 +120,7 @@ public class ProfessorService {
 
             professor = professorRepository.save(professor);
 
-            ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
-
-            emailService.sendEmailProfessor(professorDTO, "Cadastro excluido, ","delete");
-        } else {
-            throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
-        }
-    }
-
-    public void removerFisicamente(int id) throws Exception {
-        Optional<Professor> objetoOptional = professorRepository.findById(id);
-        if (objetoOptional.isPresent()) {
-            Professor professor = objetoOptional.get();
-
-            professor.setCargos(null);
-
-            professorRepository.delete(professor);
+            logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, "USUARIO PROFESSOR REMOVIDO", LocalDate.now().toString()));
 
             ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);
 
@@ -142,4 +129,5 @@ public class ProfessorService {
             throw new ObjetoNaoEncontradoException("Professor com o ID " + id + " não encontrado informe um id valido");
         }
     }
+
 }
