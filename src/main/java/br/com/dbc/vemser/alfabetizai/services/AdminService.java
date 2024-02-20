@@ -52,7 +52,7 @@ public class AdminService {
 
         adminEntity = adminRepository.save(adminEntity);
 
-        logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN CRIADO", LocalDate.now().toString()));
+        logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN CADASTRADO", LocalDate.now().toString()));
 
         AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
 

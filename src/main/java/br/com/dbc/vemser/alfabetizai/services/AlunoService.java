@@ -157,6 +157,8 @@ public class AlunoService {
             Aluno aluno = objetoOptional.get();
             aluno.getModulos().add(modulo);
             alunoRepository.save(aluno);
+
+            logService.registerLog(new LogCreateDTO(TipoLog.ALUNO, "MODULO CONCLUIDO", LocalDate.now().toString()));
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
         }
