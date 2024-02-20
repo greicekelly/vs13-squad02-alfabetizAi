@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: br.com.dbc.vemser.alfabetizai.services.DesafioServiceTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.439 s -- in br.com.dbc.vemser.alfabetizai.services.DesafioServiceTest
+=======
 Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.099 s -- in br.com.dbc.vemser.alfabetizai.services.DesafioServiceTest
+>>>>>>> 7afebea2e151fb2dda61607fb69f172cbf585843
