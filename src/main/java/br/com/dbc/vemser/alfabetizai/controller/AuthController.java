@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAuthController;
+import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.login.LoginDTO;
@@ -8,13 +9,11 @@ import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Usuario;
 import br.com.dbc.vemser.alfabetizai.security.TokenService;
-import br.com.dbc.vemser.alfabetizai.services.AdminService;
-import br.com.dbc.vemser.alfabetizai.services.ProfessorService;
-import br.com.dbc.vemser.alfabetizai.services.ResponsavelService;
-import br.com.dbc.vemser.alfabetizai.services.UsuarioService;
+import br.com.dbc.vemser.alfabetizai.services.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,6 +41,7 @@ public class AuthController implements IAuthController {
     private final AdminService adminService;
     private final ResponsavelService responsavelService;
     private final UsuarioService usuarioService;
+    private final LogService logService;
 
     @PostMapping
     public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws Exception {
@@ -59,6 +59,19 @@ public class AuthController implements IAuthController {
             Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
 
             log.info("Token Gerado.");
+
+            TipoLog tipo = usuarioValidado.getCargos().stream()
+                    .map(cargo -> cargo.getNome())
+                    .findFirst()
+                    .map(TipoLog::fromCargo)
+                    .orElseThrow(() -> new RegraDeNegocioException("Usuário sem cargo definido"));
+
+            LogCreateDTO logCreateDTO = new LogCreateDTO();
+            logCreateDTO.setTipoLog(tipo);
+            logCreateDTO.setDescricao("Efetuado Login");
+            logCreateDTO.setData(LocalDate.now().toString());
+
+            logService.registerLog(logCreateDTO);
 
             return new ResponseEntity<>(tokenService.generateToken(usuarioValidado), HttpStatus.OK);
         } catch (AuthenticationException e) {
@@ -82,11 +95,6 @@ public class AuthController implements IAuthController {
     public ResponseEntity<ResponsavelDTO> cadastrarResponsavel(@Valid @RequestBody ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         ResponsavelDTO responsavelAdicionado = responsavelService.criar(responsavelCreateDTO);
         return ResponseEntity.ok(responsavelAdicionado);
-    }
-
-    @GetMapping("/usuario-logado")
-    public ResponseEntity<Optional<Usuario>>usuarioLogado()throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
     }
 
     @PutMapping("/alterar_senha")

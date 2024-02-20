@@ -5,10 +5,12 @@ import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
 import br.com.dbc.vemser.alfabetizai.enums.ClassificacaoModulo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class ModuloDTO {
@@ -22,4 +24,6 @@ public class ModuloDTO {
     private ProfessorDTO professor;
     private ClassificacaoModulo classificacao;
     private String ativo;
+
+
 }

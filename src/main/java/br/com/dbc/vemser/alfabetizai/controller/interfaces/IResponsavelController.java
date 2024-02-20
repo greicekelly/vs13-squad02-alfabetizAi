@@ -101,15 +101,4 @@ public interface IResponsavelController {
     )
     @DeleteMapping("/{idResponsavel}")
     public ResponseEntity<Void> deleteLogico(@PathVariable("idResponsavel") Integer id) throws Exception;
-
-    @Operation(summary = "Delatar responsavel fisicamente", description = "Deleta o usuário responsavel com o id informado")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Responsavel deletado com sucesso"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @DeleteMapping("/delete-fisico/{idResponsavel}")
-    public ResponseEntity<Void> deleteFisico(@PathVariable("idResponsavel") Integer id) throws Exception;
 }
