@@ -6,8 +6,8 @@ import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
-import br.com.dbc.vemser.alfabetizai.models.Aluno;
 import br.com.dbc.vemser.alfabetizai.models.Responsavel;
+
 import br.com.dbc.vemser.alfabetizai.repository.IResponsavelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -17,9 +17,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -205,5 +210,33 @@ class ResponsavelServiceTest {
         int idNaoExistente = new Random().nextInt();
 
         assertThrows(ObjetoNaoEncontradoException.class, () -> responsavelService.buscarResponsavelPorIdComAlunos(idNaoExistente));
+    }
+
+    @Test
+    @DisplayName("Deveria retornar a lista de todo os usuários Responsavel com sucesso")
+    void listarTodosUsuariosResponsavelComSucesso() throws Exception {
+        // ARRANGE - GIVEN
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Responsavel> responsaveisMock = criarPageResponsaveisMock(pageable);
+
+        // ACT - WHEN
+        when(responsavelRepository.findAll(pageable)).thenReturn(responsaveisMock);
+
+        Page<ResponsavelDTO> responsavelDTOPageRetornado = responsavelService.listar(pageable);
+
+        // ASSERT / THEN
+        assertNotNull(responsavelDTOPageRetornado);
+        assertEquals(2, responsavelDTOPageRetornado.getContent().size());
+    }
+
+    public static Page<Responsavel> criarPageResponsaveisMock(Pageable pageable) {
+
+        List<Responsavel> responsaveis = new ArrayList<>();
+        responsaveis.add(retornarResponsavel());
+        responsaveis.add(retornarResponsavel());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), responsaveis.size());
+        return new PageImpl<>(responsaveis.subList(start, end), pageable, responsaveis.size());
     }
 }
