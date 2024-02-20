@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.INotificacaoController;
 import br.com.dbc.vemser.alfabetizai.dto.log.LogContadorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.log.LogDTO;
 import br.com.dbc.vemser.alfabetizai.dto.notificacao.NotificacaoContadorDTO;
@@ -24,7 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notificacao")
-public class NotificacaoController {
+public class NotificacaoController implements INotificacaoController {
   private final NotificacaoService notificacaoService;
 
   @GetMapping()

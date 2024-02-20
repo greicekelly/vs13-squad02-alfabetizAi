@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 
+import br.com.dbc.vemser.alfabetizai.controller.interfaces.ILogController;
 import br.com.dbc.vemser.alfabetizai.dto.log.LogContadorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.log.LogDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/log")
-public class LogController {
+public class LogController implements ILogController {
   private final LogService logService;
 
   @GetMapping()
