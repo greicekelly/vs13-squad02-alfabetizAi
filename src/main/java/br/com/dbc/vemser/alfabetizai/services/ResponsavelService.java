@@ -1,9 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelComAlunosDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
+import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Cargo;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,8 @@ public class ResponsavelService {
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+
+    private final LogService logService;
 
     public ResponsavelDTO criar(ResponsavelCreateDTO responsavelCreateDTO) throws Exception {
         Responsavel responsavelEntity = objectMapper.convertValue(responsavelCreateDTO, Responsavel.class);
@@ -44,6 +49,8 @@ public class ResponsavelService {
         responsavelEntity.setCargos(List.of(cargo));
 
         responsavelEntity = responsavelRepository.save(responsavelEntity);
+
+        logService.registerLog(new LogCreateDTO(TipoLog.RESPONSAVEL, "USUARIO RESPONSAVEL CADASTRADO", LocalDate.now().toString()));
 
         ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavelEntity, ResponsavelDTO.class);
 
@@ -116,6 +123,8 @@ public class ResponsavelService {
 
             responsavel = responsavelRepository.save(responsavel);
 
+            logService.registerLog(new LogCreateDTO(TipoLog.RESPONSAVEL, "USUARIO RESPONSAVEL ATUALIZADO", LocalDate.now().toString()));
+
             ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
 
             emailService.sendEmailResponsavel(responsavelDTO, "Cadastro atualizado, ", "update");
@@ -135,6 +144,8 @@ public class ResponsavelService {
             responsavel.setAtivo("N");
 
             responsavel = responsavelRepository.save(responsavel);
+
+            logService.registerLog(new LogCreateDTO(TipoLog.RESPONSAVEL, "USUARIO RESPONSAVEL REMOVIDO", LocalDate.now().toString()));
 
             ResponsavelDTO responsavelDTO = objectMapper.convertValue(responsavel, ResponsavelDTO.class);
 
