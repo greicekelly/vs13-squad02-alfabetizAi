@@ -1,11 +1,13 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
-import br.com.dbc.vemser.alfabetizai.dto.Log.LogCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.dto.notificacao.NotificacaoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
+import br.com.dbc.vemser.alfabetizai.enums.TipoStatus;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
@@ -20,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,8 @@ public class AlunoService {
     private final ResponsavelService responsavelService;
 
     private final LogService logService;
+
+    private final NotificacaoService notificacaoService;
 
     public AlunoDTO criar(Integer idResponsavel, AlunoCreateDTO alunoCreateDTO) throws Exception {
         Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
@@ -158,7 +161,7 @@ public class AlunoService {
             aluno.getModulos().add(modulo);
             alunoRepository.save(aluno);
 
-            logService.registerLog(new LogCreateDTO(TipoLog.ALUNO, "MODULO CONCLUIDO", LocalDate.now().toString()));
+            notificacaoService.registerEvent(new NotificacaoCreateDTO(TipoStatus.CONCLUIDO, "MODULO CONCLUIDO - "+modulo.getTitulo(), aluno.getNomeAluno(), aluno.getResponsavel().getNome(), aluno.getResponsavel().getTelefone(), LocalDate.now().toString()));
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + idALuno + " não encontrado informe um id valido");
         }
@@ -173,7 +176,7 @@ public class AlunoService {
             if(jaFezDesafio(aluno, desafio)) {
                 throw new RegraDeNegocioException("Aluno ja concluiu este desafio anteriormente");
             }
-            
+            notificacaoService.registerEvent(new NotificacaoCreateDTO(TipoStatus.INICIADO, "DESAFIO INICIADO - "+desafio.getTitulo(), aluno.getNomeAluno(), aluno.getResponsavel().getNome(), aluno.getResponsavel().getTelefone(), LocalDate.now().toString()));
             aluno.getDesafios().add(desafio);
             aluno.adicionarPontuacao(desafio.getPontos());
             concluirModulo(aluno,desafio);
@@ -187,6 +190,7 @@ public class AlunoService {
        Modulo modulo = moduloService.buscarModuloPorId(desafio.getModulo().getId());
        if (aluno.getDesafios().containsAll(modulo.getDesafios())) {
            fazerModulo(aluno.getIdAluno(), desafio.getModulo().getId());
+           notificacaoService.registerEvent(new NotificacaoCreateDTO(TipoStatus.EM_ANDAMENTO, "MODULO EM ANDAMENTO - "+modulo.getTitulo(), aluno.getNomeAluno(), aluno.getResponsavel().getNome(), aluno.getResponsavel().getTelefone(), LocalDate.now().toString()));
        }
     }
 

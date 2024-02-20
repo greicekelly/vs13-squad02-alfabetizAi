@@ -1,8 +1,8 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 
-import br.com.dbc.vemser.alfabetizai.dto.Log.LogContadorDTO;
-import br.com.dbc.vemser.alfabetizai.dto.Log.LogDTO;
+import br.com.dbc.vemser.alfabetizai.dto.log.LogContadorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.log.LogDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.services.LogService;

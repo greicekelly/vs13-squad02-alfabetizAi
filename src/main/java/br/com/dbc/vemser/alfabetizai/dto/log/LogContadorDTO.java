@@ -1,4 +1,4 @@
-package br.com.dbc.vemser.alfabetizai.dto.Log;
+package br.com.dbc.vemser.alfabetizai.dto.log;
 
 import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import lombok.AllArgsConstructor;

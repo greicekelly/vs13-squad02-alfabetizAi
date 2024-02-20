@@ -1,7 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.controller;
 
 import br.com.dbc.vemser.alfabetizai.controller.interfaces.IAuthController;
-import br.com.dbc.vemser.alfabetizai.dto.Log.LogCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.login.LoginDTO;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")

@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,7 +41,6 @@ public class ModuloService {
         modulo.setAtivo("S");
         modulo.setFoiAprovado("N");
 
-        Modulo moduloAdicionado = converterDTO(moduloCreateDTO);
         return retornarDTO(moduloRepository.save(modulo));
     }
 
@@ -56,14 +54,6 @@ public class ModuloService {
 
         return objectMapper.convertValue(modulo, ModuloDTO.class);
 
-//        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
-//
-//        if (moduloOptional.isPresent()) {
-//            Modulo modulo = moduloOptional.get();
-//            return objectMapper.convertValue(modulo, ModuloDTO.class);
-//        } else {
-//            throw new RegraDeNegocioException("Módulo não encontrado.");
-//        }
     }
 
     public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
