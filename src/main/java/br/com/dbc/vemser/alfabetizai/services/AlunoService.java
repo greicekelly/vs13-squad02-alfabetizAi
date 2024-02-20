@@ -1,9 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.Log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Aluno;
@@ -15,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,6 +36,8 @@ public class AlunoService {
 
     private final ResponsavelService responsavelService;
 
+    private final LogService logService;
+
     public AlunoDTO criar(Integer idResponsavel, AlunoCreateDTO alunoCreateDTO) throws Exception {
         Aluno alunoEntity = objectMapper.convertValue(alunoCreateDTO, Aluno.class);
 
@@ -41,6 +46,8 @@ public class AlunoService {
 
         alunoEntity.setAtivo("S");
         alunoRepository.save(alunoEntity);
+
+        logService.registerLog(new LogCreateDTO(TipoLog.ALUNO, "ALUNO CADASTRADO", LocalDate.now().toString()));
 
         return objectMapper.convertValue(alunoEntity, AlunoDTO.class);
     }
@@ -82,6 +89,8 @@ public class AlunoService {
 
             aluno = alunoRepository.save(aluno);
 
+            logService.registerLog(new LogCreateDTO(TipoLog.ALUNO, "ALUNO ATUALIZADO", LocalDate.now().toString()));
+
             AlunoDTO alunoDTO = objectMapper.convertValue(aluno, AlunoDTO.class);
 
             return alunoDTO;
@@ -99,6 +108,9 @@ public class AlunoService {
             aluno.setAtivo("N");
 
             alunoRepository.save(aluno);
+
+            logService.registerLog(new LogCreateDTO(TipoLog.ALUNO, "ALUNO REMOVIDO", LocalDate.now().toString()));
+
         } else {
             throw new ObjetoNaoEncontradoException("Aluno com o ID " + id + " não encontrado informe um id valido");
         }

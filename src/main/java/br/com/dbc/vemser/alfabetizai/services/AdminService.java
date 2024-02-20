@@ -1,9 +1,11 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.Log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
 import br.com.dbc.vemser.alfabetizai.models.Admin;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,8 @@ public class AdminService {
     private final EmailService emailService;
     private final ModuloService moduloService;
     private final PasswordEncoder passwordEncoder;
+
+    private final LogService logService;
 
 
     public AdminDTO criar(AdminCreateDTO adminCreateDTO) throws Exception {
@@ -46,6 +51,8 @@ public class AdminService {
         adminEntity.setCargos(List.of(cargo));
 
         adminEntity = adminRepository.save(adminEntity);
+
+        logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN CRIADO", LocalDate.now().toString()));
 
         AdminDTO adminDTO = objectMapper.convertValue(adminEntity, AdminDTO.class);
 
@@ -96,6 +103,8 @@ public class AdminService {
 
             adminAtualizacao = adminRepository.save(adminAtualizacao);
 
+            logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN ATUALIZADO", LocalDate.now().toString()));
+
             AdminDTO adminDTO = objectMapper.convertValue(adminAtualizacao,AdminDTO.class);
 
             emailService.sendEmailAdmin(adminDTO, "Cadastro atualizado, ", "update");
@@ -120,6 +129,8 @@ public class AdminService {
 
             admin = adminRepository.save(admin);
 
+            logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN REMOVIDO", LocalDate.now().toString()));
+
             AdminDTO adminDTO = objectMapper.convertValue(admin, AdminDTO.class);
 
             emailService.sendEmailAdmin(adminDTO, "Cadastro excluido, ","delete");
@@ -136,6 +147,8 @@ public class AdminService {
             admin.setCargos(null);
 
             adminRepository.delete(admin);
+
+            logService.registerLog(new LogCreateDTO(TipoLog.ADMIN, "USUARIO ADMIN DELETADO", LocalDate.now().toString()));
 
             AdminDTO adminDTO = objectMapper.convertValue(admin, AdminDTO.class);
 

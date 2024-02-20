@@ -1,6 +1,7 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
 import br.com.dbc.vemser.alfabetizai.dto.Log.LogContadorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.Log.LogCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.Log.LogDTO;
 import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
 import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
@@ -77,6 +78,11 @@ public class LogService {
 
   public List<LogDTO> findAllAfterDate(String data) {
     return logRepository.findAllAfterDate(data).stream().map(obj -> objectMapper.convertValue(obj, LogDTO.class)).collect(Collectors.toList());
+  }
+
+  public void registerLog(LogCreateDTO logCreateDTO){
+    Log log = objectMapper.convertValue(logCreateDTO, Log.class);
+    logRepository.save(log);
   }
 
 }
