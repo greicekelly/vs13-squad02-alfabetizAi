@@ -1,0 +1,272 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProfessorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.dbc.vemser.alfabetizai.services</a>
+</div>
+
+<h1>Coverage Summary for Class: ProfessorService (br.com.dbc.vemser.alfabetizai.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProfessorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (55/55)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$2KFWdmY8</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$R8I7n1ze</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$SxTXlaTk</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$VOuWhYGW</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$W9TNcoBV</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$wiOTz1EH</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$XDNQNuyc</td>
+  </tr>
+  <tr>
+    <td class="name">ProfessorService$MockitoMock$67070358$auxiliary$zQCyTtn2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (55/55)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package br.com.dbc.vemser.alfabetizai.services;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.log.LogCreateDTO;
+<i class="no-highlight">4</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
+<i class="no-highlight">5</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+<i class="no-highlight">6</i>&nbsp;import br.com.dbc.vemser.alfabetizai.enums.TipoLog;
+<i class="no-highlight">7</i>&nbsp;import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+<i class="no-highlight">8</i>&nbsp;import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+<i class="no-highlight">9</i>&nbsp;import br.com.dbc.vemser.alfabetizai.models.Cargo;
+<i class="no-highlight">10</i>&nbsp;import br.com.dbc.vemser.alfabetizai.models.Professor;
+<i class="no-highlight">11</i>&nbsp;import br.com.dbc.vemser.alfabetizai.repository.IProfessorRepository;
+<i class="no-highlight">12</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">13</i>&nbsp;import lombok.AllArgsConstructor;
+<i class="no-highlight">14</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i class="no-highlight">15</i>&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
+<i class="no-highlight">16</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;import java.time.LocalDate;
+<i class="no-highlight">19</i>&nbsp;import java.util.List;
+<i class="no-highlight">20</i>&nbsp;import java.util.Optional;
+<i class="no-highlight">21</i>&nbsp;
+<b class="fc"><i class="no-highlight">22</i>&nbsp;@AllArgsConstructor</b>
+<b class="fc"><i class="no-highlight">23</i>&nbsp;@Slf4j</b>
+<i class="no-highlight">24</i>&nbsp;@Service
+<i class="no-highlight">25</i>&nbsp;public class ProfessorService {
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    private final IProfessorRepository professorRepository;
+<i class="no-highlight">28</i>&nbsp;    private final ObjectMapper objectMapper;
+<i class="no-highlight">29</i>&nbsp;    private final EmailService emailService;
+<i class="no-highlight">30</i>&nbsp;    private final PasswordEncoder passwordEncoder;
+<i class="no-highlight">31</i>&nbsp;    private final LogService logService;
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;    public ProfessorDTO criar(ProfessorCreateDTO professorCreateDTO) throws Exception {
+<b class="fc"><i class="no-highlight">34</i>&nbsp;        Professor professorEntity = objectMapper.convertValue(professorCreateDTO, Professor.class);</b>
+<i class="no-highlight">35</i>&nbsp;
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        professorPorCpfEmail(professorCreateDTO.getCpf(), professorCreateDTO.getEmail());</b>
+<i class="no-highlight">37</i>&nbsp;
+<b class="fc"><i class="no-highlight">38</i>&nbsp;        String senha = passwordEncoder.encode(professorEntity.getPassword());</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;        professorEntity.setSenha(senha);</b>
+<i class="no-highlight">40</i>&nbsp;
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        professorEntity.setAtivo(&quot;S&quot;);</b>
+<i class="no-highlight">42</i>&nbsp;
+<b class="fc"><i class="no-highlight">43</i>&nbsp;        Cargo cargo = new Cargo();</b>
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        cargo.setIdCargo(2);</b>
+<b class="fc"><i class="no-highlight">45</i>&nbsp;        cargo.setNome(&quot;ROLE_PROFESSOR&quot;);</b>
+<i class="no-highlight">46</i>&nbsp;
+<b class="fc"><i class="no-highlight">47</i>&nbsp;        professorEntity.setCargos(List.of(cargo));</b>
+<b class="fc"><i class="no-highlight">48</i>&nbsp;        professorEntity = professorRepository.save(professorEntity);</b>
+<i class="no-highlight">49</i>&nbsp;
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, &quot;USUARIO PROFESSOR CADASTRADO&quot;, LocalDate.now().toString()));</b>
+<i class="no-highlight">51</i>&nbsp;
+<b class="fc"><i class="no-highlight">52</i>&nbsp;        ProfessorDTO professorDTO = objectMapper.convertValue(professorEntity, ProfessorDTO.class);</b>
+<i class="no-highlight">53</i>&nbsp;
+<b class="fc"><i class="no-highlight">54</i>&nbsp;        emailService.sendEmailProfessor(professorDTO, &quot;Cadastro efetuado, &quot;, &quot;create&quot;);</b>
+<i class="no-highlight">55</i>&nbsp;
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        return professorDTO;</b>
+<i class="no-highlight">57</i>&nbsp;    }
+<i class="no-highlight">58</i>&nbsp;
+<i class="no-highlight">59</i>&nbsp;    public Professor professorPorCpfEmail(String cpf, String email) throws Exception {
+<b class="fc"><i class="no-highlight">60</i>&nbsp;        Professor professor = professorRepository.findAllByCpfOrEmail(cpf, email);</b>
+<b class="fc"><i class="no-highlight">61</i>&nbsp;        if (professor != null) {</b>
+<b class="fc"><i class="no-highlight">62</i>&nbsp;            throw new RegraDeNegocioException(&quot;Cpf ou Email já estão em uso.&quot;);</b>
+<i class="no-highlight">63</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">64</i>&nbsp;            return professor;</b>
+<i class="no-highlight">65</i>&nbsp;        }
+<i class="no-highlight">66</i>&nbsp;    }
+<i class="no-highlight">67</i>&nbsp;
+<i class="no-highlight">68</i>&nbsp;    public List&lt;ProfessorDTO&gt; listar() {
+<b class="fc"><i class="no-highlight">69</i>&nbsp;        List&lt;Professor&gt; professors = professorRepository.findAll();</b>
+<i class="no-highlight">70</i>&nbsp;
+<b class="fc"><i class="no-highlight">71</i>&nbsp;        return professors.stream().map(professor -&gt; objectMapper.convertValue(professor, ProfessorDTO.class)).toList();</b>
+<i class="no-highlight">72</i>&nbsp;    }
+<i class="no-highlight">73</i>&nbsp;
+<i class="no-highlight">74</i>&nbsp;    public ProfessorDTO buscarProfessorPorId(Integer id) throws ObjetoNaoEncontradoException {
+<b class="fc"><i class="no-highlight">75</i>&nbsp;        Optional&lt;Professor&gt; objetoOptional = professorRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">77</i>&nbsp;            return objectMapper.convertValue(objetoOptional.get(), ProfessorDTO.class);</b>
+<i class="no-highlight">78</i>&nbsp;
+<i class="no-highlight">79</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">80</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Professor com o ID &quot; + id + &quot; não encontrado informe um id valido&quot;);</b>
+<i class="no-highlight">81</i>&nbsp;        }
+<i class="no-highlight">82</i>&nbsp;    }
+<i class="no-highlight">83</i>&nbsp;
+<i class="no-highlight">84</i>&nbsp;    public ProfessorDTO atualizar(Integer id, ProfessorCreateDTO professorCreateDTO) throws Exception {
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        Optional&lt;Professor&gt; objetoOptional = professorRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">86</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">87</i>&nbsp;            Professor professor = objetoOptional.get();</b>
+<b class="fc"><i class="no-highlight">88</i>&nbsp;            Professor professorAtualizacoes = objectMapper.convertValue(professorCreateDTO, Professor.class);</b>
+<b class="fc"><i class="no-highlight">89</i>&nbsp;            professor.setNome(professorAtualizacoes.getNome());</b>
+<b class="fc"><i class="no-highlight">90</i>&nbsp;            professor.setSobrenome(professorAtualizacoes.getSobrenome());</b>
+<b class="fc"><i class="no-highlight">91</i>&nbsp;            professor.setEmail(professorAtualizacoes.getEmail());</b>
+<b class="fc"><i class="no-highlight">92</i>&nbsp;            professor.setSexo(professorAtualizacoes.getSexo());</b>
+<b class="fc"><i class="no-highlight">93</i>&nbsp;            professor.setSenha(professorAtualizacoes.getSenha());</b>
+<b class="fc"><i class="no-highlight">94</i>&nbsp;            professor.setCpf(professorAtualizacoes.getCpf());</b>
+<b class="fc"><i class="no-highlight">95</i>&nbsp;            professor.setTelefone(professorAtualizacoes.getTelefone());</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;            professor.setDataDeNascimento(professorAtualizacoes.getDataDeNascimento());</b>
+<b class="fc"><i class="no-highlight">97</i>&nbsp;            professor.setDescricao(professorAtualizacoes.getDescricao());</b>
+<i class="no-highlight">98</i>&nbsp;
+<b class="fc"><i class="no-highlight">99</i>&nbsp;            professor = professorRepository.save(professor);</b>
+<i class="no-highlight">100</i>&nbsp;
+<b class="fc"><i class="no-highlight">101</i>&nbsp;            logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, &quot;USUARIO PROFESSOR ATUALIZADO&quot;, LocalDate.now().toString()));</b>
+<i class="no-highlight">102</i>&nbsp;
+<b class="fc"><i class="no-highlight">103</i>&nbsp;            ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);</b>
+<i class="no-highlight">104</i>&nbsp;
+<b class="fc"><i class="no-highlight">105</i>&nbsp;            emailService.sendEmailProfessor(professorDTO, &quot;Cadastro atualizado, &quot;, &quot;update&quot;);</b>
+<i class="no-highlight">106</i>&nbsp;
+<b class="fc"><i class="no-highlight">107</i>&nbsp;            return professorDTO;</b>
+<i class="no-highlight">108</i>&nbsp;
+<i class="no-highlight">109</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">110</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Professor com o ID &quot; + id + &quot; não encontrado informe um id valido&quot;);</b>
+<i class="no-highlight">111</i>&nbsp;        }
+<i class="no-highlight">112</i>&nbsp;    }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    public void remover(int id) throws Exception {
+<b class="fc"><i class="no-highlight">115</i>&nbsp;        Optional&lt;Professor&gt; objetoOptional = professorRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">116</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">117</i>&nbsp;            Professor professor = objetoOptional.get();</b>
+<i class="no-highlight">118</i>&nbsp;
+<b class="fc"><i class="no-highlight">119</i>&nbsp;            professor.setAtivo(&quot;N&quot;);</b>
+<i class="no-highlight">120</i>&nbsp;
+<b class="fc"><i class="no-highlight">121</i>&nbsp;            professor = professorRepository.save(professor);</b>
+<i class="no-highlight">122</i>&nbsp;
+<b class="fc"><i class="no-highlight">123</i>&nbsp;            logService.registerLog(new LogCreateDTO(TipoLog.PROFESSOR, &quot;USUARIO PROFESSOR REMOVIDO&quot;, LocalDate.now().toString()));</b>
+<i class="no-highlight">124</i>&nbsp;
+<b class="fc"><i class="no-highlight">125</i>&nbsp;            ProfessorDTO professorDTO = objectMapper.convertValue(professor, ProfessorDTO.class);</b>
+<i class="no-highlight">126</i>&nbsp;
+<b class="fc"><i class="no-highlight">127</i>&nbsp;            emailService.sendEmailProfessor(professorDTO, &quot;Cadastro excluido, &quot;,&quot;delete&quot;);</b>
+<b class="fc"><i class="no-highlight">128</i>&nbsp;        } else {</b>
+<b class="fc"><i class="no-highlight">129</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Professor com o ID &quot; + id + &quot; não encontrado informe um id valido&quot;);</b>
+<i class="no-highlight">130</i>&nbsp;        }
+<i class="no-highlight">131</i>&nbsp;    }
+<i class="no-highlight">132</i>&nbsp;
+<i class="no-highlight">133</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-20 14:57</div>
+</div>
+</body>
+</html>

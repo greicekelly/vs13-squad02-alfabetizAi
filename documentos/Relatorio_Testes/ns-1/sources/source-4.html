@@ -1,0 +1,359 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ModuloService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.dbc.vemser.alfabetizai.services</a>
+</div>
+
+<h1>Coverage Summary for Class: ModuloService (br.com.dbc.vemser.alfabetizai.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ModuloService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (75/75)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$7U9NjqBS</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$9iuNTgxQ</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$dfuJeM1v</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$eJW7hdTi</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$HbWDW14f</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$lzqkgBec</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$MIaurklC</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$NZgpQ42w</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$PC2DyZul</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$QlKKL6kU</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$Rl7DDjKS</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$S2WSRetY</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$ug2HEnV5</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$uZkfFTNk</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$y0pqXRSw</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$zSDundaD</td>
+  </tr>
+  <tr>
+    <td class="name">ModuloService$MockitoMock$657958984$auxiliary$zteEJZk0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (75/75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package br.com.dbc.vemser.alfabetizai.services;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;
+<i class="no-highlight">4</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
+<i class="no-highlight">5</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
+<i class="no-highlight">6</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+<i class="no-highlight">7</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
+<i class="no-highlight">8</i>&nbsp;import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
+<i class="no-highlight">9</i>&nbsp;import br.com.dbc.vemser.alfabetizai.exceptions.ObjetoNaoEncontradoException;
+<i class="no-highlight">10</i>&nbsp;import br.com.dbc.vemser.alfabetizai.exceptions.RegraDeNegocioException;
+<i class="no-highlight">11</i>&nbsp;import br.com.dbc.vemser.alfabetizai.models.Modulo;
+<i class="no-highlight">12</i>&nbsp;import br.com.dbc.vemser.alfabetizai.models.Professor;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import br.com.dbc.vemser.alfabetizai.repository.IModuloRepository;
+<i class="no-highlight">15</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">16</i>&nbsp;import lombok.AllArgsConstructor;
+<i class="no-highlight">17</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i class="no-highlight">18</i>&nbsp;import org.springframework.data.domain.Page;
+<i class="no-highlight">19</i>&nbsp;import org.springframework.data.domain.Pageable;
+<i class="no-highlight">20</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;import java.util.List;
+<i class="no-highlight">23</i>&nbsp;import java.util.Optional;
+<i class="no-highlight">24</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">25</i>&nbsp;
+<b class="fc"><i class="no-highlight">26</i>&nbsp;@Slf4j</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;@AllArgsConstructor</b>
+<i class="no-highlight">28</i>&nbsp;@Service
+<i class="no-highlight">29</i>&nbsp;public class ModuloService {
+<i class="no-highlight">30</i>&nbsp;    private final IModuloRepository moduloRepository;
+<i class="no-highlight">31</i>&nbsp;    private final ProfessorService professorService;
+<i class="no-highlight">32</i>&nbsp;    private final ObjectMapper objectMapper;
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;    public ModuloDTO criar(ModuloCreateDTO moduloCreateDTO) throws Exception {
+<b class="fc"><i class="no-highlight">35</i>&nbsp;        ProfessorDTO professorDTO = professorService.buscarProfessorPorId(moduloCreateDTO.getIdProfessor());</b>
+<i class="no-highlight">36</i>&nbsp;
+<b class="fc"><i class="no-highlight">37</i>&nbsp;        Modulo modulo = converterDTO(moduloCreateDTO);</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;        Professor professor = objectMapper.convertValue(professorDTO, Professor.class);</b>
+<i class="no-highlight">39</i>&nbsp;
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        modulo.setProfessor(professor);</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        modulo.setAtivo(&quot;S&quot;);</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;        modulo.setFoiAprovado(&quot;N&quot;);</b>
+<i class="no-highlight">43</i>&nbsp;
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        return retornarDTO(moduloRepository.save(modulo));</b>
+<i class="no-highlight">45</i>&nbsp;    }
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;    public Page&lt;ModuloDTO&gt; listar(Pageable pageable) throws Exception {
+<b class="fc"><i class="no-highlight">48</i>&nbsp;        return moduloRepository.findAll(pageable)</b>
+<b class="fc"><i class="no-highlight">49</i>&nbsp;                .map(this::retornarDTO);</b>
+<i class="no-highlight">50</i>&nbsp;    }
+<i class="no-highlight">51</i>&nbsp;
+<i class="no-highlight">52</i>&nbsp;    public ModuloDTO listarPorIdModulo(Integer idModulo) throws Exception {
+<b class="fc"><i class="no-highlight">53</i>&nbsp;        Modulo modulo = buscarModuloPorId(idModulo);</b>
+<i class="no-highlight">54</i>&nbsp;
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        return objectMapper.convertValue(modulo, ModuloDTO.class);</b>
+<i class="no-highlight">56</i>&nbsp;
+<i class="no-highlight">57</i>&nbsp;    }
+<i class="no-highlight">58</i>&nbsp;
+<i class="no-highlight">59</i>&nbsp;    public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
+<b class="fc"><i class="no-highlight">60</i>&nbsp;        Optional&lt;Modulo&gt; moduloOptional = moduloRepository.findById(idModulo);</b>
+<i class="no-highlight">61</i>&nbsp;
+<b class="fc"><i class="no-highlight">62</i>&nbsp;        if (moduloOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">63</i>&nbsp;            return moduloOptional.get();</b>
+<i class="no-highlight">64</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">65</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Módulo de &quot; + idModulo +&quot; não encontrado.&quot;);</b>
+<i class="no-highlight">66</i>&nbsp;        }
+<i class="no-highlight">67</i>&nbsp;
+<i class="no-highlight">68</i>&nbsp;    }
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;    public Page&lt;ModuloDTO&gt; pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
+<i class="no-highlight">71</i>&nbsp;
+<b class="fc"><i class="no-highlight">72</i>&nbsp;            Page&lt;Modulo&gt; modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);</b>
+<i class="no-highlight">73</i>&nbsp;
+<b class="fc"><i class="no-highlight">74</i>&nbsp;            return modulos.map(modulo -&gt; objectMapper.convertValue(modulo, ModuloDTO.class));</b>
+<i class="no-highlight">75</i>&nbsp;
+<i class="no-highlight">76</i>&nbsp;    }
+<i class="no-highlight">77</i>&nbsp;
+<i class="no-highlight">78</i>&nbsp;    public Page&lt;ModuloProfessorDTO&gt; pagePorProfessor(Integer idProfessor, String aprovacao, Pageable pageable) {
+<i class="no-highlight">79</i>&nbsp;        Page&lt;Modulo&gt; modulos;
+<i class="no-highlight">80</i>&nbsp;        String filtro;
+<i class="no-highlight">81</i>&nbsp;
+<b class="fc"><i class="no-highlight">82</i>&nbsp;        if(aprovacao != null){</b>
+<b class="fc"><i class="no-highlight">83</i>&nbsp;            if(aprovacao.equals(&quot;Sem Analise&quot;)){</b>
+<b class="fc"><i class="no-highlight">84</i>&nbsp;                filtro = &quot;N&quot;;</b>
+<b class="fc"><i class="no-highlight">85</i>&nbsp;            } else if(aprovacao.equals(&quot;Aprovado&quot;)){</b>
+<b class="fc"><i class="no-highlight">86</i>&nbsp;                filtro = &quot;S&quot;;</b>
+<i class="no-highlight">87</i>&nbsp;            } else {
+<b class="fc"><i class="no-highlight">88</i>&nbsp;                filtro = &quot;R&quot;;</b>
+<i class="no-highlight">89</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">90</i>&nbsp;            modulos = moduloRepository.findAllProfessorComFiltro(idProfessor, filtro, pageable);</b>
+<i class="no-highlight">91</i>&nbsp;        }
+<i class="no-highlight">92</i>&nbsp;
+<b class="fc"><i class="no-highlight">93</i>&nbsp;        modulos = moduloRepository.findAllByIdProfessor(idProfessor, pageable);</b>
+<i class="no-highlight">94</i>&nbsp;
+<b class="fc"><i class="no-highlight">95</i>&nbsp;        return modulos.map(modulo -&gt; objectMapper.convertValue(modulo, ModuloProfessorDTO.class));</b>
+<i class="no-highlight">96</i>&nbsp;
+<i class="no-highlight">97</i>&nbsp;    }
+<i class="no-highlight">98</i>&nbsp;
+<i class="no-highlight">99</i>&nbsp;    public Page&lt;ModuloAdminDTO&gt; pagePorIdAdmin(Integer idAdmin, Pageable pageable) {
+<i class="no-highlight">100</i>&nbsp;
+<b class="fc"><i class="no-highlight">101</i>&nbsp;        Page&lt;Modulo&gt; modulos = moduloRepository.findAllByAdmin(idAdmin, pageable);</b>
+<i class="no-highlight">102</i>&nbsp;
+<b class="fc"><i class="no-highlight">103</i>&nbsp;        return modulos.map(modulo -&gt; objectMapper.convertValue(modulo, ModuloAdminDTO.class));</b>
+<i class="no-highlight">104</i>&nbsp;
+<i class="no-highlight">105</i>&nbsp;    }
+<i class="no-highlight">106</i>&nbsp;
+<i class="no-highlight">107</i>&nbsp;    public ModuloDTO atualizar(Integer id, ModuloCreateDTO moduloCreateDTO) throws Exception {
+<b class="fc"><i class="no-highlight">108</i>&nbsp;        Optional&lt;Modulo&gt; objetoOptional = moduloRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">109</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">110</i>&nbsp;            Modulo modulo = objetoOptional.get();</b>
+<b class="fc"><i class="no-highlight">111</i>&nbsp;            Modulo moduloAtualizacao = converterDTO(moduloCreateDTO);</b>
+<i class="no-highlight">112</i>&nbsp;
+<b class="fc"><i class="no-highlight">113</i>&nbsp;            modulo.setTitulo(moduloAtualizacao.getTitulo());</b>
+<b class="fc"><i class="no-highlight">114</i>&nbsp;            modulo.setConteudo(moduloAtualizacao.getConteudo());</b>
+<b class="fc"><i class="no-highlight">115</i>&nbsp;            modulo.setClassificacao(moduloAtualizacao.getClassificacao());</b>
+<b class="fc"><i class="no-highlight">116</i>&nbsp;            modulo.setFoiAprovado(moduloAtualizacao.getFoiAprovado());</b>
+<b class="fc"><i class="no-highlight">117</i>&nbsp;            modulo.setIdProfessor(moduloAtualizacao.getIdProfessor());</b>
+<i class="no-highlight">118</i>&nbsp;
+<b class="fc"><i class="no-highlight">119</i>&nbsp;            modulo = moduloRepository.save(modulo);</b>
+<i class="no-highlight">120</i>&nbsp;
+<b class="fc"><i class="no-highlight">121</i>&nbsp;            return retornarDTO(modulo);</b>
+<i class="no-highlight">122</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">123</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Modulo com o ID &quot; + id + &quot; não encontrado. Informe um ID válido&quot;);</b>
+<i class="no-highlight">124</i>&nbsp;        }
+<i class="no-highlight">125</i>&nbsp;    }
+<i class="no-highlight">126</i>&nbsp;
+<i class="no-highlight">127</i>&nbsp;    public void remover(int id) throws Exception {
+<b class="fc"><i class="no-highlight">128</i>&nbsp;        Optional&lt;Modulo&gt; objetoOptional = moduloRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">129</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">130</i>&nbsp;            Modulo modulo = objetoOptional.get();</b>
+<i class="no-highlight">131</i>&nbsp;
+<b class="fc"><i class="no-highlight">132</i>&nbsp;            if (!modulo.getDesafios().isEmpty() || !modulo.getAlunos().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">133</i>&nbsp;                throw new RegraDeNegocioException(&quot;Não é possível excluir o módulo pois ele está associado a outras classes.&quot;);</b>
+<i class="no-highlight">134</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">135</i>&nbsp;            moduloRepository.delete(modulo);</b>
+<i class="no-highlight">136</i>&nbsp;
+<b class="fc"><i class="no-highlight">137</i>&nbsp;        } else {</b>
+<b class="fc"><i class="no-highlight">138</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Modulo com o ID &quot; + id + &quot; não encontrado informe um id valido&quot;);</b>
+<i class="no-highlight">139</i>&nbsp;        }
+<i class="no-highlight">140</i>&nbsp;    }
+<i class="no-highlight">141</i>&nbsp;    public void removerLogico(int id) throws Exception {
+<b class="fc"><i class="no-highlight">142</i>&nbsp;        Optional&lt;Modulo&gt; objetoOptional = moduloRepository.findById(id);</b>
+<b class="fc"><i class="no-highlight">143</i>&nbsp;        if (objetoOptional.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">144</i>&nbsp;            Modulo modulo = objetoOptional.get();</b>
+<i class="no-highlight">145</i>&nbsp;
+<b class="fc"><i class="no-highlight">146</i>&nbsp;            modulo.setAtivo(&quot;N&quot;);</b>
+<i class="no-highlight">147</i>&nbsp;
+<b class="fc"><i class="no-highlight">148</i>&nbsp;            modulo = moduloRepository.save(modulo);</b>
+<i class="no-highlight">149</i>&nbsp;
+<b class="fc"><i class="no-highlight">150</i>&nbsp;        } else {</b>
+<b class="fc"><i class="no-highlight">151</i>&nbsp;            throw new ObjetoNaoEncontradoException(&quot;Modulo com o ID &quot; + id + &quot; não encontrado informe um id valido&quot;);</b>
+<i class="no-highlight">152</i>&nbsp;        }
+<i class="no-highlight">153</i>&nbsp;    }
+<i class="no-highlight">154</i>&nbsp;
+<i class="no-highlight">155</i>&nbsp;    public List&lt;ModuloDTO&gt; listarPorAprovacao(String aprovacao) throws Exception {
+<i class="no-highlight">156</i>&nbsp;        String filtro;
+<b class="fc"><i class="no-highlight">157</i>&nbsp;        if(aprovacao.equals(&quot;Sem Analise&quot;)){</b>
+<b class="fc"><i class="no-highlight">158</i>&nbsp;            filtro = &quot;N&quot;;</b>
+<b class="fc"><i class="no-highlight">159</i>&nbsp;        } else if(aprovacao.equals(&quot;Aprovado&quot;)){</b>
+<b class="fc"><i class="no-highlight">160</i>&nbsp;            filtro = &quot;S&quot;;</b>
+<i class="no-highlight">161</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">162</i>&nbsp;            filtro = &quot;R&quot;;</b>
+<i class="no-highlight">163</i>&nbsp;        }
+<i class="no-highlight">164</i>&nbsp;
+<b class="fc"><i class="no-highlight">165</i>&nbsp;        List&lt;Modulo&gt; modulo = moduloRepository.findAllByFoiAprovado(filtro);</b>
+<i class="no-highlight">166</i>&nbsp;
+<b class="fc"><i class="no-highlight">167</i>&nbsp;        return modulo.stream().map(this::retornarDTO).collect(Collectors.toList());</b>
+<i class="no-highlight">168</i>&nbsp;    }
+<i class="no-highlight">169</i>&nbsp;
+<i class="no-highlight">170</i>&nbsp;    public List&lt;ModuloDTO&gt; listarModulosConcluidos(Integer idAluno) throws Exception {
+<i class="no-highlight">171</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">172</i>&nbsp;            List&lt;Modulo&gt; modulos = moduloRepository.listarModulosConcluidos(idAluno);</b>
+<b class="fc"><i class="no-highlight">173</i>&nbsp;            return modulos.stream()</b>
+<b class="fc"><i class="no-highlight">174</i>&nbsp;                    .map(this::retornarDTO)</b>
+<b class="fc"><i class="no-highlight">175</i>&nbsp;                    .collect(Collectors.toList());</b>
+<b class="fc"><i class="no-highlight">176</i>&nbsp;        } catch (Exception e) {</b>
+<b class="fc"><i class="no-highlight">177</i>&nbsp;            log.error(&quot;Erro ao listar modulos concluidos&quot;, e);</b>
+<b class="fc"><i class="no-highlight">178</i>&nbsp;            throw new Exception(&quot;Erro ao listar modulos concluidos: &quot; + e.getMessage());</b>
+<i class="no-highlight">179</i>&nbsp;        }
+<i class="no-highlight">180</i>&nbsp;    }
+<i class="no-highlight">181</i>&nbsp;    public Modulo converterDTO(ModuloCreateDTO dto) {
+<b class="fc"><i class="no-highlight">182</i>&nbsp;        return objectMapper.convertValue(dto, Modulo.class);</b>
+<i class="no-highlight">183</i>&nbsp;    }
+<i class="no-highlight">184</i>&nbsp;    public ModuloDTO retornarDTO(Modulo entity) {
+<b class="fc"><i class="no-highlight">185</i>&nbsp;        return objectMapper.convertValue(entity, ModuloDTO.class);</b>
+<i class="no-highlight">186</i>&nbsp;    }
+<i class="no-highlight">187</i>&nbsp;
+<i class="no-highlight">188</i>&nbsp;    public ModuloDTO save(ModuloDTO moduloDTO){
+<b class="fc"><i class="no-highlight">189</i>&nbsp;        Modulo modulo = objectMapper.convertValue(moduloDTO, Modulo.class);</b>
+<i class="no-highlight">190</i>&nbsp;
+<b class="fc"><i class="no-highlight">191</i>&nbsp;        return retornarDTO(moduloRepository.save(modulo));</b>
+<i class="no-highlight">192</i>&nbsp;    }
+<i class="no-highlight">193</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-20 14:57</div>
+</div>
+</body>
+</html>
