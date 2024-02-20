@@ -1,5 +1,6 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.UsuarioDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
 import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
@@ -167,6 +168,18 @@ public class Mock {
     public static Usuario retornarUsuario() {
         Usuario usuario = new Usuario();
         usuario.setSenha("2344");
+        usuario.setCpf("11111111111");
+        usuario.setSexo("F");
+        usuario.setTelefone("8776655753");
+        usuario.setNome("Teste");
+        usuario.setDataDeNascimento(LocalDate.now());
+        usuario.setSobrenome("da silva");
+        usuario.setEmail("teste@email.com");
+        return usuario;
+    }
+
+    public static UsuarioDTO retornarUsuarioDTO() {
+        UsuarioDTO usuario = new UsuarioDTO();
         usuario.setCpf("11111111111");
         usuario.setSexo("F");
         usuario.setTelefone("8776655753");
