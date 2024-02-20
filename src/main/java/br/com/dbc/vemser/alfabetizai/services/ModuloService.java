@@ -52,14 +52,18 @@ public class ModuloService {
     }
 
     public ModuloDTO listarPorIdModulo(Integer idModulo) throws Exception {
-        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
+        Modulo modulo = buscarModuloPorId(idModulo);
 
-        if (moduloOptional.isPresent()) {
-            Modulo modulo = moduloOptional.get();
-            return objectMapper.convertValue(retornarDTO(modulo), ModuloDTO.class);
-        } else {
-            throw new RegraDeNegocioException("Módulo não encontrado.");
-        }
+        return objectMapper.convertValue(modulo, ModuloDTO.class);
+
+//        Optional<Modulo> moduloOptional = moduloRepository.findById(idModulo);
+//
+//        if (moduloOptional.isPresent()) {
+//            Modulo modulo = moduloOptional.get();
+//            return objectMapper.convertValue(modulo, ModuloDTO.class);
+//        } else {
+//            throw new RegraDeNegocioException("Módulo não encontrado.");
+//        }
     }
 
     public Modulo buscarModuloPorId(Integer idModulo) throws Exception {
@@ -72,7 +76,6 @@ public class ModuloService {
         }
 
     }
-
 
     public Page<ModuloDTO> pagePorIdProfessor(Integer idProfessor, Pageable pageable) {
 
@@ -106,7 +109,6 @@ public class ModuloService {
     public Page<ModuloAdminDTO> pagePorIdAdmin(Integer idAdmin, Pageable pageable) {
 
         Page<Modulo> modulos = moduloRepository.findAllByAdmin(idAdmin, pageable);
-        System.out.println(modulos);
 
         return modulos.map(modulo -> objectMapper.convertValue(modulo, ModuloAdminDTO.class));
 
@@ -132,7 +134,7 @@ public class ModuloService {
         }
     }
 
-    public void remover(int id) throws RegraDeNegocioException {
+    public void remover(int id) throws Exception {
         Optional<Modulo> objetoOptional = moduloRepository.findById(id);
         if (objetoOptional.isPresent()) {
             Modulo modulo = objetoOptional.get();
@@ -143,7 +145,7 @@ public class ModuloService {
             moduloRepository.delete(modulo);
 
         } else {
-            throw new RegraDeNegocioException("Modulo com o ID " + id + " não encontrado informe um id valido");
+            throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
         }
     }
     public void removerLogico(int id) throws Exception {
@@ -154,8 +156,6 @@ public class ModuloService {
             modulo.setAtivo("N");
 
             modulo = moduloRepository.save(modulo);
-
-            ModuloDTO moduloDTO = retornarDTO(modulo);
 
         } else {
             throw new ObjetoNaoEncontradoException("Modulo com o ID " + id + " não encontrado informe um id valido");
@@ -193,10 +193,6 @@ public class ModuloService {
     }
     public ModuloDTO retornarDTO(Modulo entity) {
         return objectMapper.convertValue(entity, ModuloDTO.class);
-    }
-
-    public ModuloDTO moduloPorId (Integer id){
-        return retornarDTO(moduloRepository.getById(id));
     }
 
     public ModuloDTO save(ModuloDTO moduloDTO){

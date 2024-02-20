@@ -1,12 +1,18 @@
 package br.com.dbc.vemser.alfabetizai.services;
 
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminCreateDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.admin.AdminModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.aluno.AlunoDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.desafio.DesafioDTO;
+import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.modulo.ModuloDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.professor.ProfessorDTO;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloAdminDTO;
+import br.com.dbc.vemser.alfabetizai.dto.relatorios.ModuloProfessorDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelComAlunosDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelCreateDTO;
 import br.com.dbc.vemser.alfabetizai.dto.responsavel.ResponsavelDTO;
@@ -15,6 +21,8 @@ import br.com.dbc.vemser.alfabetizai.enums.TipoDesafio;
 import br.com.dbc.vemser.alfabetizai.models.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -86,6 +94,33 @@ public class Mock {
         return desafioDTO;
     }
 
+    public static Set<Desafio> retornarDesafios() {
+        Set<Desafio> desafios = new HashSet<>();
+
+        Desafio desafio = new Desafio();
+        desafio.setId(new Random().nextInt());
+        desafio.setTitulo("Escolha a letra inicial");
+        desafio.setConteudo("Aprenda as consoantes");
+        desafio.setTipo(TipoDesafio.QUIZ);
+        desafio.setInstrucao("Marque a letra, que corresponde a primeira letra da palavra Banana.");
+        desafio.setA("D");
+        desafio.setB("T");
+        desafio.setC("B");
+        desafio.setD("S");
+        desafio.setE("R");
+        desafio.setAlternativaCorreta("C");
+        desafio.setPontos(10);
+
+        Modulo modulo = new Modulo();
+        modulo.setId(1);
+        desafio.setModulo(modulo);
+
+        desafio.setAtivo("S");
+
+        desafios.add(desafio);
+
+        return desafios;
+    }
 
     public static AlunoCreateDTO retornarAlunoCreateDTO(){
         AlunoCreateDTO alunoCreateDTO = new AlunoCreateDTO();
@@ -181,6 +216,8 @@ public class Mock {
         modulo.setId(new Random().nextInt());
         modulo.setConteudo("ABC");
         modulo.setClassificacao(ClassificacaoModulo.INICIANTE);
+        modulo.setDesafios(new HashSet<>());
+        modulo.setAlunos(new HashSet<>());
         return modulo;
     }
 
@@ -189,6 +226,35 @@ public class Mock {
         modulo.setTitulo("ABC");
         modulo.setId(new Random().nextInt());
         modulo.setConteudo("ABC");
+        modulo.setClassificacao(ClassificacaoModulo.INICIANTE);
+        return modulo;
+    }
+
+    public static ModuloCreateDTO retornarModuloCreateDTO(){
+        ModuloCreateDTO modulo = new ModuloCreateDTO();
+        modulo.setTitulo("ABC");
+        modulo.setConteudo("ABC");
+        modulo.setClassificacao(ClassificacaoModulo.INICIANTE);
+        modulo.setIdProfessor(1);
+        return modulo;
+    }
+
+    public static ModuloProfessorDTO retornarModuloProfessorDTO() {
+        ModuloProfessorDTO modulo = new ModuloProfessorDTO();
+        modulo.setTitulo("ABC");
+        modulo.setId(new Random().nextInt());
+        modulo.setConteudo("ABC");
+        modulo.setFoiAprovado("S");
+        modulo.setClassificacao(ClassificacaoModulo.INICIANTE);
+        return modulo;
+    }
+
+    public static ModuloAdminDTO retornarModuloAdminDTO() {
+        ModuloAdminDTO modulo = new ModuloAdminDTO();
+        modulo.setTitulo("ABC");
+        modulo.setId(new Random().nextInt());
+        modulo.setConteudo("ABC");
+        modulo.setFoiAprovado("S");
         modulo.setClassificacao(ClassificacaoModulo.INICIANTE);
         return modulo;
     }
@@ -239,4 +305,57 @@ public class Mock {
 
         return professorCreateDTO;
     }
+
+    public static Admin retornarAdmin(){
+        Admin admin = new Admin();
+        admin.setIdUsuario(1);
+        admin.setNome("Admin");
+        admin.setSobrenome("Um");
+        admin.setTelefone("48912345678");
+        admin.setEmail("adminUm@email.com");
+        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
+        admin.setSexo("M");
+        admin.setSenha("1234");
+        admin.setCpf("12345678911");
+        admin.setDescricao("Administrador de Sistema");
+        admin.setAtivo("S");
+
+        return admin;
+    }
+
+    public static Admin retornarAdminSegundo(){
+        Admin admin = new Admin();
+        admin.setIdUsuario(2);
+        admin.setNome("Admin");
+        admin.setSobrenome("Dois");
+        admin.setTelefone("51987654321");
+        admin.setEmail("AdminDois@email.com");
+        admin.setDataDeNascimento(LocalDate.parse("1990-10-10"));
+        admin.setSexo("F");
+        admin.setSenha("1234");
+        admin.setCpf("12345678922");
+        admin.setDescricao("Administrador de Sistema");
+        admin.setAtivo("S");
+
+        return admin;
+    }
+
+    public static AdminCreateDTO retornarAdminCreateDTO(){
+        AdminCreateDTO adminCreateDTO = new AdminCreateDTO("Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "M","1234", "12345678911", "Admistrador de Sistema");
+
+        return adminCreateDTO;
+    }
+
+    public static AdminDTO retornarAdminDTO(){
+        AdminDTO adminDTO = new AdminDTO(1, "Tiago", "Raupp", "48912345678", "tiago@email.com", LocalDate.parse("1990-10-10"), "S", "M", "12345678911", "Admintrador de Sistema");
+
+        return adminDTO;
+    }
+
+    public static AdminModuloDTO retornarAdminModuloDTO(){
+        AdminModuloDTO adminModuloDTO = new AdminModuloDTO(1,"teste", "admin", "48911223344", "teste@email.com", "S", "Admin");
+
+        return adminModuloDTO;
+    }
+
 }
