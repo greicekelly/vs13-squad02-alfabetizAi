@@ -179,6 +179,7 @@ public class AlunoService {
             notificacaoService.registerEvent(new NotificacaoCreateDTO(TipoStatus.INICIADO, "DESAFIO INICIADO - "+desafio.getTitulo(), aluno.getNomeAluno(), aluno.getResponsavel().getNome(), aluno.getResponsavel().getTelefone(), LocalDate.now().toString()));
             aluno.getDesafios().add(desafio);
             aluno.adicionarPontuacao(desafio.getPontos());
+            alunoRepository.save(aluno);
             concluirModulo(aluno,desafio);
 
         } else {
