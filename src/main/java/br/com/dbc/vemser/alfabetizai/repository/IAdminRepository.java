@@ -15,8 +15,6 @@ public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 
     List<Admin> findAllByAtivo(String ativo);
 
-
     Admin findAllByCpfOrEmail(String cpf, String email);
 
-//    Optional<Admin> findByEmailAndSenha(String email, String senha);
 }

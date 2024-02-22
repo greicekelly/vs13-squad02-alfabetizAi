@@ -17,8 +17,4 @@ public interface IAlunoRepository extends JpaRepository<Aluno, Integer> {
 
     Optional<List<Aluno>> findAllByResponsavel(Responsavel responsavel);
 
-//    @Query(value = "SELECT * FROM ALUNO a " +
-//            "JOIN RESPONSAVEL r ON r.ID_USUARIO = a.ID_USUARIO " +
-//            "WHERE a.ID_USUARIO = :idUsuario", nativeQuery = true)
-//    public Set<A> buscarPessoaCompletaPorId(@Param("idUsuario") Integer id);
 }

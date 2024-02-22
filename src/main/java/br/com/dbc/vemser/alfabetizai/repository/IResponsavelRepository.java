@@ -16,6 +16,4 @@ public interface IResponsavelRepository extends JpaRepository<Responsavel, Integ
 
     Responsavel findAllByCpfOrEmail(String cpf, String email);
 
-//    Optional<Responsavel> findByEmailAndSenha(String email, String senha);
-
 }

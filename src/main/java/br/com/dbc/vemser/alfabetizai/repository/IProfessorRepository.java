@@ -14,5 +14,4 @@ public interface IProfessorRepository extends JpaRepository<Professor, Integer> 
 
     Professor findAllByCpfOrEmail(String cpf, String email);
 
-//    Optional<Professor> findByEmailAndSenha(String email, String senha);
 }
